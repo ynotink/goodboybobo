@@ -1,0 +1,30 @@
+@font-face{font-family:Lilita;src:url(a/lilita-one-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Fred;font-weight:600;src:url(a/fredoka-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Fred;font-weight:700;src:url(a/fredoka-latin-700-normal.woff2) format('woff2')}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{height:100%;background:#2a1a10;overflow:hidden}
+body{display:flex;align-items:center;justify-content:center;font-family:Lilita,Fred,sans-serif;color:#5b2c10}
+#app{position:relative;width:390px;height:844px;flex:none;overflow:hidden;transform:scale(var(--k,1));transform-origin:center center}
+.abs{position:absolute}
+img{display:block;pointer-events:none}
+.bg{position:absolute;inset:0;background-size:100% 100%}
+.tap{pointer-events:auto;cursor:pointer;transition:transform .12s}
+.tap:active{transform:scale(.93)}
+/* text styles */
+.cream{color:#fff0c5;-webkit-text-stroke:0;text-shadow:0 2px 0 #5a2b10,0 -1.5px 0 #5a2b10,1.5px 0 0 #5a2b10,-1.5px 0 0 #5a2b10,1.5px 1.5px 0 #5a2b10,-1.5px 1.5px 0 #5a2b10,1.5px -1.5px 0 #5a2b10,-1.5px -1.5px 0 #5a2b10,0 3px 2px rgba(40,15,0,.45)}
+.dark{color:#5b2c10}
+/* wood pill (counters, labels) */
+.wpill{position:absolute;border-radius:999px;background:url(a/woodtex.webp) center/cover;border:2.5px solid #6a3612;box-shadow:inset 0 2px 0 rgba(255,220,160,.55),inset 0 -3px 0 rgba(90,40,10,.35),0 3px 3px rgba(40,15,0,.35);display:flex;align-items:center;justify-content:center}
+.wpill.dk{background:linear-gradient(#8b5228,#6e3d1c);border-color:#4e2610;box-shadow:inset 0 1.5px 0 rgba(255,200,140,.35),0 2px 2px rgba(40,15,0,.35)}
+/* top HUD */
+.hud .ico{position:absolute;filter:drop-shadow(0 2px 2px rgba(40,15,0,.35))}
+.num{font-size:22px;letter-spacing:.3px}
+/* nav */
+.nav{position:absolute;left:4px;right:4px;bottom:34px;height:88px}
+.nav .bar{position:absolute;inset:0;width:100%;height:100%}
+.nav .it{position:absolute;top:-6px;width:84px;height:92px}
+.nav .it img.i{position:absolute;left:50%;top:0;transform:translateX(-50%);height:58px;filter:drop-shadow(0 3px 2px rgba(40,15,0,.35))}
+.nav .it .lb{left:5px;right:5px;top:58px;height:28px}
+.nav .it.on .lb{box-shadow:0 0 0 2px #ffd15a,0 0 12px 3px rgba(255,210,90,.9),inset 0 1.5px 0 rgba(255,200,140,.35)}
+.nav .it.on img.i{filter:drop-shadow(0 0 8px rgba(255,220,120,.95)) drop-shadow(0 3px 2px rgba(40,15,0,.35));height:62px;top:-4px}
+.shadow{filter:drop-shadow(0 4px 5px rgba(40,15,0,.4))}

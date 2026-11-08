@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js"></script><script src="motion.js"></script><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="glass.css"><script src="common.js"></script>
+<style>
+body .gbg{inset:auto;left:0;top:0;width:390px;height:max(844px,var(--H,844px));background:url(a/bg3_home.webp) 0 -35.7px/390px auto no-repeat}
+#logo{top:112px;width:216px}
+#rambo{position:absolute;left:84px;top:208px;width:222px;filter:drop-shadow(0 10px 10px rgba(30,45,15,.28))}
+.qb{position:absolute;top:522px;width:90px;text-align:center;cursor:pointer}
+.qb img{width:66px;height:66px;display:block;margin:0 auto;filter:drop-shadow(0 3px 5px rgba(22,38,19,.25))}
+.qb .l{font-size:16px;margin-top:2px}
+#lv{position:absolute;left:50%;top:620px;transform:translateX(-50%);height:28px;padding:0 18px;border-radius:14px;display:flex;align-items:center;font-size:15px;letter-spacing:.3px}
+#play{left:50%;top:654px;width:272px;transform:translateX(-50%)}
+#play:active{transform:translateX(-50%) scale(.97)}
+</style></head><body data-hmin="762"><div id="app">
+<div class="gbg"></div>
+<div id="hud"></div>
+<img id="logo" class="ttlimg" src="a/L_logo.webp">
+<img id="rambo" src="a/r_sit.webp">
+<div class="qb tap" style="left:30px" onclick="gtoast('Daily Treat coming soon!')"><img src="a/P_daily.webp"><div class="l wt">Daily</div></div>
+<div class="qb tap" style="left:150px" onclick="gtoast('Events are coming soon!')"><img src="a/P_events.webp"><div class="l wt">Events</div></div>
+<div class="qb tap" style="left:270px" onclick="gtoast('Play with friends — coming soon!')"><img src="a/P_friends.webp"><div class="l wt">Friends</div></div>
+<div id="lv" class="gl wt">LEVEL 1</div>
+<img id="play" class="imgbtn" src="a/B_g_play.webp" onclick="go('map')">
+<div id="nv"></div>
+</div><script>
+document.getElementById('hud').outerHTML=ghud();document.getElementById('nv').outerHTML=gnav('home');
+window.FITCB=H=>{const d=Math.max(-40,Math.min(0,H-844)),u=Math.max(-34,Math.min(0,H-844-d));document.querySelectorAll('#app>*').forEach(e=>{if(e.matches('.gnav,.gtoast'))return;const y=d+(e.matches('.qb,#lv,#play')?u:0);if(e.matches('.ghud'))e.style.translate=`0 ${y}px`;else e.style.marginTop=y+'px'})};
+document.getElementById('lv').textContent='LEVEL '+gbbCur();fit();addEventListener('load',fit);setTimeout(fit,600);
+</script><script>BA.music('Theme')</script><script src="seamloop.js"></script><script src="home_video.js"></script></body></html>

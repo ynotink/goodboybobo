@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Toy Box · Good Boy Bobo</title><script src="audio.js"></script><script src="motion.js"></script><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="glass.css"><script src="common.js"></script>
+<style>
+#tt{top:112px;width:178px}
+#hero{position:absolute;left:16px;top:168px;width:358px;height:176px;border-radius:24px}
+#big{position:absolute;left:34px;top:180px;font-size:50px;font-weight:900;line-height:1}
+#tf{position:absolute;left:36px;top:232px;font-size:21px}
+#pb{position:absolute;left:32px;top:268px;width:176px;height:24px;border-radius:12px;background:rgba(255,255,255,.18);border:2px solid #FFF5DE;overflow:hidden}
+#pb .f{position:absolute;left:0;top:0;bottom:0;width:20%;min-width:44px;border-radius:10px;background:linear-gradient(#9CE52D,#368500);display:flex;align-items:center;justify-content:center;font-family:Nun;font-weight:900;font-size:12px;color:#fff;text-shadow:0 1px 0 rgba(30,80,0,.5)}
+#hint{position:absolute;left:34px;top:304px;font-size:12.5px}
+#rb{position:absolute;left:230px;top:150px;width:136px;filter:drop-shadow(0 8px 8px rgba(30,45,15,.28))}
+#scr{position:absolute;left:0;right:0;top:354px;bottom:106px;overflow-y:auto;scrollbar-width:none;padding-bottom:10px;-webkit-mask-image:linear-gradient(#000 calc(100% - 14px),transparent);mask-image:linear-gradient(#000 calc(100% - 14px),transparent)}
+#scr::-webkit-scrollbar{display:none}
+.chp{margin:4px auto 10px;width:250px;height:34px;border-radius:17px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:0 16px 14px}
+.c{position:relative;height:108px;border-radius:18px}
+.c .glow{position:absolute;left:50%;top:42px;width:84px;height:84px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,250,220,.35),rgba(255,250,220,0) 68%)}
+.c .ty{position:absolute;left:50%;top:10px;height:60px;max-width:80px;object-fit:contain;transform:translateX(-50%);filter:drop-shadow(0 3px 3px rgba(20,25,5,.3))}
+.c .lb{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:13.5px}
+.c .ck{position:absolute;right:-6px;top:-7px;width:28px}
+.c .nw{position:absolute;right:-8px;top:-9px;width:52px}
+.c.lk{opacity:.75}
+.c.lk .q{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Nun;font-weight:900;font-size:40px;color:rgba(255,255,255,.7)}
+</style></head><body data-room="toys" data-hmin="660"><div id="app">
+<div class="gbg"></div>
+<div id="hud"></div>
+<img id="tt" class="ttlimg" src="a/L_t_toybox.webp">
+<div id="hero" class="gl"></div>
+<div id="big" class="wt">6 / 30</div>
+<div id="tf" class="wt">toys found</div>
+<div id="pb"><div class="f">20%</div></div>
+<div id="hint" class="wt">Beat a chapter to win its toy!</div>
+<img id="rb" src="a/r_ball.webp">
+<div id="scr"></div>
+<div id="nv"></div>
+</div><script>
+const CH=['The Backyard','The Neighborhood','Dog Park','Sunny Woods',"Grammy's House"];
+const T1=[['toy0','Tennis Ball',1],['toy1','Rope Tug',1],['toy2','Chew Ring',1],['toy3','Frisbee',1],['toy4','Rubber Duck',1],['toy5','Bone',2]];
+let h='';CH.forEach((c,ci)=>{
+ h+=`<div class="chp gl wt">Chapter ${ci+1} · ${c}</div><div class="grid">`;
+ const L=ci==0?T1:Array(6).fill(['locked','???',0]);
+ L.forEach(([i,n,s])=>{h+=i=='locked'?`<div class="c gl lk"><div class="q">?</div></div>`:
+  `<div class="c gl tap"><div class="glow"></div><img class="ty" src="a/${i}.webp"><div class="lb wt">${n}</div>${s==1?'<img class="ck" src="a/P_check.webp">':'<img class="nw" src="a/P_new.webp">'}</div>`});
+ h+='</div>'});
+document.getElementById('scr').innerHTML=h;
+document.getElementById('hud').outerHTML=ghud();document.getElementById('nv').outerHTML=gnav('toys');fit();
+</script><script>BA.music('inside_myself')</script><script src="seamloop.js"></script><script src="room_video.js"></script><script src="room_fx.js"></script></body></html>
