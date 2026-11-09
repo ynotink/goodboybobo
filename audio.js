@@ -1,3 +1,6 @@
+window.GBB_BUILD=9;
+// temporary build tag (bottom-left) so we always know which version the phone is showing
+addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
 /* Good Boy Bobo — audio engine.
    Music: seamless loops, songs fade in from their start, crossfade when the song changes,
    fade out before leaving a page, and only continue mid-song when hopping straight between screens
@@ -51,7 +54,7 @@ async function music(name){want=name;if(!unlocked)return;const ac=ctx();if(!ac)r
 function musPos(){if(!cur||!AC)return 0;let p=AC.currentTime-cur.t0;const m=cur.m;if(p>m.loopEnd)p=m.loopStart+((p-m.loopStart)%(m.loopEnd-m.loopStart));return Math.max(0,p)}
 function remember(){if(cur)try{sessionStorage.setItem('gbb_mus',JSON.stringify({name:cur.name,pos:musPos(),at:Date.now()}))}catch(e){}}
 // leave a page smoothly: short fade, then go
-function nav(url){if(leaving)return;leaving=true;remember();window.FX&&FX.out();
+function nav(url){if(leaving)return;url=url.replace(/([?&])b=\d+&?/,'$1').replace(/[?&]$/,'');url+=(url.includes('?')?'&':'?')+'b='+window.GBB_BUILD;leaving=true;remember();window.FX&&FX.out();
  if(AC&&cur&&unlocked){ramp(bus.master,0,.32);setTimeout(()=>location.href=url,320)}else setTimeout(()=>location.href=url,window.FX?260:0)}
 addEventListener('pagehide',remember);
 addEventListener('pageshow',e=>{if(e.persisted&&AC){leaving=false;ramp(bus.master,1,.4)}});
