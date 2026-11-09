@@ -147,12 +147,12 @@
  },
  "inside_myself": {
   "file": "inside_myself.mp3",
-  "loopStart": 28.1658,
-  "loopEnd": 73.0479,
+  "loopStart": 8.127,
+  "loopEnd": 43.6985,
   "key": "B maj",
   "shift": 1,
   "seamFlux": 3.56,
-  "corr": 0.996,
-  "xf": 0.05
+  "corr": 0.94,
+  "xf": 0.5573
  }
 }
