@@ -37,7 +37,7 @@ function streak(x,y,dir,len){const n=22;for(let i=0;i<n;i++){const u=(i/(n-1)-.5
 function bombFx(x,y,size){P.push({k:'burst',x,y,s:size*1.5,life:.75,age:0,r:R()*6});P.push({k:'wave',x,y,s:size,life:.5,age:0});
  for(let i=0;i<16;i++){const a=R()*Math.PI*2,v=3+R()*5;P.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:16+R()*16,img:SPARK[(R()*6)|0],life:.6+R()*.3,age:0,r:R()*3})}kick()}
 function confetti(n,x,y,spread){for(let i=0;i<n;i++){const a=-Math.PI/2+(R()-.5)*spread,v=6+R()*8;
-  P.push({k:'conf',x:x+(R()-.5)*40,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:6+R()*4,h:10+R()*6,c:CONF[(R()*6)|0],r:R()*6,vr:(R()-.5)*.4,ph:R()*6,life:2.2+R()*.8,age:0})}kick()}
+  P.push({k:'conf',x:x+(R()-.5)*40,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:8+R()*4,h:12+R()*6,c:CONF[(R()*6)|0],r:R()*6,vr:(R()-.5)*.4,ph:R()*6,life:2.2+R()*.8,age:0})}kick()}
 // ---- draw loop ----
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const f=dt*60;
  g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
@@ -58,19 +58,24 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const f=dt*60
    gr.addColorStop(0,'rgba(255,255,255,0)');gr.addColorStop(.5,'rgba(255,255,240,.95)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;
    if(p.dir==='row')g.fillRect(p.x-L/2,p.y-T/2,L,T);else g.fillRect(p.x-T/2,p.y-L/2,T,L)}
   else if(p.k==='conf'){p.vy+=.18*f;p.vx*=.99;p.vy*=.985;p.x+=p.vx*f+Math.sin(p.age*6+p.ph)*.6;p.y+=p.vy*f;p.r+=p.vr*f;
-   g.globalCompositeOperation='source-over';g.globalAlpha=Math.min(1,(1-u)*3);g.save();g.translate(p.x,p.y);g.rotate(p.r);g.scale(Math.cos(p.age*9+p.ph),1);g.fillStyle=p.c;g.fillRect(-p.w/2,-p.h/2,p.w,p.h);g.restore()}
+   g.globalCompositeOperation='source-over';g.globalAlpha=Math.min(1,(1-u)*7);g.save();g.translate(p.x,p.y);g.rotate(p.r);const fl=Math.cos(p.age*7+p.ph),sx=Math.max(.35,Math.abs(fl));g.scale(sx,1);g.fillStyle=p.c;g.fillRect(-p.w/2,-p.h/2,p.w,p.h);if(fl<0){g.fillStyle='rgba(0,0,0,.22)';g.fillRect(-p.w/2,-p.h/2,p.w,p.h)}g.fillStyle='rgba(255,255,255,.35)';g.fillRect(-p.w/2,-p.h/2,p.w,p.h*.25);g.restore()}
  }
  g.globalAlpha=1;g.globalCompositeOperation='source-over';
  if(P.length)requestAnimationFrame(loop);else{running=false;g.clearRect(0,0,W,H)}}
+// ---- impact sounds (layered under the musical match notes) ----
+let lastCr=0,crN=0;
+function sfx(n,o){try{window.BA&&BA.play(n,o)}catch(e){}}
+function crunch(){const now=performance.now();if(now-lastCr<55)return;lastCr=now;const c=combo();
+ sfx('crunch'+(crN++%3),{gap:0,vol:Math.min(1,.55+c*.08),rate:Math.min(1.35,.95+c*.06+(Math.random()-.5)*.06)})}
 // ---- hook the game ----
 const combo=()=>{try{return Math.max(1,S.combo||1)}catch(e){return 1}};const fast=()=>{try{return FAST}catch(e){return false}};
 if(typeof popEl==='function'){const o=popEl;window.popEl=popEl=function(p){try{if(p&&p.el&&!fast()){const [x,y,s]=posOf(p.el);
-   const pw=Math.min(1.8,.85+combo()*.15);shatter(x,y,p.carrot?2:(p.sp?-1:p.t),s,p.sp?1.4:pw)}}catch(e){}return o(p)}}
+   crunch();const pw=Math.min(1.8,.85+combo()*.15);shatter(x,y,p.carrot?2:(p.sp?-1:p.t),s,p.sp?1.4:pw)}}catch(e){}return o(p)}}
 if(typeof beam==='function'){const o=beam;window.beam=beam=function(cell,dir){o(cell,dir);try{const [x,y]=center(cell);
-   const L=dir==='row'?W:(S.R*CS);const cx=dir==='row'?W/2:x,cy=dir==='row'?y:S.top+S.R*CS/2;streak(cx,cy,dir,L)}catch(e){}}}
-if(typeof ring==='function'){const o=ring;window.ring=ring=function(cell,size){o(cell,size);try{const [x,y]=center(cell);bombFx(x,y,size)}catch(e){}}}
+   sfx('blast',{gap:80,vol:.85});const L=dir==='row'?W:(S.R*CS);const cx=dir==='row'?W/2:x,cy=dir==='row'?y:S.top+S.R*CS/2;streak(cx,cy,dir,L)}catch(e){}}}
+if(typeof ring==='function'){const o=ring;window.ring=ring=function(cell,size){o(cell,size);try{sfx('boom',{gap:120,vol:.9});const [x,y]=center(cell);bombFx(x,y,size)}catch(e){}}}
 if(typeof comboText==='function'){const o=comboText;window.comboText=comboText=function(t){o(t);try{
-   if(/CLEAR/.test(t)){confetti(70,W*.25,H*.55,1.1);confetti(70,W*.75,H*.55,1.1)}else if(/MEGA|TASTIC/.test(t))confetti(60,W/2,H*.55,1.4);else if(/PAWSOME/.test(t))confetti(30,W/2,H*.55,1.2)}catch(e){}}}
+   if(/CLEAR/.test(t)){sfx('popper',{gap:300});confetti(42,W*.25,H*.55,1.1);confetti(42,W*.75,H*.55,1.1)}else if(/MEGA|TASTIC/.test(t)){sfx('popper',{gap:300,vol:.85});confetti(36,W/2,H*.55,1.4)}else if(/PAWSOME/.test(t)){sfx('popper',{gap:300,vol:.7});confetti(18,W/2,H*.55,1.2)}}catch(e){}}}
 if(typeof hitBlock==='function'){const o=hitBlock;window.hitBlock=hitBlock=function(cell){try{if(cell&&cell.b&&!fast()){const [x,y]=center(cell);
    const wood=cell.b.k==='crate';shatter(x,y,wood?'w':'d',CS,1.1)}}catch(e){}return o(cell)}}
 // glow whenever a special piece appears on the board
@@ -78,6 +83,6 @@ const pcs=document.getElementById('pcs');
 if(pcs)new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;
   const img=n.tagName==='IMG'?n:n.querySelector&&n.querySelector('img');if(!img||!/sp_/.test(img.getAttribute('src')||''))continue;
   const el=n.classList&&n.classList.contains('pc')?n:n.closest?n.closest('.pc'):null;
-  setTimeout(()=>{try{const [x,y,s]=posOf(el||img);glow(x,y,s)}catch(e){}},60)}}).observe(pcs,{childList:true,subtree:true});
+  setTimeout(()=>{try{const [x,y,s]=posOf(el||img);glow(x,y,s);sfx('shimmer',{gap:150,vol:.8})}catch(e){}},60)}}).observe(pcs,{childList:true,subtree:true});
 window.GFX={shatter,glow,streak,bombFx,confetti};
 })();

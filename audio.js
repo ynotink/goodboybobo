@@ -1,4 +1,4 @@
-window.GBB_BUILD=16;
+window.GBB_BUILD=17;
 // temporary build tag (bottom-left) so we always know which version the phone is showing
 addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
 /* Good Boy Bobo — audio engine.
@@ -10,7 +10,7 @@ addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t
 const MUS={home:'Theme',rooms:'inside_myself',
  ch:['Backyard_Groove','Things_to_Do','On_My_Mind','Breezy_Love','Groove','Rainy_Day_Love','Groove_2','Find_a_Way','Love_on_the_Way','Always_with_You']};
 const TONAL=['swap','match','special','rainbow','star','win','lose','buy','combo0','combo1','combo2','combo3','combo4','combo5','combo6','combo7','starland0','starland1','starland2'];
-const PLAIN=['tap','badswap','striped','bomb','mega','crate','dirt','leash','lowmoves'];
+const PLAIN=['tap','badswap','striped','bomb','mega','crate','dirt','leash','lowmoves','crunch0','crunch1','crunch2','blast','boom','shimmer','popper'];
 const VOICE=['voice_m6','voice_m9'],BARK=['rambo_bark','rambo_bark2','rambo_double','rambo_triple'];
 const LV={music:.42,sfx:1,voice:.5,bark:.48,tap:.55};
 const FADE_IN=1.8,XFADE=1.6,RESUME_WINDOW=25;
@@ -69,7 +69,7 @@ function play(name,opt={}){if(!unlocked||muted()||leaving||!AC)return;const s=ST
  const isB=BARK.includes(name),isV=VOICE.includes(name);if(isB&&!s.barks)return;
  const p=pathOf(name),b=buf[p];if(!b){load(p);return}           // not ready yet: skip rather than play late
  const now=performance.now();if(last[name]&&now-last[name]<(opt.gap??45))return;last[name]=now;
- const src=AC.createBufferSource();src.buffer=b;
+ const src=AC.createBufferSource();src.buffer=b;if(opt.rate)src.playbackRate.value=opt.rate;
  const g=AC.createGain();g.gain.value=(opt.vol??1)*(isB?LV.bark:isV?LV.voice:name=='tap'?LV.tap:1);
  src.connect(g);g.connect(isB||isV?bus.voice:bus.sfx);const t=AC.currentTime+(opt.delay||0);src.start(t);
  if(isB||isV){bus.duck.gain.cancelScheduledValues(t);bus.duck.gain.setValueAtTime(bus.duck.gain.value,t);bus.duck.gain.linearRampToValueAtTime(.72,t+.08);
