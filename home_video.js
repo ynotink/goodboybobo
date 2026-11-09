@@ -13,7 +13,7 @@ function init(){
  const v=document.createElement('video');
  Object.assign(v,{muted:true,loop:true,playsInline:true,autoplay:true,preload:'auto'});
  v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('disablepictureinpicture','');
- v.src='a/motion/home_seam.mp4?v=6';
+ v.src='a/motion/home_seam.mp4?v=7';
  v.style.cssText=`position:absolute;left:${V.left}px;top:${V.top}px;width:${V.w}px;height:${V.h}px;object-fit:fill;pointer-events:none;opacity:0;transition:opacity .35s;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 6px,#000 calc(100% - 40px),transparent 100%)`;
  v.className='hm_video';gbg.after(v);const L=window.SeamLoop?SeamLoop(v):null;
