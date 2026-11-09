@@ -1,66 +1,73 @@
 {
  "Always_with_You": {
   "file": "Always_with_You.mp3",
-  "loopStart": 27.121,
-  "loopEnd": 98.6678,
+  "loopStart": 26.0063,
+  "loopEnd": 79.6831,
   "key": "C# maj",
   "shift": 3,
   "seamFlux": 1.81,
-  "corr": 0.2160000056028366
+  "corr": 0.984,
+  "xf": 0.05
  },
  "Backyard_Groove": {
   "file": "Backyard_Groove.mp3",
-  "loopStart": 23.127,
-  "loopEnd": 106.0911,
+  "loopStart": 28.3051,
+  "loopEnd": 78.1063,
   "key": "G maj",
   "shift": -3,
   "seamFlux": 3.32,
-  "corr": 0.3050000071525574
+  "corr": 0.997,
+  "xf": 0.05
  },
  "Breezy_Love": {
   "file": "Breezy_Love.mp3",
-  "loopStart": 29.907,
-  "loopEnd": 101.4247,
+  "loopStart": 59.9075,
+  "loopEnd": 95.8112,
   "key": "B maj",
   "shift": 1,
   "seamFlux": 2.09,
-  "corr": 0.1379999965429306
+  "corr": 0.987,
+  "xf": 0.05
  },
  "Find_a_Way": {
   "file": "Find_a_Way.mp3",
-  "loopStart": 3.32,
-  "loopEnd": 101.911,
+  "loopStart": 11.5403,
+  "loopEnd": 86.6605,
   "key": "A min",
   "shift": 2,
   "seamFlux": 4.62,
-  "corr": 0.5059999823570251
+  "corr": 0.987,
+  "xf": 0.05
  },
  "Groove_2": {
   "file": "Groove_2.mp3",
-  "loopStart": 23.22,
-  "loopEnd": 111.1526,
+  "loopStart": 59.3966,
+  "loopEnd": 94.9987,
   "key": "F# maj",
   "shift": -4,
   "seamFlux": 2.54,
-  "corr": 0.17000000178813934
+  "corr": 0.999,
+  "xf": 0.05
  },
  "Groove": {
   "file": "Groove.mp3",
-  "loopStart": 41.866,
-  "loopEnd": 104.7812,
+  "loopStart": 48.0653,
+  "loopEnd": 93.0048,
   "key": "F# maj",
   "shift": -4,
   "seamFlux": 1.59,
-  "corr": 0.9710000157356262
+  "corr": 0.998,
+  "xf": 0.05
  },
  "Love_on_the_Way": {
   "file": "Love_on_the_Way.mp3",
-  "loopStart": 68.267,
-  "loopEnd": 113.5797,
+  "loopStart": 19.5744,
+  "loopEnd": 64.8771,
   "key": "B min",
   "shift": 4,
   "seamFlux": 2.33,
-  "corr": 0.625
+  "corr": 0.991,
+  "xf": 0.05
  },
  "No_better_Love_2": {
   "file": "No_better_Love_2.mp3",
@@ -82,12 +89,13 @@
  },
  "On_My_Mind": {
   "file": "On_My_Mind.mp3",
-  "loopStart": 35.085,
-  "loopEnd": 103.4479,
+  "loopStart": 25.4026,
+  "loopEnd": 93.7655,
   "key": "F# maj",
   "shift": -4,
   "seamFlux": 1.99,
-  "corr": 0.9509999752044678
+  "corr": 0.999,
+  "xf": 0.05
  },
  "Piano_Passion": {
   "file": "Piano_Passion.mp3",
@@ -105,7 +113,8 @@
   "key": "G maj",
   "shift": -3,
   "seamFlux": 3.22,
-  "corr": 0.652999997138977
+  "corr": 0.653,
+  "xf": 0.35
  },
  "Theme_2": {
   "file": "Theme_2.mp3",
@@ -118,29 +127,32 @@
  },
  "Theme": {
   "file": "Theme.mp3",
-  "loopStart": 56.866,
-  "loopEnd": 103.6081,
+  "loopStart": 39.3346,
+  "loopEnd": 86.0766,
   "key": "Bb min",
   "shift": 3,
   "seamFlux": 1.68,
-  "corr": 0.9509999752044678
+  "corr": 0.999,
+  "xf": 0.05
  },
  "Things_to_Do": {
   "file": "Things_to_Do.mp3",
-  "loopStart": 4.876,
-  "loopEnd": 95.7181,
+  "loopStart": 12.2834,
+  "loopEnd": 84.9025,
   "key": "D maj",
   "shift": 4,
   "seamFlux": 1.81,
-  "corr": 0.19599999487400055
+  "corr": 0.997,
+  "xf": 0.05
  },
  "inside_myself": {
   "file": "inside_myself.mp3",
-  "loopStart": 6.455,
-  "loopEnd": 104.875,
+  "loopStart": 28.1658,
+  "loopEnd": 73.0479,
   "key": "B maj",
   "shift": 1,
   "seamFlux": 3.56,
-  "corr": 0.41100001335144043
+  "corr": 0.996,
+  "xf": 0.05
  }
 }

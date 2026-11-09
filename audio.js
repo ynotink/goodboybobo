@@ -1,4 +1,4 @@
-window.GBB_BUILD=11;
+window.GBB_BUILD=12;
 // temporary build tag (bottom-left) so we always know which version the phone is showing
 addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
 /* Good Boy Bobo — audio engine.
@@ -31,20 +31,25 @@ function apply(){if(!AC)return;const s=ST(),m=muted()?0:1,t=AC.currentTime;
 function load(path){if(buf[path])return Promise.resolve(buf[path]);if(loading[path])return loading[path];
  loading[path]=fetch(path).then(r=>r.arrayBuffer()).then(a=>new Promise((res,rej)=>ctx().decodeAudioData(a,res,rej))).then(b=>(buf[path]=b)).catch(()=>null);return loading[path]}
 const pathOf=n=>TONAL.includes(n)?`au/k${shift}/${n}.mp3`:`au/${n}.mp3`;
-async function meta(){if(META)return META;try{META=await (await fetch('au/mus/music.json')).json()}catch(e){META={}}return META}
+async function meta(){if(META)return META;try{META=await (await fetch('au/mus/music.json?v='+window.GBB_BUILD)).json()}catch(e){META={}}return META}
 // decode everything ahead of time, a few at a time so gameplay never stutters
 let qBusy=false;const queue=[];
 function preloadAll(){const list=[...PLAIN,...TONAL,...VOICE,...BARK].map(pathOf);list.forEach(p=>{if(!buf[p]&&!queue.includes(p))queue.push(p)});pump()}
 async function pump(){if(qBusy)return;qBusy=true;while(queue.length){const p=queue.shift();await load(p);await new Promise(r=>setTimeout(r,25))}qBusy=false}
 // ---------- music ----------
 function ramp(g,to,dur){const t=AC.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(to,t+dur)}
+// blend the end of the loop into the audio just before the loop start (equal-power), so the jump back is seamless
+function bake(b,m){if(b._baked)return;b._baked=1;const sr=b.sampleRate,N=Math.round((m.xf||.05)*sr),e=Math.round(m.loopEnd*sr),s0=Math.round(m.loopStart*sr);
+ const e2=Math.min(e,b.length);if(e2!==e){m.loopEnd=e2/sr}
+ if(s0<N||e2<N)return;for(let c=0;c<b.numberOfChannels;c++){const d=b.getChannelData(c);
+  for(let i=0;i<N;i++){const t=(i+.5)/N,g1=Math.cos(t*Math.PI/2),g2=Math.sin(t*Math.PI/2);d[e2-N+i]=d[e2-N+i]*g1+d[s0-N+i]*g2}}}
 async function music(name){want=name;if(!unlocked)return;const ac=ctx();if(!ac)return;const M=await meta();const m=M[name];if(!m)return;
  if(cur&&cur.name==name)return;
- const b=await load('au/mus/'+m.file);if(!b||want!==name||leaving)return;
+ const b=await load('au/mus/'+m.file);if(!b||want!==name||leaving)return;bake(b,m);
  const newShift=m.shift||0;if(newShift!==shift){shift=newShift;preloadAll()}
  let pos=0,fade=FADE_IN;
  try{const r=JSON.parse(sessionStorage.getItem('gbb_mus')||'null');
-  if(r&&r.name==name&&(Date.now()-r.at)/1000<RESUME_WINDOW){pos=r.pos+(Date.now()-r.at)/1000;fade=1.0}}catch(e){}
+  if(r&&r.name==name&&(Date.now()-r.at)/1000<RESUME_WINDOW){pos=r.pos;fade=0.7}}catch(e){}
  if(pos>=m.loopEnd)pos=m.loopStart+((pos-m.loopStart)%(m.loopEnd-m.loopStart));
  const src=ac.createBufferSource();src.buffer=b;src.loop=true;src.loopStart=m.loopStart;src.loopEnd=m.loopEnd;
  const g=ac.createGain();g.gain.value=0;src.connect(g);g.connect(bus.duck);const t=ac.currentTime+.05;
