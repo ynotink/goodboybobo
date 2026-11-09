@@ -13,7 +13,7 @@ function init(){
  const v=document.createElement('video');
  Object.assign(v,{muted:true,loop:true,playsInline:true,autoplay:true,preload:'auto'});
  v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('disablepictureinpicture','');
- v.src='a/motion/home_seam.mp4?v=13';
+ v.src='a/motion/home_seam.mp4?v=14';
  v.style.cssText=`position:absolute;left:${V.left}px;top:${V.top}px;width:${V.w}px;height:${V.h}px;object-fit:fill;pointer-events:none;opacity:0;transition:opacity .35s;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 6px,#000 calc(100% - 40px),transparent 100%)`;
  v.className='hm_video';gbg.after(v);const L=window.SeamLoop?SeamLoop(v):null;
@@ -34,7 +34,7 @@ function init(){
    if(start>=0){const u=(now-start)/220;const lb=u<.38?ss(0,.38,u):u<.55?1:1-ss(.55,1,u);ov.style.clipPath=`inset(0 0 ${(100-lb*100).toFixed(1)}% 0)`;
     if(u>1){start=-1;ov.style.clipPath='inset(0 0 100% 0)';next=now+5000+Math.random()*5000}}}
   requestAnimationFrame(tick)})(performance.now());
- window.HOME_VIDEO={video:v,align:V};
+ window.HOME_VIDEO={video:v,align:V,loop:L,logoOverlay:ov};
 }
 if(document.readyState==='loading')addEventListener('DOMContentLoaded',init);else init();
 })();

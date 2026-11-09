@@ -1,4 +1,4 @@
-window.GBB_BUILD=13;
+window.GBB_BUILD=14;
 // temporary build tag (bottom-left) so we always know which version the phone is showing
 addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
 /* Good Boy Bobo — audio engine.
