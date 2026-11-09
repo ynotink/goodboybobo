@@ -11,6 +11,7 @@ const COLX={w:['#e7a64a','#8a4f1a'],d:['#a46a3c','#5e3a1c']};
 const COL=[['#fae3ba','#b67f3b'],['#d2e21c','#8fa106'],['#fab935','#c36204'],['#1f5fd0','#e8891a'],['#f63d32','#b00e06']];
 const SPARK=[0,1,2,3,4,5].map(i=>{const m=new Image();m.src='a/fx/tw'+i+'.webp';return m});
 const GLINT=new Image();GLINT.src='a/fx/glint.webp';const BURST=new Image();BURST.src='a/fx/burst.webp';
+const BONES=['a/ic1.webp','a/i_bone1.webp'].map(u=>{const m=new Image();m.src=u;return m});
 const CONF=['#ff5a6e','#ffc93c','#4fc3f7','#7ed957','#b388ff','#ff8a3d'];
 const cv=document.createElement('canvas');cv.style.cssText='position:absolute;left:0;top:0;pointer-events:none;z-index:2';host.appendChild(cv);
 const g=cv.getContext('2d');let W=390,H=844,dpr=1;
@@ -38,6 +39,9 @@ function bombFx(x,y,size){P.push({k:'burst',x,y,s:size*1.5,life:.75,age:0,r:R()*
  for(let i=0;i<16;i++){const a=R()*Math.PI*2,v=3+R()*5;P.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:16+R()*16,img:SPARK[(R()*6)|0],life:.6+R()*.3,age:0,r:R()*3})}kick()}
 function confetti(n,x,y,spread){for(let i=0;i<n;i++){const a=-Math.PI/2+(R()-.5)*spread,v=6+R()*8;
   P.push({k:'conf',x:x+(R()-.5)*40,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:8+R()*4,h:12+R()*6,c:CONF[(R()*6)|0],r:R()*6,vr:(R()-.5)*.4,ph:R()*6,life:2.2+R()*.8,age:0})}kick()}
+function bones(n,x,y,spread){for(let i=0;i<n;i++){const a=-Math.PI/2+(R()-.5)*spread,v=7+R()*8;
+  P.push({k:'bone',x:x+(R()-.5)*40,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:34+R()*18,img:BONES[R()<.85?0:1],r:R()*6,vr:(R()-.5)*.35,life:1.9+R()*.6,age:0,tw:0})}
+ for(let i=0;i<12;i++){const a=R()*Math.PI*2,v=2+R()*4;P.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,s:20+R()*16,img:SPARK[(R()*6)|0],life:.7,age:0,r:0})}kick()}
 // ---- draw loop ----
 function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const f=dt*60;
  g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
@@ -57,6 +61,11 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;const f=dt*60
    const gr=p.dir==='row'?g.createLinearGradient(p.x-L/2,0,p.x+L/2,0):g.createLinearGradient(0,p.y-L/2,0,p.y+L/2);
    gr.addColorStop(0,'rgba(255,255,255,0)');gr.addColorStop(.5,'rgba(255,255,240,.95)');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;
    if(p.dir==='row')g.fillRect(p.x-L/2,p.y-T/2,L,T);else g.fillRect(p.x-T/2,p.y-L/2,T,L)}
+  else if(p.k==='bone'){p.vy+=.22*f;p.vx*=.99;p.x+=p.vx*f;p.y+=p.vy*f;p.r+=p.vr*f;p.tw+=dt;
+   if(p.tw>.07&&u<.6){p.tw=0;P.push({k:'spark',x:p.x,y:p.y,vx:0,vy:0,s:p.s*.5,img:SPARK[(R()*6)|0],life:.35,age:0,r:0})}
+   g.globalCompositeOperation='source-over';g.globalAlpha=Math.min(1,(1-u)*6);g.save();g.translate(p.x,p.y);g.rotate(p.r);
+   g.shadowColor='rgba(60,30,0,.35)';g.shadowBlur=4;g.shadowOffsetY=3;const a=p.img.naturalWidth?p.img.naturalHeight/p.img.naturalWidth:.85;
+   if(p.img.complete)g.drawImage(p.img,-p.s/2,-p.s*a/2,p.s,p.s*a);g.shadowColor='transparent';g.restore()}
   else if(p.k==='conf'){p.vy+=.18*f;p.vx*=.99;p.vy*=.985;p.x+=p.vx*f+Math.sin(p.age*6+p.ph)*.6;p.y+=p.vy*f;p.r+=p.vr*f;
    g.globalCompositeOperation='source-over';g.globalAlpha=Math.min(1,(1-u)*7);g.save();g.translate(p.x,p.y);g.rotate(p.r);const fl=Math.cos(p.age*7+p.ph),sx=Math.max(.35,Math.abs(fl));g.scale(sx,1);g.fillStyle=p.c;g.fillRect(-p.w/2,-p.h/2,p.w,p.h);if(fl<0){g.fillStyle='rgba(0,0,0,.22)';g.fillRect(-p.w/2,-p.h/2,p.w,p.h)}g.fillStyle='rgba(255,255,255,.35)';g.fillRect(-p.w/2,-p.h/2,p.w,p.h*.25);g.restore()}
  }
@@ -75,7 +84,7 @@ if(typeof beam==='function'){const o=beam;window.beam=beam=function(cell,dir){o(
    sfx('blast',{gap:80,vol:.85});const L=dir==='row'?W:(S.R*CS);const cx=dir==='row'?W/2:x,cy=dir==='row'?y:S.top+S.R*CS/2;streak(cx,cy,dir,L)}catch(e){}}}
 if(typeof ring==='function'){const o=ring;window.ring=ring=function(cell,size){o(cell,size);try{sfx('boom',{gap:120,vol:.9});const [x,y]=center(cell);bombFx(x,y,size)}catch(e){}}}
 if(typeof comboText==='function'){const o=comboText;window.comboText=comboText=function(t){o(t);try{
-   if(/CLEAR/.test(t)){sfx('popper',{gap:300});confetti(42,W*.25,H*.55,1.1);confetti(42,W*.75,H*.55,1.1)}else if(/MEGA|TASTIC/.test(t)){sfx('popper',{gap:300,vol:.85});confetti(36,W/2,H*.55,1.4)}else if(/PAWSOME/.test(t)){sfx('popper',{gap:300,vol:.7});confetti(18,W/2,H*.55,1.2)}}catch(e){}}}
+   if(/CLEAR/.test(t)){sfx('popper',{gap:300});confetti(42,W*.25,H*.55,1.1);confetti(42,W*.75,H*.55,1.1)}else if(/MEGA|TASTIC/.test(t)){sfx('popper',{gap:300,vol:.85});bones(26,W/2,H*.55,1.4)}else if(/PAWSOME/.test(t)){sfx('popper',{gap:300,vol:.7});bones(14,W/2,H*.55,1.2)}}catch(e){}}}
 if(typeof hitBlock==='function'){const o=hitBlock;window.hitBlock=hitBlock=function(cell){try{if(cell&&cell.b&&!fast()){const [x,y]=center(cell);
    const wood=cell.b.k==='crate';shatter(x,y,wood?'w':'d',CS,1.1)}}catch(e){}return o(cell)}}
 // glow whenever a special piece appears on the board
@@ -84,5 +93,5 @@ if(pcs)new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){
   const img=n.tagName==='IMG'?n:n.querySelector&&n.querySelector('img');if(!img||!/sp_/.test(img.getAttribute('src')||''))continue;
   const el=n.classList&&n.classList.contains('pc')?n:n.closest?n.closest('.pc'):null;
   setTimeout(()=>{try{const [x,y,s]=posOf(el||img);glow(x,y,s);sfx('shimmer',{gap:150,vol:.8})}catch(e){}},60)}}).observe(pcs,{childList:true,subtree:true});
-window.GFX={shatter,glow,streak,bombFx,confetti};
+window.GFX={shatter,glow,streak,bombFx,confetti,bones};
 })();
