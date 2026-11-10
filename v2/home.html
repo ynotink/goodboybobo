@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Good Boy Bobo · Home (v2 preview)</title>
+<style>
+@font-face{font-family:Fred;font-weight:600;src:url(a/fredoka-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:Fred;font-weight:700;src:url(a/fredoka-latin-700-normal.woff2) format('woff2')}
+html,body{margin:0;height:100%;overflow:hidden;background:#3a9be8;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+#st{position:absolute;left:0;top:0;width:390px;transform-origin:0 0;overflow:hidden;font-family:Fred,system-ui,sans-serif}
+#bg{position:absolute;left:0;top:0;width:390px;height:845px;background:url(a/home_bg.webp) center top/100% 100% no-repeat}
+#bgx{position:absolute;left:0;top:845px;width:390px;height:200px;background:url(a/home_bg.webp) center bottom/100% 845px no-repeat}
+.ch{position:absolute;pointer-events:none}
+img{-webkit-user-drag:none}
+/* cream material */
+.cream{background:linear-gradient(180deg,#fffaf0 0%,#fbefd6 55%,#f3e0bb 100%);box-shadow:inset 0 2px 0 rgba(255,255,255,.95),inset 0 -3px 0 rgba(214,180,128,.55),0 2.5px 0 rgba(196,160,108,.5),0 6px 10px rgba(30,40,10,.2)}
+.pill{position:absolute;height:35px;border-radius:18px}
+.pill .ic{position:absolute;top:50%;transform:translateY(-50%)}
+.pill .v{position:absolute;top:0;height:35px;line-height:36px;font-weight:700;font-size:27px;color:#0f5257}
+.pill .pl{position:absolute;right:7px;top:50%;width:27px;height:27px;transform:translateY(-50%)}
+#gear{position:absolute;left:318px;width:45px;height:45px;border-radius:50%}
+#gear img{position:absolute;left:5.5px;top:5.5px;width:34px;height:34px}
+.card{position:absolute;top:542px;width:148px;height:98px;border-radius:24px}
+.card img{position:absolute;left:50%;transform:translateX(-50%)}
+.card .t{position:absolute;left:0;right:0;top:57px;text-align:center;font-weight:700;font-size:29px;color:#0f5257;letter-spacing:-.2px}
+#play{position:absolute;left:25px;top:648px;width:338px;height:90px;border-radius:45px;
+ background:linear-gradient(180deg,#6bea41 0%,#3ccf27 35%,#21b31c 70%,#14921a 100%);
+ box-shadow:inset 0 3px 0 rgba(220,255,200,.75),inset 0 -5px 0 rgba(10,100,20,.55),0 4px 0 #0e7a17,0 9px 14px rgba(10,50,10,.35)}
+#play:before{content:'';position:absolute;left:26px;right:26px;top:7px;height:28px;border-radius:30px;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0))}
+#play .a{position:absolute;left:0;right:0;top:4px;text-align:center;font-weight:700;font-size:55px;line-height:58px;color:#fff6e0;letter-spacing:1px;text-shadow:0 3px 0 #11801a,0 0 2px #11801a}
+#play .b{position:absolute;left:0;right:0;top:55px;text-align:center;font-weight:700;font-size:26px;line-height:26px;color:#fff;text-shadow:0 2px 0 #11801a}
+/* nav */
+#nav{position:absolute;left:0;width:390px;height:85px;background:linear-gradient(180deg,#17676b 0%,#135c60 30%,#10555a 100%);box-shadow:0 -2px 0 rgba(8,60,62,.6),0 -6px 12px rgba(0,30,30,.18)}
+.tab{position:absolute;top:0;width:76px;height:85px}
+.tab img{position:absolute;left:50%;top:3px;width:52px;height:52px;transform:translateX(-50%)}
+.tab span{position:absolute;left:-10px;right:-10px;top:50px;text-align:center;font-weight:700;font-size:17.5px;color:#fff;text-shadow:0 1.5px 0 rgba(0,40,40,.55)}
+.tab.on{top:-4px;height:76px;left:15px!important;width:74px;border-radius:15px}
+.tab.on img{top:5px}
+.tab.on span{top:51px;color:#0f5257;text-shadow:none}
+.div{position:absolute;top:22px;width:1.5px;height:42px;background:rgba(255,255,255,.28);border-radius:1px}
+.press{transition:transform .09s ease-out}
+.press:active{transform:scale(.96)}
+#tag{position:absolute;right:8px;bottom:92px;font:600 10px Fred;color:rgba(255,255,255,.6);z-index:50}
+</style></head><body>
+<div id="st">
+ <div id="bg"></div><div id="bgx"></div>
+ <img class="ch" id="buck" src="a/buck_home.webp">
+ <img class="ch" id="bunny" src="a/bunny_home.webp">
+ <img class="ch" id="logo" src="a/logo.webp">
+ <img class="ch" id="rambo" src="a/rambo_home.webp">
+ <img class="ch" id="cardinal" src="a/cardinal_home.webp">
+
+ <div class="pill cream press" id="hp" style="left:32px;width:113px"><img class="ic" src="a/icon_heart.webp" style="left:5px;width:42px;height:42px"><div class="v" style="left:52px">5</div><img class="pl" src="a/icon_plus.webp"></div>
+ <div class="pill cream press" id="bp" style="left:157px;width:139px"><img class="ic" src="a/icon_bone.webp" style="left:2px;width:50px;height:50px"><div class="v" style="left:55px">430</div><img class="pl" src="a/icon_plus.webp"></div>
+ <div id="gear" class="cream press"><img src="a/icon_gear.webp"></div>
+
+ <div class="card cream press" style="left:40px"><img src="a/icon_gift.webp" style="top:-6px;width:72px;height:72px"><div class="t">Daily</div></div>
+ <div class="card cream press" style="left:202px"><img src="a/icon_calendar.webp" style="top:-4px;width:70px;height:70px"><div class="t">Events</div></div>
+ <div id="play" class="press"><div class="a">PLAY</div><div class="b">Level 18</div></div>
+
+ <div id="nav">
+  <div class="tab on cream" style="left:15px"><img src="a/nav_home.webp"><span>Home</span></div>
+  <div class="tab" style="left:89px"><img src="a/nav_map.webp"><span>Map</span></div>
+  <div class="div" style="left:165px"></div>
+  <div class="tab" style="left:164px"><img src="a/nav_toys.webp"><span>Toys</span></div>
+  <div class="div" style="left:237px"></div>
+  <div class="tab" style="left:237px"><img src="a/nav_friends.webp"><span>Friends</span></div>
+  <div class="div" style="left:312px"></div>
+  <div class="tab" style="left:309px"><img src="a/nav_shop.webp"><span>Shop</span></div>
+ </div>
+ <div id="tag">v2 preview</div>
+</div>
+<script>
+// Visible-art boxes measured from Home_APPROVED (390pt design): center-x, bottom-y, height
+const A={buck:[329,415,240],bunny:[54,411,183],logo:[192.5,121,108,'c'],rambo:[209,528,368],cardinal:[64,513,113]};
+let LOGO=A.logo;
+function place(id,dy){const [cx,by,h,c]=id=='logo'?LOGO:A[id],el=document.getElementById(id);const w=h*el.naturalWidth/el.naturalHeight;
+ el.style.height=h+'px';el.style.left=(cx-w/2)+'px';el.style.top=(c?by-h/2:by-h)+dy+'px'}
+function fit(){
+ const s=innerWidth/390,H=innerHeight/s,st=document.getElementById('st');
+ st.style.height=H+'px';st.style.transform=`scale(${s})`;
+ // safe area: keep the top row clear of the status bar / Dynamic Island
+ const probe=document.createElement('div');probe.style.cssText='position:fixed;top:env(safe-area-inset-top);';document.body.appendChild(probe);
+ const qs=new URLSearchParams(location.search).get('sat');const sat=qs?+qs:probe.getBoundingClientRect().top/s;probe.remove();
+ const topY=Math.max(25,sat+2), push=topY-25;               // how far the top row had to move
+ for(const id of ['hp','bp'])document.getElementById(id).style.top=topY+'px';
+ document.getElementById('gear').style.top=(topY-6.5)+'px';
+ // On notched phones the top row moves below the status bar. To keep the approved composition,
+ // the dog, bunny and buck step down a little (cardinal stays on its painted rock), Daily/Events/PLAY
+ // use some of the spare gap above the tab bar, and the logo fills the space that is left.
+ const cdy=Math.min(18,push*0.5), udy=Math.min(10,push*0.28);
+ const ltop=topY+35+(push?4:8), lbot=121+54+cdy, lh=Math.min(108,lbot-ltop);LOGO=[192.5,ltop+lh/2,lh,'c'];
+ const DY={buck:cdy,bunny:cdy,rambo:cdy,logo:0,cardinal:0};
+ for(const id of ['buck','bunny','logo','rambo','cardinal']){const el=document.getElementById(id);const go=()=>place(id,DY[id]);el.complete&&el.naturalWidth?go():el.addEventListener('load',go)}
+ document.querySelectorAll('.card').forEach(c=>c.style.top=(542+udy)+'px');document.getElementById('play').style.top=(648+udy)+'px';
+ document.getElementById('nav').style.top=(H-85)+'px';
+}
+addEventListener('resize',fit);fit();
+</script>
+</body></html>
