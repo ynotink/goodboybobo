@@ -6,3 +6,4 @@ Files here are kept byte-for-byte as delivered. The game uses derived copies onl
 | Rambo_Home_Native_1536x2048_alpha_fixed.png | 1536x2048 RGBA, native render, solid body, contact shadow included | d7cfa2153d44b7a6a268527250f82b00c636fb5f15b5cd29f0183a810d403afb | Antonio, 2026-11-10 |
 
 Superseded: Rambo_Home_Native_1536x2048.png (sha256 9d246c9b…bfa04). Identical colors; body alpha was 253 instead of 255. Verified by Claude: every visible RGB value unchanged, shadow and edge alpha unchanged, body 99.93% at 255.
+| Mr_Bunny_Home_Native_1536x2048.png | 1536x2048 RGBA, native render, solid body, contact shadow included | 198f32e8509fd123349bc2d90f821df3d4fc3425bb171ed81687de8c3ca8d88a | Antonio, 2026-11-10 (Thumper-likeness review deferred to before release) |
