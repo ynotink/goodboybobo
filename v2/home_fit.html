@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Home fit test (approved original, unaltered)</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+/* TEMPORARY test margins: plain colour fill, not approved scenery */
+body{background:linear-gradient(180deg,#22a6e8 0%,#2fb2ec 45%,#58c63a 70%,#2f9e2a 100%)}
+#art{position:absolute;display:block}
+/* The approved image is shown exactly as delivered: no filters, no sharpening, no recolouring. */
+#art img{display:block;width:100%;height:100%}
+.tap{position:absolute;border-radius:12px}
+body.dbg .tap{outline:2px dashed #ff00d4;background:rgba(255,0,212,.12)}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 90px);transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font:600 14px -apple-system,system-ui;padding:8px 14px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+#toast.on{opacity:1}
+#lbl{position:fixed;left:6px;top:calc(env(safe-area-inset-top) + 2px);font:600 9px -apple-system,system-ui;color:rgba(255,255,255,.85);z-index:9}
+</style></head><body>
+<div id="art"><img src="a/home_approved_852.png" alt="Approved Home"></div>
+<div id="lbl">FIT TEST · tap ★ top-left 3× to show tap areas</div>
+<div id="toast"></div>
+<script>
+const IW=852,IH=1846;
+// TEMPORARY invisible tap regions, in pixels of the 852x1846 approved image. Test only.
+const TAPS=[
+ ['Hearts +',  69,  52, 248, 79],['Bones +', 340, 52, 302, 79],['Settings',688,40,100,100],
+ ['Daily',     87,1184, 322,212],['Events', 440,1184,320,212],
+ ['PLAY',      55,1415, 738,197],
+ ['Tab: Home', 30,1650, 162,166],['Tab: Map',195,1650,160,170],['Tab: Toys',356,1650,160,170],['Tab: Friends',517,1650,162,170],['Tab: Shop',680,1650,165,170]];
+const art=document.getElementById('art');
+TAPS.forEach(([n,x,y,w,h])=>{const d=document.createElement('div');d.className='tap';d.dataset.n=n;d.dataset.r=[x,y,w,h].join(',');d.onclick=()=>toast(n+' (test only, no action)');art.appendChild(d)});
+let tt;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),1100)}
+let n=0;document.getElementById('lbl').onclick=()=>{if(++n>=3){document.body.classList.toggle('dbg');n=0}};
+function inset(side){const q=new URLSearchParams(location.search).get(side);if(q)return +q;const p=document.createElement('div');p.style.cssText=`position:fixed;top:0;height:env(safe-area-inset-${side})`;document.body.appendChild(p);const v=p.getBoundingClientRect().height;p.remove();return v}
+function fit(){
+ const W=innerWidth,H=innerHeight,st=inset('top'),sb=inset('bottom');
+ const aw=W,ah=H-st-sb;const s=Math.min(aw/IW,ah/IH);   // proportional, never stretched
+ const w=IW*s,h=IH*s,x=(W-w)/2,y=st+(ah-h)/2;
+ Object.assign(art.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});
+ art.querySelectorAll('.tap').forEach(d=>{const [a,b,c,e]=d.dataset.r.split(',').map(Number);Object.assign(d.style,{left:a*s+'px',top:b*s+'px',width:c*s+'px',height:e*s+'px'})});
+ window.FIT={W,H,st,sb,w,h,x,y,devicePx:w*devicePixelRatio,enlarge:(w*devicePixelRatio/IW)};
+}
+addEventListener('resize',fit);fit();
+</script></body></html>
