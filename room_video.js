@@ -12,7 +12,7 @@ function init(){
  const v=document.createElement('video');
  Object.assign(v,{muted:true,loop:true,playsInline:true,autoplay:true,preload:'auto'});
  v.setAttribute('muted','');v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('disablepictureinpicture','');
- v.src=`a/motion/${room}_seam.mp4?v=19`;
+ v.src=`a/motion/${room}_seam.mp4?v=20`;
  v.style.cssText=`position:absolute;left:${V.left}px;top:${V.top}px;width:${V.w}px;height:${V.h}px;object-fit:fill;pointer-events:none;opacity:0;transition:opacity .4s;
   -webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent 100%);mask-image:linear-gradient(to bottom,#000 calc(100% - 70px),transparent 100%)`;
  v.className='room_video';gbg.after(v);const L=window.SeamLoop?SeamLoop(v):null;

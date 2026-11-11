@@ -1,27 +1,89 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js?v=19"></script><script src="motion.js?v=19"></script><link rel="stylesheet" href="base.css?v=19"><link rel="stylesheet" href="glass.css?v=19"><script src="common.js?v=19"></script>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Good Boy Bobo</title><script src="audio.js?v=20"></script><script src="common.js?v=20"></script>
 <style>
-body .gbg{inset:auto;left:0;top:0;width:390px;height:max(844px,var(--H,844px));background:url(a/bg3_home.webp) 0 -35.7px/390px auto no-repeat}
-#logo{top:112px;width:216px}
-#rambo{position:absolute;left:84px;top:208px;width:222px;filter:drop-shadow(0 10px 10px rgba(30,45,15,.28))}
-.qb{position:absolute;top:522px;width:90px;text-align:center;cursor:pointer}
-.qb img{width:66px;height:66px;display:block;margin:0 auto;filter:drop-shadow(0 3px 5px rgba(22,38,19,.25))}
-.qb .l{font-size:16px;margin-top:2px}
-#lv{position:absolute;left:50%;top:620px;transform:translateX(-50%);height:28px;padding:0 18px;border-radius:14px;display:flex;align-items:center;font-size:15px;letter-spacing:.3px}
-#play{left:50%;top:654px;width:272px;transform:translateX(-50%)}
-#play:active{transform:translateX(-50%) scale(.97)}
-</style></head><body data-hmin="762"><div id="app">
-<div class="gbg"></div>
-<div id="hud"></div>
-<img id="logo" class="ttlimg" src="a/L_logo.webp">
-<img id="rambo" src="a/r_sit.webp">
-<div class="qb tap" style="left:30px" onclick="gtoast('Daily Treat coming soon!')"><img src="a/P_daily.webp"><div class="l wt">Daily</div></div>
-<div class="qb tap" style="left:150px" onclick="gtoast('Events are coming soon!')"><img src="a/P_events.webp"><div class="l wt">Events</div></div>
-<div class="qb tap" style="left:270px" onclick="gtoast('Play with friends — coming soon!')"><img src="a/P_friends.webp"><div class="l wt">Friends</div></div>
-<div id="lv" class="gl wt">LEVEL 1</div>
-<img id="play" class="imgbtn" src="a/B_g_play.webp" onclick="go('map')">
-<div id="nv"></div>
-</div><script>
-document.getElementById('hud').outerHTML=ghud();document.getElementById('nv').outerHTML=gnav('home');
-window.FITCB=H=>{const d=Math.max(-40,Math.min(0,H-844)),u=Math.max(-34,Math.min(0,H-844-d));document.querySelectorAll('#app>*').forEach(e=>{if(e.matches('.gnav,.gtoast'))return;const y=d+(e.matches('.qb,#lv,#play')?u:0);if(e.matches('.ghud'))e.style.translate=`0 ${y}px`;else e.style.marginTop=y+'px'})};
-document.getElementById('lv').textContent='LEVEL '+gbbCur();fit();addEventListener('load',fit);setTimeout(fit,600);
-</script><script>BA.music('Theme')</script><script src="seamloop.js?v=19"></script><script src="home_video.js?v=19"></script></body></html>
+html,body{margin:0;height:100%;overflow:hidden;background:#0b5459;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+#stage{position:absolute;left:0;top:0;width:1290px;height:2796px;transform-origin:0 0}
+#stage img,#stage canvas{position:absolute;display:block;pointer-events:none}
+#ostop{position:absolute;left:0;top:-100px;width:1290px;height:100px}
+.hit{position:absolute;cursor:pointer}
+body.dbg .hit{outline:4px dashed #ff00d4;background:rgba(255,0,212,.12)}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 110px);transform:translateX(-50%);background:rgba(0,0,0,.78);color:#fff;font:600 14px -apple-system,system-ui;padding:8px 14px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9;white-space:nowrap}
+#toast.on{opacity:1}
+</style></head><body>
+<div id="stage">
+ <img id="ostop" src="a/home/os_top.webp" alt="">
+ <img id="L01_background" src="a/home/L01_background.webp" alt="">
+</div>
+<div id="app" style="display:none"></div>
+<div id="toast"></div>
+<script>
+/* Home (approved 2026-11-10). Built exactly from the approved Home layers (GoodBoyBobo_Revised_Home_Review, approved by Antonio 2026-11-10).
+   Each layer is the approved full-canvas layer, losslessly cropped to its painted area; recomposed it is pixel-identical
+   to the approved mockup. Nothing is scaled independently: the whole 1290x2796 canvas gets one uniform scale. */
+const ORDER=['L02_heart_counter','L03_bone_counter','L04_gear','L05_logo','L06_buck','L07_bunny','L08_rambo','L09_cardinal','L10_daily','L11_events','L12_play','L13_bottom_bar','L14_active_home_tile','L15_nav_home','L16_nav_map','L17_nav_toys','L18_nav_friends','L19_nav_shop'];
+const PRESSED={L04_gear:'ALT_gear_pressed',L10_daily:'ALT_daily_pressed',L11_events:'ALT_events_pressed',L12_play:'ALT_play_pressed'};
+// Live-number spec (spec/live_numbers.json)
+const SPEC={
+ counter:{fill:'#006368',outline:'#003E42',ow:1,sh:{c:'0,57,59',a:.45,dx:0,dy:3,b:1},hi:{c:'#55AAA5',a:.2}},
+ level:{fill:'#FFF7E6',outline:'#134719',ow:3,sh:{c:'6,56,13',a:.75,dx:0,dy:5,b:2},hi:{c:'#FFFFFF',a:.25}}};
+const BOX={hearts:{x:215,y:229,w:86,h:96,fs:84,st:'counter'},
+ bones:{x:603,y:229,w:237,h:96,fs:84,min:70,pad:4,st:'counter'},
+ level:{x:310,y:2280,w:670,h:84,fs:78,st:'level'}};
+const stage=document.getElementById('stage');
+let L={},S=1;const CM=new URLSearchParams(location.search).get('cm')||'adv';
+const fmt=n=>Math.max(0,Math.floor(+n||0)).toLocaleString('en-US');
+let VAL={hearts:String(Math.max(0,Math.min(5,Math.floor(+G.hearts||0)))),bones:fmt(G.bones),level:'Level '+gbbCur()};
+const q=new URLSearchParams(location.search);['hearts','bones','level'].forEach(k=>{if(q.get(k))VAL[k]=k=='level'?'Level '+q.get(k):q.get(k)});
+
+async function build(){
+ const meta=await (await fetch('a/home/layers.json?v=20')).json();
+ const mk=(k,hidden)=>{const [x,y,w,h]=meta[k];const i=new Image();i.src='a/home/'+k+'.webp';i.alt='';Object.assign(i.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});if(hidden)i.style.visibility='hidden';stage.appendChild(i);return i};
+ for(const k of ORDER){L[k]=mk(k);if(PRESSED[k]){L[PRESSED[k]]=mk(PRESSED[k],true);stage.insertBefore(L[PRESSED[k]],L[k].nextSibling)}}
+ // bottom overscan: bar colour below the canvas on taller screens
+ const ff=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900'});await ff.load();document.fonts.add(ff);
+ for(const k in BOX){const c=document.createElement('canvas');c.id='t_'+k;stage.appendChild(c);BOX[k].c=c}
+ // tap areas (painted bounds of each control)
+ const hit=(name,[x,y,w,h],layer,act)=>{const d=document.createElement('div');d.className='hit';Object.assign(d.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});stage.appendChild(d);
+  const down=()=>{if(layer){L[layer].style.visibility='hidden';L[PRESSED[layer]].style.visibility='visible'}};
+  const up=()=>{if(layer){L[layer].style.visibility='visible';L[PRESSED[layer]].style.visibility='hidden'}};
+  d.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(e=>d.addEventListener(e,up));
+  d.addEventListener('click',()=>{BA.play&&BA.play('tap',{gap:80});act?act():toast(name)})};
+ hit('Hearts +',meta.L02_heart_counter,null,()=>go('shop'));hit('Bones +',meta.L03_bone_counter,null,()=>go('shop'));hit('Settings',meta.L04_gear,'L04_gear',()=>go('settings'));
+ hit('Daily treats are coming soon!',meta.L10_daily,'L10_daily');hit('Events are coming soon!',meta.L11_events,'L11_events');hit('PLAY',meta.L12_play,'L12_play',()=>BA.nav('game.html?lv='+gbbCur()));
+ const TABS=[['Home',()=>{}],['Map',()=>go('map')],['Toys',()=>go('toys')],['Friends',null],['Shop',()=>go('shop')]];TABS.forEach(([n,a],i)=>hit(n=='Friends'?'Friends are coming soon!':n,[i*258,2450,258,231],null,a));
+ fit();drawAll();
+}
+function drawText(k){
+ const B=BOX[k],P=SPEC[B.st],txt=VAL[k],r=S*devicePixelRatio,c=B.c,pad=12;
+ c.width=Math.round((B.w+2*pad)*r);c.height=Math.round((B.h+2*pad)*r);
+ Object.assign(c.style,{left:(B.x-pad)+'px',top:(B.y-pad)+'px',width:(B.w+2*pad)+'px',height:(B.h+2*pad)+'px'});
+ const g=c.getContext('2d');g.setTransform(r,0,0,r,0,0);
+ let fs=B.fs;const font=s=>`900 ${s}px BoboNunito`;g.font=font(fs);
+ if(B.min){while(fs>B.min&&g.measureText(txt).width+B.pad>B.w){fs--;g.font=font(fs)}}
+ const m=g.measureText(txt),asc=m.actualBoundingBoxAscent,desc=m.actualBoundingBoxDescent;
+ const x=CM=='adv'?pad+B.w/2-m.width/2:pad+B.w/2-(m.actualBoundingBoxRight-m.actualBoundingBoxLeft)/2,y=pad+B.h/2+(asc-desc)/2-1;
+ g.textBaseline='alphabetic';g.textAlign='left';g.lineJoin='round';
+ const shape=(ctx,dx,dy)=>{ctx.lineWidth=2*P.ow;ctx.strokeText(txt,x+dx,y+dy);ctx.fillText(txt,x+dx,y+dy)};
+ // 1 shadow (of the outlined text)
+ g.save();g.filter=`blur(${P.sh.b}px)`;g.fillStyle=g.strokeStyle=`rgba(${P.sh.c},${P.sh.a})`;shape(g,P.sh.dx,P.sh.dy);g.restore();
+ // 2 outline then fill
+ g.strokeStyle=P.outline;g.lineWidth=2*P.ow;g.strokeText(txt,x,y);g.fillStyle=P.fill;g.fillText(txt,x,y);
+ // 3 inside top-edge highlight: fill mask minus the same mask shifted down 1px
+ const o=document.createElement('canvas');o.width=c.width;o.height=c.height;const h=o.getContext('2d');h.setTransform(r,0,0,r,0,0);h.font=g.font;
+ h.fillStyle='#000';h.fillText(txt,x,y);h.globalCompositeOperation='destination-out';h.fillText(txt,x,y+1);
+ h.globalCompositeOperation='source-in';h.fillStyle=P.hi.c;h.fillRect(0,0,o.width,o.height);
+ g.save();g.setTransform(1,0,0,1,0,0);g.globalAlpha=P.hi.a;g.drawImage(o,0,0);g.restore();
+}
+function drawAll(){for(const k in BOX)if(BOX[k].c)drawText(k)}
+function fit(){
+ const W=innerWidth,H=innerHeight;S=Math.min(W/1290,H/2796);
+ const w=1290*S,h=2796*S,x=(W-w)/2,y=H-h;   // bottom-anchored so the tab bar meets the screen edge; overscan sky fills any extra top
+ stage.style.transform=`translate(${x}px,${y}px) scale(${S})`;
+ document.body.style.background=x>0.5?'#0b5459':'linear-gradient(#2a9be6,#2a9be6 50%,#0b5459 50%)';
+}
+let tt;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),1100)}
+addEventListener('resize',()=>{fit();drawAll()});
+build();
+</script><script>BA.music('Theme')</script></body></html>
