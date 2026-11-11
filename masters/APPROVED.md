@@ -11,3 +11,4 @@ Superseded: Rambo_Home_Native_1536x2048.png (sha256 9d246c9b…bfa04). Identical
 | Mr_Cardinal_Home_Native_1536x2048_clean.png | 1536x2048 RGBA, native render, solid body, foot contact shadow, clean background, no rock | 27246444b042eac702b5b7f56d6e461fa860564743aa4d0346a72448c0f1e905 | Antonio, 2026-11-10 |
 | GoodBoyBobo_Logo_1774x887_v3.png | 1774x887 RGBA, cleaned from existing large logo (no re-render), teal and 3D edge deepened to match approved Home, patch fixed | 6169165f4040a6f7956f5ada7ce69e606ec2212f934d3e096a0bf23238c07a9f | Antonio, 2026-11-10 |
 | Heart_Counter_Blank_Native_2188x718.png | 2188x718 RGBA, blank number area, soft drop shadow | 194a900f1445724304558d2be899fee4bb0ba88bdffc95248462b5e825512569 | Antonio, 2026-11-10 |
+| Bone_Counter_Wide_Blank_Native_2678x800.png | 2678x800 RGBA, panel 25% wider than heart counter, bone over top edge, blank number area | f8cb3db52c07602f55430d1341aaa4b4d4fe9ecee5bb4b2d1c19281597f79e1f | Antonio, 2026-11-10 |
