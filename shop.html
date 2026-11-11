@@ -1,49 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Shop · Good Boy Bobo</title><script src="audio.js?v=20"></script><script src="motion.js?v=20"></script><link rel="stylesheet" href="base.css?v=20"><link rel="stylesheet" href="glass.css?v=20"><script src="common.js?v=20"></script>
-<style>
-#tt{top:110px;width:122px}
-#scr{position:absolute;left:0;right:0;top:166px;bottom:104px;overflow-y:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(transparent,#000 14px,#000 calc(100% - 14px),transparent)}
-#scr::-webkit-scrollbar{display:none}
-#in{position:relative;height:980px}
-.pn{position:absolute;left:16px;width:358px;border-radius:24px}
-.sec{position:absolute;left:50%;transform:translateX(-50%);filter:drop-shadow(0 3px 4px rgba(22,38,19,.25))}
-#bnd .rb{position:absolute;left:-2px;top:-4px;width:148px;filter:drop-shadow(0 8px 8px rgba(30,45,15,.28))}
-#bnd .h{position:absolute;left:156px;top:16px;width:178px}
-#bnd .s{position:absolute;left:146px;right:8px;top:84px;text-align:center;font-size:14px;line-height:1.25}
-#bnd .bs{position:absolute;left:156px;right:16px;top:124px;display:flex;justify-content:space-around}
-#bnd .bs img{height:34px;filter:drop-shadow(0 2px 2px rgba(40,20,0,.3))}
-#bnd .buy{left:160px;top:168px;width:180px}
-.row{position:absolute;left:0;right:0;height:76px;display:flex;align-items:center}
-.row+.row{border-top:1.5px solid rgba(255,245,222,.35)}
-.row .ic{width:76px;height:60px;margin-left:12px;object-fit:contain;filter:drop-shadow(0 3px 3px rgba(40,20,0,.3))}
-.row .n{flex:1;font-size:19px;margin-left:8px;white-space:nowrap}
-.row .imgbtn{position:relative;width:116px;margin-right:12px}
-.card{position:absolute;width:171px;height:160px;border-radius:22px;text-align:center}
-.card .glow{position:absolute;left:50%;top:46px;width:96px;height:96px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,250,220,.35),rgba(255,250,220,0) 68%)}
-.card .ic{position:absolute;left:50%;top:10px;height:62px;transform:translateX(-50%);filter:drop-shadow(0 3px 3px rgba(40,20,0,.3))}
-.card .nm{position:absolute;left:0;right:0;top:76px;font-size:16px}
-.card .imgbtn{left:24px;top:102px;width:123px}
-</style></head><body data-room="shop" data-hmin="640"><div id="app">
-<div class="gbg"></div>
-<div id="hud"></div>
-<img id="tt" class="ttlimg" src="a/L_t_shop.webp">
-<div id="scr"><div id="in">
- <div id="bnd" class="pn gl" style="top:8px;height:230px">
-  <img class="rb" src="a/r_gift.webp">
-  <img class="h" src="a/L_t_bundle.webp">
-  <div class="s wt">2,500 Bones +<br>3 of every booster</div>
-  <div class="bs"><img src="a/bo0.webp"><img src="a/bo1.webp"><img src="a/bo2.webp"><img src="a/bo3.webp"></div>
-  <img class="imgbtn buy" data-snd="buy" src="a/B_p_499.webp" onclick="gtoast('Purchases coming soon!')">
- </div>
- <img class="sec" src="a/L_t_bones.webp" style="top:256px;width:104px">
- <div id="bones" class="pn gl" style="top:304px;height:232px"></div>
- <img class="sec" src="a/L_t_boosters.webp" style="top:556px;width:142px">
- <div id="boost"></div>
-</div></div>
-<div id="nv"></div>
-</div><script>
-const B=[['i_bone1','100 bones','p_099'],['i_bone2','550 bones','p_499'],['i_bowl','1,200 bones','p_999']];
-document.getElementById('bones').innerHTML=B.map(([i,n,p],k)=>`<div class="row" style="top:${2+k*76}px"><img class="ic" src="a/${i}.webp"><div class="n wt">${n}</div><img class="imgbtn" data-snd="buy" src="a/B_${p}.webp" onclick="gtoast('Purchases coming soon!')"></div>`).join('');
-const card=(x,y,ic,nm,c)=>`<div class="card gl" style="left:${x}px;top:${y}px"><div class="glow"></div><img class="ic" src="a/${ic}.webp"><div class="nm wt">${nm}</div><img class="imgbtn" data-snd="buy" src="a/B_c_${c}.webp" onclick="gtoast('Coming soon!')"></div>`;
-document.getElementById('boost').outerHTML=card(16,604,'bo0','Paw Tap',60)+card(203,604,'bo1','Swap',80)+card(16,776,'bo2','Bone Blast',120)+card(203,776,'bo3','Shuffle',90);
-document.getElementById('hud').outerHTML=ghud();document.getElementById('nv').outerHTML=gnav('shop');fit();
-</script><script>BA.music('inside_myself')</script><script src="seamloop.js?v=20"></script><script src="room_video.js?v=20"></script><script src="shop_fx.js?v=20"></script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js?v=21"></script><script src="common.js?v=21"></script></head><body><div id="app" style="display:none"></div><script src="pages.js?v=21"></script><script>
+buildPage({image:'shop',extra(){const P=PAGE;
+ P.hit('Purchases coming soon!',[100,700,1090,520]);P.hit('Purchases coming soon!',[100,1280,1090,390]);
+ P.hit('Boosters coming soon!',[100,1730,1090,460]);P.hit('Nothing to restore yet.',[340,2200,600,110]);}});
+</script><script>BA.music("Theme")</script></body></html>

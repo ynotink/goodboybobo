@@ -14,7 +14,7 @@ function nav(cur,bot){
   const it=[['home','Home','nav0',58],['map','Map','nav1',155],['toys','Toys','nav2',242],['shop','Shop','nav3',331]];
   return `<div class="nav" ${bot!=null?`style="bottom:${bot}px"`:""}><img class="bar" src="a/navbar.webp" style="object-fit:fill">`+
    it.map(([k,l,i,x])=>`<div class="it tap ${k==cur?'on':''}" style="left:${x-42}px" onclick="go('${k}')"><img class="i" src="a/${i}.webp"><div class="wpill dk lb"><span class="cream" style="font-size:16px">${l}</span></div></div>`).join('')+`</div>`}
-function go(p){if(p=='index')p='home';const m={home:'index.html',map:'map.html',toys:'toys.html',shop:'shop.html',settings:'settings.html',game:'game.html'};window.BA?BA.nav(m[p]):location.href=m[p]}
+function go(p){if(p=='index')p='home';const m={home:'index.html',map:'map.html',toys:'toys.html',shop:'shop.html',settings:'settings.html',game:'game.html',friends:'friends.html'};window.BA?BA.nav(m[p]):location.href=m[p]}
 // Fill the phone: full width; the screen stretches/shrinks to the phone's height. Top stays at top, bottom menu at
 // the bottom. Each page says how short it may get (body data-hmin) and which pieces slide up on short phones (data-sy="max").
 function fit(){const app=document.getElementById('app'),B=document.body,hmin=+(B&&B.dataset.hmin)||844;

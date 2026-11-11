@@ -1,38 +1,17 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Settings · Good Boy Bobo</title><script src="audio.js?v=20"></script><script src="motion.js?v=20"></script><link rel="stylesheet" href="base.css?v=20"><link rel="stylesheet" href="glass.css?v=20"><script src="common.js?v=20"></script>
-<style>
-#tt{top:112px;width:176px}
-#rb{position:absolute;left:122px;top:160px;width:146px;filter:drop-shadow(0 8px 8px rgba(30,45,15,.28))}
-#pn{position:absolute;left:16px;top:350px;width:358px;height:376px;border-radius:24px}
-.row{position:absolute;left:0;right:0;height:74px;display:flex;align-items:center;padding:0 16px}
-.row+.row{border-top:1.5px solid rgba(255,245,222,.35)}
-.row .ic{width:50px;height:48px;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(40,20,0,.3));flex:none}
-.row .lb{font-size:18px;margin-left:12px;flex:1}
-.row .sw{display:flex;flex-direction:column;flex:1;margin-left:12px}
-.row .sw .lb{margin:0 0 6px}
-.sld{position:relative;width:190px;height:18px;border-radius:9px;background:rgba(108,134,88,.9);border:2px solid #FFF5DE;cursor:pointer;touch-action:none}
-.sld .f{position:absolute;left:0;top:0;bottom:0;border-radius:7px;background:linear-gradient(#9CE52D,#368500)}
-.sld .k{position:absolute;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;background:url(a/P_knob.webp) center/contain no-repeat;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
-.row .pc{width:52px;text-align:right;font-size:16px}
-.tg{width:70px;height:38px;background:url(a/P_tog_on.webp) center/contain no-repeat;cursor:pointer;flex:none}
-.tg.off{background-image:url(a/P_tog_off.webp)}
-</style></head><body data-room="settings" data-hmin="756"><div id="app">
-<div class="gbg"></div>
-<div id="hud"></div>
-<img id="tt" data-sy="0" class="ttlimg" src="a/L_t_settings.webp">
-<img id="rb" data-sy="0" src="a/r_bust.webp">
-<div id="pn" data-sy="80" class="gl"></div>
-<div id="nv"></div>
-</div><script>
-let ST={music:70,sounds:80,barks:1,vib:1,hints:1};
-try{Object.assign(ST,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}
-const sv=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply()};
-const R=[['i_music','Music','s','music'],['i_sound','Sounds','s','sounds'],['fr_rambo','Rambo barks','t','barks'],['i_vib','Vibration','t','vib'],['i_hint','Hints','t','hints']];
-document.getElementById('pn').innerHTML=R.map(([ic,l,k,key],i)=>`<div class="row" style="top:${4+i*73}px"><img class="ic" src="a/${ic}.webp" ${ic=='fr_rambo'?'style="width:58px;height:58px;margin-top:8px"':''}>`+
- (k=='s'?`<div class="sw"><div class="lb wt">${l}</div><div class="sld" data-k="${key}"><div class="f"></div><div class="k"></div></div></div><div class="pc wt" id="p_${key}"></div>`
- :`<div class="lb wt">${l}</div><div class="tg tap ${ST[key]?'':'off'}" onclick="ST.${key}^=1;this.classList.toggle('off');sv()"></div>`)+`</div>`).join('');
-function paint(){document.querySelectorAll('.sld').forEach(s=>{const v=ST[s.dataset.k];s.querySelector('.f').style.width=v+'%';s.querySelector('.k').style.left=v+'%';document.getElementById('p_'+s.dataset.k).textContent=v+'%'})}
-document.querySelectorAll('.sld').forEach(s=>{const set=e=>{const r=s.getBoundingClientRect();ST[s.dataset.k]=Math.round(Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*100);paint();sv()};
- s.onpointerdown=e=>{s.setPointerCapture(e.pointerId);set(e);s.onpointermove=set};s.onpointerup=()=>s.onpointermove=null});
-paint();
-document.getElementById('hud').outerHTML=ghud();document.getElementById('nv').outerHTML=gnav('');fit();
-</script><script>BA.music('inside_myself')</script><script src="seamloop.js?v=20"></script><script src="room_video.js?v=20"></script><script src="room_fx.js?v=20"></script></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js?v=21"></script><script src="common.js?v=21"></script></head><body><div id="app" style="display:none"></div><script src="pages.js?v=21"></script><script>
+buildPage({image:'settings',extra(){const P=PAGE;
+ let ST={music:70,sounds:80,barks:1,vib:1,hints:1};try{Object.assign(ST,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}
+ const sv=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply()};
+ // toggle art is cut from this page's own painted toggles (on = Music row, off = Notifications row)
+ const TG=[{k:'music',y:802},{k:'sounds',y:934},{k:'vib',y:1069},{k:'notif',y:1204}];
+ const isOn=t=>t.k=='notif'?false:t.k=='vib'?!!ST.vib:ST[t.k]>0;
+ TG.forEach((t,i)=>{t.on=P.img(`a/pages/tg${i}_on.webp`,880,t.y,250,120);t.off=P.img(`a/pages/tg${i}_off.webp`,880,t.y,250,120);
+  const show=()=>{const v=isOn(t);t.on.style.visibility=v?'visible':'hidden';t.off.style.visibility=v?'hidden':'visible'};show();
+  P.hit('',[100,t.y+5,1090,115],()=>{
+   if(t.k=='notif')return P.toast('Notifications coming soon!');
+   if(t.k=='vib')ST.vib=ST.vib?0:1;
+   else if(ST[t.k]>0){ST['_'+t.k]=ST[t.k];ST[t.k]=0}else ST[t.k]=ST['_'+t.k]||(t.k=='music'?70:80);
+   sv();show();if(t.k=='vib'&&ST.vib&&navigator.vibrate)navigator.vibrate(30)})});
+ [[1450,'Player profiles are coming soon!'],[1590,'Saving to the cloud is coming soon!'],[1700,'More languages are coming soon!'],[2025,'Help & Support is coming soon!'],[2155,'Privacy & Terms are coming soon!']].forEach(([y,m])=>P.hit(m,[100,y,1090,115]));
+}});
+</script><script>BA.music("Theme")</script></body></html>

@@ -3,7 +3,7 @@
    Only live pieces are layered on top: the locked Home counters (blank) with live numbers, and page widgets. */
 (function(){
 const HOME='a/home/';
-const PAGES=window.PAGE_NAV||(location.pathname.includes('/p_')?{home:'index.html',map:'map.html',toys:'p_toys.html',shop:'p_shop.html',settings:'p_settings.html',friends:'p_friends.html'}:null)||{home:'index.html',map:'map.html',toys:'toys.html',shop:'shop.html',settings:'settings.html',friends:'friends.html'};
+const PAGES=window.PAGE_NAV||{home:'index.html',map:'map.html',toys:'toys.html',shop:'shop.html',settings:'settings.html',friends:'friends.html'};
 const stage=document.createElement('div');stage.id='stage';
 Object.assign(stage.style,{position:'absolute',left:0,top:0,width:'1290px',height:'2796px',transformOrigin:'0 0'});
 document.body.appendChild(stage);
@@ -36,7 +36,7 @@ function fit(){const W=innerWidth,H=innerHeight;S=Math.min(W/1290,H/2796);const 
 window.PAGE={stage,img,hit,toast,go,fit};
 window.buildPage=async function(o){
  img('a/pages/'+o.image+'.webp',0,0,1290,2796);
- const meta=await (await fetch(HOME+'layers.json?v=20')).json();
+ const meta=await (await fetch(HOME+'layers.json?v=21')).json();
  for(const k of ['L02_heart_counter','L03_bone_counter']){const [x,y,w,h]=meta[k];img(HOME+k+'.webp',x,y,w,h)}
  const ff=new FontFace('BoboNunito',`url(${HOME}Nunito-Black.ttf)`,{weight:'900'});await ff.load();document.fonts.add(ff);
  const G2=(typeof G!=='undefined'?G:null)||{hearts:5,bones:0};VAL={hearts:String(Math.max(0,Math.min(5,Math.floor(+G2.hearts||0)))),bones:Math.max(0,Math.floor(+G2.bones||0)).toLocaleString('en-US')};
