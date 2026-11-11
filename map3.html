@@ -67,20 +67,33 @@ STOPS.forEach((arr,s)=>arr.forEach(([x,y0],k)=>{
  const kind=L<cur||st?'completed':L==cur?'current':'locked';
  const wrap=document.createElement('div');wrap.className='stop'+(kind=='current'?' cur':'');Object.assign(wrap.style,{left:(x-sz/2)+'px',top:(y-sz*424/512)+'px'});world.appendChild(wrap);
  const gs=document.createElement('div');Object.assign(gs.style,{position:'absolute',left:(x-sz*.36)+'px',top:(y-sz*.06)+'px',width:(sz*.72)+'px',height:(sz*.16)+'px',borderRadius:'50%',background:'radial-gradient(closest-side,rgba(20,35,10,.55),rgba(20,35,10,.25) 60%,rgba(20,35,10,0))',zIndex:49,pointerEvents:'none'});world.appendChild(gs);
- put(wrap,`${M}marker_${kind}_512.webp`,0,0,sz,sz);const k5=sz/512;
+ const FL=0.66,AY=424/512;const disc=document.createElement('div');Object.assign(disc.style,{position:'absolute',left:0,top:0,width:sz+'px',height:sz+'px',transform:`scaleY(${FL})`,transformOrigin:`50% ${AY*100}%`});wrap.appendChild(disc);
+ put(disc,`${M}marker_${kind}_512.webp`,0,0,sz,sz);const k5=sz/512;const fy=v=>AY*sz+(v-AY*sz)*FL;
  const nb={locked:[150,128,212,106,100],current:[125,133,262,170,132],completed:[125,120,262,145,116]}[kind];
- label(wrap,String(L),Object.assign({},MK,{ }),nb[4]*k5,nb[0]*k5,nb[1]*k5,nb[2]*k5,nb[3]*k5,1);
- if(kind=='completed')[[123,279],[215,294],[307,279]].forEach(([sx,sy],i)=>{const e=put(wrap,M+'star_gold_512.webp',sx*k5,sy*k5,82*k5,82*k5);if(i>=st)e.style.filter='grayscale(1) brightness(.55)';});
+ label(wrap,String(L),Object.assign({},MK,{ }),nb[4]*k5*.92,nb[0]*k5,fy((nb[1]+nb[3]/2)*k5)-nb[3]*k5/2,nb[2]*k5,nb[3]*k5,1);
+ if(kind=='completed')[[123,279],[215,294],[307,279]].forEach(([sx,sy],i)=>{const e=put(wrap,M+'star_gold_512.webp',sx*k5,fy((sy+41)*k5)-41*k5,82*k5,82*k5);if(i>=st)e.style.filter='grayscale(1) brightness(.55)';});
  wrap.onclick=()=>{if(kind=='locked')return toast('Finish level '+cur+' first!');window.BA&&BA.play&&BA.play('tap',{gap:80});BA.nav('game.html?lv='+L)};
  if(kind=='current')curXY=[x,y];
 }));
 // Rambo + friends beside the current stop (locked Home masters, same proportions as Home)
-if(curXY){const [x,y]=curXY,side=x<700?1:-1,H=500/1121;
- const fig=(k,w,h,cx,fy,flip)=>{const i=put(world,`${HM}${k}.webp`,cx-w/2,fy-h,w,h);i.style.zIndex=60;if(flip)i.style.transform='scaleX(-1)';return i};
- fig('L06_buck',370*H,729*H,x+side*520,y-40,side<0);
- fig('L08_rambo',709*H,1121*H,x+side*300,y+110,side<0);
- fig('L07_bunny',282*H,538*H,x-side*280,y+120,side>0);
- fig('L09_cardinal',250*H,336*H,x-side*250,y-170,side>0);}
+if(curXY){const [x,y]=curXY,side=x<700?1:-1,RH=560;
+ const fig=(k,w,h,cx,fy,flip)=>{const i=put(world,`${HM}${k}.webp`,cx-w/2,fy-h,w,h);i.style.zIndex=40;if(flip)i.style.transform='scaleX(-1)';return i};
+ const shd=(cx,fy,w)=>{const d=document.createElement('div');Object.assign(d.style,{position:'absolute',left:(cx-w/2)+'px',top:(fy-w*.09)+'px',width:w+'px',height:(w*.18)+'px',borderRadius:'50%',background:'radial-gradient(closest-side,rgba(20,35,10,.5),rgba(20,35,10,0))',zIndex:39});world.appendChild(d)};
+ const H=(h0,h)=>h/h0; // target heights match the approved map mockup: Buck 1.23x Rambo, bunny 0.87x, cardinal 0.48x
+ const F=(k,w0,h0,th,cx,fy,flip)=>{const sc=th/h0;shd(cx,fy-6,w0*sc*.8);fig(k,w0*sc,th,cx,fy,flip)};
+ const ALL=[];STOPS.forEach((arr,s2)=>arr.forEach(([sx,sy],k2)=>{const L2=s2*5+k2+1;if(Math.abs(L2-cur)<=1)ALL.push([sx,TOP[s2]-CROP[s2]+sy])}));
+ const placed=[];
+ const hitStop=(l,t,r,b)=>ALL.some(([sx,sy])=>sx+115>l&&sx-115<r&&sy+30>t&&sy-120<b);
+ const hitFig=(l,t,r,b,mg=140)=>placed.some(q=>q[0]<r-mg&&q[2]>l+mg&&q[1]<b-Math.min(mg,100)&&q[3]>t+Math.min(mg,100));
+ const P=(k,w0,h0,th,cands)=>{const w=w0*th/h0;for(const [dx,dy] of cands){for(const sd of [side,-side]){const cx=x+sd*dx,fy=y+dy,l=cx-w/2,r=cx+w/2,t=fy-th;
+   if(l<5||r>1285)continue;if(((k=='L08_rambo'||k=='L09_cardinal')&&hitStop(l+w*.22,t+th*.3,r-w*.22,fy-10))||hitFig(l,t,r,fy,k=='L09_cardinal'?0:140))continue;
+   placed.push([l,t,r,fy]);shd(cx,fy-6,w*.8);fig(k,w,th,cx,fy,sd<0);return}}
+   if(k=='L08_rambo'){const cx=x+side*cands[0][0],fy=y+cands[0][1];placed.push([cx-w/2,fy-th,cx+w/2,fy]);shd(cx,fy-6,w*.8);fig(k,w,th,cx,fy,side<0)}};
+ P('L08_rambo',709,1121,RH,[[330,120],[360,40],[320,220],[400,-60]]);
+ P('L06_buck',370,729,RH*1.23,[[560,-110],[600,0],[-560,0],[600,-200],[-560,-200],[600,200],[-560,200],[480,-350]]);
+ P('L07_bunny',282,538,RH*.87,[[-300,170],[-260,190],[-330,60],[330,320],[-330,320],[-450,250],[450,250]]);
+ P('L09_cardinal',250,336,RH*.48,[[-330,-330],[-120,350],[240,-470],[-480,380],[-300,-200],[-360,-140],[-420,-330],[-460,-120],[-500,-160],[520,-260],[-200,-300],[200,-320]]);
+}
 // fixed UI: counters, gear, chapter banner, tab bar (Map active)
 let BOXES={};
 fetch(HM+'layers.json?v=22').then(r=>r.json()).then(m=>{BOXES=m;
