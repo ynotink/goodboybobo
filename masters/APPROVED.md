@@ -32,3 +32,7 @@ Starting set (B): tennis, rubber_ball (red, holes), rope, ring, squeaky_bone (pu
 - rubber_ball.png b9ac7ea3bfb3b7d5646b3f661ec1f6283ba93ae2b452d1defe8734b6012117cc
 - squeaky_bone.png 8217b65feb4006e86c9612ce6cf90d08c6e679c656dfd28fcff8c612760609bf
 - tennis.png 00dd56c3327a2ca35852b55d0067f705b9551b0b7d8c40c1e0cb60d58383216f
+
+## Gameplay look (scenery fix v2, 2026-11-11)
+- masters/gameplay/Gameplay_Background_1290x2796.png dc4b59d1865a8848cddfdd23008b28d6f4037d511725b9a08bca9db811be60a1
+- masters/gameplay/Gameplay_Scenery_Fixed_1290x2796.png 182e0eb1477ea37181dc05c1c037fa09d152c4becfe8195bf439fc1bffe9bbd5
