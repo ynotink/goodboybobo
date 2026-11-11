@@ -1,0 +1,1096 @@
+{
+  "canvas": [
+    1290,
+    2796
+  ],
+  "coordinates": "x,y,width,height, pixels, top-left origin",
+  "font": {
+    "file": "spec/Nunito-Black.ttf",
+    "family": "Nunito",
+    "weight": 900,
+    "fill": "#004f54",
+    "main_stroke": {
+      "color": "#004449",
+      "width": 1
+    },
+    "shadow": {
+      "fill": "#003c40",
+      "stroke_width": 2,
+      "offset": [
+        1,
+        4
+      ]
+    },
+    "alignment": "center",
+    "vertical_anchor": "Pillow mm; exact alphabetic baseline offsets provided"
+  },
+  "popups": {
+    "Pause": {
+      "outer_panel": [
+        110,
+        560,
+        1070,
+        1750
+      ],
+      "title_plate": [
+        140,
+        440,
+        1010,
+        190
+      ],
+      "fields": {},
+      "buttons": [
+        "resume",
+        "restart",
+        "quit_map"
+      ],
+      "layer_order": [
+        "layers/Dim_Game.png",
+        "panels/Pause_Panel.png",
+        "live goal icons/counts, level/moves/bones, medals and toggle states",
+        "buttons/resume_normal_Layer.png",
+        "buttons/restart_normal_Layer.png",
+        "buttons/quit_map_normal_Layer.png"
+      ],
+      "toggles": {
+        "music": {
+          "box": [
+            850,
+            1762,
+            189,
+            86
+          ],
+          "on": "assets/Settings_Toggle_on.png",
+          "off": "assets/Settings_Toggle_off.png"
+        },
+        "sound": {
+          "box": [
+            850,
+            1972,
+            189,
+            86
+          ],
+          "on": "assets/Settings_Toggle_on.png",
+          "off": "assets/Settings_Toggle_off.png"
+        }
+      },
+      "panel_file": "panels/Pause_Panel.png",
+      "button_specs": {
+        "resume": {
+          "hit_box": [
+            245,
+            770,
+            800,
+            205
+          ],
+          "font_size": 142,
+          "label": "Resume",
+          "normal": {
+            "full_canvas": "buttons/resume_normal_Layer.png",
+            "crop": "buttons/resume_normal.png",
+            "asset_box": [
+              231,
+              765,
+              827,
+              228
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/resume_pressed_Layer.png",
+            "crop": "buttons/resume_pressed.png",
+            "asset_box": [
+              231,
+              765,
+              827,
+              228
+            ]
+          },
+          "letter_spacing_px": 4.26
+        },
+        "restart": {
+          "hit_box": [
+            245,
+            1060,
+            800,
+            205
+          ],
+          "font_size": 142,
+          "label": "Restart",
+          "normal": {
+            "full_canvas": "buttons/restart_normal_Layer.png",
+            "crop": "buttons/restart_normal.png",
+            "asset_box": [
+              231,
+              1055,
+              827,
+              229
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/restart_pressed_Layer.png",
+            "crop": "buttons/restart_pressed.png",
+            "asset_box": [
+              231,
+              1055,
+              827,
+              229
+            ]
+          },
+          "letter_spacing_px": 4.26
+        },
+        "quit_map": {
+          "hit_box": [
+            245,
+            1350,
+            800,
+            205
+          ],
+          "font_size": 109,
+          "label": "Quit to Map",
+          "normal": {
+            "full_canvas": "buttons/quit_map_normal_Layer.png",
+            "crop": "buttons/quit_map_normal.png",
+            "asset_box": [
+              231,
+              1345,
+              827,
+              229
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/quit_map_pressed_Layer.png",
+            "crop": "buttons/quit_map_pressed.png",
+            "asset_box": [
+              231,
+              1345,
+              827,
+              229
+            ]
+          },
+          "letter_spacing_px": 3.27
+        }
+      }
+    },
+    "Ready_to_Play": {
+      "outer_panel": [
+        110,
+        560,
+        1070,
+        1750
+      ],
+      "title_plate": [
+        105,
+        440,
+        1080,
+        190
+      ],
+      "fields": {
+        "level": {
+          "box": [
+            245,
+            718,
+            800,
+            175
+          ],
+          "font_size": 119,
+          "format": "Level {level}",
+          "example": "Level 18",
+          "widest_example": "Level 300",
+          "alphabetic_baseline_y": 845.5,
+          "alignment": "center",
+          "widest_advance_px": 552.640625,
+          "letter_spacing_em": 0.03,
+          "letter_spacing_px": 3.57,
+          "optical_pair_spacing_em": {},
+          "ink_centered": true,
+          "glyph_layout": "Kerning-aware prefix advance plus tracking; center full shadow-inclusive ink bounds in the same text box.",
+          "widest_ink_width_px": 574
+        },
+        "goal_1": {
+          "box": [
+            301,
+            1400,
+            270,
+            130
+          ],
+          "font_size": 118,
+          "format": "{count}",
+          "example": "8",
+          "widest_example": "999",
+          "alphabetic_baseline_y": 1504.0,
+          "alignment": "center",
+          "widest_advance_px": 212.390625
+        },
+        "goal_2": {
+          "box": [
+            719,
+            1400,
+            270,
+            130
+          ],
+          "font_size": 118,
+          "format": "{count}",
+          "example": "20",
+          "widest_example": "999",
+          "alphabetic_baseline_y": 1504.0,
+          "alignment": "center",
+          "widest_advance_px": 212.390625
+        },
+        "moves": {
+          "box": [
+            430,
+            1650,
+            430,
+            135
+          ],
+          "font_size": 145,
+          "format": "{moves}",
+          "example": "24",
+          "widest_example": "99",
+          "alphabetic_baseline_y": 1765.5,
+          "alignment": "center",
+          "widest_advance_px": 174.0
+        }
+      },
+      "buttons": [
+        "play"
+      ],
+      "layer_order": [
+        "layers/Dim_Game.png",
+        "panels/Ready_to_Play_Panel.png",
+        "live goal icons/counts, level/moves/bones, medals and toggle states",
+        "buttons/play_normal_Layer.png"
+      ],
+      "goal_slots": [
+        {
+          "box": [
+            308,
+            1130,
+            256,
+            256
+          ],
+          "normal_asset": "assets/crate.png",
+          "fit": "Trim alpha bounds, contain, centered, as in v2.",
+          "native_display_assets": {
+            "crate": "assets/crate_Display.png",
+            "tennis": "assets/tennis_Display.png"
+          },
+          "draw_rule": "Draw the supplied256x256DisplayPNG at this box, without trimming or scaling."
+        },
+        {
+          "box": [
+            726,
+            1130,
+            256,
+            256
+          ],
+          "normal_asset": "assets/tennis.png",
+          "fit": "Trim alpha bounds, contain, centered, as in v2.",
+          "native_display_assets": {
+            "crate": "assets/crate_Display.png",
+            "tennis": "assets/tennis_Display.png"
+          },
+          "draw_rule": "Draw the supplied256x256DisplayPNG at this box, without trimming or scaling."
+        }
+      ],
+      "moves_panel": [
+        265,
+        1640,
+        760,
+        290
+      ],
+      "panel_file": "panels/Ready_to_Play_Panel.png",
+      "button_specs": {
+        "play": {
+          "hit_box": [
+            245,
+            1980,
+            800,
+            205
+          ],
+          "font_size": 142,
+          "label": "Play",
+          "normal": {
+            "full_canvas": "buttons/play_normal_Layer.png",
+            "crop": "buttons/play_normal.png",
+            "asset_box": [
+              231,
+              1975,
+              827,
+              228
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/play_pressed_Layer.png",
+            "crop": "buttons/play_pressed.png",
+            "asset_box": [
+              231,
+              1975,
+              827,
+              228
+            ]
+          },
+          "letter_spacing_px": 4.26
+        }
+      }
+    },
+    "Out_of_Moves": {
+      "outer_panel": [
+        110,
+        560,
+        1070,
+        1750
+      ],
+      "title_plate": [
+        105,
+        440,
+        1080,
+        190
+      ],
+      "fields": {
+        "goal_1": {
+          "box": [
+            301,
+            1190,
+            270,
+            130
+          ],
+          "font_size": 118,
+          "format": "{count}",
+          "example": "8",
+          "widest_example": "999",
+          "alphabetic_baseline_y": 1294.0,
+          "alignment": "center",
+          "widest_advance_px": 212.390625
+        },
+        "goal_2": {
+          "box": [
+            719,
+            1190,
+            270,
+            130
+          ],
+          "font_size": 118,
+          "format": "{count}",
+          "example": "20",
+          "widest_example": "999",
+          "alphabetic_baseline_y": 1294.0,
+          "alignment": "center",
+          "widest_advance_px": 212.390625
+        },
+        "moves": {
+          "box": [
+            290,
+            1506,
+            710,
+            186
+          ],
+          "font_size": 103,
+          "format": "{moves} Moves Left",
+          "example": "0 Moves Left",
+          "widest_example": "0 Moves Left",
+          "alphabetic_baseline_y": 1633.0,
+          "alignment": "center",
+          "widest_advance_px": 633.640625,
+          "letter_spacing_em": 0.03,
+          "letter_spacing_px": 3.09,
+          "optical_pair_spacing_em": {
+            "ft": 0.045
+          },
+          "ink_centered": true,
+          "glyph_layout": "Kerning-aware prefix advance plus tracking; center full shadow-inclusive ink bounds in the same text box.",
+          "widest_ink_width_px": 673
+        }
+      },
+      "buttons": [
+        "plus5",
+        "quit"
+      ],
+      "layer_order": [
+        "layers/Dim_Game.png",
+        "panels/Out_of_Moves_Panel.png",
+        "live goal icons/counts, level/moves/bones, medals and toggle states",
+        "buttons/plus5_normal_Layer.png",
+        "buttons/quit_normal_Layer.png"
+      ],
+      "goal_slots": [
+        {
+          "box": [
+            308,
+            920,
+            256,
+            256
+          ],
+          "normal_asset": "assets/crate.png",
+          "fit": "Trim alpha bounds, contain, centered, as in v2.",
+          "native_display_assets": {
+            "crate": "assets/crate_Display.png",
+            "tennis": "assets/tennis_Display.png"
+          },
+          "draw_rule": "Draw the supplied256x256DisplayPNG at this box, without trimming or scaling."
+        },
+        {
+          "box": [
+            726,
+            920,
+            256,
+            256
+          ],
+          "normal_asset": "assets/tennis.png",
+          "fit": "Trim alpha bounds, contain, centered, as in v2.",
+          "native_display_assets": {
+            "crate": "assets/crate_Display.png",
+            "tennis": "assets/tennis_Display.png"
+          },
+          "draw_rule": "Draw the supplied256x256DisplayPNG at this box, without trimming or scaling."
+        }
+      ],
+      "panel_file": "panels/Out_of_Moves_Panel.png",
+      "button_specs": {
+        "plus5": {
+          "hit_box": [
+            245,
+            1800,
+            800,
+            205
+          ],
+          "font_size": 134,
+          "label": "+5 Moves",
+          "normal": {
+            "full_canvas": "buttons/plus5_normal_Layer.png",
+            "crop": "buttons/plus5_normal.png",
+            "asset_box": [
+              231,
+              1795,
+              827,
+              228
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/plus5_pressed_Layer.png",
+            "crop": "buttons/plus5_pressed.png",
+            "asset_box": [
+              231,
+              1795,
+              827,
+              228
+            ]
+          },
+          "letter_spacing_px": 4.02
+        },
+        "quit": {
+          "hit_box": [
+            245,
+            2070,
+            800,
+            185
+          ],
+          "font_size": 138,
+          "label": "Quit",
+          "normal": {
+            "full_canvas": "buttons/quit_normal_Layer.png",
+            "crop": "buttons/quit_normal.png",
+            "asset_box": [
+              231,
+              2065,
+              827,
+              209
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/quit_pressed_Layer.png",
+            "crop": "buttons/quit_pressed.png",
+            "asset_box": [
+              231,
+              2065,
+              827,
+              209
+            ]
+          },
+          "letter_spacing_px": 4.14
+        }
+      }
+    },
+    "Win_Results": {
+      "outer_panel": [
+        110,
+        480,
+        1070,
+        2160
+      ],
+      "title_plate": [
+        220,
+        380,
+        850,
+        190
+      ],
+      "fields": {
+        "level": {
+          "box": [
+            195,
+            960,
+            900,
+            135
+          ],
+          "font_size": 86,
+          "format": "Level {level} Complete!",
+          "example": "Level 18 Complete!",
+          "widest_example": "Level 300 Complete!",
+          "alphabetic_baseline_y": 1055.5,
+          "alignment": "center",
+          "widest_advance_px": 896.25,
+          "letter_spacing_em": 0.03,
+          "letter_spacing_px": 2.58,
+          "optical_pair_spacing_em": {},
+          "ink_centered": true,
+          "glyph_layout": "Kerning-aware prefix advance plus tracking; center full shadow-inclusive ink bounds in the same text box.",
+          "widest_ink_width_px": 889
+        },
+        "bones": {
+          "box": [
+            535,
+            1955,
+            430,
+            160
+          ],
+          "font_size": 105,
+          "format": "+{bones:,}",
+          "example": "+50",
+          "widest_example": "+99,999",
+          "alphabetic_baseline_y": 2070.0,
+          "alignment": "center",
+          "widest_advance_px": 406.5625,
+          "box_role": "Maximum amount field envelope; actual centered group text box is computed per value.",
+          "normal_box": [
+            650,
+            1955,
+            189.0,
+            160
+          ],
+          "widest_box": [
+            542,
+            1955,
+            406.5625,
+            160
+          ]
+        }
+      },
+      "buttons": [
+        "continue",
+        "replay"
+      ],
+      "layer_order": [
+        "layers/Dim_Game.png",
+        "panels/Win_Results_Panel.png",
+        "layers/Win_Results_Rambo.png",
+        "live goal icons/counts, level/moves/bones, medals and toggle states",
+        "buttons/continue_normal_Layer.png",
+        "buttons/replay_normal_Layer.png"
+      ],
+      "medals": [
+        {
+          "box": [
+            225,
+            665,
+            260,
+            260
+          ],
+          "earned": "assets/medal_on_Display.png",
+          "empty": "assets/medal_off_Display.png",
+          "fit": "trim alpha, contain, centered",
+          "draw_rule": "Native260x260DisplayPNG; no trim/scale."
+        },
+        {
+          "box": [
+            515,
+            665,
+            260,
+            260
+          ],
+          "earned": "assets/medal_on_Display.png",
+          "empty": "assets/medal_off_Display.png",
+          "fit": "trim alpha, contain, centered",
+          "draw_rule": "Native260x260DisplayPNG; no trim/scale."
+        },
+        {
+          "box": [
+            805,
+            665,
+            260,
+            260
+          ],
+          "earned": "assets/medal_on_Display.png",
+          "empty": "assets/medal_off_Display.png",
+          "fit": "trim alpha, contain, centered",
+          "draw_rule": "Native260x260DisplayPNG; no trim/scale."
+        }
+      ],
+      "bones_group": {
+        "container": [
+          235,
+          1945,
+          820,
+          185
+        ],
+        "center_x": 645,
+        "icon": "assets/bone_icon_Display.png",
+        "icon_size": [
+          172,
+          160
+        ],
+        "y": 1955,
+        "gap": 28,
+        "text_font_size": 105,
+        "text_height": 160,
+        "format": "+{bones:,}",
+        "rule": "advance=font.getlength(formatted_amount);group_width=172+28+advance;icon_x=round(645-group_width/2);text_x=icon_x+172+28;center text in its advance-width box. This keeps icon and amount together on one centered line.",
+        "normal": {
+          "icon_box": [
+            450,
+            1955,
+            172,
+            160
+          ],
+          "text_box": [
+            650,
+            1955,
+            189.0,
+            160
+          ],
+          "text": "+50"
+        },
+        "widest": {
+          "icon_box": [
+            342,
+            1955,
+            172,
+            160
+          ],
+          "text_box": [
+            542,
+            1955,
+            406.5625,
+            160
+          ],
+          "text": "+99,999"
+        },
+        "draw_icon_native_size": true
+      },
+      "fixed_art_layer": "layers/Win_Results_Rambo.png",
+      "rambo_box": [
+        325,
+        1110,
+        640,
+        805
+      ],
+      "panel_file": "panels/Win_Results_Panel.png",
+      "button_specs": {
+        "continue": {
+          "hit_box": [
+            245,
+            2200,
+            800,
+            185
+          ],
+          "font_size": 139,
+          "label": "Continue",
+          "normal": {
+            "full_canvas": "buttons/continue_normal_Layer.png",
+            "crop": "buttons/continue_normal.png",
+            "asset_box": [
+              231,
+              2195,
+              827,
+              208
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/continue_pressed_Layer.png",
+            "crop": "buttons/continue_pressed.png",
+            "asset_box": [
+              231,
+              2195,
+              827,
+              208
+            ]
+          },
+          "letter_spacing_px": 4.17
+        },
+        "replay": {
+          "hit_box": [
+            245,
+            2430,
+            800,
+            160
+          ],
+          "font_size": 122,
+          "label": "Replay",
+          "normal": {
+            "full_canvas": "buttons/replay_normal_Layer.png",
+            "crop": "buttons/replay_normal.png",
+            "asset_box": [
+              232,
+              2425,
+              825,
+              184
+            ]
+          },
+          "pressed": {
+            "full_canvas": "buttons/replay_pressed_Layer.png",
+            "crop": "buttons/replay_pressed.png",
+            "asset_box": [
+              232,
+              2425,
+              825,
+              184
+            ]
+          },
+          "letter_spacing_px": 3.6599999999999997
+        }
+      }
+    }
+  },
+  "buttons": {
+    "resume": {
+      "hit_box": [
+        245,
+        770,
+        800,
+        205
+      ],
+      "font_size": 142,
+      "label": "Resume",
+      "normal": {
+        "full_canvas": "buttons/resume_normal_Layer.png",
+        "crop": "buttons/resume_normal.png",
+        "asset_box": [
+          231,
+          765,
+          827,
+          228
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/resume_pressed_Layer.png",
+        "crop": "buttons/resume_pressed.png",
+        "asset_box": [
+          231,
+          765,
+          827,
+          228
+        ]
+      },
+      "letter_spacing_px": 4.26
+    },
+    "restart": {
+      "hit_box": [
+        245,
+        1060,
+        800,
+        205
+      ],
+      "font_size": 142,
+      "label": "Restart",
+      "normal": {
+        "full_canvas": "buttons/restart_normal_Layer.png",
+        "crop": "buttons/restart_normal.png",
+        "asset_box": [
+          231,
+          1055,
+          827,
+          229
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/restart_pressed_Layer.png",
+        "crop": "buttons/restart_pressed.png",
+        "asset_box": [
+          231,
+          1055,
+          827,
+          229
+        ]
+      },
+      "letter_spacing_px": 4.26
+    },
+    "quit_map": {
+      "hit_box": [
+        245,
+        1350,
+        800,
+        205
+      ],
+      "font_size": 109,
+      "label": "Quit to Map",
+      "normal": {
+        "full_canvas": "buttons/quit_map_normal_Layer.png",
+        "crop": "buttons/quit_map_normal.png",
+        "asset_box": [
+          231,
+          1345,
+          827,
+          229
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/quit_map_pressed_Layer.png",
+        "crop": "buttons/quit_map_pressed.png",
+        "asset_box": [
+          231,
+          1345,
+          827,
+          229
+        ]
+      },
+      "letter_spacing_px": 3.27
+    },
+    "play": {
+      "hit_box": [
+        245,
+        1980,
+        800,
+        205
+      ],
+      "font_size": 142,
+      "label": "Play",
+      "normal": {
+        "full_canvas": "buttons/play_normal_Layer.png",
+        "crop": "buttons/play_normal.png",
+        "asset_box": [
+          231,
+          1975,
+          827,
+          228
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/play_pressed_Layer.png",
+        "crop": "buttons/play_pressed.png",
+        "asset_box": [
+          231,
+          1975,
+          827,
+          228
+        ]
+      },
+      "letter_spacing_px": 4.26
+    },
+    "plus5": {
+      "hit_box": [
+        245,
+        1800,
+        800,
+        205
+      ],
+      "font_size": 134,
+      "label": "+5 Moves",
+      "normal": {
+        "full_canvas": "buttons/plus5_normal_Layer.png",
+        "crop": "buttons/plus5_normal.png",
+        "asset_box": [
+          231,
+          1795,
+          827,
+          228
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/plus5_pressed_Layer.png",
+        "crop": "buttons/plus5_pressed.png",
+        "asset_box": [
+          231,
+          1795,
+          827,
+          228
+        ]
+      },
+      "letter_spacing_px": 4.02
+    },
+    "quit": {
+      "hit_box": [
+        245,
+        2070,
+        800,
+        185
+      ],
+      "font_size": 138,
+      "label": "Quit",
+      "normal": {
+        "full_canvas": "buttons/quit_normal_Layer.png",
+        "crop": "buttons/quit_normal.png",
+        "asset_box": [
+          231,
+          2065,
+          827,
+          209
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/quit_pressed_Layer.png",
+        "crop": "buttons/quit_pressed.png",
+        "asset_box": [
+          231,
+          2065,
+          827,
+          209
+        ]
+      },
+      "letter_spacing_px": 4.14
+    },
+    "continue": {
+      "hit_box": [
+        245,
+        2200,
+        800,
+        185
+      ],
+      "font_size": 139,
+      "label": "Continue",
+      "normal": {
+        "full_canvas": "buttons/continue_normal_Layer.png",
+        "crop": "buttons/continue_normal.png",
+        "asset_box": [
+          231,
+          2195,
+          827,
+          208
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/continue_pressed_Layer.png",
+        "crop": "buttons/continue_pressed.png",
+        "asset_box": [
+          231,
+          2195,
+          827,
+          208
+        ]
+      },
+      "letter_spacing_px": 4.17
+    },
+    "replay": {
+      "hit_box": [
+        245,
+        2430,
+        800,
+        160
+      ],
+      "font_size": 122,
+      "label": "Replay",
+      "normal": {
+        "full_canvas": "buttons/replay_normal_Layer.png",
+        "crop": "buttons/replay_normal.png",
+        "asset_box": [
+          232,
+          2425,
+          825,
+          184
+        ]
+      },
+      "pressed": {
+        "full_canvas": "buttons/replay_pressed_Layer.png",
+        "crop": "buttons/replay_pressed.png",
+        "asset_box": [
+          232,
+          2425,
+          825,
+          184
+        ]
+      },
+      "letter_spacing_px": 3.6599999999999997
+    }
+  },
+  "completion_and_level_lines": "Render the whole formatted line in the supplied box, including fixed words, to preserve exact centering as digit counts change. These words are intentionally not baked into the blank panel.",
+  "example_value_layers": "layers/*_Values.png are review examples only, not static runtime panels.",
+  "buttons_and_shadows": "Choose either full-canvas button layer or its crop at asset_box. Both include their soft shadows; do not add another shadow.",
+  "widgets": {
+    "crate": {
+      "file": "assets/crate_Display.png",
+      "canvas": [
+        256,
+        256
+      ],
+      "draw_native_size": true,
+      "source_file": "assets/crate.png",
+      "source_alpha_bounds": [
+        2,
+        0,
+        121,
+        118
+      ],
+      "note": "Same display-size transformation as v2/v3 proof art; no new render."
+    },
+    "tennis": {
+      "file": "assets/tennis_Display.png",
+      "canvas": [
+        256,
+        256
+      ],
+      "draw_native_size": true,
+      "source_file": "assets/tennis.png",
+      "source_alpha_bounds": [
+        5,
+        3,
+        141,
+        138
+      ],
+      "note": "Same display-size transformation as v2/v3 proof art; no new render."
+    },
+    "medal_on": {
+      "file": "assets/medal_on_Display.png",
+      "canvas": [
+        260,
+        260
+      ],
+      "draw_native_size": true,
+      "source_file": "assets/medal_on.png",
+      "source_alpha_bounds": [
+        31,
+        26,
+        480,
+        486
+      ],
+      "note": "Same display-size transformation as v2/v3 proof art; no new render."
+    },
+    "medal_off": {
+      "file": "assets/medal_off_Display.png",
+      "canvas": [
+        260,
+        260
+      ],
+      "draw_native_size": true,
+      "source_file": "assets/medal_off.png",
+      "source_alpha_bounds": [
+        31,
+        26,
+        479,
+        485
+      ],
+      "note": "Same display-size transformation as v2/v3 proof art; no new render."
+    },
+    "bone_icon": {
+      "file": "assets/bone_icon_Display.png",
+      "canvas": [
+        172,
+        160
+      ],
+      "draw_native_size": true,
+      "source_file": "assets/bone_icon.png",
+      "source_alpha_bounds": [
+        31,
+        42,
+        353,
+        342
+      ],
+      "note": "Same display-size transformation as v2/v3 proof art; no new render."
+    }
+  },
+  "lettering_revision": {
+    "static_labels": "Baked in panels/buttons; use supplied art, do not retype.",
+    "tracking_em": 0.03,
+    "fit": "8percent side margins on title plates and buttons; font reduced only where needed.",
+    "optical_pair_adjustment": "The overhanging f/t pair in Left has a small additional optical gap to prevent visible strokes touching.",
+    "live_word_captions": "Word-based formatted captions use their recorded tracking; numerical-only fields retain v3 typography.",
+    "same_pixel_boxes": true
+  }
+}
