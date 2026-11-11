@@ -1,0 +1,34 @@
+[
+  {
+    "field": "hearts",
+    "value": "5",
+    "font_size_px": 84,
+    "glyph_width_px": 52,
+    "box_width_px": 86,
+    "passes": true
+  },
+  {
+    "field": "bones",
+    "value": "430",
+    "font_size_px": 84,
+    "glyph_width_px": 153,
+    "box_width_px": 237,
+    "passes": true
+  },
+  {
+    "field": "bones",
+    "value": "99,999",
+    "font_size_px": 70,
+    "glyph_width_px": 231,
+    "box_width_px": 237,
+    "passes": true
+  },
+  {
+    "field": "level",
+    "value": "Level 300",
+    "font_size_px": 78,
+    "glyph_width_px": 368,
+    "box_width_px": 670,
+    "passes": true
+  }
+]

@@ -1,0 +1,363 @@
+{
+  "canvas": [
+    1290,
+    2796
+  ],
+  "top_no_go": [
+    0,
+    0,
+    1290,
+    200
+  ],
+  "bottom_no_go": [
+    0,
+    2681,
+    1290,
+    115
+  ],
+  "placements": [
+    {
+      "name": "heart_counter",
+      "source": "masters/heart_counter.png",
+      "layer": "layers/L02_heart_counter.png",
+      "box": [
+        70,
+        218,
+        360,
+        132
+      ],
+      "painted_bounds": [
+        70,
+        228,
+        360,
+        111
+      ],
+      "native_scale": 0.17830609212481427,
+      "align": "center"
+    },
+    {
+      "name": "bone_counter",
+      "source": "masters/bone_counter.png",
+      "layer": "layers/L03_bone_counter.png",
+      "box": [
+        470,
+        218,
+        460,
+        132
+      ],
+      "painted_bounds": [
+        470,
+        222,
+        460,
+        123
+      ],
+      "native_scale": 0.18333997608609007,
+      "align": "center"
+    },
+    {
+      "name": "gear",
+      "source": "masters/gear_normal.png",
+      "layer": "layers/L04_gear.png",
+      "box": [
+        1010,
+        229,
+        227,
+        110
+      ],
+      "painted_bounds": [
+        1070,
+        229,
+        106,
+        110
+      ],
+      "native_scale": 0.12702078521939955,
+      "align": "center"
+    },
+    {
+      "name": "logo",
+      "source": "masters/logo.png",
+      "layer": "layers/L05_logo.png",
+      "box": [
+        314,
+        395,
+        672,
+        325
+      ],
+      "painted_bounds": [
+        320,
+        395,
+        660,
+        325
+      ],
+      "native_scale": 0.4082914572864322,
+      "align": "center"
+    },
+    {
+      "name": "buck",
+      "source": "masters/buck.png",
+      "layer": "layers/L06_buck.png",
+      "painted_bounds": [
+        855,
+        703,
+        370,
+        729
+      ],
+      "native_scale": 0.35985985985985985,
+      "source_sole": [
+        610.5,
+        2023
+      ],
+      "ground_contact_target": [
+        978,
+        1423
+      ],
+      "body_height_target": 719
+    },
+    {
+      "name": "bunny",
+      "source": "masters/bunny.png",
+      "layer": "layers/L07_bunny.png",
+      "painted_bounds": [
+        88,
+        864,
+        282,
+        538
+      ],
+      "native_scale": 0.27133367399080227,
+      "source_sole": [
+        872.6262626262626,
+        2012
+      ],
+      "ground_contact_target": [
+        263,
+        1396
+      ],
+      "body_height_target": 531
+    },
+    {
+      "name": "rambo",
+      "source": "masters/rambo.png",
+      "layer": "layers/L08_rambo.png",
+      "painted_bounds": [
+        337,
+        663,
+        709,
+        1121
+      ],
+      "native_scale": 0.5625319040326697,
+      "source_sole": [
+        780.5779816513761,
+        2016
+      ],
+      "ground_contact_target": [
+        689,
+        1766
+      ],
+      "body_height_target": 1102
+    },
+    {
+      "name": "cardinal",
+      "source": "masters/cardinal.png",
+      "layer": "layers/L09_cardinal.png",
+      "painted_bounds": [
+        162,
+        1368,
+        250,
+        336
+      ],
+      "native_scale": 0.18181818181818182,
+      "source_sole": [
+        712.039603960396,
+        1935
+      ],
+      "ground_contact_target": [
+        284,
+        1698
+      ],
+      "body_height_target": 330
+    },
+    {
+      "name": "daily",
+      "source": "masters/daily_normal.png",
+      "layer": "layers/L10_daily.png",
+      "box": [
+        188,
+        1815,
+        443,
+        309
+      ],
+      "painted_bounds": [
+        188,
+        1817,
+        443,
+        304
+      ],
+      "native_scale": 0.33946360153256705,
+      "align": "center"
+    },
+    {
+      "name": "events",
+      "source": "masters/events_normal.png",
+      "layer": "layers/L11_events.png",
+      "box": [
+        664,
+        1815,
+        438,
+        309
+      ],
+      "painted_bounds": [
+        664,
+        1816,
+        438,
+        306
+      ],
+      "native_scale": 0.3201754385964912,
+      "align": "center"
+    },
+    {
+      "name": "play",
+      "source": "masters/play_normal.png",
+      "layer": "layers/L12_play.png",
+      "box": [
+        145,
+        2135,
+        1001,
+        317
+      ],
+      "painted_bounds": [
+        145,
+        2135,
+        1001,
+        316
+      ],
+      "native_scale": 0.4975149105367793,
+      "align": "center"
+    },
+    {
+      "name": "bottom_bar",
+      "source": "masters/nav_bar_blank.png",
+      "layer": "layers/L13_bottom_bar.png",
+      "box": [
+        0,
+        2450,
+        1290,
+        346
+      ],
+      "extension": "Native painted bottom-row colors continued down behind home-swipe zone; no new controls."
+    },
+    {
+      "name": "active_home_tile",
+      "source": "masters/active_tab_tile.png",
+      "layer": "layers/L14_active_home_tile.png",
+      "box": [
+        19,
+        2450,
+        226,
+        226
+      ],
+      "painted_bounds": [
+        19,
+        2450,
+        226,
+        225
+      ],
+      "native_scale": 0.20397111913357402,
+      "align": "center"
+    },
+    {
+      "name": "nav_home",
+      "source": "masters/nav_home_teal.png",
+      "layer": "layers/L15_nav_home.png",
+      "box": [
+        20,
+        2450,
+        218,
+        208
+      ],
+      "painted_bounds": [
+        43,
+        2450,
+        171,
+        208
+      ],
+      "native_scale": 0.4663677130044843,
+      "align": "center"
+    },
+    {
+      "name": "nav_map",
+      "source": "masters/nav_map_white.png",
+      "layer": "layers/L16_nav_map.png",
+      "box": [
+        278,
+        2450,
+        218,
+        208
+      ],
+      "painted_bounds": [
+        302,
+        2450,
+        169,
+        208
+      ],
+      "native_scale": 0.4444444444444444,
+      "align": "center"
+    },
+    {
+      "name": "nav_toys",
+      "source": "masters/nav_toys_white.png",
+      "layer": "layers/L17_nav_toys.png",
+      "box": [
+        536,
+        2450,
+        218,
+        208
+      ],
+      "painted_bounds": [
+        562,
+        2450,
+        166,
+        208
+      ],
+      "native_scale": 0.45714285714285713,
+      "align": "center"
+    },
+    {
+      "name": "nav_friends",
+      "source": "masters/nav_friends_white.png",
+      "layer": "layers/L18_nav_friends.png",
+      "box": [
+        794,
+        2450,
+        218,
+        208
+      ],
+      "painted_bounds": [
+        800,
+        2450,
+        205,
+        208
+      ],
+      "native_scale": 0.5024154589371981,
+      "align": "center"
+    },
+    {
+      "name": "nav_shop",
+      "source": "masters/nav_shop_white.png",
+      "layer": "layers/L19_nav_shop.png",
+      "box": [
+        1052,
+        2450,
+        218,
+        208
+      ],
+      "painted_bounds": [
+        1082,
+        2450,
+        158,
+        208
+      ],
+      "native_scale": 0.45414847161572053,
+      "align": "center"
+    }
+  ]
+}

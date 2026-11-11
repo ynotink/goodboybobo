@@ -1,0 +1,106 @@
+{
+  "status": "Font/style candidate for Antonio approval; original painted reference font is not identifiable from the image alone.",
+  "canvas": [
+    1290,
+    2796
+  ],
+  "font": {
+    "family": "Nunito",
+    "style": "Black",
+    "weight": 900,
+    "file": "fonts/Nunito-Black.ttf",
+    "source": "https://github.com/google/fonts/tree/main/ofl/nunito",
+    "license": "fonts/OFL.txt"
+  },
+  "styles": {
+    "counter": {
+      "fill": "#006368",
+      "outline": "#003E42",
+      "outline_width_px": 1,
+      "shadow": {
+        "color": "#00393B",
+        "opacity": 0.45,
+        "offset_px": [
+          0,
+          3
+        ],
+        "blur_px": 1
+      },
+      "inner_highlight": {
+        "color": "#55AAA5",
+        "opacity": 0.2,
+        "offset_px": [
+          0,
+          -1
+        ]
+      }
+    },
+    "level": {
+      "fill": "#FFF7E6",
+      "outline": "#134719",
+      "outline_width_px": 3,
+      "shadow": {
+        "color": "#06380D",
+        "opacity": 0.75,
+        "offset_px": [
+          0,
+          5
+        ],
+        "blur_px": 2
+      },
+      "inner_highlight": {
+        "color": "#FFFFFF",
+        "opacity": 0.25,
+        "offset_px": [
+          0,
+          -1
+        ]
+      }
+    }
+  },
+  "boxes": {
+    "hearts": {
+      "x": 215,
+      "y": 229,
+      "width": 86,
+      "height": 96,
+      "align": "center",
+      "vertical_align": "center",
+      "font_size_px": 84,
+      "style": "counter",
+      "widest": "5",
+      "effect_padding_px": 4
+    },
+    "bones": {
+      "x": 603,
+      "y": 229,
+      "width": 237,
+      "height": 96,
+      "align": "center",
+      "vertical_align": "center",
+      "font_size_px": 84,
+      "style": "counter",
+      "widest": "99,999",
+      "min_font_size_px": 70,
+      "effect_padding_px": 4,
+      "fit_rule": "Use84px for regular counts; reduce one pixel at a time only when actual glyph width plus4px effects padding exceeds237px. Floor70px; 99,999 uses70px. No horizontal scaling."
+    },
+    "level": {
+      "x": 310,
+      "y": 2280,
+      "width": 670,
+      "height": 84,
+      "align": "center",
+      "vertical_align": "center",
+      "font_size_px": 78,
+      "style": "level",
+      "widest": "Level 300"
+    }
+  },
+  "rules": [
+    "No automatic font substitution or horizontal squishing.",
+    "Numbers remain live; they are not baked into button masters.",
+    "Use the supplied static font instance consistently; no browser synthetic bold.",
+    "Show 5, 99,999 and Level 300 on the actual phone before final visual approval."
+  ]
+}
