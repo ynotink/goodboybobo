@@ -36,7 +36,7 @@ function fit(){const W=innerWidth,H=innerHeight;S=Math.min(W/1290,H/2796);const 
 window.PAGE={stage,img,hit,toast,go,fit};
 window.buildPage=async function(o){
  img('a/pages/'+o.image+'.webp',0,0,1290,2796);
- const meta=await (await fetch(HOME+'layers.json?v=21')).json();
+ const meta=await (await fetch(HOME+'layers.json?v=22')).json();
  for(const k of ['L02_heart_counter','L03_bone_counter']){const [x,y,w,h]=meta[k];img(HOME+k+'.webp',x,y,w,h)}
  const ff=new FontFace('BoboNunito',`url(${HOME}Nunito-Black.ttf)`,{weight:'900'});await ff.load();document.fonts.add(ff);
  const G2=(typeof G!=='undefined'?G:null)||{hearts:5,bones:0};VAL={hearts:String(Math.max(0,Math.min(5,Math.floor(+G2.hearts||0)))),bones:Math.max(0,Math.floor(+G2.bones||0)).toLocaleString('en-US')};
