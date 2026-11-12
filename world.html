@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Good Boy Bobo · World Map (preview)</title>
+<script src="audio.js?v=22"></script><script src="common.js?v=22"></script>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#3d7a2a;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+#vp{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#vp::-webkit-scrollbar{display:none}
+#world{position:relative;width:1290px;transform-origin:0 0;overflow:hidden}
+#world img,#world canvas,#fixed img,#fixed canvas{position:absolute;display:block;pointer-events:none}
+.stop{position:absolute;cursor:pointer}
+#fixed{position:fixed;left:0;top:0;width:1290px;height:2796px;transform-origin:0 0;pointer-events:none}
+#fixed .h{position:absolute;pointer-events:auto;cursor:pointer}
+@keyframes glow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 22px rgba(190,255,110,.9))}}
+.cur>img:first-child{animation:glow 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style></head><body>
+<div id="vp"><div id="world"></div></div>
+<div id="fixed"></div>
+<script>
+const HM='a/home/',M2='a/map2/',W='a/world/';
+// chapters bottom -> top. Each world strip is 956 wide; shown at 1290 (x1.3494).
+let CHS=[],H=0,EXT=420,curXY=null,curSpot=null;const ALLM=[];const TOPS=[];
+const K=1290/956;
+const world=document.getElementById('world'),vp=document.getElementById('vp'),fixed=document.getElementById('fixed');
+const put=(par,src,x,y,w,h)=>{const i=new Image();i.src=src;i.alt='';Object.assign(i.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});par.appendChild(i);return i};
+const stars=(()=>{try{return JSON.parse(localStorage.getItem('gbb_play')||'{}').stars||{}}catch(e){return{}}})();
+const cur=gbbCur();
+const fontP=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900'}).load().then(f=>document.fonts.add(f));
+function label(par,txt,st,fs,x,y,w,h){const c=document.createElement('canvas');const r=Math.max(2,devicePixelRatio||1);c.width=Math.round(w*r);c.height=Math.round(h*r);
+ Object.assign(c.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});par.appendChild(c);
+ fontP.then(()=>{const g=c.getContext('2d');g.setTransform(r,0,0,r,0,0);let f=fs;g.font=`900 ${f}px BoboNunito`;while(f>16&&g.measureText(txt).width>w*.86){f--;g.font=`900 ${f}px BoboNunito`}
+  const m=g.measureText(txt),by=h/2+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2;g.textAlign='center';g.lineJoin='round';
+  g.save();g.globalAlpha=.6;g.filter=`blur(${f*.04}px)`;g.lineWidth=f*st.ow;g.strokeStyle='#002C25';g.strokeText(txt,w/2,by+f*.06);g.restore();
+  g.lineWidth=f*st.ow;g.strokeStyle=st.ol;g.strokeText(txt,w/2,by);g.fillStyle=st.fill;g.fillText(txt,w/2,by)});return c}
+fetch(W+'chapters.json?v=1').then(r=>r.json()).then(d=>{CHS=d;build();startUI()});
+function build(){
+// stack chapters: chapter 0 at the bottom
+H=0;TOPS.length=0;for(let i=CHS.length-1;i>=0;i--){TOPS[i]=H;H+=Math.round(CHS[i].h*K)}
+EXT=420;world.style.height=(H+EXT)+'px';
+curXY=null;curSpot=null;const MS=430;ALLM.length=0; // marker canvas size (disc ~255px wide)
+{const b=put(world,W+CHS[0].file,0,H,1290,Math.round(CHS[0].h*K));b.style.transform='scaleY(-1)';b.style.transformOrigin='0 0';b.style.top=(H+Math.round(CHS[0].h*K))+'px';b.style.clipPath='inset(0 0 0 0)';}
+CHS.forEach((ch,ci)=>{const top=TOPS[ci];put(world,W+ch.file,0,top,1290,Math.round(ch.h*K));
+ ch.m.forEach(([[mx,my],rs,bs,sd],k)=>{const L=ci*15+k+1,x=mx*K,y=top+my*K,st=stars[L-1]||0;
+  const kind=L<cur||st?'completed':L==cur?'current':'locked';ALLM.push([x,y]);
+  const wrap=document.createElement('div');wrap.className='stop'+(kind=='current'?' cur':'');
+  Object.assign(wrap.style,{left:(x-MS/2)+'px',top:(y-MS*0.52)+'px',width:MS+'px',height:MS+'px',zIndex:Math.round(y)+100000});world.appendChild(wrap);
+  wrap.style.transform='scaleY(.8)';wrap.style.transformOrigin='50% 62%';
+  put(wrap,`${W}marker_${kind}_grounded.webp`,0,0,MS,MS);
+  const q=MS/512;
+  if(kind=='locked')label(wrap,String(L),{fill:'#FFFFFF',ol:'#1d2a2a',ow:.16},92*q*1.3,150*q,118*q,212*q,110*q);
+  else label(wrap,String(L),{fill:'#FFFFFF',ol:kind=='current'?'#0d5a12':'#063D35',ow:.16},(kind=='completed'?118:140)*q*1.25,120*q,(kind=='completed'?100:150)*q,272*q,(kind=='completed'?140:150)*q);
+  if(kind=='completed')[[171,290],[256,302],[341,290]].forEach(([sx,sy],i)=>{const e=put(wrap,M2+'star_gold_512.webp',(sx-46)*q,(sy-46)*q,92*q,92*q);if(i>=Math.max(1,st))e.style.filter='grayscale(1) brightness(.55)'});
+  wrap.onclick=()=>{if(kind!='locked')location.href='game.html?lv='+L};
+  if(kind=='current'){curXY=[x,y];curSpot={top,rs,bs,sd,mx,my}}
+ })});
+// Mr. Buck hangs out at one spot per chapter (a friends clearing away from the current level)
+CHS.forEach((ch,ci)=>{const top=TOPS[ci],k=(cur-1)-ci*15;let j=7;if(k>=0&&k<15&&Math.abs(k-j)<3)j=k<7?12:2;
+ const [bx0,by0]=ch.m[j][2],BH=540*1.23,BW=370*BH/729,bx=bx0*K,by=top+by0*K,mx=ch.m[j][0][0]*K;
+ const d=document.createElement('div');Object.assign(d.style,{position:'absolute',left:(bx-BW*.4)+'px',top:(by-BW*.065)+'px',width:(BW*.8)+'px',height:(BW*.13)+'px',borderRadius:'50%',background:'radial-gradient(closest-side,rgba(25,30,5,.6),rgba(25,30,5,0))',zIndex:Math.round(by)-1});world.appendChild(d);
+ const i=put(world,HM+'L06_buck.webp',bx-BW/2,by-BH,BW,BH);i.style.zIndex=Math.round(by)+400;if(bx>mx)i.style.transform='scaleX(-1)'});
+// Rambo + friends on the painted friends spots, kept clear of every marker
+if(curSpot){const {top,rs,bs,mx,my}=curSpot,RH=540,P=([px,py])=>[px*K,top+py*K],MX=mx*K;
+ const shd=(cx,fy,w)=>{const d=document.createElement('div');Object.assign(d.style,{position:'absolute',left:(cx-w/2)+'px',top:(fy-w*.08)+'px',width:w+'px',height:(w*.16)+'px',borderRadius:'50%',background:'radial-gradient(closest-side,rgba(25,30,5,.6),rgba(25,30,5,0))',zIndex:Math.round(fy)-1});world.appendChild(d)};
+ const fig=(k,w0,h0,th,cx,fy,flip)=>{const w=w0*th/h0;shd(cx,fy-4,w*.8);const i=put(world,HM+k+'.webp',cx-w/2,fy-th,w,th);i.style.zIndex=Math.round(fy)+400;if(flip)i.style.transform='scaleX(-1)';return i};
+ // does a box (figure body) cover any marker other than the current one?
+ const hits=(l,t,r,b,inclCur)=>ALLM.some(([x,y])=>(inclCur||!(Math.abs(x-curXY[0])<2&&Math.abs(y-curXY[1])<2))&&x+150>l&&x-150<r&&y+80>t&&y-110<b);
+ const place=(cx,fy,w,h,out,inc)=>{for(let n=0;n<16;n++){const l=cx-w/2,r=cx+w/2;if(!hits(l+w*.15,fy-h*.85,r-w*.15,fy,inc)||l<0||r>1290)break;cx+=out*25}return Math.max(w/2+8,Math.min(1282-w/2,cx))};
+ let [rx,ry]=P(rs),[bx,by]=P(bs);const away=rx<MX?-1:1,bAway=bx<MX?-1:1;
+ const RW=709*RH/1121,BH=RH*1.23,BW=370*BH/729,NH=RH*.87,NW=282*NH/538,CH=RH*.48,CW=250*CH/336;
+ // compact group: Rambo, bunny tucked in front on the outer side, cardinal at the bunny's feet
+ const OFF=[[0,0,RW,RH],[away*150,70,NW,NH],[away*(150+NW/2+10),110,CW,CH]];
+ const box=c=>{let l=1e9,r=-1e9;OFF.forEach(([dx,,w])=>{l=Math.min(l,c+dx-w/2);r=Math.max(r,c+dx+w/2)});return[l,r]};
+ for(let n=0;n<20;n++){const [l,r]=box(rx);const clear=!hits(l+30,ry-RH*.8,r-30,ry+110,true);if(clear)break;const nx=rx+away*25,[l2,r2]=box(nx);if(l2<4||r2>1286)break;rx=nx}
+ {const [l,r]=box(rx);if(l<4)rx+=4-l;if(r>1286)rx-=r-1286}
+ fig('L08_rambo',709,1121,RH,rx,ry,away>0);
+ fig('L07_bunny',282,538,NH,rx+OFF[1][0],ry+OFF[1][1],away>0);
+ fig('L09_cardinal',250,336,CH,rx+OFF[2][0],ry+OFF[2][1],away>0);
+}
+}
+// fixed UI
+function startUI(){fetch(HM+'layers.json?v=22').then(r=>r.json()).then(m=>{
+ for(const k of ['L02_heart_counter','L03_bone_counter','L04_gear']){const [x,y,w,h]=m[k];put(fixed,`${HM}${k}.webp`,x,y,w,h)}
+ put(fixed,M2+'chapter_banner_blank_1290x500.webp',95,330,1100,1100*500/1290);
+ const k=1100/1290;window.banner=ci=>{if(window.BCI===ci)return;window.BCI=ci;(window.BT||[]).forEach(c=>c.remove());window.BT=[label(fixed,CHS[ci].name,{fill:'#FFF5DE',ol:'#003C32',ow:.12},114*k,95+127*k,330+83*k,1036*k,151*k),label(fixed,'Chapter '+(ci+1),{fill:'#FFF5DE',ol:'#003C32',ow:.12},76*k,95+442*k,330+287*k,406*k,102*k)]};
+ const onS=()=>{const S=sc(),mid=(vp.scrollTop+innerHeight*.5)/S;let ci=0;for(let i=0;i<CHS.length;i++)if(mid>=TOPS[i]){ci=i;break}banner(ci)};vp.addEventListener('scroll',onS,{passive:true});onS();
+ const [bx,by,bw,bh]=m.L13_bottom_bar;put(fixed,HM+'L13_bottom_bar.webp',bx,by,bw,bh);
+ const [tx,ty,tw,th]=m.L14_active_home_tile;put(fixed,HM+'L14_active_home_tile.webp',tx+258,ty,tw,th);
+ ['L15_nav_home','L16_nav_map','L17_nav_toys','L18_nav_friends','L19_nav_shop'].forEach(n=>{const [x,y,w,h]=m[n];put(fixed,n=='L16_nav_map'?M2+'nav_map_teal.webp':HM+n+'.webp',x,y,w,h)});
+ label(fixed,'5',{fill:'#006368',ol:'#003E42',ow:.04},84,215,229,86,96);label(fixed,'430',{fill:'#006368',ol:'#003E42',ow:.04},84,603,229,237,96);
+ fit();if(curXY)vp.scrollTop=Math.max(0,curXY[1]*sc()-innerHeight*.55);onS()})}
+const sc=()=>innerWidth/1290;
+function fit(){const S=sc();world.style.transform=`scale(${S})`;world.style.marginBottom=((H+EXT)*S-(H+EXT))+'px';
+ const fh=innerHeight/S;fixed.style.transform=`scale(${S})`;fixed.style.height=fh+'px';const off=fh-2796;
+ fixed.querySelectorAll('img,canvas').forEach(e=>{if(e.dataset.by===undefined)e.dataset.by=parseFloat(e.style.top);const by=+e.dataset.by;if(by>=2400)e.style.top=(by+off)+'px'})}
+addEventListener('resize',fit);
+</script></body></html>
