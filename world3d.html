@@ -4,7 +4,7 @@
 <title>Good Boy Bobo · Rolling Map (preview)</title>
 <script src="audio.js?v=22"></script><script src="common.js?v=22"></script>
 <style>
-html,body{margin:0;height:100%;overflow:hidden;background:#3d7a2a;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;background:#3d7a2a;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 #vp{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 #vp::-webkit-scrollbar{display:none}
 #world{position:relative;width:1290px;transform-origin:0 0;overflow:hidden}
@@ -19,7 +19,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#3d7a2a;-webkit-user-s
 #gl{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
 #objs{position:fixed;inset:0;pointer-events:none;overflow:hidden}
 #objs img,#objs canvas,#objs div{position:absolute}
-.mk{pointer-events:auto;cursor:pointer}
+.mk{pointer-events:none}
 @keyframes glow2{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 14px rgba(190,255,110,.9))}}
 .mk.cur img{animation:glow2 1.6s ease-in-out infinite}
 </style></head><body>
@@ -98,13 +98,20 @@ function draw(){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
  MKS.forEach(m=>{place(m,[MS/2,MS*0.52]);m.el.style.transform+=' scaleY(.8)'});
  if(rambo){const s=rambo.wy-scroll,p=proj(rambo.x,s);if(!p||p.a>1.45)rambo.el.style.display='none';else{rambo.el.style.display='';rambo.el.style.transform=`translate(${p.x}px,${p.y}px) scale(${p.sc*innerWidth/WW})`;rambo.el.style.zIndex=Math.round(5000-s)}}
  if(window.banner){const mid=scroll+Hs*0.45;banner(Math.max(0,Math.min(CHS.length-1,Math.floor(mid/HC))))}}
-// ---- scrolling with momentum ----
-let vel=0,drag=null,last=0;const clampS=s=>Math.max(-Hs*0.1,Math.min(TOTAL-Hs*0.6,s));
-cv.addEventListener('pointerdown',e=>{drag={y:e.clientY,s:scroll,t:performance.now()};vel=0;cv.setPointerCapture(e.pointerId)});
-cv.addEventListener('pointermove',e=>{if(!drag)return;const k=WW/innerWidth,now=performance.now(),ns=clampS(drag.s+(e.clientY-drag.y)*k);vel=(ns-scroll)/Math.max(1,now-last);last=now;scroll=ns;draw()});
-cv.addEventListener('pointerup',()=>{drag=null;const step=()=>{if(drag||Math.abs(vel)<0.01)return;scroll=clampS(scroll+vel*16);vel*=0.95;draw();requestAnimationFrame(step)};requestAnimationFrame(step)});
-cv.addEventListener('wheel',e=>{scroll=clampS(scroll-e.deltaY*1.5);draw();e.preventDefault()},{passive:false});
-objs.addEventListener('pointerdown',e=>{if(!e.target.closest('.mk'))cv.dispatchEvent(new PointerEvent('pointerdown',e))});
+// ---- scrolling with momentum (touch + mouse on the whole screen) ----
+let vel=0,drag=null,need=false;const clampS=s=>Math.max(-Hs*0.1,Math.min(TOTAL-Hs*0.6,s));
+const req=()=>{if(!need){need=true;requestAnimationFrame(()=>{need=false;draw()})}};
+function start(y,x){drag={y,x,s:scroll,ly:y,lt:performance.now(),moved:0};vel=0}
+function move(y){if(!drag)return;const k=WW/innerWidth,now=performance.now();const ns=clampS(drag.s+(y-drag.y)*k);
+ const dt=Math.max(1,now-drag.lt);vel=0.8*vel+0.2*((ns-scroll)/dt);drag.lt=now;drag.moved=Math.max(drag.moved,Math.abs(y-drag.y));scroll=ns;req()}
+function end(){if(!drag)return;const d=drag;drag=null;
+ if(d.moved<10){const m=MKS.find(m=>{const r=m.el.getBoundingClientRect();return m.el.style.display!='none'&&d.x>=r.left&&d.x<=r.right&&d.y>=r.top&&d.y<=r.bottom});if(m)m.el.onclick();return}
+ let lt=performance.now();const step=t=>{if(drag||Math.abs(vel)<0.02)return;const dt=t-lt;lt=t;scroll=clampS(scroll+vel*dt);vel*=Math.pow(0.995,dt);draw();requestAnimationFrame(step)};requestAnimationFrame(step)}
+addEventListener('touchstart',e=>{const t=e.touches[0];start(t.clientY,t.clientX)},{passive:true});
+addEventListener('touchmove',e=>{e.preventDefault();move(e.touches[0].clientY)},{passive:false});
+addEventListener('touchend',end);addEventListener('touchcancel',end);
+addEventListener('mousedown',e=>start(e.clientY,e.clientX));addEventListener('mousemove',e=>move(e.clientY));addEventListener('mouseup',end);
+addEventListener('wheel',e=>{scroll=clampS(scroll-e.deltaY*1.5);req();e.preventDefault()},{passive:false});
 window.setScroll=s=>{scroll=clampS(s);draw()};
 fetch(W+'chapters.json?v=2').then(r=>r.json()).then(d=>{CHS=d;TOTAL=HC*CHS.length;size();
  Promise.all(CHS.map((c,i)=>new Promise(res=>{const im=new Image();im.onload=()=>{tex(i,im);res()};im.src=W+c.file}))).then(()=>{
