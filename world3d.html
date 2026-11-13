@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Good Boy Bobo · Rolling Map (preview)</title>
-<script src="audio.js?v=22"></script><script src="common.js?v=22"></script>
+<script src="audio.js?v=23"></script><script src="common.js?v=23"></script>
 <style>
 html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;background:#3d7a2a;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 #vp{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -121,7 +121,7 @@ const sc=()=>innerWidth/1290;
 function fit(){const S=sc();const fh=innerHeight/S;fixed.style.transform=`scale(${S})`;fixed.style.height=fh+'px';const off=fh-2796;
  fixed.querySelectorAll('img,canvas').forEach(e=>{if(e.dataset.by===undefined)e.dataset.by=parseFloat(e.style.top);const by=+e.dataset.by;if(by>=2400)e.style.top=(by+off)+'px'})}
 // fixed UI
-function startUI(){fetch(HM+'layers.json?v=22').then(r=>r.json()).then(m=>{
+function startUI(){fetch(HM+'layers.json?v=23').then(r=>r.json()).then(m=>{
  for(const k of ['L02_heart_counter','L03_bone_counter','L04_gear']){const [x,y,w,h]=m[k];put(fixed,`${HM}${k}.webp`,x,y,w,h)}
  put(fixed,M2+'chapter_banner_blank_1290x500.webp',95,330,1100,1100*500/1290);
  const k=1100/1290;window.banner=ci=>{if(window.BCI===ci)return;window.BCI=ci;(window.BT||[]).forEach(c=>c.remove());window.BT=[label(fixed,CHS[ci].name,{fill:'#FFF5DE',ol:'#003C32',ow:.12},114*k,95+127*k,330+83*k,1036*k,151*k),label(fixed,'Chapter '+(ci+1),{fill:'#FFF5DE',ol:'#003C32',ow:.12},76*k,95+442*k,330+287*k,406*k,102*k)]};

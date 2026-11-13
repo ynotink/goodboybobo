@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Good Boy Bobo</title><script src="audio.js?v=22"></script><script src="common.js?v=22"></script>
+<title>Good Boy Bobo</title><script src="audio.js?v=23"></script><script src="common.js?v=23"></script>
 <style>
 html,body{margin:0;height:100%;overflow:hidden;background:#0b5459;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 #stage{position:absolute;left:0;top:0;width:1290px;height:2796px;transform-origin:0 0}
@@ -38,7 +38,7 @@ let VAL={hearts:String(Math.max(0,Math.min(5,Math.floor(+G.hearts||0)))),bones:f
 const q=new URLSearchParams(location.search);['hearts','bones','level'].forEach(k=>{if(q.get(k))VAL[k]=k=='level'?'Level '+q.get(k):q.get(k)});
 
 async function build(){
- const meta=await (await fetch('a/home/layers.json?v=22')).json();
+ const meta=await (await fetch('a/home/layers.json?v=23')).json();
  const mk=(k,hidden)=>{const [x,y,w,h]=meta[k];const i=new Image();i.src='a/home/'+k+'.webp';i.alt='';Object.assign(i.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});if(hidden)i.style.visibility='hidden';stage.appendChild(i);return i};
  for(const k of ORDER){L[k]=mk(k);if(PRESSED[k]){L[PRESSED[k]]=mk(PRESSED[k],true);stage.insertBefore(L[PRESSED[k]],L[k].nextSibling)}}
  // bottom overscan: bar colour below the canvas on taller screens

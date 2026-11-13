@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Good Boy Bobo · Map</title>
-<script src="audio.js?v=22"></script><script src="common.js?v=22"></script>
+<script src="audio.js?v=23"></script><script src="common.js?v=23"></script>
 <style>
 html,body{margin:0;height:100%;overflow:hidden;background:#0b5459;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 #vp{position:absolute;left:0;top:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -96,7 +96,7 @@ if(curXY){const [x,y]=curXY,side=x<700?1:-1,RH=560;
 }
 // fixed UI: counters, gear, chapter banner, tab bar (Map active)
 let BOXES={};
-fetch(HM+'layers.json?v=22').then(r=>r.json()).then(m=>{BOXES=m;
+fetch(HM+'layers.json?v=23').then(r=>r.json()).then(m=>{BOXES=m;
  for(const k of ['L02_heart_counter','L03_bone_counter','L04_gear']){const [x,y,w,h]=m[k];put(fixed,`${HM}${k}.webp`,x,y,w,h)}
  window.BAN=put(fixed,M+'chapter_banner_blank_1290x500.webp',95,330,1100,1100*500/1290);
  const [bx,by,bw,bh]=m.L13_bottom_bar;put(fixed,HM+'L13_bottom_bar.webp',bx,by,bw,bh);
