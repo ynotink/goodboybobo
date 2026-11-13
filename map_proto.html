@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Good Boy Bobo · Map movement prototype</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#8fd0f5;touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#sky,#gl,#obj{position:fixed;left:0;top:0;width:100%;height:100%;display:block}
+#obj{touch-action:none}
+#fixed{position:fixed;left:0;top:0;width:1290px;height:2796px;transform-origin:0 0;pointer-events:none}
+#fixed img,#fixed canvas{position:absolute;display:block}
+#dbg{position:fixed;left:6px;right:6px;bottom:calc(27vw + 6px + env(safe-area-inset-bottom));display:flex;gap:5px;flex-wrap:wrap;justify-content:center;z-index:10;pointer-events:none}
+#dbg button{pointer-events:auto;font:700 12px system-ui;padding:7px 9px;border-radius:9px;border:0;background:rgba(0,48,52,.85);color:#fff}
+#info{width:100%;text-align:center;font:600 11px system-ui;color:#fff;text-shadow:0 1px 2px #000}
+#toast{position:fixed;left:50%;top:40%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font:700 14px system-ui;padding:8px 14px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:11}
+</style></head><body>
+<canvas id="sky"></canvas><canvas id="gl"></canvas><canvas id="obj"></canvas>
+<div id="fixed"></div>
+<div id="dbg"><div id="info"></div><button id="bBack">▼ Back</button><button id="bFwd">▲ Forward</button><button id="bRambo">Go to Rambo</button><button id="bWin">✓ Win level</button><button id="bReset">Reset</button></div>
+<div id="toast"></div>
+<script>
+'use strict';
+// =====================================================================
+//  GOOD BOY BOBO — MAP MOVEMENT PROTOTYPE (temporary art, not live)
+//  World units: 1290 = phone width. s = distance along the world (up).
+//  Route repeats: A (right start) → crossing → B (left start) → crossing.
+// =====================================================================
+const WV=1290, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=3, TOT=L*LOOPS;
+const SEC=[{n:'A',len:SA},{n:'X1',len:SX},{n:'B',len:SA},{n:'X2',len:SX}];
+const SECBASE=[0,SA,SA+SX,2*SA+SX];
+const ss=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
+function secAt(s){const m=((s%L)+L)%L;let i=3;for(let j=0;j<4;j++)if(m<SECBASE[j]+SEC[j].len){i=j;break}return{i,loc:m-SECBASE[i],loop:Math.floor(s/L)}}
+function cross(loc,a,b){const m=(a+b)/2;if(loc<400)return a+(m-a)*ss(loc/400);if(loc<700)return m;return m+(b-m)*ss((loc-700)/400)}
+function routeX(s){const {i,loc}=secAt(s);
+ if(i==0)return 645+255*Math.cos(2*Math.PI*loc/SA);   // starts right (900), swings left, back right
+ if(i==2)return 645-255*Math.cos(2*Math.PI*loc/SA);   // starts left (390), swings right, back left
+ if(i==1)return cross(loc,900,390);                    // crossing right → left over the bridge
+ return cross(loc,390,900);}                           // crossing left → right
+const rng=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+
+// ---------------- levels (5 per A/B section) ----------------
+const LEVELS=[];
+for(let k=0;k<LOOPS;k++)[0,2].forEach((si,h)=>{for(let j=0;j<5;j++){const s=k*L+SECBASE[si]+350+j*500;LEVELS.push({L:k*10+h*5+j+1,s,x:routeX(s)})}});
+// Rambo & friends: world anchors for a level (only change when a level is won)
+function anchors(lv){const m=LEVELS[lv-1],side=m.x>645?-1:1;return{
+ rambo:{x:m.x+side*235,s:m.s-40},bunny:{x:m.x+side*415,s:m.s-5},cardinal:{x:m.x+side*330,s:m.s-150},buck:{x:m.x-side*300,s:m.s+170},face:side}}
+const KEY='gbb_proto_cur';let cur=Math.max(1,Math.min(LEVELS.length,+(localStorage.getItem(KEY)||3)));
+
+// ---------------- temporary props (separate upright sprites) ----------------
+function sprite(w,h,fn){const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);return c}
+function ball(g,x,y,r,c1,c2){const gr=g.createRadialGradient(x-r*.35,y-r*.4,r*.1,x,y,r);gr.addColorStop(0,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,7);g.fill()}
+const TREE=(a,b,c)=>sprite(300,420,(g,w,h)=>{g.fillStyle='#7a4a22';g.fillRect(w/2-22,h-150,44,150);[[150,150,105],[85,200,80],[215,200,80],[150,95,85]].forEach(([x,y,r])=>ball(g,x,y,r,a,b));ball(g,120,120,30,c,a)});
+const SPR={
+ treeG:TREE('#9be05a','#3f8a26','#c9f58a'), treeO:TREE('#ffc155','#d0661c','#ffe2a0'),
+ bush:sprite(240,150,(g,w,h)=>{[[70,95,60],[130,80,70],[185,100,52]].forEach(([x,y,r])=>ball(g,x,y,r,'#8fd858','#3b8424'));[[80,70],[150,60],[190,85]].forEach(([x,y])=>{g.fillStyle='#fff';g.beginPath();g.arc(x,y,9,0,7);g.fill();g.fillStyle='#ffd23a';g.beginPath();g.arc(x,y,4,0,7);g.fill()})}),
+ house:sprite(380,360,(g,w,h)=>{g.fillStyle='#f6e7c8';g.fillRect(40,150,300,210);g.fillStyle='#d94a3a';g.beginPath();g.moveTo(15,165);g.lineTo(190,20);g.lineTo(365,165);g.closePath();g.fill();g.fillStyle='#1f8a8c';g.fillRect(160,240,60,120);g.fillStyle='#8fd3ff';g.fillRect(70,200,60,50);g.fillRect(250,200,60,50)}),
+ houseT:sprite(380,360,(g,w,h)=>{g.fillStyle='#f3dfb8';g.fillRect(40,150,300,210);g.fillStyle='#2a8f95';g.beginPath();g.moveTo(15,165);g.lineTo(190,20);g.lineTo(365,165);g.closePath();g.fill();g.fillStyle='#8a4a2a';g.fillRect(160,240,60,120);g.fillStyle='#8fd3ff';g.fillRect(70,200,60,50);g.fillRect(250,200,60,50)}),
+ lamp:sprite(70,340,(g,w,h)=>{g.fillStyle='#24525a';g.fillRect(29,60,12,280);g.fillRect(15,325,40,15);ball(g,35,45,30,'#fff6b0','#f2b232')})};
+const PROPS=[];
+(function(){const all=[];for(let lv=1;lv<=LEVELS.length;lv++){const a=anchors(lv);['rambo','bunny','cardinal','buck'].forEach(k=>all.push(a[k]))}
+ const clear=(x,s,r)=>!all.some(p=>Math.abs(p.x-x)<r&&Math.abs(p.s-s)<r*0.8)&&!LEVELS.some(m=>Math.abs(m.x-x)<220&&Math.abs(m.s-s)<200);
+ for(let k=0;k<LOOPS;k++)for(let si=0;si<4;si++){const r=rng(k*31+si*7+3),base=k*L+SECBASE[si],len=SEC[si].len,autumn=si==2;
+  for(let loc=120;loc<len-80;loc+=210){const s=base+loc,rx=routeX(s);
+   for(const side of[-1,1]){if(r()<0.25)continue;const t=r();let type=t<.5?(autumn?'treeO':'treeG'):t<.75?'bush':t<.9?(autumn?'houseT':'house'):'lamp';
+    let x=type=='lamp'?rx+side*(290+r()*30):rx+side*(420+r()*520);if(si%2==1&&loc>380&&loc<720&&type!='bush')continue;
+    const dims={treeG:[300,420],treeO:[300,420],bush:[240,150],house:[380,360],houseT:[380,360],lamp:[70,340]}[type];
+    if(clear(x,s+r()*60,type=='lamp'?200:300))PROPS.push({type,x,s:s+r()*60,w:dims[0],h:dims[1]})}}}})();
+
+// ---------------- drum camera (curved ground + open sky) ----------------
+let k,Hv,y0,D,R,AT,cam=0,DPR=1;const AMIN=-0.25,X0=-1290,XW=3870;
+function tang(){let a=0,b=Math.PI;for(let i=0;i<60;i++){const m=(a+b)/2,f=y0*Math.sin(m)+R-(R+D)*Math.cos(m);if(f<0)a=m;else b=m}return(a+b)/2}
+function projA(x,al){const X=x-645,Y=y0+R*Math.sin(al),Z=-R*(1-Math.cos(al)),sc=D/(D-Z);return{px:innerWidth/2+X*sc*k,py:innerHeight/2-Y*sc*k,sc,al}}
+function proj(x,s){return projA(x,(s-cam)/R)}
+function geom(){k=innerWidth/WV;Hv=WV*innerHeight/innerWidth;y0=-Hv/2-80;D=1.15*Hv;
+ const want=Hv/2-Hv*0.30;let lo=Hv*0.2,hi=Hv*60;
+ for(let i=0;i<70;i++){R=(lo+hi)/2;AT=tang();const p=projA(645,AT),yw=(innerHeight/2-p.py)/k;if(yw>want)hi=R;else lo=R}
+ R=(lo+hi)/2;AT=tang()}
+const horizonPx=()=>projA(645,AT).py;
+
+// ---------------- WebGL ground ----------------
+const glc=document.getElementById('gl'),gl=glc.getContext('webgl2',{antialias:true,premultipliedAlpha:false});
+const VS=`#version 300 es
+in vec2 p;uniform float R,D,y0,Hv,W,AT,AMIN,cam,X0,XW,LL;out vec2 vT;out float vA;
+void main(){float a=mix(AMIN,AT,p.y);float x=X0+p.x*XW;float X=x-W*0.5;float Y=y0+R*sin(a);float Z=-R*(1.0-cos(a));float sc=D/(D-Z);
+ gl_Position=vec4(X*sc/(W*0.5),Y*sc/(Hv*0.5),0.0,1.0);vT=vec2(p.x,(cam+a*R)/LL);vA=(a-AMIN)/(AT-AMIN);}`;
+const FS=`#version 300 es
+precision highp float;in vec2 vT;in float vA;uniform sampler2D tex;out vec4 o;
+void main(){vec4 c=texture(tex,vT);float h=smoothstep(0.80,1.0,vA);c.rgb=mix(c.rgb,vec3(0.74,0.88,0.93),h*0.45);c.rgb*=mix(1.0,0.86,smoothstep(0.93,1.0,vA));o=vec4(c.rgb,1.0);}`;
+function shd(t,src){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
+const pr=gl.createProgram();gl.attachShader(pr,shd(gl.VERTEX_SHADER,VS));gl.attachShader(pr,shd(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
+const NX=48,NY=220,vv=[];for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){const x0=i/NX,x1=(i+1)/NX,a0=j/NY,a1=(j+1)/NY;vv.push(x0,a0,x1,a0,x1,a1,x0,a0,x1,a1,x0,a1)}
+gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vv),gl.STATIC_DRAW);
+const lp=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lp);gl.vertexAttribPointer(lp,2,gl.FLOAT,false,0,0);
+const U=n=>gl.getUniformLocation(pr,n);
+function paintGround(){const S=3,c=document.createElement('canvas');c.width=Math.round(XW/S);c.height=Math.round(L/S);const g=c.getContext('2d'),r=rng(99),tx=x=>(x-X0)/S;
+ const cols=['#6cbc46','#64b24a','#93c64a','#64b24a'];SEC.forEach((sec,i)=>{g.fillStyle=cols[i];g.fillRect(0,SECBASE[i]/S,c.width,sec.len/S+1)});
+ for(let s=0;s<L;s+=260){g.fillStyle='rgba(255,255,255,.06)';g.fillRect(0,s/S,c.width,130/S)}
+ for(let i=0;i<16000;i++){g.fillStyle=r()<.55?'rgba(25,80,15,.22)':'rgba(230,255,170,.2)';g.fillRect(r()*c.width,r()*c.height,1.4,4)}
+ for(let i=0;i<900;i++){const x=r()*c.width,y=r()*c.height;g.fillStyle=['#fff','#ffd1e6','#ffe36b'][i%3];g.beginPath();g.arc(x,y,2.2,0,7);g.fill()}
+ [1,3].forEach(i=>{const y1=(SECBASE[i]+450)/S,y2=(SECBASE[i]+650)/S;g.fillStyle='#3f8fd2';g.fillRect(0,y1,c.width,y2-y1);g.fillStyle='rgba(255,255,255,.3)';for(let j=0;j<120;j++)g.fillRect(r()*c.width,y1+4+r()*(y2-y1-8),24,2);g.fillStyle='#4b7a2c';g.fillRect(0,y1-5,c.width,5);g.fillRect(0,y2,c.width,5)});
+ const path=()=>{g.beginPath();for(let s=-80;s<=L+80;s+=6){const x=tx(routeX(s)),y=s/S;s==-80?g.moveTo(x,y):g.lineTo(x,y)}};
+ g.lineCap='round';g.lineJoin='round';path();g.strokeStyle='#a46a32';g.lineWidth=400/S;g.stroke();path();g.strokeStyle='#e9c07c';g.lineWidth=352/S;g.stroke();path();g.strokeStyle='rgba(255,244,210,.35)';g.lineWidth=110/S;g.stroke();
+ [1,3].forEach(i=>{const x=tx(645),y1=(SECBASE[i]+415)/S,y2=(SECBASE[i]+685)/S,w=430/S;g.fillStyle='#7a4c22';g.fillRect(x-w/2,y1,w,y2-y1);g.fillStyle='#b9824a';for(let y=y1+3;y<y2-6;y+=24/S)g.fillRect(x-w/2+8,y,w-16,17/S);g.fillStyle='#5a3414';g.fillRect(x-w/2,y1,10,y2-y1);g.fillRect(x+w/2-10,y1,10,y2-y1)});
+ return c}
+function upload(){const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,paintGround());gl.generateMipmap(gl.TEXTURE_2D);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+ const an=gl.getExtension('EXT_texture_filter_anisotropic');if(an)gl.texParameterf(gl.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,8);gl.uniform1i(U('tex'),0)}
+upload();
+
+// ---------------- sky ----------------
+const sky=document.getElementById('sky'),sg=sky.getContext('2d');
+function drawSky(){const w=innerWidth,h=innerHeight;sg.setTransform(DPR,0,0,DPR,0,0);const gr=sg.createLinearGradient(0,0,0,horizonPx()+20);gr.addColorStop(0,'#5fb7ef');gr.addColorStop(1,'#d8f1fb');sg.fillStyle=gr;sg.fillRect(0,0,w,h);
+ const off=cam*0.02*k;sg.fillStyle='rgba(255,255,255,.92)';for(let i=0;i<6;i++){const x=((i*173+off)%(w+200)+w+200)%(w+200)-100,y=h*0.12+((i*53)%5)*h*0.03;[[0,0,26],[24,-8,30],[52,0,24],[26,8,22]].forEach(([dx,dy,r])=>{sg.beginPath();sg.arc(x+dx*k*3,y+dy*k*3,r*k*3,0,7);sg.fill()})}
+ // far hills on the horizon (behind the curved ground)
+ const hy=horizonPx();sg.fillStyle='#9fd08a';sg.beginPath();sg.moveTo(0,hy+4);for(let x=0;x<=w;x+=8)sg.lineTo(x,hy-10-8*Math.sin((x+off*0.5)/40)-6*Math.sin((x+off*0.5)/17));sg.lineTo(w,hy+4);sg.fill()}
+
+// ---------------- images (approved characters + markers) ----------------
+const IM={};['L08_rambo','L07_bunny','L09_cardinal','L06_buck'].forEach(n=>{IM[n]=new Image();IM[n].src='a/home/'+n+'.webp'});
+['completed','current','locked'].forEach(n=>{IM['mk_'+n]=new Image();IM['mk_'+n].src='a/world/marker_'+n+'_grounded.webp'});
+IM.star=new Image();IM.star.src='a/map2/star_gold_512.webp';
+const fontP=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900'}).load().then(f=>{document.fonts.add(f)}).catch(()=>{});
+
+// ---------------- characters (world-anchored) ----------------
+const CHAR={rambo:['L08_rambo',709,1121,380],bunny:['L07_bunny',282,538,330],cardinal:['L09_cardinal',250,336,180],buck:['L06_buck',370,729,470]};
+let pos=anchors(cur),move=null;
+function setCur(n,animate){const from=pos,to=anchors(n);cur=n;localStorage.setItem(KEY,cur);
+ if(!animate){pos=to;return}move={from,to,t0:performance.now(),dur:1500}}
+function stepMove(t){if(!move)return;const u=Math.min(1,(t-move.t0)/move.dur),e=ss(u);const p={face:move.to.face};
+ for(const n in CHAR){const a=move.from[n],b=move.to[n];p[n]={x:a.x+(b.x-a.x)*e,s:a.s+(b.s-a.s)*e,hop:n=='rambo'?Math.abs(Math.sin(u*Math.PI*4))*40*(1-u):0}}
+ pos=p;if(u>=1){pos=move.to;move=null}}
+
+// ---------------- objects pass (depth-sorted, horizon-occluded) ----------------
+const obc=document.getElementById('obj'),og=obc.getContext('2d');let HITS=[];
+function squash(x,s){const a=proj(x,s),b=proj(x,s+40);return Math.max(0.08,Math.min(1.05,(a.py-b.py)/(40*a.sc*k)))}
+function drawObjects(){og.setTransform(DPR,0,0,DPR,0,0);og.clearRect(0,0,innerWidth,innerHeight);HITS=[];
+ const items=[],aMax=AT+0.45,aMin=-0.35;
+ const vis=s=>{const al=(s-cam)/R;return al>aMin&&al<aMax};
+ PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});
+ LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});
+ for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})}
+ items.sort((A,B)=>B.s-A.s);const hz=horizonPx();
+ for(const it of items){const x=it.kind=='prop'?it.p.x:it.kind=='mk'?it.m.x:it.a.x,q=proj(x,it.s);
+  og.save();if(q.al>AT-0.002){og.beginPath();og.rect(0,0,innerWidth,hz);og.clip()}
+  const f=q.sc*k,sq=squash(x,it.s);
+  if(it.kind=='prop'){const p=it.p,w=p.w*f,h=p.h*f;og.fillStyle='rgba(20,40,10,.32)';og.beginPath();og.ellipse(q.px+w*0.08,q.py,w*0.42,w*0.42*sq*0.35,0,0,7);og.fill();og.drawImage(SPR[p.type],q.px-w/2,q.py-h,w,h)}
+  else if(it.kind=='ch'){const [img,iw,ih,hh]=CHAR[it.n],h=hh*f,w=iw/ih*h,hop=(it.a.hop||0)*f;
+   og.fillStyle='rgba(20,35,8,.38)';og.beginPath();og.ellipse(q.px,q.py,w*0.38,w*0.38*sq*0.3,0,0,7);og.fill();
+   const flip=(it.n=='buck'?-1:1)*pos.face<0;og.translate(q.px,q.py-hop);if(flip)og.scale(-1,1);if(IM[img].complete)og.drawImage(IM[img],-w/2,-h,w,h)}
+  else{const m=it.m,kind=m.L<cur?'completed':m.L==cur?'current':'locked',W=300*f,img=IM['mk_'+kind];
+   og.translate(q.px,q.py);og.scale(W/512,W/512*sq*0.8);
+   if(kind=='current'){const gl2=0.5+0.5*Math.sin(performance.now()/260);og.fillStyle=`rgba(190,255,110,${0.25+0.25*gl2})`;og.beginPath();og.ellipse(0,0,250,200,0,0,7);og.fill()}
+   if(img.complete)og.drawImage(img,-256,-205,512,512);
+   og.fillStyle='#fff';og.strokeStyle=kind=='locked'?'#1d2a2a':kind=='current'?'#0d5a12':'#063D35';og.lineJoin='round';og.lineWidth=18;og.textAlign='center';og.textBaseline='middle';
+   og.font=`900 ${kind=='locked'?120:150}px BoboNunito, system-ui`;const ty=kind=='completed'?-45:-20;og.strokeText(m.L,0,ty);og.fillText(m.L,0,ty);
+   if(kind=='completed'&&IM.star.complete)[[-85,85],[0,97],[85,85]].forEach(([sx,sy])=>og.drawImage(IM.star,sx-46,sy-46,92,92));
+   HITS.push({L:m.L,kind,x:q.px,y:q.py,r:W*0.45})}
+  og.restore()}}
+
+// ---------------- approved UI overlay (unchanged art) ----------------
+const fixed=document.getElementById('fixed');
+const put=(src,x,y,w,h)=>{const i=new Image();i.src=src;Object.assign(i.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});fixed.appendChild(i);return i};
+function label(txt,st,fs,x,y,w,h){const c=document.createElement('canvas'),r=Math.max(2,devicePixelRatio||1);c.width=w*r;c.height=h*r;Object.assign(c.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});fixed.appendChild(c);
+ fontP.then(()=>{const g=c.getContext('2d');g.setTransform(r,0,0,r,0,0);let f=fs;g.font=`900 ${f}px BoboNunito`;while(f>16&&g.measureText(txt).width>w*.86){f--;g.font=`900 ${f}px BoboNunito`}
+  const m=g.measureText(txt),by=h/2+(m.actualBoundingBoxAscent-m.actualBoundingBoxDescent)/2;g.textAlign='center';g.lineJoin='round';g.lineWidth=f*st.ow;g.strokeStyle=st.ol;g.strokeText(txt,w/2,by);g.fillStyle=st.fill;g.fillText(txt,w/2,by)});return c}
+let BT=[],BN='',UIREADY=false;
+function banner(name){if(!UIREADY||name===BN)return;BN=name;BT.forEach(c=>c.remove());const kk=1100/1290;
+ BT=[label(name,{fill:'#FFF5DE',ol:'#003C32',ow:.12},114*kk,95+127*kk,330+83*kk,1036*kk,151*kk),label('Movement prototype',{fill:'#FFF5DE',ol:'#003C32',ow:.12},70*kk,95+442*kk,330+287*kk,406*kk,102*kk)]}
+fetch('a/home/layers.json').then(r=>r.json()).then(m=>{
+ for(const n of['L02_heart_counter','L03_bone_counter','L04_gear'])put('a/home/'+n+'.webp',...m[n]);
+ put('a/map2/chapter_banner_blank_1290x500.webp',95,330,1100,1100*500/1290);
+ put('a/home/L13_bottom_bar.webp',...m.L13_bottom_bar);const t=m.L14_active_home_tile;put('a/home/L14_active_home_tile.webp',t[0]+258,t[1],t[2],t[3]);
+ ['L15_nav_home','L16_nav_map','L17_nav_toys','L18_nav_friends','L19_nav_shop'].forEach(n=>put(n=='L16_nav_map'?'a/map2/nav_map_teal.webp':'a/home/'+n+'.webp',...m[n]));
+ label('5',{fill:'#006368',ol:'#003E42',ow:.04},84,215,229,86,96);label('430',{fill:'#006368',ol:'#003E42',ow:.04},84,603,229,237,96);UIREADY=true;fitUI()});
+function fitUI(){const S=innerWidth/1290,fh=innerHeight/S;fixed.style.transform=`scale(${S})`;fixed.style.height=fh+'px';const off=fh-2796;
+ fixed.querySelectorAll('img,canvas').forEach(e=>{if(e.dataset.by===undefined)e.dataset.by=parseFloat(e.style.top);const by=+e.dataset.by;if(by>=2400)e.style.top=(by+off)+'px'})}
+
+// ---------------- camera input (camera only; never moves characters) ----------------
+const clampC=s=>Math.max(-300,Math.min(TOT-2600,s));
+let drag=null,vel=0,glide=null;
+function camFor(sTarget){return clampC(sTarget-0.30*Hv)}
+function glideTo(s){glide={from:cam,to:clampC(s),t0:performance.now(),dur:700};vel=0}
+function down(x,y,t){drag={x,y,c0:cam,t,moved:0};vel=0;glide=null}
+function mv(x,y,t){if(!drag)return;drag.moved=Math.max(drag.moved,Math.hypot(x-drag.x,y-drag.y));const nc=clampC(drag.c0+(y-drag.y)/k),dt=Math.max(8,t-(drag.lt||drag.t));vel=0.7*vel+0.3*(nc-cam)/dt;drag.lt=t;cam=nc}
+function up(x,y){if(!drag)return;const d=drag;drag=null;if(d.moved<10){vel=0;const h=HITS.find(h=>Math.hypot(h.x-x,h.y-y)<h.r);if(h)toast(h.kind=='locked'?`Level ${h.L} is locked`:`Level ${h.L}`)}}
+if(window.PointerEvent){obc.addEventListener('pointerdown',e=>{obc.setPointerCapture(e.pointerId);down(e.clientX,e.clientY,e.timeStamp)});
+ obc.addEventListener('pointermove',e=>mv(e.clientX,e.clientY,e.timeStamp));obc.addEventListener('pointerup',e=>up(e.clientX,e.clientY));obc.addEventListener('pointercancel',e=>up(-1e4,-1e4))}
+else{obc.addEventListener('touchstart',e=>{const t=e.touches[0];down(t.clientX,t.clientY,e.timeStamp)},{passive:true});
+ obc.addEventListener('touchmove',e=>{const t=e.touches[0];mv(t.clientX,t.clientY,e.timeStamp)},{passive:true});obc.addEventListener('touchend',e=>{const t=e.changedTouches[0];up(t.clientX,t.clientY)})}
+document.addEventListener('touchmove',e=>{if(!e.target.closest('button'))e.preventDefault()},{passive:false});
+addEventListener('wheel',e=>{cam=clampC(cam-e.deltaY);vel=0;e.preventDefault()},{passive:false});
+document.getElementById('bFwd').onclick=()=>glideTo(cam+1300);
+document.getElementById('bBack').onclick=()=>glideTo(cam-1300);
+document.getElementById('bRambo').onclick=()=>glideTo(camFor(pos.rambo.s));
+document.getElementById('bWin').onclick=()=>{if(move||cur>=LEVELS.length)return;setCur(cur+1,true);glideTo(camFor(LEVELS[cur-1].s))};
+document.getElementById('bReset').onclick=()=>{setCur(3,false);glideTo(camFor(pos.rambo.s))};
+let tt;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.opacity=1;clearTimeout(tt);tt=setTimeout(()=>e.style.opacity=0,1000)}
+
+// ---------------- frame loop ----------------
+function resize(){DPR=Math.min(3,devicePixelRatio||1);for(const c of[glc,sky,obc]){c.width=Math.round(innerWidth*DPR);c.height=Math.round(innerHeight*DPR)}gl.viewport(0,0,glc.width,glc.height);geom();fitUI()}
+addEventListener('resize',resize);resize();
+const secName=s=>({A:'SECTION A',X1:'CROSSING',B:'SECTION B',X2:'CROSSING'})[SEC[secAt(s).i].n];
+let lastT=performance.now();
+function frame(t){const dt=Math.min(50,t-lastT);lastT=t;
+ if(glide){const u=Math.min(1,(t-glide.t0)/glide.dur);cam=glide.from+(glide.to-glide.from)*ss(u);if(u>=1)glide=null}
+ else if(!drag&&Math.abs(vel)>0.01){cam=clampC(cam+vel*dt);vel*=Math.pow(0.996,dt)}
+ stepMove(t);
+ gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+ [['R',R],['D',D],['y0',y0],['Hv',Hv],['W',WV],['AT',AT],['AMIN',AMIN],['cam',cam],['X0',X0],['XW',XW],['LL',L]].forEach(([n,v])=>gl.uniform1f(U(n),v));
+ gl.drawArrays(gl.TRIANGLES,0,NX*NY*6);drawSky();drawObjects();
+ const mid=cam+0.45*Hv,si=secAt(mid);banner(secName(mid));
+ document.getElementById('info').textContent=`camera ${Math.round(cam)} · ${SEC[si.i].n} ${Math.round(si.loc)}/${SEC[si.i].len} · loop ${si.loop+1} · Rambo at level ${cur}`;
+ requestAnimationFrame(frame)}
+cam=camFor(pos.rambo.s);window.PROTO={get cam(){return cam},set cam(v){cam=clampC(v);vel=0;glide=null},proj,get pos(){return pos},LEVELS,L,SECBASE,setCur,get cur(){return cur}};
+requestAnimationFrame(frame);
+</script></body></html>
