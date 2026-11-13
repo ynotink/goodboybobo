@@ -46,7 +46,8 @@ function anchors(lv){const m=LEVELS[lv-1],side=m.x>645?-1:1;return{
 const KEY='gbb_proto_cur';let cur=Math.max(1,Math.min(LEVELS.length,+(localStorage.getItem(KEY)||3)));
 
 // ---------------- Backyard props (ChatGPT batch 1 sprites) ----------------
-const BB='a/mapbb/',PW={bowl:[160,100],tree_small:[220,320],rock:[200,120],birdbath:[200,260],ball:[128,128],bush_flowers:[240,150],shed:[380,360],doghouse:[300,280],tree_round:[300,420],fence:[400,160],tree_big:[300,420],flowers:[240,150]};
+const BB='a/mapbb2/',PW={ball:[150,150],bench:[360,220],birdbath:[240,330],bowl:[180,110],bridge_post_left:[90,260],bridge_post_right:[90,260],bush_flowers:[340,210],doghouse:[460,430],family_house:[900,760],fence:[520,220],flowers:[300,190],garden_light:[110,380],rock:[260,160],shed:[520,500],swing:[500,520],tree_big:[480,680],tree_round:[420,580],tree_small:[300,420],wheelbarrow:[300,200]};
+const MULCH={0:[[1956,1343],[2229,349],[556,1366],[371,882]],1:[[440,726]],2:[[2262,661],[332,1845],[529,493],[279,1043]],3:[[2115,557]]};
 const PIMG={};for(const n in PW){PIMG[n]=new Image();PIMG[n].src=BB+n+'.webp'}
 const PROPS=[];
 (function(){const all=[];for(let lv=1;lv<=LEVELS.length;lv++){const a=anchors(lv);['rambo','bunny','cardinal','buck'].forEach(k=>all.push({...a[k],r:k=='buck'?170:140}))}
@@ -56,16 +57,20 @@ const PROPS=[];
   if(PROPS.some(p=>Math.abs(p.x-x)<(p.w+w)*0.45&&Math.abs(p.s-s)<110))return false;
   const {i,loc}=secAt(s);if(loc<160||loc>SEC[i].len-160)return false;if(i%2==1&&loc>420&&loc<690)return false;return x>-560&&x<1850};
  const add=(n,x,s)=>{const [w,h]=PW[n];if(ok(x,s,w)){PROPS.push({type:n,x,s,w,h});return true}return false};
- for(let k=0;k<LOOPS;k++)for(let si=0;si<4;si++){const r=rng(k*31+si*7+5),base=k*L+SECBASE[si],len=SEC[si].len,flip=si>=2?-1:1;
-  const mx=x=>flip>0?x:1290-x;   // B and X2 mirror A and X1 (stand-in until their own art arrives)
-  if(si%2==0){ // landmark set for the 5-level sections
-   add('doghouse',mx(1150),base+420)||add('doghouse',mx(1210),base+520);add('bowl',mx(1000),base+330);add('ball',mx(170),base+990);
-   add('shed',mx(1170),base+1500)||add('shed',mx(1180),base+1650);add('birdbath',mx(150),base+1900);
-   for(let x=-560;x<1850;x+=390){add('fence',x,base+len-200)}}
-  else{ // crossing: trees and flowers on the banks
-   [['tree_big',mx(1090),base+760],['tree_round',mx(180),base+300],['flowers',mx(1000),base+250],['bush_flowers',mx(240),base+800],['rock',mx(900),base+720]].forEach(p=>add(...p))}
-  const fill=['tree_big','tree_round','tree_small','bush_flowers','flowers','rock','tree_small','bush_flowers'];
-  for(let loc=180;loc<len-160;loc+=150)for(const side of[-1,1])for(let tries=0;tries<3;tries++){const s2=base+loc+r()*80,rx=routeX(s2),n=fill[Math.floor(r()*fill.length)],x=rx+side*(230+PW[n][0]/2+r()*700);if(add(n,x,s2))break}}})();
+ const near=(n,side,b,s0,s1,maxOff)=>{const w=PW[n][0];for(let s=s0;s<=s1;s+=40)for(let o=0;o<=(maxOff||500);o+=40){const x=routeX(b+s)+side*(225+w/2+o);if(add(n,x,b+s))return true}return false};
+ const force=(n,x,s)=>{const [w,h]=PW[n];PROPS.push({type:n,x,s,w,h})};
+ const nearChar=(x,s,w)=>all.some(p=>Math.abs(p.x-x)<p.r+w*0.4&&Math.abs(p.s-s)<150);
+ for(let k=0;k<LOOPS;k++)for(let si=0;si<4;si++){const r=rng(k*31+si*7+5),base=k*L+SECBASE[si],len=SEC[si].len;
+  // trees on the mulch rings ChatGPT painted (template px → world)
+  MULCH[si].forEach(([tx,ty],j)=>{const x=tx-645,s=base+len-ty,n=['tree_big','tree_round','tree_small','tree_big'][j%4];if(!nearChar(x,s,PW[n][0]))force(n,x,s)});
+  if(si==0){near('doghouse',1,base,300,700);near('bowl',1,base,250,750,200);near('family_house',1,base,1700,2300,300);near('swing',-1,base,1500,2200);near('bench',-1,base,900,1400);near('ball',-1,base,700,1100,300);near('garden_light',1,base,1200,1500,60)}
+  if(si==2){near('shed',-1,base,400,900);near('wheelbarrow',-1,base,1000,1400);near('birdbath',1,base,1300,1700);near('bench',1,base,1900,2300);near('garden_light',-1,base,1600,1900,60)}
+  if(si%2==1){[['bridge_post_left',430,415],['bridge_post_right',860,415],['bridge_post_left',430,685],['bridge_post_right',860,685]].forEach(([n,x,y])=>force(n,x,base+len-y));
+   add('flowers',si==1?1000:250,base+250);add('bush_flowers',si==1?240:1050,base+850);add('rock',si==1?900:350,base+780)}
+  if(si%2==0)for(let x=-500;x<1850;x+=470)add('fence',x,base+len-230);
+  const fill=['bush_flowers','flowers','rock','tree_small','bush_flowers','flowers'];
+  for(let loc=200;loc<len-180;loc+=170)for(const side of[-1,1])for(let tries=0;tries<3;tries++){const s2=base+loc+r()*80,rx=routeX(s2),n=fill[Math.floor(r()*fill.length)],x=rx+side*(240+PW[n][0]/2+r()*650);if(add(n,x,s2))break}}
+})();
 
 // ---------------- drum camera (curved ground + open sky) ----------------
 let k,Hv,y0,D,R,AT,cam=0,DPR=1;const AMIN=-0.25,X0=-645,XW=2580;
@@ -85,12 +90,12 @@ in vec2 p;uniform float R,D,y0,Hv,W,AT,AMIN,cam,X0,XW,LL;out vec2 vT;out float v
 void main(){float a=mix(AMIN,AT,p.y);float x=X0-1290.0+p.x*(XW+2580.0);float X=x-W*0.5;float Y=y0+R*sin(a);float Z=-R*(1.0-cos(a));float sc=D/(D-Z);
  gl_Position=vec4(X*sc/(W*0.5),Y*sc/(Hv*0.5),0.0,1.0);vT=vec2((x-X0)/XW,cam+a*R);vA=(a-AMIN)/(AT-AMIN);}`;
 const FS=`#version 300 es
-precision highp float;in vec2 vT;in float vA;uniform sampler2D tA,tX;uniform float LL,SA,SX;out vec4 o;
+precision highp float;in vec2 vT;in float vA;uniform sampler2D tA,tX,tB,tY;uniform float LL,SA,SX;out vec4 o;
 void main(){float m=mod(vT.y,LL);float u=vT.x;vec4 c;
  if(m<SA){c=texture(tA,vec2(u,1.0-m/SA));}
  else if(m<SA+SX){c=texture(tX,vec2(u,1.0-(m-SA)/SX));}
- else if(m<2.0*SA+SX){c=texture(tA,vec2(1.0-u,1.0-(m-SA-SX)/SA));}
- else{c=texture(tX,vec2(1.0-u,1.0-(m-2.0*SA-SX)/SX));}float h=smoothstep(0.80,1.0,vA);c.rgb=mix(c.rgb,vec3(0.74,0.88,0.93),h*0.45);c.rgb*=mix(1.0,0.86,smoothstep(0.93,1.0,vA));o=vec4(c.rgb,1.0);}`;
+ else if(m<2.0*SA+SX){c=texture(tB,vec2(u,1.0-(m-SA-SX)/SA));}
+ else{c=texture(tY,vec2(u,1.0-(m-2.0*SA-SX)/SX));}float h=smoothstep(0.80,1.0,vA);c.rgb=mix(c.rgb,vec3(0.74,0.88,0.93),h*0.45);c.rgb*=mix(1.0,0.86,smoothstep(0.93,1.0,vA));o=vec4(c.rgb,1.0);}`;
 function shd(t,src){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
 const pr=gl.createProgram();gl.attachShader(pr,shd(gl.VERTEX_SHADER,VS));gl.attachShader(pr,shd(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
 const NX=48,NY=220,vv=[];for(let j=0;j<NY;j++)for(let i=0;i<NX;i++){const x0=i/NX,x1=(i+1)/NX,a0=j/NY,a1=(j+1)/NY;vv.push(x0,a0,x1,a0,x1,a1,x0,a0,x1,a1,x0,a1)}
@@ -101,8 +106,8 @@ function loadTex(unit,src,cb){const im=new Image();im.onload=()=>{const t=gl.cre
  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.generateMipmap(gl.TEXTURE_2D);
  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.MIRRORED_REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
  const an=gl.getExtension('EXT_texture_filter_anisotropic');if(an)gl.texParameterf(gl.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,8);cb&&cb()};im.src=src}
-let TEXN=0;loadTex(0,BB+'ground_A.webp',()=>TEXN++);loadTex(1,BB+'ground_X1.webp',()=>TEXN++);
-gl.uniform1i(U('tA'),0);gl.uniform1i(U('tX'),1);
+let TEXN=0;['A','X1','B','X2'].forEach((n,i)=>loadTex(i,BB+'ground_'+n+'.webp',()=>TEXN++));
+gl.uniform1i(U('tA'),0);gl.uniform1i(U('tX'),1);gl.uniform1i(U('tB'),2);gl.uniform1i(U('tY'),3);
 
 // ---------------- sky ----------------
 const sky=document.getElementById('sky'),sg=sky.getContext('2d');
