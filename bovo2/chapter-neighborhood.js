@@ -21,235 +21,109 @@
    "src": "art/nb/house_yellow_swing.webp",
    "w": 1161.4,
    "h": 1050,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_house_blue_porch": {
    "src": "art/nb/house_blue_porch.webp",
    "w": 1277.4,
    "h": 1150,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_house_red_brick": {
    "src": "art/nb/house_red_brick.webp",
    "w": 1281.5,
    "h": 1150,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_house_green_white": {
    "src": "art/nb/house_green_white.webp",
    "w": 1271.4,
    "h": 1150,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_house_lavender": {
    "src": "art/nb/house_lavender.webp",
    "w": 1237.8,
    "h": 1150,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_mailbox_flowers": {
    "src": "art/nb/mailbox_flowers.webp",
    "w": 362.4,
    "h": 420,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_fire_hydrant": {
    "src": "art/nb/fire_hydrant.webp",
    "w": 216.4,
    "h": 300,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_kid_bicycle": {
    "src": "art/nb/kid_bicycle.webp",
    "w": 367.4,
    "h": 320,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_gnome_daisies": {
    "src": "art/nb/gnome_daisies.webp",
    "w": 245.5,
    "h": 260,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_lemonade_stand": {
    "src": "art/nb/lemonade_stand.webp",
    "w": 582.3,
    "h": 620,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_picket_roses": {
    "src": "art/nb/picket_roses.webp",
    "w": 485.3,
    "h": 380,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_street_lamp": {
    "src": "art/nb/street_lamp.webp",
    "w": 241.7,
    "h": 760,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_trash_recycling": {
    "src": "art/nb/trash_recycling.webp",
    "w": 416.9,
    "h": 360,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_stop_sign": {
    "src": "art/nb/stop_sign.webp",
    "w": 283.4,
    "h": 560,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_hedge": {
    "src": "art/nb/hedge.webp",
    "w": 572.2,
    "h": 240,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_bus_stop_bench": {
    "src": "art/nb/bus_stop_bench.webp",
    "w": 419.8,
    "h": 300,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_bush_flowers": {
    "src": "art/nb/bush_flowers.webp",
    "w": 270.0,
    "h": 210,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_low_picket_segment": {
    "src": "art/nb/low_picket_segment.webp",
    "w": 813.5,
    "h": 300,
-   "group": "structure",
-   "grounding": {
-    "bandTop": 0.72,
-    "minContact": 0.74,
-    "referenceSlope": 0.6,
-    "contactOpacity": 0.38,
-    "contactWidth": 0.012
-   }
+   "group": "structure"
   },
   "nb_vet_visit_arrow": {
    "src": "art/nb/vet_visit_arrow.webp",
@@ -265,14 +139,6 @@
    "s": 1672,
    "w": 1161.4,
    "h": 1050,
-   "flip": false
-  },
-  {
-   "type": "nb_house_blue_porch",
-   "x": 1765,
-   "s": 276,
-   "w": 1277.4,
-   "h": 1150,
    "flip": false
   },
   {
@@ -293,7 +159,7 @@
   },
   {
    "type": "nb_kid_bicycle",
-   "x": -164,
+   "x": -70,
    "s": 1557,
    "w": 367.4,
    "h": 320,
@@ -308,17 +174,9 @@
    "flip": false
   },
   {
-   "type": "nb_gnome_daisies",
-   "x": 1039,
-   "s": 2254,
-   "w": 245.5,
-   "h": 260,
-   "flip": false
-  },
-  {
    "type": "nb_stop_sign",
-   "x": 730,
-   "s": 2850,
+   "x": 1003,
+   "s": 2863,
    "w": 283.4,
    "h": 560,
    "flip": false
@@ -345,14 +203,6 @@
    "s": 4307,
    "w": 582.3,
    "h": 620,
-   "flip": false
-  },
-  {
-   "type": "nb_house_green_white",
-   "x": -475,
-   "s": 3994,
-   "w": 1271.4,
-   "h": 1150,
    "flip": false
   },
   {

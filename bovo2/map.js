@@ -91,6 +91,56 @@ function fadeDraw(img,x,foot,w,h,q,flip=false){const top=foot-h,hz=horizonPx();i
  // Terrain occlusion: retain opaque sprite bases up to the crest; antialias only the 1.5 CSS px silhouette edge.
  const bw=Math.max(1,Math.ceil(w*DPR)),bh=Math.max(1,Math.ceil(h*DPR));spriteBuffer.width=bw;spriteBuffer.height=bh;const bg=spriteBuffer.getContext('2d');bg.setTransform(DPR,0,0,DPR,0,0);bg.save();if(flip){bg.translate(w,0);bg.scale(-1,1)}bg.drawImage(img,0,0,w,h);bg.restore();bg.globalCompositeOperation='destination-in';const edge=hz-top,grad=bg.createLinearGradient(0,edge-.75,0,edge+.75);grad.addColorStop(0,'rgba(0,0,0,1)');grad.addColorStop(1,'rgba(0,0,0,0)');bg.fillStyle=grad;bg.fillRect(0,0,w,h);og.drawImage(spriteBuffer,x-w/2,top,w,h);return true;
 }
+// ---------------- planting: cast shadow + contact darkening + real-grass fringe ----------------
+const PLANT=new Map(),PLANT_OFF=QP.has('noplant');
+function prng(seed){let t=seed>>>0;return()=>{t+=0x6D2B79F5;let r=Math.imul(t^t>>>15,1|t);r^=r+Math.imul(r^r>>>7,61|r);return((r^r>>>14)>>>0)/4294967296}}
+function plantSprite(type){let v=PLANT.get(type);if(v)return v;const im=SPR[type];if(!im||!im.naturalWidth)return null;
+ // base span from the sprite's lowest opaque rows
+ const cw=Math.min(512,im.naturalWidth),ch=Math.max(8,Math.round(cw*im.naturalHeight/im.naturalWidth)),c=document.createElement('canvas');c.width=cw;c.height=ch;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(im,0,0,cw,ch);
+ const d=g.getImageData(0,0,cw,ch).data;let L=cw,Rr=0;for(let y=ch-1;y>=ch-Math.max(3,ch*.04);y--)for(let x=0;x<cw;x++)if(d[(y*cw+x)*4+3]>150){L=Math.min(L,x);Rr=Math.max(Rr,x)}
+ if(Rr<L){L=cw*.2;Rr=cw*.8}
+ // blurred silhouette, flipped so the base is the top row
+ const sw=96,sh=Math.max(8,Math.round(sw*ch/cw)),pad=10,sil=document.createElement('canvas');sil.width=sw+pad*2;sil.height=sh+pad*2;const sg=sil.getContext('2d');
+ const tmp=document.createElement('canvas');tmp.width=sw;tmp.height=sh;const tg=tmp.getContext('2d');tg.drawImage(im,0,0,sw,sh);tg.globalCompositeOperation='source-in';tg.fillStyle='#0f2408';tg.fillRect(0,0,sw,sh);
+ const small=document.createElement('canvas');small.width=Math.ceil((sw+pad*2)/4);small.height=Math.ceil((sh+pad*2)/4);const smg=small.getContext('2d');smg.imageSmoothingEnabled=true;
+ smg.save();smg.translate(0,small.height);smg.scale(1,-1);smg.drawImage(tmp,pad/4,pad/4,sw/4,sh/4);smg.restore();
+ sg.imageSmoothingEnabled=true;sg.imageSmoothingQuality='high';sg.drawImage(small,0,0,sil.width,sil.height);
+ v={baseL:L/cw,baseR:(Rr+1)/cw,sil,pad:pad/sw};PLANT.set(type,v);return v}
+function groundTex(s){const k=Math.floor(s/7400),loc=s-k*7400,ch=((k%NCH)+NCH)%NCH,sf=ch?'_'+ch:'';
+ if(loc<2600)return{img:GROUND['A'+sf],len:2600,loc};if(loc<3700)return{img:GROUND['X1'+sf],len:1100,loc:loc-2600};if(loc<6300)return{img:GROUND['B'+sf],len:2600,loc:loc-3700};return{img:GROUND['X2'+sf],len:1100,loc:loc-6300}}
+const FRINGE=new WeakMap();
+function fringeFor(p){let v=FRINGE.get(p);if(v!==undefined)return v;const ps=plantSprite(p.type);if(!ps){return null}
+ const bw=(ps.baseR-ps.baseL)*p.w,bx=p.x+((ps.baseL+ps.baseR)/2-.5)*p.w*(p.flip?-1:1),T=groundTex(p.s),im=T.img;if(!im||!im.naturalWidth){FRINGE.set(p,null);return null}
+ const kx=im.naturalWidth/2580,ky=im.naturalHeight/T.len,ext=bw*1.08,sx=(bx-ext/2+645)*kx,sw=ext*kx,behind=34,front=10,sh=(behind+front)*ky;
+ const W=Math.max(16,Math.round(Math.min(900,sw))),H=Math.max(12,Math.round(sh*W/sw)),c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d',{willReadFrequently:true});
+ // sample real lawn at the base; if the base is on a patch, borrow the lawn just in front of it
+ let okStrip=false;for(const fwd of [0,60,120,180,260,360,480]){const ls=T.loc-fwd;if(ls-front<0)break;const sy=(T.len-(ls+behind))*ky;g.clearRect(0,0,W,H);g.drawImage(im,Math.max(0,sx),Math.max(0,sy),sw,sh,0,0,W,H);
+  const dd=g.getImageData(0,0,W,H).data;let green=0,n=0;for(let i=0;i<dd.length;i+=16){n++;if(dd[i+1]>dd[i]+12&&dd[i+1]>dd[i+2])green++}if(green/n>=.62){okStrip=true;break}}
+ if(!okStrip){FRINGE.set(p,null);return null}
+ const m=document.createElement('canvas');m.width=W;m.height=H;const mg=m.getContext('2d'),r=prng(Math.round(p.x*7+p.s*13));const base=H*(behind/(behind+front));
+ mg.fillStyle='#000';mg.fillRect(0,base-1,W,H-base+1);
+ for(let x=-4;x<W+4;x+=1.1+r()*1.8){const bh=base*(.35+r()*.65),bwid=1.4+r()*2.8,lean=(r()-.5)*bwid*2.2;mg.beginPath();mg.moveTo(x-bwid,base+1);mg.quadraticCurveTo(x+lean*.3,base-bh*.55,x+lean,base-bh);mg.quadraticCurveTo(x+lean*.3+bwid*.4,base-bh*.5,x+bwid,base+1);mg.closePath();mg.fill()}
+ mg.globalCompositeOperation='destination-in';const fg=mg.createLinearGradient(0,0,W,0);fg.addColorStop(0,'rgba(0,0,0,0)');fg.addColorStop(.07,'#000');fg.addColorStop(.93,'#000');fg.addColorStop(1,'rgba(0,0,0,0)');mg.fillStyle=fg;mg.fillRect(0,0,W,H);
+ // below the base the strip fades away so it never covers the contact shadow
+ const vm=document.createElement('canvas');vm.width=W;vm.height=H;const vg=vm.getContext('2d'),lg=vg.createLinearGradient(0,0,0,H);lg.addColorStop(0,'#000');lg.addColorStop(Math.min(.99,base/H),'#000');lg.addColorStop(Math.min(1,base/H+.12),'rgba(0,0,0,0)');lg.addColorStop(1,'rgba(0,0,0,0)');vg.fillStyle=lg;vg.fillRect(0,0,W,H);
+ mg.globalCompositeOperation='destination-in';mg.drawImage(vm,0,0);
+ g.globalCompositeOperation='destination-in';g.drawImage(m,0,0);
+ // grass against a wall sits in its shade: darker at the roots, lighter at the tips
+ g.globalCompositeOperation='source-atop';const sh2=g.createLinearGradient(0,0,0,base);sh2.addColorStop(0,'rgba(16,32,6,.05)');sh2.addColorStop(1,'rgba(16,32,6,.42)');g.fillStyle=sh2;g.fillRect(0,0,W,H);
+ v={c,ext,bx,behind,front};FRINGE.set(p,v);return v}
+function plantBefore(p,q,w,h){if(PLANT_OFF)return;const ps=plantSprite(p.type);if(!ps)return;const f=q.sc*k,hz=horizonPx();
+ og.save();og.beginPath();og.rect(0,hz,innerWidth,innerHeight-hz);og.clip();
+ const bw=(ps.baseR-ps.baseL)*w,bx=q.px+((ps.baseL+ps.baseR)/2-.5)*w*(p.flip?-1:1);
+ // cast shadow: silhouette laid down toward the lower right (light from the upper left)
+ const tall=Math.min(1,p.h/900),sq=.24,shx=.62;og.globalAlpha=.40*(.6+.4*tall);
+ og.transform(1,0,shx,sq,q.px,q.py);const pw=w*(1+2*ps.pad),ph=h*(1+2*ps.pad*w/h);og.drawImage(ps.sil,-pw/2+(p.flip?0:0),-ps.pad*w,pw,ph);og.setTransform(DPR,0,0,DPR,0,0);
+ // contact darkening hugging the base
+ og.globalAlpha=1;const rx=bw*.56,ry=Math.max(2,Math.min(bw*.07,22*f)),gr=og.createRadialGradient(bx,q.py,0,bx,q.py,rx);gr.addColorStop(0,'rgba(16,32,6,.58)');gr.addColorStop(.55,'rgba(16,32,6,.3)');gr.addColorStop(1,'rgba(18,36,8,0)');
+ og.translate(bx,q.py);og.scale(1,ry/rx);og.translate(-bx,-q.py);og.fillStyle=gr;og.beginPath();og.arc(bx,q.py,rx,0,Math.PI*2);og.fill();
+ og.restore()}
+function plantAfter(p,q,w,h){if(PLANT_OFF)return;const fr=fringeFor(p);if(!fr)return;const f=q.sc*k,hz=horizonPx();if(q.py<hz)return;
+ const b=fr.behind/(fr.behind+fr.front),Hs=Math.max(5,46*f),W=fr.ext*f,x=q.px+(fr.bx-p.x)*f;
+ og.save();og.beginPath();og.rect(0,hz,innerWidth,innerHeight-hz);og.clip();og.drawImage(fr.c,x-W/2,q.py-b*Hs,W,Hs);og.restore()}
 // Ground contact profiles keep isometric bases on the projected drum surface.
 const GROUND_CONTACTS={};let groundingAudit=[];
 function prepareGrounding(){
@@ -130,7 +180,7 @@ function drawObjects(){og.setTransform(DPR,0,0,DPR,0,0);og.clearRect(0,0,innerWi
  const items=[],hz=horizonPx(),vis=s=>{const al=(s-cam)/R;return al>AMIN-.35&&al<Math.PI};
  PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});const cr=pos.cardinal,rs=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];if(cr&&cr.lift==null&&vis(cr.s))items.push({s:cr.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:cr.x,s:cr.s,w:rs.w,h:rs.h}});for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})};for(let k=0;k<LOOPS;k++)for(const c of (CHS[k%NCH].cameos||[])){{const a={...c,s:c.s+k*L};if(!vis(a.s))continue;if(c.who==='cardinal'&&c.lift==null){const rs2=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];items.push({s:a.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:a.x,s:a.s,w:rs2.w,h:rs2.h}})}a.cameo=1;items.push({s:a.s,kind:'ch',n:c.who,a})}};items.sort((a,b)=>b.s-a.s);
  for(const it of items){const x=it.kind==='prop'?it.p.x:it.kind==='mk'?it.m.x:it.a.x,q=proj(x,it.s),f=q.sc*k,sq=squash(x,it.s);
-  if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;if(GROUND_CONTACTS[p.type])groundedProp(p,q);else if(p.lift)fadeDraw(SPR[p.type],q.px,q.py-p.lift*f,w,h,q,p.flip);else {if(q.al<=AT&&!p.noShadow)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
+  if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;const plant=q.al<=AT&&!p.lift&&!/fence|gate|picket/.test(p.type);if(plant)plantBefore(p,q,w,h);if(GROUND_CONTACTS[p.type])groundedProp(p,q);else if(p.lift)fadeDraw(SPR[p.type],q.px,q.py-p.lift*f,w,h,q,p.flip);else {if(q.al<=AT&&!p.noShadow)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}if(plant)plantAfter(p,q,w,h);visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
   else if(it.kind==='ch'){const c=CHAR[it.n],img=IM[it.n],h=c.h*f,w=c.w*f,hop=(it.a.hop||0)*f,perch=it.n==='cardinal'?(it.a.lift??BOBO_CHAPTER.cardinalPerch)*f:0,foot=q.py-hop-perch;if(q.al>AT&&foot-h>=hz)continue;if(it.a.cameo&&q.py>tabTop()-10)continue;const flip=it.a.flip!=null?it.a.flip:it.n==='buck'?it.a.x<routeX(it.s):pos.face<0;if(it.n!=='cardinal'&&q.al<=AT)characterGrounding(c,q.px,foot,w,h,sq,flip);fadeDraw(img,q.px,foot,w,h,q,flip);visibleAudit.push({id:it.n,kind:'character',s:it.s,x:it.a.x,top:foot-h,base:foot,left:q.px-w/2,right:q.px+w/2});}
   else{const m=it.m,kind=m.L<cur?'completed':m.L===cur?'current':'locked',W=BOBO_CHAPTER.markerWidth*MKS*f,img=IM['mk_'+kind],hs=W/512*sq*.8,top=q.py-205*hs;if(q.al>AT&&top>=hz)continue;
    og.save();if(q.al>AT)og.globalAlpha=ss((hz-top)/24);og.translate(q.px,q.py);og.scale(W/512,hs);
