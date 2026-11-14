@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — picture scroll test</title>
+<style>
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+html,body{margin:0;height:100%;background:#7ec8f0;overflow:hidden;font-family:Nun,system-ui}
+#sc{position:fixed;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
+#sc::-webkit-scrollbar{display:none}
+#world{position:relative;width:100%;padding-top:30vw;padding-bottom:calc(279/759*100vw - 6vw);background:linear-gradient(#8fd0f2,#bfe6f7 30vw,transparent 31vw)}
+#world img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+#fx{position:fixed;inset:0;pointer-events:none;width:100%;height:100%}
+#hud{position:fixed;top:0;left:0;width:100%;pointer-events:none;
+ -webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+#tabs{position:fixed;bottom:0;left:0;width:100%;pointer-events:none}
+#banner{position:fixed;left:50%;transform:translateX(-50%);top:calc(36vw);text-align:center;pointer-events:none;transition:opacity .35s}
+#banner .t{display:inline-block;background:#1f6f6a;border:3px solid #f6ead0;border-radius:22px;padding:4px 18px;color:#fff;font-size:6.2vw;
+ text-shadow:0 2px 0 #0b3b38,0 0 3px #0b3b38;box-shadow:0 4px 0 #0e4744,0 6px 14px rgba(0,0,0,.25);white-space:nowrap}
+#banner .c{display:inline-block;margin-top:-4px;background:#155a56;border:2px solid #f6ead0;border-radius:14px;padding:1px 14px;color:#fff;font-size:4vw}
+#tag{position:fixed;left:6px;bottom:6px;z-index:9;font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:3px 7px;border-radius:8px}
+</style></head><body>
+<div id="sc"><div id="world"><img id="strip" src="strip.webp?v=1" alt=""></div></div>
+<canvas id="fx"></canvas>
+<img id="hud" src="hud.webp?v=2" alt="">
+<div id="banner"><div class="t" id="bt">THE BACKYARD</div><br><div class="c" id="bc">Chapter 1</div></div>
+<img id="tabs" src="tabs.webp?v=1" alt="">
+<div id="tag">TEST · picture scroll</div>
+<script>
+'use strict';
+const NAMES=[['THE BACKYARD','Chapter 1'],['THE NEIGHBORHOOD','Chapter 2'],['VET VISIT','Chapter 3'],['RAINY DAY','Chapter 4'],["GRAMMY'S HOUSE",'Chapter 5']];
+const SW=759,SH=5990,CH=[[4680,5990],[3510,4820],[2340,3650],[1170,2480],[0,1310]];
+const sc=document.getElementById('sc'),strip=document.getElementById('strip'),cv=document.getElementById('fx'),g=cv.getContext('2d');
+let W=0,H=0,DPR=1,k=1;
+function size(){DPR=Math.min(3,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;k=W/SW}
+size();addEventListener('resize',size);
+strip.addEventListener('load',()=>{sc.scrollTop=sc.scrollHeight});if(strip.complete)sc.scrollTop=sc.scrollHeight;
+// chapter banner follows the chapter in the middle of the screen
+let shown=-1;function banner(){const mid=(sc.scrollTop-30*W/100+H*.55)/k;let i=0;for(let j=0;j<5;j++)if(mid>=CH[j][0]&&mid<CH[j][1])i=j;
+ if(i!==shown){shown=i;const b=document.getElementById('banner');b.style.opacity=0;setTimeout(()=>{document.getElementById('bt').textContent=NAMES[i][0];document.getElementById('bc').textContent=NAMES[i][1];b.style.opacity=1},200)}}
+// ---------- ambient life ----------
+const R=(a,b)=>a+Math.random()*(b-a);
+const clouds=[...Array(4)].map((_,i)=>({x:R(-.5,1.2),y:R(0,SH),r:R(.55,.9),v:R(.006,.012)}));
+const sparks=[...Array(38)].map(()=>({x:R(0,1),y:R(0,SH),ph:R(0,6.28),sp:R(.8,1.6),s:R(1.2,2.6)}));
+const leaves=[...Array(10)].map(()=>({x:R(0,1),y:R(0,SH),a:R(0,6.28),v:R(12,22),w:R(.5,1.2),c:Math.random()<.5?'#7cc04a':'#e8b83a'}));
+const drops=[...Array(140)].map(()=>({x:R(0,1),y:R(0,1),l:R(10,22),v:R(.9,1.4)}));
+let last=performance.now();
+function frame(t){const dt=Math.min(.05,(t-last)/1000);last=t;banner();
+ const top=(sc.scrollTop-30*W/100)/k;g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);
+ // drifting cloud shadows across the ground
+ for(const c of clouds){c.x+=c.v*dt;if(c.x>1.6){c.x=-.7;c.y=R(top-200,top+H/k+200)}
+  const sy=(c.y-top)*k;if(sy<-W||sy>H+W)continue;const rx=c.r*W,gr=g.createRadialGradient(c.x*W,sy,0,c.x*W,sy,rx);
+  gr.addColorStop(0,'rgba(20,40,60,.16)');gr.addColorStop(.6,'rgba(20,40,60,.08)');gr.addColorStop(1,'rgba(20,40,60,0)');
+  g.save();g.translate(c.x*W,sy);g.scale(1,.45);g.translate(-c.x*W,-sy);g.fillStyle=gr;g.beginPath();g.arc(c.x*W,sy,rx,0,7);g.fill();g.restore()}
+ // warm sun glow, breathing
+ const p=.5+.5*Math.sin(t/1800),sg=g.createRadialGradient(0,0,0,0,0,W*.9);sg.addColorStop(0,`rgba(255,240,180,${.22+.1*p})`);sg.addColorStop(1,'rgba(255,240,180,0)');
+ g.fillStyle=sg;g.fillRect(0,0,W,H);
+ // floating sparkles / pollen
+ for(const s of sparks){s.y-=6*dt;if(s.y<top-50)s.y=top+H/k+20;const sy=(s.y-top)*k;if(sy<0||sy>H)continue;
+  const a=Math.max(0,Math.sin(t/1000*s.sp+s.ph));g.fillStyle=`rgba(255,250,210,${.75*a})`;g.beginPath();g.arc(s.x*W,sy,s.s*a+.3,0,7);g.fill()}
+ // a few drifting leaves (not in the rain)
+ for(const l of leaves){l.y+=l.v*dt;l.a+=dt*1.5;l.x+=Math.sin(l.a)*.0008;if(l.y>top+H/k+40){l.y=top-40;l.x=R(0,1)}
+  const sy=(l.y-top)*k;if(sy<-20||sy>H+20)continue;if(l.y>CH[3][0]&&l.y<CH[3][1])continue;
+  g.save();g.translate(l.x*W,sy);g.rotate(Math.sin(l.a)*1.2);g.fillStyle=l.c;g.beginPath();g.ellipse(0,0,5*l.w,2.4*l.w,0,0,7);g.fill();g.restore()}
+ // rain only over the Rainy Day chapter
+ const r0=(CH[3][0]-top)*k,r1=(CH[3][1]-top)*k;
+ if(r1>0&&r0<H){g.save();g.beginPath();const f0=Math.max(0,r0),f1=Math.min(H,r1);g.rect(0,f0,W,f1-f0);g.clip();
+  const fade=g.createLinearGradient(0,r0,0,r1);g.strokeStyle='rgba(220,235,255,.55)';g.lineWidth=1.2;g.lineCap='round';
+  for(const d of drops){d.y+=d.v*dt*1.4;if(d.y>1)d.y-=1;const y=f0+d.y*(f1-f0+40)-20,x=d.x*W;g.beginPath();g.moveTo(x,y);g.lineTo(x-2.5,y+d.l);g.stroke()}
+  g.fillStyle='rgba(60,80,110,.10)';g.fillRect(0,f0,W,f1-f0);g.restore()}
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script></body></html>
