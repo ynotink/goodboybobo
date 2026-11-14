@@ -5,7 +5,7 @@
 //  World units: 1290 = phone width. s = distance along the world (up).
 //  Route repeats: A (right start) → crossing → B (left start) → crossing.
 // =====================================================================
-const WV=1140, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=3, TOT=L*LOOPS;
+const QP=new URLSearchParams(location.search),WV=+QP.get('wv')||1700,MKS=+QP.get('mk')||1.15, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=3, TOT=L*LOOPS;
 const SEC=[{n:'A',len:SA},{n:'X1',len:SX},{n:'B',len:SA},{n:'X2',len:SX}];
 const SECBASE=[0,SA,SA+SX,2*SA+SX];
 const ss=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
@@ -50,7 +50,7 @@ let k,Hv,y0,D,R,AT,cam=0,DPR=1;const AMIN=-0.25,X0=-645,XW=2580;
 function tang(){let a=0,b=Math.PI;for(let i=0;i<60;i++){const m=(a+b)/2,f=y0*Math.sin(m)+R-(R+D)*Math.cos(m);if(f<0)a=m;else b=m}return(a+b)/2}
 function projA(x,al){const X=x-645,Y=y0+R*Math.sin(al),Z=-R*(1-Math.cos(al)),sc=D/(D-Z);return{px:innerWidth/2+X*sc*k,py:innerHeight/2-Y*sc*k,sc,al}}
 function proj(x,s){return projA(x,(s-cam)/R)}
-function geom(){k=innerWidth/WV;Hv=WV*innerHeight/innerWidth;y0=-Hv/2-80;D=1.15*Hv;
+function geom(){k=innerWidth/WV;Hv=WV*innerHeight/innerWidth;y0=-Hv/2-80;D=(+QP.get('d')||1.15)*Hv;
  const want=Hv/2-Hv*0.30;let lo=Hv*0.2,hi=Hv*60;
  for(let i=0;i<70;i++){R=(lo+hi)/2;AT=tang();const p=projA(645,AT),yw=(innerHeight/2-p.py)/k;if(yw>want)hi=R;else lo=R}
  R=(lo+hi)/2;AT=tang()}
@@ -134,7 +134,7 @@ function drawObjects(){og.setTransform(DPR,0,0,DPR,0,0);og.clearRect(0,0,innerWi
  for(const it of items){const x=it.kind==='prop'?it.p.x:it.kind==='mk'?it.m.x:it.a.x,q=proj(x,it.s),f=q.sc*k,sq=squash(x,it.s);
   if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;if(GROUND_CONTACTS[p.type])groundedProp(p,q);else {if(q.al<=AT)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
   else if(it.kind==='ch'){const c=CHAR[it.n],img=IM[it.n],h=c.h*f,w=c.w*f,hop=(it.a.hop||0)*f,perch=it.n==='cardinal'?(it.a.lift??BOBO_CHAPTER.cardinalPerch)*f:0,foot=q.py-hop-perch;if(q.al>AT&&foot-h>=hz)continue;if(it.a.cameo&&q.py>tabTop()-10)continue;const flip=it.a.flip!=null?it.a.flip:it.n==='buck'?it.a.x<routeX(it.s):pos.face<0;if(it.n!=='cardinal'&&q.al<=AT)characterGrounding(c,q.px,foot,w,h,sq,flip);fadeDraw(img,q.px,foot,w,h,q,flip);visibleAudit.push({id:it.n,kind:'character',s:it.s,x:it.a.x,top:foot-h,base:foot,left:q.px-w/2,right:q.px+w/2});}
-  else{const m=it.m,kind=m.L<cur?'completed':m.L===cur?'current':'locked',W=BOBO_CHAPTER.markerWidth*f,img=IM['mk_'+kind],hs=W/512*sq*.8,top=q.py-205*hs;if(q.al>AT&&top>=hz)continue;
+  else{const m=it.m,kind=m.L<cur?'completed':m.L===cur?'current':'locked',W=BOBO_CHAPTER.markerWidth*MKS*f,img=IM['mk_'+kind],hs=W/512*sq*.8,top=q.py-205*hs;if(q.al>AT&&top>=hz)continue;
    og.save();if(q.al>AT)og.globalAlpha=ss((hz-top)/24);og.translate(q.px,q.py);og.scale(W/512,hs);
    if(kind==='current'){const pulse=.5+.5*Math.sin(performance.now()/260);og.fillStyle=`rgba(190,255,110,${.25+.25*pulse})`;og.beginPath();og.ellipse(0,0,250,200,0,0,7);og.fill()}
    og.drawImage(img,-256,-205,512,512);og.fillStyle='#fff';og.strokeStyle=kind==='locked'?'#1d2a2a':kind==='current'?'#0d5a12':'#063D35';og.lineJoin='round';og.lineWidth=18;og.textAlign='center';og.textBaseline='middle';og.font=`900 ${kind==='locked'?120:150}px BoboNunito,system-ui`;const ty=kind==='completed'?-45:-20;og.strokeText(m.L,0,ty);og.fillText(m.L,0,ty);if(kind==='completed'){const ns=Math.max(1,+STARS[m.L-1]||3);[[-85,85],[0,97],[85,85]].forEach(([a,b],i)=>{og.save();if(i>=ns){og.filter='grayscale(1) brightness(.55)';og.globalAlpha=.85}og.drawImage(IM.star,a-46,b-46,92,92);og.restore()})};og.restore();
@@ -166,10 +166,10 @@ function fitUI(){const S=innerWidth/1290,fh=innerHeight/S;fixed.style.transform=
 const clampC=s=>Math.max(-1200,Math.min(TOT-2600,s));
 function tabTop(){return innerHeight-346*innerWidth/1290}
 function cameraForY(s,y){let lo=s-Math.PI*R*.45,hi=s+200;for(let j=0;j<50;j++){const c=(lo+hi)/2,p=projA(645,(s-c)/R);if(p.py<y)lo=c;else hi=c}return clampC((lo+hi)/2)}
-function startCamera(n){const m=LEVELS[n-1],bottom=tabTop(),top=horizonPx(),target=bottom-.4*(bottom-top);let c=cameraForY(m.s,target);if(n<=2)c=Math.min(c,cameraForY(LEVELS[0].s,bottom-120*k));return c}
+function startCamera(n){const m=LEVELS[n-1],bottom=tabTop(),top=horizonPx(),target=bottom-(+QP.get('cy')||.22)*(bottom-top);let c=cameraForY(m.s,target);if(n<=2)c=Math.min(c,cameraForY(LEVELS[0].s,bottom-120*k));return c}
 
 let drag=null,vel=0,glide=null;
-function camFor(sTarget){return cameraForY(sTarget,tabTop()-.4*(tabTop()-horizonPx()))}
+function camFor(sTarget){return cameraForY(sTarget,tabTop()-(+QP.get('cy')||.22)*(tabTop()-horizonPx()))}
 function glideTo(s){glide={from:cam,to:clampC(s),t0:performance.now(),dur:700};vel=0}
 let dragFrames=[],lastDrag=null;
 function down(x,y,t){dragFrames=[];drag={x,y,c0:cam,t,moved:0,started:performance.now()};vel=0;glide=null}
