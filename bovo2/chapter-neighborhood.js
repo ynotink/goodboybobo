@@ -21,109 +21,235 @@
    "src": "art/nb/house_yellow_swing.webp",
    "w": 1161.4,
    "h": 1050,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_house_blue_porch": {
    "src": "art/nb/house_blue_porch.webp",
    "w": 1277.4,
    "h": 1150,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_house_red_brick": {
    "src": "art/nb/house_red_brick.webp",
    "w": 1281.5,
    "h": 1150,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_house_green_white": {
    "src": "art/nb/house_green_white.webp",
    "w": 1271.4,
    "h": 1150,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_house_lavender": {
    "src": "art/nb/house_lavender.webp",
    "w": 1237.8,
    "h": 1150,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_mailbox_flowers": {
    "src": "art/nb/mailbox_flowers.webp",
    "w": 362.4,
    "h": 420,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_fire_hydrant": {
    "src": "art/nb/fire_hydrant.webp",
    "w": 216.4,
    "h": 300,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_kid_bicycle": {
    "src": "art/nb/kid_bicycle.webp",
    "w": 367.4,
    "h": 320,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_gnome_daisies": {
    "src": "art/nb/gnome_daisies.webp",
    "w": 245.5,
    "h": 260,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_lemonade_stand": {
    "src": "art/nb/lemonade_stand.webp",
    "w": 582.3,
    "h": 620,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_picket_roses": {
    "src": "art/nb/picket_roses.webp",
    "w": 485.3,
    "h": 380,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_street_lamp": {
    "src": "art/nb/street_lamp.webp",
    "w": 241.7,
    "h": 760,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_trash_recycling": {
    "src": "art/nb/trash_recycling.webp",
    "w": 416.9,
    "h": 360,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_stop_sign": {
    "src": "art/nb/stop_sign.webp",
    "w": 283.4,
    "h": 560,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_hedge": {
    "src": "art/nb/hedge.webp",
    "w": 572.2,
    "h": 240,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_bus_stop_bench": {
    "src": "art/nb/bus_stop_bench.webp",
    "w": 419.8,
    "h": 300,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_bush_flowers": {
    "src": "art/nb/bush_flowers.webp",
    "w": 270.0,
    "h": 210,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_low_picket_segment": {
    "src": "art/nb/low_picket_segment.webp",
    "w": 813.5,
    "h": 300,
-   "group": "structure"
+   "group": "structure",
+   "grounding": {
+    "bandTop": 0.72,
+    "minContact": 0.74,
+    "referenceSlope": 0.6,
+    "contactOpacity": 0.38,
+    "contactWidth": 0.012
+   }
   },
   "nb_vet_visit_arrow": {
    "src": "art/nb/vet_visit_arrow.webp",
@@ -135,56 +261,56 @@
  "props": [
   {
    "type": "nb_house_yellow_swing",
-   "x": -84,
-   "s": 1150,
+   "x": 1490,
+   "s": 1672,
    "w": 1161.4,
    "h": 1050,
    "flip": false
   },
   {
    "type": "nb_house_blue_porch",
-   "x": 1674,
-   "s": 410,
+   "x": 1765,
+   "s": 276,
    "w": 1277.4,
    "h": 1150,
    "flip": false
   },
   {
    "type": "nb_mailbox_flowers",
-   "x": 1341,
-   "s": 700,
+   "x": 1326,
+   "s": 642,
    "w": 362.4,
    "h": 420,
    "flip": false
   },
   {
    "type": "nb_fire_hydrant",
-   "x": 1225,
-   "s": 1300,
+   "x": 1214,
+   "s": 1214,
    "w": 216.4,
    "h": 300,
    "flip": false
   },
   {
    "type": "nb_kid_bicycle",
-   "x": -86,
-   "s": 1700,
+   "x": -164,
+   "s": 1557,
    "w": 367.4,
    "h": 320,
    "flip": false
   },
   {
    "type": "nb_house_red_brick",
-   "x": 1549,
-   "s": 1900,
+   "x": -450,
+   "s": 901,
    "w": 1281.5,
    "h": 1150,
    "flip": false
   },
   {
    "type": "nb_gnome_daisies",
-   "x": 1037,
-   "s": 2320,
+   "x": 1039,
+   "s": 2254,
    "w": 245.5,
    "h": 260,
    "flip": false
@@ -215,32 +341,32 @@
   },
   {
    "type": "nb_lemonade_stand",
-   "x": 1144,
-   "s": 4600,
+   "x": 1356,
+   "s": 4307,
    "w": 582.3,
    "h": 620,
    "flip": false
   },
   {
    "type": "nb_house_green_white",
-   "x": -384,
-   "s": 4110,
+   "x": -475,
+   "s": 3994,
    "w": 1271.4,
    "h": 1150,
    "flip": false
   },
   {
    "type": "nb_picket_roses",
-   "x": -18,
-   "s": 4820,
+   "x": -42,
+   "s": 4719,
    "w": 485.3,
    "h": 380,
    "flip": false
   },
   {
    "type": "nb_street_lamp",
-   "x": 1183,
-   "s": 5200,
+   "x": 1242,
+   "s": 5016,
    "w": 241.7,
    "h": 760,
    "flip": false
@@ -248,31 +374,31 @@
   {
    "type": "nb_house_lavender",
    "x": -393,
-   "s": 5300,
+   "s": 4995,
    "w": 1237.8,
    "h": 1150,
    "flip": false
   },
   {
    "type": "nb_trash_recycling",
-   "x": 1381,
-   "s": 5850,
+   "x": 1414,
+   "s": 5761,
    "w": 416.9,
    "h": 360,
    "flip": false
   },
   {
    "type": "nb_bus_stop_bench",
-   "x": 1330,
-   "s": 7000,
+   "x": 1354,
+   "s": 6967,
    "w": 419.8,
    "h": 300,
    "flip": false
   },
   {
    "type": "nb_street_lamp",
-   "x": 560,
-   "s": 7060,
+   "x": 524,
+   "s": 7026,
    "w": 241.7,
    "h": 760,
    "flip": false
@@ -287,8 +413,8 @@
   },
   {
    "type": "nb_bush_flowers",
-   "x": 460,
-   "s": 6610,
+   "x": 432,
+   "s": 6604,
    "w": 270.0,
    "h": 210,
    "flip": false
@@ -359,8 +485,8 @@
   },
   {
    "type": "nb_vet_visit_arrow",
-   "x": 676.65,
-   "s": 7058,
+   "x": 640.65,
+   "s": 7024,
    "w": 293.3,
    "h": 140,
    "flip": false,
@@ -370,14 +496,14 @@
  "cameos": [
   {
    "who": "cardinal",
-   "x": 1341,
-   "s": 699,
+   "x": 1326,
+   "s": 641,
    "lift": 395
   },
   {
    "who": "bunny",
-   "x": 300,
-   "s": 5940
+   "x": 170,
+   "s": 4830
   },
   {
    "who": "bunny",
