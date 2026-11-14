@@ -78,7 +78,7 @@ let pos=anchors(seenLv),move=null;
 function setCur(n,animate){const from=pos,to=anchors(n);cur=n;try{localStorage.setItem(SEEN,cur)}catch(e){}
  if(!animate){pos=to;return}move={from,to,t0:performance.now(),dur:1500}}
 function stepMove(t){if(!move)return;const u=Math.min(1,(t-move.t0)/move.dur),e=ss(u);const p={face:move.to.face};
- for(const n in CHAR){const a=move.from[n],b=move.to[n];p[n]={x:a.x+(b.x-a.x)*e,s:a.s+(b.s-a.s)*e,hop:n=='rambo'?Math.abs(Math.sin(u*Math.PI*4))*40*(1-u):0}}
+ for(const n in CHAR){const a=move.from[n],b=move.to[n];if(!a||!b){p[n]=u<.5?a:b;continue}p[n]={x:a.x+(b.x-a.x)*e,s:a.s+(b.s-a.s)*e,hop:n=='rambo'?Math.abs(Math.sin(u*Math.PI*4))*40*(1-u):0};if(a.lift!=null||b.lift!=null)p[n].lift=(a.lift??BOBO_CHAPTER.cardinalPerch)+((b.lift??BOBO_CHAPTER.cardinalPerch)-(a.lift??BOBO_CHAPTER.cardinalPerch))*e}
  pos=p;if(u>=1){pos=move.to;move=null}}
 
 // ---------------- objects pass (depth-sorted, horizon-occluded) ----------------
@@ -130,10 +130,10 @@ function groundedProp(p,q){const profile=GROUND_CONTACTS[p.type],im=SPR[p.type],
 
 function drawObjects(){og.setTransform(DPR,0,0,DPR,0,0);og.clearRect(0,0,innerWidth,innerHeight);HITS=[];visibleAudit=[];groundingAudit=[];
  const items=[],hz=horizonPx(),vis=s=>{const al=(s-cam)/R;return al>AMIN-.35&&al<Math.PI};
- PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});const cr=pos.cardinal,rs=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];if(cr&&vis(cr.s))items.push({s:cr.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:cr.x,s:cr.s,w:rs.w,h:rs.h}});for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})}items.sort((a,b)=>b.s-a.s);
+ PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});const cr=pos.cardinal,rs=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];if(cr&&cr.lift==null&&vis(cr.s))items.push({s:cr.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:cr.x,s:cr.s,w:rs.w,h:rs.h}});for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})}items.sort((a,b)=>b.s-a.s);
  for(const it of items){const x=it.kind==='prop'?it.p.x:it.kind==='mk'?it.m.x:it.a.x,q=proj(x,it.s),f=q.sc*k,sq=squash(x,it.s);
   if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;if(GROUND_CONTACTS[p.type])groundedProp(p,q);else {if(q.al<=AT)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
-  else if(it.kind==='ch'){const c=CHAR[it.n],img=IM[it.n],h=c.h*f,w=c.w*f,hop=(it.a.hop||0)*f,perch=it.n==='cardinal'?BOBO_CHAPTER.cardinalPerch*f:0,foot=q.py-hop-perch;if(q.al>AT&&foot-h>=hz)continue;const flip=it.n==='buck'?it.a.x<routeX(it.s):pos.face<0;if(it.n!=='cardinal'&&q.al<=AT)characterGrounding(c,q.px,foot,w,h,sq,flip);fadeDraw(img,q.px,foot,w,h,q,flip);visibleAudit.push({id:it.n,kind:'character',s:it.s,x:it.a.x,top:foot-h,base:foot,left:q.px-w/2,right:q.px+w/2});}
+  else if(it.kind==='ch'){const c=CHAR[it.n],img=IM[it.n],h=c.h*f,w=c.w*f,hop=(it.a.hop||0)*f,perch=it.n==='cardinal'?(it.a.lift??BOBO_CHAPTER.cardinalPerch)*f:0,foot=q.py-hop-perch;if(q.al>AT&&foot-h>=hz)continue;const flip=it.n==='buck'?it.a.x<routeX(it.s):pos.face<0;if(it.n!=='cardinal'&&q.al<=AT)characterGrounding(c,q.px,foot,w,h,sq,flip);fadeDraw(img,q.px,foot,w,h,q,flip);visibleAudit.push({id:it.n,kind:'character',s:it.s,x:it.a.x,top:foot-h,base:foot,left:q.px-w/2,right:q.px+w/2});}
   else{const m=it.m,kind=m.L<cur?'completed':m.L===cur?'current':'locked',W=BOBO_CHAPTER.markerWidth*f,img=IM['mk_'+kind],hs=W/512*sq*.8,top=q.py-205*hs;if(q.al>AT&&top>=hz)continue;
    og.save();if(q.al>AT)og.globalAlpha=ss((hz-top)/24);og.translate(q.px,q.py);og.scale(W/512,hs);
    if(kind==='current'){const pulse=.5+.5*Math.sin(performance.now()/260);og.fillStyle=`rgba(190,255,110,${.25+.25*pulse})`;og.beginPath();og.ellipse(0,0,250,200,0,0,7);og.fill()}

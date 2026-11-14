@@ -629,7 +629,7 @@ window.BOBO_CHAPTER={
   },
   "p2_shed": {
    "src": "art/bbA/p2_shed.webp",
-   "w": 1050.0,
+   "w": 1050,
    "h": 1050,
    "native": [
     1522,
@@ -729,8 +729,8 @@ window.BOBO_CHAPTER={
   },
   "buck": {
    "src": "approved/a/home/L06_buck.png",
-   "w": 558.2990397805213,
-   "h": 1100,
+   "w": 385.73388203017834,
+   "h": 760,
    "native": [
     370,
     729
@@ -812,69 +812,6 @@ window.BOBO_CHAPTER={
  },
  "props": [
   {
-   "type": "p2_rose_bush",
-   "x": 810,
-   "s": 2850,
-   "w": 303.76119402985074,
-   "h": 240,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_hedge",
-   "x": -180,
-   "s": 3390,
-   "w": 548.40625,
-   "h": 230,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_hedge",
-   "x": 960,
-   "s": 3390,
-   "w": 548.40625,
-   "h": 230,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_mailbox",
-   "x": 1250,
-   "s": 7000,
-   "w": 273.016894609815,
-   "h": 420,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_lamp_post",
-   "x": 570,
-   "s": 7060,
-   "w": 241.7277486910995,
-   "h": 760,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_hedge",
-   "x": 1470,
-   "s": 6610,
-   "w": 548.40625,
-   "h": 230,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_bush_flowers",
-   "x": 460,
-   "s": 6610,
-   "w": 308.57142857142856,
-   "h": 240,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
    "type": "p2_fence_segment",
    "x": -234.57417582417582,
    "s": 3150,
@@ -921,8 +858,8 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_gate_leaf_left",
-   "x": 288.7866772402855,
-   "s": 3010,
+   "x": -32.85396988504293,
+   "s": 3139,
    "w": 257.57335448057097,
    "h": 400,
    "flip": false,
@@ -930,8 +867,8 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_gate_leaf_right",
-   "x": 507.92423046566694,
-   "s": 3010,
+   "x": 796.1430621790905,
+   "s": 3139,
    "w": 224.15153906866612,
    "h": 400,
    "flip": false,
@@ -984,8 +921,8 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_gate_leaf_left",
-   "x": 798.7866772402855,
-   "s": 6710,
+   "x": 477.14603011495706,
+   "s": 6839,
    "w": 257.57335448057097,
    "h": 400,
    "flip": false,
@@ -993,17 +930,26 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_gate_leaf_right",
-   "x": 1017.9242304656669,
-   "s": 6710,
+   "x": 1306.1430621790905,
+   "s": 6839,
    "w": 224.15153906866612,
    "h": 400,
    "flip": false,
    "group": "structure"
   },
   {
+   "type": "bb_dog",
+   "x": -64,
+   "s": 1150,
+   "w": 915.0089126559714,
+   "h": 820,
+   "flip": false,
+   "group": "structure"
+  },
+  {
    "type": "p2_tree_big_round",
-   "x": -326,
-   "s": 350,
+   "x": 1775,
+   "s": 360,
    "w": 1149.548311076198,
    "h": 1150,
    "flip": false,
@@ -1011,21 +957,12 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "bb_flrock",
-   "x": 1380,
-   "s": 260,
+   "x": 1387,
+   "s": 740,
    "w": 342.69896193771626,
    "h": 240,
    "flip": false,
    "group": "detail"
-  },
-  {
-   "type": "bb_dog",
-   "x": -69,
-   "s": 700,
-   "w": 915.0089126559714,
-   "h": 820,
-   "flip": false,
-   "group": "structure"
   },
   {
    "type": "bb_rock",
@@ -1047,8 +984,8 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_tree_wide_oak",
-   "x": 1458,
-   "s": 1950,
+   "x": 1780,
+   "s": 1710,
    "w": 1230.1826846703732,
    "h": 1100,
    "flip": false,
@@ -1064,9 +1001,36 @@ window.BOBO_CHAPTER={
    "group": "greenery"
   },
   {
+   "type": "p2_rose_bush",
+   "x": 810,
+   "s": 2850,
+   "w": 303.76119402985074,
+   "h": 240,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_hedge",
+   "x": -500,
+   "s": 3390,
+   "w": 548.40625,
+   "h": 230,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_hedge",
+   "x": 1800,
+   "s": 3390,
+   "w": 548.40625,
+   "h": 230,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
    "type": "p2_tree_big_round",
-   "x": 1616,
-   "s": 4050,
+   "x": -485,
+   "s": 4060,
    "w": 1149.548311076198,
    "h": 1150,
    "flip": false,
@@ -1074,7 +1038,7 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_tire_swing_tree",
-   "x": -394,
+   "x": -514,
    "s": 5150,
    "w": 1111.3267326732673,
    "h": 1100,
@@ -1105,6 +1069,42 @@ window.BOBO_CHAPTER={
    "s": 6000,
    "w": 315.6262425447316,
    "h": 210,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_mailbox",
+   "x": 1250,
+   "s": 7000,
+   "w": 273.016894609815,
+   "h": 420,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_lamp_post",
+   "x": 570,
+   "s": 7060,
+   "w": 241.7277486910995,
+   "h": 760,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_hedge",
+   "x": 1790,
+   "s": 6610,
+   "w": 548.40625,
+   "h": 230,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_bush_flowers",
+   "x": 460,
+   "s": 6610,
+   "w": 308.57142857142856,
+   "h": 240,
    "flip": false,
    "group": "greenery"
   }
@@ -1169,7 +1169,7 @@ window.BOBO_CHAPTER={
   "Neighborhood": "crosswalk + lamp posts",
   "Vet Visit": "brick plaza archway",
   "Rainy Day": "wooden bridge over stream (v5 bridge source retained outside active chapter)",
-  "Grammy\u2019s House": "flowered arbor over stone path"
+  "Grammy’s House": "flowered arbor over stone path"
  },
  "chapterTransitionRule": "bottom half outgoing terrain, top half incoming terrain; retain route footprint; no future chapter art generated",
  "identityLock": "Approved v5 standing Rambo, Mr Buck, bunny, cardinal and shared UI files retained byte for byte. Shadow-removal generation was rejected because it redrew Rambo.",
@@ -1209,16 +1209,17 @@ window.BOBO_CHAPTER={
     "s": 320
    },
    "buck": {
-    "x": 923,
-    "s": 1640
+    "x": 1160,
+    "s": 1180
    },
    "bunny": {
-    "x": 520,
-    "s": 640
+    "x": 110,
+    "s": 670
    },
    "cardinal": {
-    "x": 270,
-    "s": 730
+    "x": 330,
+    "s": 1145,
+    "lift": 150
    }
   },
   "2": {
@@ -1228,16 +1229,16 @@ window.BOBO_CHAPTER={
     "s": 820
    },
    "buck": {
-    "x": 923,
-    "s": 1640
+    "x": 1060,
+    "s": 1740
    },
    "bunny": {
-    "x": 520,
-    "s": 640
+    "x": 135,
+    "s": 960
    },
    "cardinal": {
-    "x": 270,
-    "s": 730
+    "x": 1035,
+    "s": 1290
    }
   },
   "3": {
@@ -1247,16 +1248,16 @@ window.BOBO_CHAPTER={
     "s": 1320
    },
    "buck": {
-    "x": 460,
-    "s": 640
+    "x": 785,
+    "s": 2270
    },
    "bunny": {
-    "x": 863,
-    "s": 1640
+    "x": 135,
+    "s": 960
    },
    "cardinal": {
-    "x": 1113,
-    "s": 1730
+    "x": 1210,
+    "s": 2270
    }
   },
   "4": {
@@ -1266,16 +1267,16 @@ window.BOBO_CHAPTER={
     "s": 1820
    },
    "buck": {
-    "x": 460,
-    "s": 640
+    "x": 1185,
+    "s": 2770
    },
    "bunny": {
-    "x": 863,
-    "s": 1640
+    "x": 1135,
+    "s": 2080
    },
    "cardinal": {
-    "x": 1113,
-    "s": 1730
+    "x": 760,
+    "s": 2770
    }
   },
   "5": {
@@ -1285,16 +1286,17 @@ window.BOBO_CHAPTER={
     "s": 2320
    },
    "buck": {
-    "x": 460,
-    "s": 640
+    "x": 1000,
+    "s": 3380
    },
    "bunny": {
-    "x": 863,
-    "s": 1640
+    "x": 110,
+    "s": 2670
    },
    "cardinal": {
-    "x": 1113,
-    "s": 1730
+    "x": 155,
+    "s": 3141,
+    "lift": 450
    }
   },
   "6": {
@@ -1304,16 +1306,16 @@ window.BOBO_CHAPTER={
     "s": 4020
    },
    "buck": {
-    "x": 367,
-    "s": 5340
+    "x": 135,
+    "s": 4880
    },
    "bunny": {
-    "x": 770,
-    "s": 4340
+    "x": 1160,
+    "s": 4160
    },
    "cardinal": {
-    "x": 1020,
-    "s": 4430
+    "x": 1010,
+    "s": 4970
    }
   },
   "7": {
@@ -1323,16 +1325,16 @@ window.BOBO_CHAPTER={
     "s": 4520
    },
    "buck": {
-    "x": 367,
-    "s": 5340
+    "x": 235,
+    "s": 5410
    },
    "bunny": {
-    "x": 770,
-    "s": 4340
+    "x": 1160,
+    "s": 4780
    },
    "cardinal": {
-    "x": 1020,
-    "s": 4430
+    "x": 260,
+    "s": 4990
    }
   },
   "8": {
@@ -1342,16 +1344,16 @@ window.BOBO_CHAPTER={
     "s": 5020
    },
    "buck": {
-    "x": 830,
-    "s": 4340
+    "x": 510,
+    "s": 5970
    },
    "bunny": {
-    "x": 427,
-    "s": 5340
+    "x": 1160,
+    "s": 5220
    },
    "cardinal": {
-    "x": 177,
-    "s": 5430
+    "x": 85,
+    "s": 5970
    }
   },
   "9": {
@@ -1361,16 +1363,16 @@ window.BOBO_CHAPTER={
     "s": 5520
    },
    "buck": {
-    "x": 830,
-    "s": 4340
+    "x": 485,
+    "s": 6470
    },
    "bunny": {
-    "x": 427,
-    "s": 5340
+    "x": 135,
+    "s": 5780
    },
    "cardinal": {
-    "x": 177,
-    "s": 5430
+    "x": 60,
+    "s": 6530
    }
   },
   "10": {
@@ -1380,16 +1382,17 @@ window.BOBO_CHAPTER={
     "s": 6020
    },
    "buck": {
-    "x": 830,
-    "s": 4340
+    "x": 290,
+    "s": 7090
    },
    "bunny": {
-    "x": 427,
-    "s": 5340
+    "x": 1185,
+    "s": 6430
    },
    "cardinal": {
-    "x": 177,
-    "s": 5430
+    "x": 1135,
+    "s": 6841,
+    "lift": 450
    }
   },
   "11": {
@@ -1399,16 +1402,16 @@ window.BOBO_CHAPTER={
     "s": 7720
    },
    "buck": {
-    "x": 923,
-    "s": 9040
+    "x": 1160,
+    "s": 8580
    },
    "bunny": {
-    "x": 520,
-    "s": 8040
+    "x": 110,
+    "s": 8070
    },
    "cardinal": {
-    "x": 270,
-    "s": 8130
+    "x": 330,
+    "s": 8545
    }
   },
   "12": {
@@ -1418,16 +1421,16 @@ window.BOBO_CHAPTER={
     "s": 8220
    },
    "buck": {
-    "x": 923,
-    "s": 9040
+    "x": 1060,
+    "s": 9140
    },
    "bunny": {
-    "x": 520,
-    "s": 8040
+    "x": 135,
+    "s": 8360
    },
    "cardinal": {
-    "x": 270,
-    "s": 8130
+    "x": 1035,
+    "s": 8690
    }
   },
   "13": {
@@ -1437,16 +1440,16 @@ window.BOBO_CHAPTER={
     "s": 8720
    },
    "buck": {
-    "x": 460,
-    "s": 8040
+    "x": 785,
+    "s": 9670
    },
    "bunny": {
-    "x": 863,
-    "s": 9040
+    "x": 135,
+    "s": 8360
    },
    "cardinal": {
-    "x": 1113,
-    "s": 9130
+    "x": 1210,
+    "s": 9670
    }
   },
   "14": {
@@ -1456,16 +1459,16 @@ window.BOBO_CHAPTER={
     "s": 9220
    },
    "buck": {
-    "x": 460,
-    "s": 8040
+    "x": 1185,
+    "s": 10170
    },
    "bunny": {
-    "x": 863,
-    "s": 9040
+    "x": 1135,
+    "s": 9480
    },
    "cardinal": {
-    "x": 1113,
-    "s": 9130
+    "x": 760,
+    "s": 10170
    }
   },
   "15": {
@@ -1475,16 +1478,16 @@ window.BOBO_CHAPTER={
     "s": 9720
    },
    "buck": {
-    "x": 460,
-    "s": 8040
+    "x": 1000,
+    "s": 10780
    },
    "bunny": {
-    "x": 863,
-    "s": 9040
+    "x": 110,
+    "s": 10070
    },
    "cardinal": {
-    "x": 1113,
-    "s": 9130
+    "x": 155,
+    "s": 10541
    }
   },
   "16": {
@@ -1494,16 +1497,16 @@ window.BOBO_CHAPTER={
     "s": 11420
    },
    "buck": {
-    "x": 367,
-    "s": 12740
+    "x": 135,
+    "s": 12280
    },
    "bunny": {
-    "x": 770,
-    "s": 11740
+    "x": 1160,
+    "s": 11560
    },
    "cardinal": {
-    "x": 1020,
-    "s": 11830
+    "x": 1010,
+    "s": 12370
    }
   },
   "17": {
@@ -1513,16 +1516,16 @@ window.BOBO_CHAPTER={
     "s": 11920
    },
    "buck": {
-    "x": 367,
-    "s": 12740
+    "x": 235,
+    "s": 12810
    },
    "bunny": {
-    "x": 770,
-    "s": 11740
+    "x": 1160,
+    "s": 12180
    },
    "cardinal": {
-    "x": 1020,
-    "s": 11830
+    "x": 260,
+    "s": 12390
    }
   },
   "18": {
@@ -1532,16 +1535,16 @@ window.BOBO_CHAPTER={
     "s": 12420
    },
    "buck": {
-    "x": 830,
-    "s": 11740
+    "x": 510,
+    "s": 13370
    },
    "bunny": {
-    "x": 427,
-    "s": 12740
+    "x": 1160,
+    "s": 12620
    },
    "cardinal": {
-    "x": 177,
-    "s": 12830
+    "x": 85,
+    "s": 13370
    }
   },
   "19": {
@@ -1551,16 +1554,16 @@ window.BOBO_CHAPTER={
     "s": 12920
    },
    "buck": {
-    "x": 830,
-    "s": 11740
+    "x": 485,
+    "s": 13870
    },
    "bunny": {
-    "x": 427,
-    "s": 12740
+    "x": 135,
+    "s": 13180
    },
    "cardinal": {
-    "x": 177,
-    "s": 12830
+    "x": 60,
+    "s": 13930
    }
   },
   "20": {
@@ -1570,16 +1573,16 @@ window.BOBO_CHAPTER={
     "s": 13420
    },
    "buck": {
-    "x": 830,
-    "s": 11740
+    "x": 290,
+    "s": 14490
    },
    "bunny": {
-    "x": 427,
-    "s": 12740
+    "x": 1185,
+    "s": 13830
    },
    "cardinal": {
-    "x": 177,
-    "s": 12830
+    "x": 1135,
+    "s": 14241
    }
   },
   "21": {
@@ -1589,16 +1592,16 @@ window.BOBO_CHAPTER={
     "s": 15120
    },
    "buck": {
-    "x": 923,
-    "s": 16440
+    "x": 1160,
+    "s": 15980
    },
    "bunny": {
-    "x": 520,
-    "s": 15440
+    "x": 110,
+    "s": 15470
    },
    "cardinal": {
-    "x": 270,
-    "s": 15530
+    "x": 330,
+    "s": 15945
    }
   },
   "22": {
@@ -1608,16 +1611,16 @@ window.BOBO_CHAPTER={
     "s": 15620
    },
    "buck": {
-    "x": 923,
-    "s": 16440
+    "x": 1060,
+    "s": 16540
    },
    "bunny": {
-    "x": 520,
-    "s": 15440
+    "x": 135,
+    "s": 15760
    },
    "cardinal": {
-    "x": 270,
-    "s": 15530
+    "x": 1035,
+    "s": 16090
    }
   },
   "23": {
@@ -1627,16 +1630,16 @@ window.BOBO_CHAPTER={
     "s": 16120
    },
    "buck": {
-    "x": 460,
-    "s": 15440
+    "x": 785,
+    "s": 17070
    },
    "bunny": {
-    "x": 863,
-    "s": 16440
+    "x": 135,
+    "s": 15760
    },
    "cardinal": {
-    "x": 1113,
-    "s": 16530
+    "x": 1210,
+    "s": 17070
    }
   },
   "24": {
@@ -1646,16 +1649,16 @@ window.BOBO_CHAPTER={
     "s": 16620
    },
    "buck": {
-    "x": 460,
-    "s": 15440
+    "x": 1185,
+    "s": 17570
    },
    "bunny": {
-    "x": 863,
-    "s": 16440
+    "x": 1135,
+    "s": 16880
    },
    "cardinal": {
-    "x": 1113,
-    "s": 16530
+    "x": 760,
+    "s": 17570
    }
   },
   "25": {
@@ -1665,16 +1668,16 @@ window.BOBO_CHAPTER={
     "s": 17120
    },
    "buck": {
-    "x": 460,
-    "s": 15440
+    "x": 1000,
+    "s": 18180
    },
    "bunny": {
-    "x": 863,
-    "s": 16440
+    "x": 110,
+    "s": 17470
    },
    "cardinal": {
-    "x": 1113,
-    "s": 16530
+    "x": 155,
+    "s": 17941
    }
   },
   "26": {
@@ -1684,16 +1687,16 @@ window.BOBO_CHAPTER={
     "s": 18820
    },
    "buck": {
-    "x": 367,
-    "s": 20140
+    "x": 135,
+    "s": 19680
    },
    "bunny": {
-    "x": 770,
-    "s": 19140
+    "x": 1160,
+    "s": 18960
    },
    "cardinal": {
-    "x": 1020,
-    "s": 19230
+    "x": 1010,
+    "s": 19770
    }
   },
   "27": {
@@ -1703,16 +1706,16 @@ window.BOBO_CHAPTER={
     "s": 19320
    },
    "buck": {
-    "x": 367,
-    "s": 20140
+    "x": 235,
+    "s": 20210
    },
    "bunny": {
-    "x": 770,
-    "s": 19140
+    "x": 1160,
+    "s": 19580
    },
    "cardinal": {
-    "x": 1020,
-    "s": 19230
+    "x": 260,
+    "s": 19790
    }
   },
   "28": {
@@ -1722,16 +1725,16 @@ window.BOBO_CHAPTER={
     "s": 19820
    },
    "buck": {
-    "x": 830,
-    "s": 19140
+    "x": 510,
+    "s": 20770
    },
    "bunny": {
-    "x": 427,
-    "s": 20140
+    "x": 1160,
+    "s": 20020
    },
    "cardinal": {
-    "x": 177,
-    "s": 20230
+    "x": 85,
+    "s": 20770
    }
   },
   "29": {
@@ -1741,16 +1744,16 @@ window.BOBO_CHAPTER={
     "s": 20320
    },
    "buck": {
-    "x": 830,
-    "s": 19140
+    "x": 485,
+    "s": 21270
    },
    "bunny": {
-    "x": 427,
-    "s": 20140
+    "x": 135,
+    "s": 20580
    },
    "cardinal": {
-    "x": 177,
-    "s": 20230
+    "x": 60,
+    "s": 21330
    }
   },
   "30": {
@@ -1760,16 +1763,16 @@ window.BOBO_CHAPTER={
     "s": 20820
    },
    "buck": {
-    "x": 830,
-    "s": 19140
+    "x": 290,
+    "s": 21890
    },
    "bunny": {
-    "x": 427,
-    "s": 20140
+    "x": 1185,
+    "s": 21230
    },
    "cardinal": {
-    "x": 177,
-    "s": 20230
+    "x": 1135,
+    "s": 21641
    }
   }
  },
