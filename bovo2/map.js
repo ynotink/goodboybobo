@@ -5,7 +5,7 @@
 //  World units: 1290 = phone width. s = distance along the world (up).
 //  Route repeats: A (right start) → crossing → B (left start) → crossing.
 // =====================================================================
-const QP=new URLSearchParams(location.search),WV=+QP.get('wv')||1700,MKS=+QP.get('mk')||1.15, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=3, TOT=L*LOOPS;
+const CHS=[window.BOBO_CHAPTER,...(window.BOBO_MORE||[])],NCH=CHS.length,QP=new URLSearchParams(location.search),WV=+QP.get('wv')||1700,MKS=+QP.get('mk')||1.15, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=NCH>1?NCH:3, TOT=L*LOOPS;
 const SEC=[{n:'A',len:SA},{n:'X1',len:SX},{n:'B',len:SA},{n:'X2',len:SX}];
 const SECBASE=[0,SA,SA+SX,2*SA+SX];
 const ss=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
@@ -34,16 +34,14 @@ function sprite(w,h,fn){const c=document.createElement('canvas');c.width=w;c.hei
 function ball(g,x,y,r,c1,c2){const gr=g.createRadialGradient(x-r*.35,y-r*.4,r*.1,x,y,r);gr.addColorStop(0,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,7);g.fill()}
 const SPR={},ART={},GROUND={},IM={},ARTLOAD=[];let ART_READY=false,groundRenderer;
 function artImage(path,dict,key){const im=new Image();ARTLOAD.push(new Promise((ok,no)=>{im.onload=ok;im.onerror=()=>no(new Error('Missing art: '+path))}));im.src=path;dict[key]=im;}
-for(const [id,spec] of Object.entries(BOBO_CHAPTER.sprites))artImage(spec.src,SPR,id);
-for(const n of ['A','B'])artImage(BOBO_CHAPTER.terrain[n],GROUND,n);
-for(const n of ['X1','X2'])artImage(BOBO_CHAPTER.connectors[n].ground,GROUND,n);
+CHS.forEach((C,i)=>{const sf=i?'_'+i:'';for(const [id,spec] of Object.entries(C.sprites)){if(i&&BOBO_CHAPTER.sprites[id])continue;if(i)BOBO_CHAPTER.sprites[id]=spec;artImage(spec.src,SPR,id)}
+ for(const n of ['A','B'])artImage(C.terrain[n],GROUND,n+sf);for(const n of ['X1','X2'])artImage(C.connectors[n].ground,GROUND,n+sf);});
 artImage(BOBO_CHAPTER.sky,ART,'sky');artImage(BOBO_CHAPTER.farStrip,ART,'far');
 for(const [id,spec] of Object.entries(BOBO_CHAPTER.characters))artImage(spec.src,IM,id);
 for(const [id,path] of Object.entries(BOBO_CHAPTER.markers))artImage(path,IM,'mk_'+id);
 artImage(BOBO_CHAPTER.star,IM,'star');
-const BASEPROPS=[...BOBO_CHAPTER.props];
-for(const n of ['X1','X2']){const base=n==='X1'?2600:6300;for(const p of BOBO_CHAPTER.connectors[n].parts)BASEPROPS.push({...p,s:p.s+base});}
-const PROPS=[];for(let k=0;k<LOOPS;k++)BASEPROPS.forEach(p=>PROPS.push({...p,s:p.s+k*L}));
+const CHPROPS=CHS.map(C=>{const B=[...C.props];for(const n of ['X1','X2']){const base=n==='X1'?2600:6300;for(const p of (C.connectors[n].parts||[]))B.push({...p,s:p.s+base});}return B});
+const PROPS=[];for(let k=0;k<LOOPS;k++)CHPROPS[k%NCH].forEach(p=>PROPS.push({...p,s:p.s+k*L}));
 
 // ---------------- drum camera (curved ground + open sky) ----------------
 let k,Hv,y0,D,R,AT,cam=0,DPR=1;const AMIN=-0.25,X0=-645,XW=2580;
@@ -130,9 +128,9 @@ function groundedProp(p,q){const profile=GROUND_CONTACTS[p.type],im=SPR[p.type],
 
 function drawObjects(){og.setTransform(DPR,0,0,DPR,0,0);og.clearRect(0,0,innerWidth,innerHeight);HITS=[];visibleAudit=[];groundingAudit=[];
  const items=[],hz=horizonPx(),vis=s=>{const al=(s-cam)/R;return al>AMIN-.35&&al<Math.PI};
- PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});const cr=pos.cardinal,rs=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];if(cr&&cr.lift==null&&vis(cr.s))items.push({s:cr.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:cr.x,s:cr.s,w:rs.w,h:rs.h}});for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})};(BOBO_CHAPTER.cameos||[]).forEach(c=>{for(let k=0;k<LOOPS;k++){const a={...c,s:c.s+k*L};if(!vis(a.s))continue;if(c.who==='cardinal'&&c.lift==null){const rs2=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];items.push({s:a.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:a.x,s:a.s,w:rs2.w,h:rs2.h}})}a.cameo=1;items.push({s:a.s,kind:'ch',n:c.who,a})}});items.sort((a,b)=>b.s-a.s);
+ PROPS.forEach(p=>{if(vis(p.s))items.push({s:p.s,kind:'prop',p})});LEVELS.forEach(m=>{if(vis(m.s))items.push({s:m.s,kind:'mk',m})});const cr=pos.cardinal,rs=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];if(cr&&cr.lift==null&&vis(cr.s))items.push({s:cr.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:cr.x,s:cr.s,w:rs.w,h:rs.h}});for(const n in CHAR){const a=pos[n];if(a&&vis(a.s))items.push({s:a.s,kind:'ch',n,a})};for(let k=0;k<LOOPS;k++)for(const c of (CHS[k%NCH].cameos||[])){{const a={...c,s:c.s+k*L};if(!vis(a.s))continue;if(c.who==='cardinal'&&c.lift==null){const rs2=BOBO_CHAPTER.sprites[BOBO_CHAPTER.cardinalRock];items.push({s:a.s,kind:'prop',p:{type:BOBO_CHAPTER.cardinalRock,x:a.x,s:a.s,w:rs2.w,h:rs2.h}})}a.cameo=1;items.push({s:a.s,kind:'ch',n:c.who,a})}};items.sort((a,b)=>b.s-a.s);
  for(const it of items){const x=it.kind==='prop'?it.p.x:it.kind==='mk'?it.m.x:it.a.x,q=proj(x,it.s),f=q.sc*k,sq=squash(x,it.s);
-  if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;if(GROUND_CONTACTS[p.type])groundedProp(p,q);else {if(q.al<=AT)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
+  if(it.kind==='prop'){const p=it.p,w=p.w*f,h=p.h*f,top=q.py-h;if(q.al>AT&&top>=hz)continue;if(top>innerHeight||q.px+w/2<0||q.px-w/2>innerWidth)continue;if(GROUND_CONTACTS[p.type])groundedProp(p,q);else if(p.lift)fadeDraw(SPR[p.type],q.px,q.py-p.lift*f,w,h,q,p.flip);else {if(q.al<=AT&&!p.noShadow)softShadow(q.px,q.py,w,sq,.18);fadeDraw(SPR[p.type],q.px,q.py,w,h,q,p.flip);}visibleAudit.push({id:p.type,s:p.s,top,base:q.py,horizon:hz,crest:q.al>AT});}
   else if(it.kind==='ch'){const c=CHAR[it.n],img=IM[it.n],h=c.h*f,w=c.w*f,hop=(it.a.hop||0)*f,perch=it.n==='cardinal'?(it.a.lift??BOBO_CHAPTER.cardinalPerch)*f:0,foot=q.py-hop-perch;if(q.al>AT&&foot-h>=hz)continue;if(it.a.cameo&&q.py>tabTop()-10)continue;const flip=it.a.flip!=null?it.a.flip:it.n==='buck'?it.a.x<routeX(it.s):pos.face<0;if(it.n!=='cardinal'&&q.al<=AT)characterGrounding(c,q.px,foot,w,h,sq,flip);fadeDraw(img,q.px,foot,w,h,q,flip);visibleAudit.push({id:it.n,kind:'character',s:it.s,x:it.a.x,top:foot-h,base:foot,left:q.px-w/2,right:q.px+w/2});}
   else{const m=it.m,kind=m.L<cur?'completed':m.L===cur?'current':'locked',W=BOBO_CHAPTER.markerWidth*MKS*f,img=IM['mk_'+kind],hs=W/512*sq*.8,top=q.py-205*hs;if(q.al>AT&&top>=hz)continue;
    og.save();if(q.al>AT)og.globalAlpha=ss((hz-top)/24);og.translate(q.px,q.py);og.scale(W/512,hs);
