@@ -812,114 +812,6 @@ window.BOBO_CHAPTER={
  },
  "props": [
   {
-   "type": "p2_tree_big_round",
-   "x": 114,
-   "s": 350,
-   "w": 1149.548311076198,
-   "h": 1150,
-   "flip": false,
-   "group": "structure"
-  },
-  {
-   "type": "bb_flrock",
-   "x": 1380,
-   "s": 260,
-   "w": 342.69896193771626,
-   "h": 240,
-   "flip": false,
-   "group": "detail"
-  },
-  {
-   "type": "bb_dog",
-   "x": 153,
-   "s": 950,
-   "w": 915.0089126559714,
-   "h": 820,
-   "flip": false,
-   "group": "structure"
-  },
-  {
-   "type": "bb_rock",
-   "x": 1286,
-   "s": 1250,
-   "w": 331.57894736842104,
-   "h": 170,
-   "flip": false,
-   "group": "detail"
-  },
-  {
-   "type": "bb_bush",
-   "x": -73,
-   "s": 1630,
-   "w": 375.3,
-   "h": 270,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_tree_wide_oak",
-   "x": 1138,
-   "s": 1950,
-   "w": 1230.1826846703732,
-   "h": 1100,
-   "flip": false,
-   "group": "structure"
-  },
-  {
-   "type": "bb_fern",
-   "x": 1080,
-   "s": 2340,
-   "w": 285.6043956043956,
-   "h": 230,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_tree_big_round",
-   "x": 1176,
-   "s": 4050,
-   "w": 1149.548311076198,
-   "h": 1150,
-   "flip": false,
-   "group": "structure"
-  },
-  {
-   "type": "p2_tire_swing_tree",
-   "x": -114,
-   "s": 5150,
-   "w": 1111.3267326732673,
-   "h": 1100,
-   "flip": false,
-   "group": "structure"
-  },
-  {
-   "type": "p2_birdbath",
-   "x": 1267,
-   "s": 5250,
-   "w": 327.9012345679012,
-   "h": 400,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_wheelbarrow_flowers",
-   "x": 1391,
-   "s": 5910,
-   "w": 287.1065493646139,
-   "h": 230,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
-   "type": "p2_lavender_row",
-   "x": 175,
-   "s": 6000,
-   "w": 315.6262425447316,
-   "h": 210,
-   "flip": false,
-   "group": "greenery"
-  },
-  {
    "type": "p2_rose_bush",
    "x": 810,
    "s": 2850,
@@ -1107,6 +999,114 @@ window.BOBO_CHAPTER={
    "h": 400,
    "flip": false,
    "group": "structure"
+  },
+  {
+   "type": "p2_tree_big_round",
+   "x": -326,
+   "s": 350,
+   "w": 1149.548311076198,
+   "h": 1150,
+   "flip": false,
+   "group": "structure"
+  },
+  {
+   "type": "bb_flrock",
+   "x": 1380,
+   "s": 260,
+   "w": 342.69896193771626,
+   "h": 240,
+   "flip": false,
+   "group": "detail"
+  },
+  {
+   "type": "bb_dog",
+   "x": -69,
+   "s": 700,
+   "w": 915.0089126559714,
+   "h": 820,
+   "flip": false,
+   "group": "structure"
+  },
+  {
+   "type": "bb_rock",
+   "x": 1286,
+   "s": 1250,
+   "w": 331.57894736842104,
+   "h": 170,
+   "flip": false,
+   "group": "detail"
+  },
+  {
+   "type": "bb_bush",
+   "x": -73,
+   "s": 1630,
+   "w": 375.3,
+   "h": 270,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_tree_wide_oak",
+   "x": 1458,
+   "s": 1950,
+   "w": 1230.1826846703732,
+   "h": 1100,
+   "flip": false,
+   "group": "structure"
+  },
+  {
+   "type": "bb_fern",
+   "x": 1080,
+   "s": 2340,
+   "w": 285.6043956043956,
+   "h": 230,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_tree_big_round",
+   "x": 1616,
+   "s": 4050,
+   "w": 1149.548311076198,
+   "h": 1150,
+   "flip": false,
+   "group": "structure"
+  },
+  {
+   "type": "p2_tire_swing_tree",
+   "x": -394,
+   "s": 5150,
+   "w": 1111.3267326732673,
+   "h": 1100,
+   "flip": false,
+   "group": "structure"
+  },
+  {
+   "type": "p2_birdbath",
+   "x": 1267,
+   "s": 5250,
+   "w": 327.9012345679012,
+   "h": 400,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_wheelbarrow_flowers",
+   "x": 1391,
+   "s": 5910,
+   "w": 287.1065493646139,
+   "h": 230,
+   "flip": false,
+   "group": "greenery"
+  },
+  {
+   "type": "p2_lavender_row",
+   "x": 175,
+   "s": 6000,
+   "w": 315.6262425447316,
+   "h": 210,
+   "flip": false,
+   "group": "greenery"
   }
  ],
  "reviewPositions": {
