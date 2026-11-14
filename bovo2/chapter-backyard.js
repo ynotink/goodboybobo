@@ -939,8 +939,8 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "bb_dog",
-   "x": -90,
-   "s": 800,
+   "x": -120,
+   "s": 600,
    "w": 915.0089126559714,
    "h": 820,
    "flip": false,
@@ -1083,7 +1083,7 @@ window.BOBO_CHAPTER={
   },
   {
    "type": "p2_lamp_post",
-   "x": 330,
+   "x": 200,
    "s": 7060,
    "w": 241.7277486910995,
    "h": 760,
@@ -1215,7 +1215,7 @@ window.BOBO_CHAPTER={
   "2": {
    "face": -1,
    "rambo": {
-    "x": 543,
+    "x": 253,
     "s": 600
    },
    "buck": null,
@@ -1265,8 +1265,8 @@ window.BOBO_CHAPTER={
   "7": {
    "face": 1,
    "rambo": {
-    "x": 747,
-    "s": 4300
+    "x": 1037,
+    "s": 4520
    },
    "buck": null,
    "bunny": null,
@@ -1315,8 +1315,8 @@ window.BOBO_CHAPTER={
   "12": {
    "face": -1,
    "rambo": {
-    "x": 543,
-    "s": 8000
+    "x": 253,
+    "s": 8220
    },
    "buck": null,
    "bunny": null,
@@ -1365,7 +1365,7 @@ window.BOBO_CHAPTER={
   "17": {
    "face": 1,
    "rambo": {
-    "x": 747,
+    "x": 1037,
     "s": 11700
    },
    "buck": null,
@@ -1508,19 +1508,14 @@ window.BOBO_CHAPTER={
  "cameos": [
   {
    "who": "bunny",
-   "x": -40,
-   "s": 640
+   "x": 170,
+   "s": 360
   },
   {
    "who": "cardinal",
-   "x": 331,
-   "s": 799,
+   "x": 301,
+   "s": 599,
    "lift": 150
-  },
-  {
-   "who": "buck",
-   "x": 1000,
-   "s": 3380
   },
   {
    "who": "cardinal",

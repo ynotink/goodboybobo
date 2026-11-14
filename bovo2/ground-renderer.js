@@ -21,8 +21,9 @@ class GLDrumGround {
  precision highp float;in vec2 world;uniform sampler2D ${names.map(n=>'t'+n).join(',')};uniform float R,cam,AT;out vec4 o;
  vec4 sec(int ch,int n,float s){${branch}return vec4(0.);}
  int chOf(float k){return int(mod(k,${NCH}.));}
- void main(){float k=floor(world.y/7400.);float s=world.y-k*7400.;int ch=chOf(k),pc=chOf(k-1.);vec4 c;
- if(s<140.)c=mix(sec(pc,3,s+7400.),sec(ch,0,s),smoothstep(-140.,140.,s));
+ void main(){float wy=world.y<0.?-world.y:world.y;float k=floor(wy/7400.);float s=wy-k*7400.;int ch=chOf(k),pc=chOf(k-1.);vec4 c;
+ if(s<140.&&k<.5)c=sec(ch,0,s);
+ else if(s<140.)c=mix(sec(pc,3,s+7400.),sec(ch,0,s),smoothstep(-140.,140.,s));
  else if(s>7260.)c=mix(sec(ch,3,s),sec(chOf(k+1.),0,s-7400.),smoothstep(7260.,7540.,s));
  else if(abs(s-2600.)<140.)c=mix(sec(ch,0,s),sec(ch,1,s),smoothstep(2460.,2740.,s));
  else if(abs(s-3700.)<140.)c=mix(sec(ch,1,s),sec(ch,2,s),smoothstep(3560.,3840.,s));
@@ -48,8 +49,9 @@ class CPUDrumGround{
  const NCH=Math.max(1,Math.round(Object.keys(this.tex).length/4)),suf=c=>c?'_'+c:'',sections=[['A',0,2600],['X1',2600,1100],['B',3700,2600],['X2',6300,1100]],smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
  const descriptor=(n,s,row,ch)=>{const [name,start,len]=sections[n],chain=this.tex[name+suf(ch)],top=chain[0],footprint=Math.max(top.w/row.width,row.worldDy*top.h/len),lod=Math.max(0,Math.min(chain.length-1,Math.floor(Math.log2(Math.max(1,footprint))))),t=chain[lod],sy=Math.max(0,Math.min(t.h-1,(1-(s-start)/len)*(t.h-1))),y0=Math.floor(sy);return {t,base0:y0*t.w,base1:Math.min(t.h-1,y0+1)*t.w,fy:sy-y0}};
  const sample=(d,u)=>{const {t,base0,base1,fy}=d,sx=Math.max(0,Math.min(t.w-1,u*(t.w-1))),x0=Math.floor(sx),x1=Math.min(t.w-1,x0+1),fx=sx-x0,a=t.px[base0+x0],b=t.px[base0+x1],c=t.px[base1+x0],e=t.px[base1+x1],v=(1-fx)*(1-fy),w=fx*(1-fy),z=(1-fx)*fy,q=fx*fy;return [(a&255)*v+(b&255)*w+(c&255)*z+(e&255)*q,((a>>>8)&255)*v+((b>>>8)&255)*w+((c>>>8)&255)*z+((e>>>8)&255)*q,((a>>>16)&255)*v+((b>>>16)&255)*w+((c>>>16)&255)*z+((e>>>16)&255)*q]};
- for(const row of this.rows){const wy=cam+row.a*R,kk=Math.floor(wy/7400),s=wy-kk*7400,cm=k=>((k%NCH)+NCH)%NCH,ch=cm(kk);let n=s<2600?0:s<3700?1:s<6300?2:3,d1,d2=null,mix=0;
- if(s<140){d1=descriptor(3,s+7400,row,cm(kk-1));d2=descriptor(0,s,row,ch);mix=smooth((s+140)/280)}
+ for(const row of this.rows){const wy=Math.abs(cam+row.a*R),kk=Math.floor(wy/7400),s=wy-kk*7400,cm=k=>((k%NCH)+NCH)%NCH,ch=cm(kk);let n=s<2600?0:s<3700?1:s<6300?2:3,d1,d2=null,mix=0;
+ if(s<140&&kk===0){d1=descriptor(0,s,row,ch)}
+ else if(s<140){d1=descriptor(3,s+7400,row,cm(kk-1));d2=descriptor(0,s,row,ch);mix=smooth((s+140)/280)}
  else if(s>7260){d1=descriptor(3,s,row,ch);d2=descriptor(0,s-7400,row,cm(kk+1));mix=smooth((s-7260)/280)}
  else {for(const [join,l,r] of [[2600,0,1],[3700,1,2],[6300,2,3]])if(Math.abs(s-join)<140){d1=descriptor(l,s,row,ch);d2=descriptor(r,s,row,ch);mix=smooth((s-join+140)/280);break;}if(!d1)d1=descriptor(n,s,row,ch)}
  const fade=row.haze,keep=1-fade;

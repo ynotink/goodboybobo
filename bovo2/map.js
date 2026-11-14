@@ -5,7 +5,7 @@
 //  World units: 1290 = phone width. s = distance along the world (up).
 //  Route repeats: A (right start) → crossing → B (left start) → crossing.
 // =====================================================================
-const CHS=[window.BOBO_CHAPTER,...(window.BOBO_MORE||[])],NCH=CHS.length,QP=new URLSearchParams(location.search),WV=+QP.get('wv')||1700,MKS=+QP.get('mk')||1.15, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=NCH>1?NCH:3, TOT=L*LOOPS;
+const CHS=[window.BOBO_CHAPTER,...(window.BOBO_MORE||[])],NCH=CHS.length,QP=new URLSearchParams(location.search),WV=+QP.get('wv')||1140,MKS=+QP.get('mk')||1, SA=2600, SX=1100, L=2*(SA+SX), LOOPS=NCH>1?NCH:3, TOT=L*LOOPS;
 const SEC=[{n:'A',len:SA},{n:'X1',len:SX},{n:'B',len:SA},{n:'X2',len:SX}];
 const SECBASE=[0,SA,SA+SX,2*SA+SX];
 const ss=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
@@ -48,7 +48,7 @@ let k,Hv,y0,D,R,AT,cam=0,DPR=1;const AMIN=-0.25,X0=-645,XW=2580;
 function tang(){let a=0,b=Math.PI;for(let i=0;i<60;i++){const m=(a+b)/2,f=y0*Math.sin(m)+R-(R+D)*Math.cos(m);if(f<0)a=m;else b=m}return(a+b)/2}
 function projA(x,al){const X=x-645,Y=y0+R*Math.sin(al),Z=-R*(1-Math.cos(al)),sc=D/(D-Z);return{px:innerWidth/2+X*sc*k,py:innerHeight/2-Y*sc*k,sc,al}}
 function proj(x,s){return projA(x,(s-cam)/R)}
-function geom(){k=innerWidth/WV;Hv=WV*innerHeight/innerWidth;y0=-Hv/2-80;D=(+QP.get('d')||1.15)*Hv;
+function geom(){k=innerWidth/WV;Hv=WV*innerHeight/innerWidth;y0=-Hv/2-(QP.has('tilt')?+QP.get('tilt'):1.1)*Hv;D=(+QP.get('d')||1.15)*Hv;
  const want=Hv/2-Hv*0.30;let lo=Hv*0.2,hi=Hv*60;
  for(let i=0;i<70;i++){R=(lo+hi)/2;AT=tang();const p=projA(645,AT),yw=(innerHeight/2-p.py)/k;if(yw>want)hi=R;else lo=R}
  R=(lo+hi)/2;AT=tang()}
@@ -211,13 +211,13 @@ function fitUI(){const S=innerWidth/1290,fh=innerHeight/S;fixed.style.transform=
  fixed.querySelectorAll('img,canvas,div').forEach(e=>{if(e.dataset.by===undefined)e.dataset.by=parseFloat(e.style.top);const by=+e.dataset.by;if(by>=2400)e.style.top=(by+off)+'px'})}
 
 // ---------------- camera input (camera only; never moves characters) ----------------
-const clampC=s=>Math.max(-1200,Math.min(TOT-2600,s));
+const clampC=s=>Math.max(-3200,Math.min(TOT-2600,s));
 function tabTop(){return innerHeight-346*innerWidth/1290}
 function cameraForY(s,y){let lo=s-Math.PI*R*.45,hi=s+200;for(let j=0;j<50;j++){const c=(lo+hi)/2,p=projA(645,(s-c)/R);if(p.py<y)lo=c;else hi=c}return clampC((lo+hi)/2)}
-function startCamera(n){const m=LEVELS[n-1],bottom=tabTop(),top=horizonPx(),target=bottom-(+QP.get('cy')||.22)*(bottom-top);let c=cameraForY(m.s,target);if(n<=2)c=Math.min(c,cameraForY(LEVELS[0].s,bottom-120*k));return c}
+function startCamera(n){const m=LEVELS[n-1],bottom=tabTop(),top=horizonPx(),target=bottom-(+QP.get('cy')||.35)*(bottom-top);let c=cameraForY(m.s,target);if(n<=2)c=Math.min(c,cameraForY(LEVELS[0].s,bottom-120*k));return c}
 
 let drag=null,vel=0,glide=null;
-function camFor(sTarget){return cameraForY(sTarget,tabTop()-(+QP.get('cy')||.22)*(tabTop()-horizonPx()))}
+function camFor(sTarget){return cameraForY(sTarget,tabTop()-(+QP.get('cy')||.35)*(tabTop()-horizonPx()))}
 function glideTo(s){glide={from:cam,to:clampC(s),t0:performance.now(),dur:700};vel=0}
 let dragFrames=[],lastDrag=null;
 function down(x,y,t){dragFrames=[];drag={x,y,c0:cam,t,moved:0,started:performance.now()};vel=0;glide=null}
