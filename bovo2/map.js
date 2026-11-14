@@ -33,7 +33,7 @@ const seenLv=Math.max(1,Math.min(cur,+(localStorage.getItem(SEEN)||cur)));
 function sprite(w,h,fn){const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);return c}
 function ball(g,x,y,r,c1,c2){const gr=g.createRadialGradient(x-r*.35,y-r*.4,r*.1,x,y,r);gr.addColorStop(0,c1);gr.addColorStop(1,c2);g.fillStyle=gr;g.beginPath();g.arc(x,y,r,0,7);g.fill()}
 const SPR={},ART={},GROUND={},IM={},ARTLOAD=[];let ART_READY=false,groundRenderer;
-function artImage(path,dict,key){const im=new Image();ARTLOAD.push(new Promise((ok,no)=>{im.onload=ok;im.onerror=()=>no(new Error('Missing art: '+path))}));im.src=path;dict[key]=im;}
+function artImage(path,dict,key){const im=new Image();ARTLOAD.push(new Promise((ok,no)=>{im.onload=ok;im.onerror=()=>no(new Error('Missing art: '+path))}));im.src=path+(path.includes('?')?'':'?v=b25');dict[key]=im;}
 CHS.forEach((C,i)=>{const sf=i?'_'+i:'';for(const [id,spec] of Object.entries(C.sprites)){if(i&&BOBO_CHAPTER.sprites[id])continue;if(i)BOBO_CHAPTER.sprites[id]=spec;artImage(spec.src,SPR,id)}
  for(const n of ['A','B'])artImage(C.terrain[n],GROUND,n+sf);for(const n of ['X1','X2'])artImage(C.connectors[n].ground,GROUND,n+sf);});
 artImage(BOBO_CHAPTER.sky,ART,'sky');artImage(BOBO_CHAPTER.farStrip,ART,'far');
