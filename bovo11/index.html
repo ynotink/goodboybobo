@@ -1,11 +1,11 @@
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Good Boy Bobo — Home (new)</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Good Boy Bobo — Home (new)</title>
 <style>
 @font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
 html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-select:none;user-select:none}
 #stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
-#stage canvas{position:absolute;inset:0;width:100%;height:100%}
+#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%)}#bg{position:fixed;inset:-40px;background:url(home/scene.png?v=2) center bottom/cover;filter:blur(18px) brightness(.85)}#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}#stage canvas{position:absolute;inset:0;width:100%;height:100%}
 .L{position:absolute;display:block;-webkit-user-drag:none}
 .btn{cursor:pointer;transition:transform .12s}.btn:active{transform:scale(.94)}
 #logo{animation:float 3.4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-1.2%)}}
@@ -14,30 +14,33 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 #lvl{position:absolute;font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,70,0,.45);text-align:center;pointer-events:none}
 #tag{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 4px);z-index:9;font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 </style></head><body>
-<div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div>
-<div id="tag">NEW HOME · preview</div>
+<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui"></div>
+
 <script>
 'use strict';
-const IW=852,IH=1846,CH=461,RW=1290,RH=2796,A='../a/home/';
+const IW=852,IH=1846,CH=553,RW=1290,RH=2796,A='../a/home/';
 const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx=document.getElementById('fx');
 // [file, x, y, w, h] in the original 1290x2796 layout (logo moved up and smaller so the cast shows)
 const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110],
- ['L05_logo',345,312,500,247,'logo'],['L10_daily',188,1817,443,304,'daily'],['L11_events',664,1816,438,306,'events'],['L12_play',145,2135,1001,316,'play'],
+ ['L05_logo',320,395,660,325,'logo'],['L10_daily',188,1817,443,304,'daily'],['L11_events',664,1816,438,306,'events'],['L12_play',145,2135,1001,316,'play'],
  ['L13_bottom_bar',0,2450,1290,346],['L14_active_home_tile',19,2450,226,225],['L15_nav_home',43,2450,171,208],['L16_nav_map',302,2450,169,208,'map'],
  ['L17_nav_toys',562,2450,166,208],['L18_nav_friends',800,2450,205,208],['L19_nav_shop',1082,2450,158,208]];
-const P=v=>v*100+'%';
-for(const [f,x,y,w,h,id] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L'+(id&&id!=='logo'?' btn':'');if(id)i.id=id;
- i.style.left=P(x/RW);i.style.top=P(y/RH);i.style.width=P(w/RW);i.style.height=P(h/RH);stage.appendChild(i)}
-const t1=document.createElement('div');t1.className='t';t1.textContent='5';Object.assign(t1.style,{left:P(200/RW),width:P(150/RW),justifyContent:'center',top:P(228/RH),height:P(111/RH)});stage.appendChild(t1);
-const t2=document.createElement('div');t2.className='t';t2.textContent='430';Object.assign(t2.style,{left:P(640/RW),width:P(190/RW),justifyContent:'center',top:P(222/RH),height:P(123/RH)});stage.appendChild(t2);
-const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';Object.assign(lv.style,{left:P(145/RW),width:P(1001/RW),top:P(2318/RRH())});stage.appendChild(lv);
+const P=v=>v*100+'%',ui=document.getElementById('ui');let UW=390;const V=v=>v/RW*UW+'px';const PL=[];
+function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
+function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);if(h)el.style.height=V(h);
+ if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-(h||0));el.style.top=''}}
+ document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px');lv.style.fontSize=UW*.06+'px'}
+for(const [f,x,y,w,h,id] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L'+(id&&id!=='logo'?' btn':'');if(id)i.id=id;place(i,x,y,w,h)}
+const t1=document.createElement('div');t1.className='t';t1.textContent='5';t1.style.justifyContent='center';place(t1,200,228,150,111);
+const t2=document.createElement('div');t2.className='t';t2.textContent='430';t2.style.justifyContent='center';place(t2,640,222,190,123);
+const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';place(lv,145,2318,1001,0);lv.style.bottom=V(2796-2318-80);
 function RRH(){return RH}
-let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');lvlN=Object.keys(g.stars||{}).length+1}catch(e){}lv.textContent='Level '+lvlN;
+let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');lvlN=Object.keys(g.stars||{}).length+1}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
 const go=u=>()=>location.href=u;
 document.getElementById('play').onclick=go('../bovo10/index.html');document.getElementById('map').onclick=go('../bovo10/index.html');
-function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}
+function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
  stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
- document.querySelectorAll('.t').forEach(e=>e.style.fontSize=w*.054+'px');lv.style.fontSize=w*.06+'px'}
+ layout();lv.style.bottom=V(2796-2318-80)}
 size();addEventListener('resize',size);
 const gl=cv.getContext('webgl',{alpha:false,antialias:false});
 const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
@@ -61,7 +64,7 @@ const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attac
 gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
 const U=n=>gl.getUniformLocation(pr,n);
 const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
- for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src='home/'+f+'?v=1'});
+ for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src='home/'+f+'?v=2'});
 const TW=[[.03,.6],[.05,.64],[.96,.63],[.92,.66],[.04,.58],[.1,.2],[.2,.13]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));
 const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
 Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),CH/IH);
