@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — Backyard scene 1</title>
+<style>
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
+#scene{position:fixed;left:50%;top:0;transform:translateX(-50%)}
+#scene canvas{position:absolute;inset:0;width:100%;height:100%}
+.o{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
+.ch{filter:sepia(.14) saturate(1.1) brightness(1.02) contrast(.97)}
+.sh{position:absolute;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(35,45,10,.55),rgba(35,45,10,.25) 55%,rgba(35,45,10,0));pointer-events:none}
+.n{position:absolute;transform:translate(-50%,-50%);font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35);pointer-events:none}
+#hud{position:fixed;left:0;right:0;top:0;height:120px;pointer-events:none}
+#hud img{position:absolute;top:calc(env(safe-area-inset-top) + 34px);height:38px}
+#hud .t{position:absolute;top:calc(env(safe-area-inset-top) + 34px);height:38px;line-height:38px;font-family:Nun;font-size:22px;color:#14504e}
+#tabs{position:fixed;left:0;bottom:0;width:100%;pointer-events:none}
+#paw{position:absolute;transform:translate(-50%,-50%);filter:drop-shadow(0 0 10px #ffe27a) drop-shadow(0 0 4px #ffd34d) drop-shadow(0 4px 3px rgba(0,0,0,.35));animation:bob 1.2s ease-in-out infinite;pointer-events:none;color:#f5b400}
+@keyframes bob{50%{margin-top:-6px}}
+#win{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(27vw + 14px);z-index:9;font:800 16px system-ui;border:0;border-radius:16px;padding:10px 18px;color:#fff;background:linear-gradient(#57c84d,#2f9a2b);box-shadow:0 4px 0 #1f6e1c}
+#tog{position:fixed;right:10px;top:calc(env(safe-area-inset-top) + 84px);z-index:9;font:800 13px system-ui;border:0;border-radius:14px;padding:8px 11px;color:#fff;background:rgba(18,95,90,.9)}
+#tog.off{background:rgba(120,120,120,.9)}
+#tag{position:fixed;left:8px;top:calc(env(safe-area-inset-top) + 86px);z-index:9;font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
+</style></head><body>
+<div id="scene"><canvas id="gl"></canvas><canvas id="fx"></canvas></div>
+<div id="hud"><img src="L02_heart_counter.png" style="left:12px"><div class="t" style="left:68px">5</div>
+<img src="L03_bone_counter.png" style="left:142px"><div class="t" style="left:198px">430</div>
+<img src="L04_gear.png" style="right:12px"></div>
+<img id="tabs" src="tabs.png?v=1">
+<button id="tog">Motion: ON</button><div id="tag">POSTER SCENE · Backyard 1</div><button id="win">Win level ▶</button>
+<script>
+'use strict';
+const IW=1024,IH=1536,CH=460;
+const scene=document.getElementById('scene'),cv=document.getElementById('gl'),fx=document.getElementById('fx'),fg=fx.getContext('2d');
+let DPR=1,motion=true;
+function put(src,x,y,w,cls){const i=document.createElement('img');i.src=src;i.className='o '+(cls||'');i.style.left=x*100+'%';i.style.top=y*100+'%';i.style.width=w*100+'%';scene.appendChild(i);return i}
+function shadow(x,y,w){const d=document.createElement('div');d.className='sh';d.style.left=x*100+'%';d.style.top=y*100+'%';d.style.width=w*100+'%';d.style.height=w*30+'%';d.style.aspectRatio='auto';scene.appendChild(d);d.style.height='';d.dataset.w=w}
+// level spots on the painted path (image fractions) and button width
+const SP=[[.45,.885,.20],[.53,.745,.16],[.575,.63,.13],[.53,.51,.10],[.495,.425,.08]];
+// cast: [img, x, feetY, height as fraction of picture height]
+const CAST=[];
+const SH=[];
+for(const [src,x,y,h] of CAST){const im=new Image();im.src=src;SH.push([x,y,h,src])}
+let cur=0;const BTN=[];
+const paw=document.createElement('img');paw.id='paw';paw.src='paw.webp';
+function build(){scene.querySelectorAll('.o,.sh,.n').forEach(e=>e.remove());BTN.length=0;
+ SP.forEach(([x,y,w],i)=>{const st=i<cur?'done':i===cur?'cur':'lock';const im=put(st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_lock.png',x,y+w*.18,w);BTN.push(im);
+  if(st!=='lock'){const n=document.createElement('div');n.className='n';n.textContent=i+1;n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(w*.33*scene.clientWidth)+'px';scene.appendChild(n)}});
+ const [x,y,w]=SP[cur];paw.style.left=x*100+'%';paw.style.top=(y-w*.42)*100+'%';paw.style.width=(w*.62*100)+'%';scene.appendChild(paw)}
+function win(){if(cur>=SP.length-1){cur=0;build();return}const [x0,y0,w0]=SP[cur],[x1,y1,w1]=SP[cur+1];const t0=performance.now();
+ try{new Audio('../au/rambo_bark.mp3').play()}catch(e){}
+ (function hop(now){const u=Math.min(1,(now-t0)/900),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;const x=x0+(x1-x0)*e,y=(y0-w0*.42)+((y1-w1*.42)-(y0-w0*.42))*e-Math.sin(u*Math.PI)*.08,w=w0+(w1-w0)*e;
+  paw.style.left=x*100+'%';paw.style.top=y*100+'%';paw.style.width=(w*.62*100)+'%';if(u<1)requestAnimationFrame(hop);else{cur++;build()}})(t0)}
+function size(){DPR=Math.min(2.5,devicePixelRatio||1);const tabH=innerWidth*327/1170;let w=innerWidth*1.12,h=w*IH/IW;const bottom=innerHeight-tabH+innerWidth*.035;if(h<bottom){h=bottom;w=h*IW/IH}
+ scene.style.width=w+'px';scene.style.height=h+'px';scene.style.top=(bottom-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;build()}
+const gl=cv.getContext('webgl',{alpha:false,antialias:false});
+const vs=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
+const fs=`precision highp float;varying vec2 uv;uniform sampler2D tB,tM,tS,tC,tR;uniform float t,on,chf;uniform vec2 px;
+void main(){vec4 m=texture2D(tM,uv);vec2 d=vec2(0.);
+ float wind=.72+.28*sin(t*.31)+.35*max(0.,sin(t*.17+1.))*max(0.,sin(t*.9));
+ float ph=uv.x*2.4;float sway=.78*sin(t*1.2+ph)+.22*sin(t*2.6+ph*2.3);
+ d.x+=m.r*px.x*17.*sway*wind;d.y+=m.r*px.y*3.*sin(t*1.2+ph+1.3)*wind;
+ float gust=exp(-pow(uv.x*.55+uv.y*1.1-fract(t*.09)*2.4+.5,2.)/.02);
+ float blade=sin(uv.x*14.-t*2.2+uv.y*20.);
+ d.x+=m.g*px.x*(2.+3.5*gust)*blade*wind;
+ d.x+=m.b*px.x*6.*sin(t*1.8+uv.x*20.+uv.y*12.)*wind;
+ d*=on;vec3 c=texture2D(tB,uv-d).rgb;
+ c+=m.g*gust*vec3(.08,.10,.03)*on;c+=m.r*(sway*.022)*vec3(1.,1.,.6)*on;
+ if(uv.y<chf){vec3 sky=texture2D(tS,vec2(uv.x,uv.y/chf)).rgb;vec3 clean=mix(c,sky,texture2D(tR,vec2(uv.x,uv.y/chf)).r*m.a);
+  vec4 c1=texture2D(tC,vec2(fract(uv.x-t*.012*on),uv.y/chf));c=mix(clean,c1.rgb,c1.a*m.a);}
+ float r=length((uv-vec2(.0,.17))*vec2(1.,1.6));c+=vec3(1.,.92,.65)*exp(-r*r/.03)*(.08+.05*sin(t*.7))*on;
+ gl_FragColor=vec4(c,1.);}`;
+function sh(k,src){const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
+const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
+const U=n=>gl.getUniformLocation(pr,n);
+function tex(src,unit,name){return new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=src+'?v=2'})}
+size();addEventListener('resize',size);
+const TW=[[.08,.87],[.07,.9],[.84,.89],[.9,.86],[.98,.42],[.95,.4],[.34,.34],[.38,.35],[.1,.42]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));
+const POL=[...Array(22)].map(()=>({x:Math.random(),y:.35+Math.random()*.6,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
+Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{
+ gl.uniform1f(U('chf'),CH/IH);let on=1,t0=performance.now(),last=t0;
+ (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
+  gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  const W=fx.width,H=fx.height;fg.clearRect(0,0,W,H);fg.globalAlpha=on;
+  for(const s of TW){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,r=W*.012*a;
+   fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-r,y);fg.lineTo(x+r,y);fg.moveTo(x,y-r);fg.lineTo(x,y+r);fg.stroke()}
+  for(const p of POL){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.3){p.y=1;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);
+   fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
+  fg.globalAlpha=1;requestAnimationFrame(frame)})(t0)});
+document.getElementById('win').onclick=win;document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
+</script></body></html>
