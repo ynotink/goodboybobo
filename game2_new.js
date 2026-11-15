@@ -78,7 +78,7 @@ setInterval(()=>{if(typeof S!=='undefined'&&S&&(S.booster??-1)!==lastSel)drawHud
 // tap areas (approved pixel boxes)
 const hit=(b,fn,cls='h')=>{const d=document.createElement('div');d.className=cls;Object.assign(d.style,{left:b[0]*KC+'px',top:b[1]*KC+'px',width:b[2]*KC+'px',height:b[3]*KC+'px'});d.onclick=fn;ui.appendChild(d);return d};
 [[41, 2233, 288, 257], [348, 2233, 288, 257], [659, 2233, 285, 257], [964, 2233, 288, 257]].forEach((b,k)=>hit(b,()=>useBooster(k),'h bh'));
-hit([42,2574,157,157],()=>showPause());
+hit([42,2574,157,157],()=>window.g2pause());
 
 window.g2fit=()=>{const off=window.G2OFF||0;top.style.top='0px';top.style.height=off+'px';
  [skin,hudBox,ui].forEach(e=>e.style.top=off+'px');pop.style.height=app.style.height;cel.style.height=app.style.height;
@@ -135,7 +135,7 @@ window.win=async function(){
  const _show=window.showOv;window.showOv=()=>{};await _win();window.showOv=_show;
  const kk=S.score/target3(),stars=kk>=1?3:kk>=.65?2:1;
  const bones=10*stars;try{const G0=JSON.parse(localStorage.getItem('gbb')||'{}');const GG=typeof G!=='undefined'?G:{};G0.bones=(G0.bones!=null?+G0.bones:(+GG.bones||430))+bones;G0.hearts=G0.hearts??(GG.hearts??3);localStorage.setItem('gbb',JSON.stringify(G0));GG.bones=G0.bones}catch(e){}
- cel.classList.add('on');let done=false;const go=()=>{if(done)return;done=true;cel.classList.remove('on');results(stars,bones)};cel.onclick=go;setTimeout(go,2400)};
+ window.g2results?window.g2results(stars,bones):results(stars,bones)};
 function results(stars,bones){openPop('Win_Results',({P,g,put,btn})=>{
  put(A+'P_Win_Rambo.webp',PM.P_Win_Rambo);
  P.medals.forEach((m,i)=>put(A+(i<stars?'medal_on_Display':'medal_off_Display')+'.webp',m.box));
