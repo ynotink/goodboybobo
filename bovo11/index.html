@@ -24,7 +24,7 @@ const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx
 const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110],
  ['L05_logo',320,395,660,325,'logo'],['L10_daily',188,1817,443,304,'daily'],['L11_events',664,1816,438,306,'events'],['L12_play',145,2135,1001,316,'play'],
  ['L13_bottom_bar',0,2450,1290,346],['L14_active_home_tile',19,2450,226,225],['L15_nav_home',43,2450,171,208],['L16_nav_map',302,2450,169,208,'map'],
- ['L17_nav_toys',562,2450,166,208],['L18_nav_friends',800,2450,205,208],['L19_nav_shop',1082,2450,158,208]];
+ ['L17_nav_toys',562,2450,166,208,'toys'],['L18_nav_friends',800,2450,205,208],['L19_nav_shop',1082,2450,158,208]];
 const P=v=>v*100+'%',ui=document.getElementById('ui');let UW=390;const V=v=>v/RW*UW+'px';const PL=[];
 function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
 function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);if(h)el.style.height=V(h);
@@ -37,7 +37,7 @@ const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';plac
 function RRH(){return RH}
 let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');lvlN=Object.keys(g.stars||{}).length+1}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
 const go=u=>()=>location.href=u;
-document.getElementById('play').onclick=go('../bovo10/index.html');document.getElementById('map').onclick=go('../bovo10/index.html');
+document.getElementById('play').onclick=go('../bovo10/index.html');document.getElementById('map').onclick=go('../bovo10/index.html');document.getElementById('toys').onclick=go('toys.html');
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
  stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
  layout();lv.style.bottom=V(2796-2318-80)}
