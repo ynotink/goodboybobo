@@ -42,7 +42,7 @@ function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
 const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110],
  ['../../bovo11/shop/nav',0,2440,1290,356]];
 for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
-for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[516,'toys.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
+for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[516,'toys.html'],[774,'friends.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
 const t1=document.createElement('div');t1.className='t';t1.textContent='5';place(t1,200,228,150,111);
 const t2=document.createElement('div');t2.className='t';t2.textContent='430';place(t2,640,222,190,123);
 function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);el.style.height=V(h);
