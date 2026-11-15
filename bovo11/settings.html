@@ -1,0 +1,75 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Settings (new)</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#3a2412;-webkit-user-select:none;user-select:none}
+#bgb{position:fixed;inset:-40px;background:url(settings/bg.jpg) center bottom/cover;filter:blur(18px) brightness(.8)}
+#stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
+#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+#stage>*{position:absolute}#bgi{inset:0;width:100%;height:100%}
+#fx{inset:0;width:100%;height:100%;pointer-events:none}
+#panel{filter:drop-shadow(0 1.2vh 1.4vh rgba(70,30,0,.35))}
+#title{animation:float 3.4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-6%)}}
+#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%);pointer-events:none}
+#ui>*{position:absolute;pointer-events:auto}
+.L{display:block;-webkit-user-drag:none}
+.hit{cursor:pointer}
+.t{font-family:Nun;color:#14504e;display:flex;align-items:center;justify-content:center}
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+#toast{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.9);background:rgba(20,80,78,.92);color:#fff;font:800 16px system-ui;padding:12px 18px;border-radius:16px;opacity:0;transition:.25s;pointer-events:none;z-index:9;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+</style></head><body>
+<div id="bgb"></div>
+<div id="stage"><img id="bgi" src="settings/bg.jpg?v=2"><canvas id="fx"></canvas>
+<img id="title" class="L" src="settings/title.webp?v=1"><img id="panel" class="L" src="settings/panel.webp?v=1"></div>
+<div id="ui"></div><div id="toast"></div>
+<script>
+'use strict';const pc=(v,b)=>v/b*100+'%';
+const IW=852,IH=1846,RW=1290,RH=2796,A='../a/home/';
+const stage=document.getElementById('stage'),fx=document.getElementById('fx'),ui=document.getElementById('ui');
+// panel & title in scene units (852 x 1846)
+const SC=.645,GX=426-(645-100)*SC,GY=482-(646-630)*SC;   // panel = old page x100..1190, y630..2410
+function put(el,x,y,w,h){el.style.left=pc(x,IW);el.style.top=pc(y,IH);el.style.width=pc(w,IW);el.style.height=pc(h,IH)}
+put(document.getElementById('panel'),GX,GY,1090*SC,1780*SC);put(document.getElementById('title'),426-165,336,330,330*160/625);
+const toast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1600)};
+const O=(x,y,w,h)=>[GX+(x-100)*SC,GY+(y-630)*SC,w*SC,h*SC];
+function oldHit(r,fn){const d=document.createElement('div');d.className='hit';put(d,...O(...r));d.onclick=fn;stage.appendChild(d);return d}
+function oldImg(src,r){const i=document.createElement('img');i.src=src;i.className='L';i.style.pointerEvents='none';put(i,...O(...r));stage.appendChild(i);return i}
+let ST={music:70,sounds:80,barks:1,vib:1,hints:1};try{Object.assign(ST,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}
+const sv=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
+const TG=[{k:'music',y:802},{k:'sounds',y:934},{k:'vib',y:1069},{k:'notif',y:1204}];
+const isOn=t=>t.k=='notif'?false:t.k=='vib'?!!ST.vib:ST[t.k]>0;
+TG.forEach((t,i)=>{t.on=oldImg(`../a/pages/tg${i}_on.webp`,[880,t.y,250,120]);t.off=oldImg(`../a/pages/tg${i}_off.webp`,[880,t.y,250,120]);
+ const show=()=>{const v=isOn(t);t.on.style.visibility=v?'visible':'hidden';t.off.style.visibility=v?'hidden':'visible'};show();
+ oldHit([100,t.y+5,1090,115],()=>{
+  if(t.k=='notif')return toast('Notifications coming soon!');
+  if(t.k=='vib')ST.vib=ST.vib?0:1;
+  else if(ST[t.k]>0){ST['_'+t.k]=ST[t.k];ST[t.k]=0}else ST[t.k]=ST['_'+t.k]||(t.k=='music'?70:80);
+  sv();show();if(t.k=='vib'&&ST.vib&&navigator.vibrate)navigator.vibrate(30)})});
+[[1450,'Player profiles are coming soon!'],[1590,'Saving to the cloud is coming soon!'],[1700,'More languages are coming soon!'],[2025,'Help & Support is coming soon!'],[2155,'Privacy & Terms are coming soon!']].forEach(([y,m])=>oldHit([100,y,1090,115],()=>toast(m)));
+// HUD + nav pinned to the screen like the Home page
+let UW=390;const V=v=>v/RW*UW+'px',PL=[];
+function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
+const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'index.html'],
+ ['../../bovo11/settings/nav',0,2440,1290,356]];
+for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
+for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[516,'toys.html'],[774,'friends.html'],[1032,'shop.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
+const t1=document.createElement('div');t1.className='t';t1.textContent='5';place(t1,200,228,150,111);
+const t2=document.createElement('div');t2.className='t';t2.textContent='430';place(t2,640,222,190,123);
+function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);el.style.height=V(h);
+ if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-h);el.style.top=''}}document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px')}
+function size(){const DPR=Math.min(2,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}
+ stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';
+ fx.width=Math.round(w*DPR);fx.height=Math.round(h*DPR);layout()}
+size();addEventListener('resize',size);
+// living light: dust motes drifting in the window sunbeam + soft breathing glow
+const g=fx.getContext('2d');const M=[...Array(46)].map(()=>({x:Math.random()*.6,y:.05+Math.random()*.75,r:.6+Math.random()*1.6,vx:.004+Math.random()*.01,vy:(Math.random()-.5)*.006,ph:Math.random()*6.3}));
+let t0=performance.now(),last=t0;
+(function f(now){const t=(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;const W=fx.width,H=fx.height;g.clearRect(0,0,W,H);
+ const gl=.10+.05*Math.sin(t*.6);const rg=g.createRadialGradient(W*.05,H*.12,0,W*.05,H*.12,W*.9);rg.addColorStop(0,`rgba(255,214,140,${gl})`);rg.addColorStop(1,'rgba(255,214,140,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);
+ for(const m of M){m.x+=m.vx*dt+Math.sin(t*.7+m.ph)*.0002;m.y+=m.vy*dt+Math.cos(t*.5+m.ph)*.0002;if(m.x>.75||m.y<0||m.y>.85){m.x=Math.random()*.2;m.y=.05+Math.random()*.7}
+  const beam=Math.max(0,1-Math.abs((m.y*H*.55)-(m.x*W))/(W*.35));const a=(.25+.35*Math.sin(t*1.7+m.ph))*(.3+.7*beam);if(a<=0)continue;
+  g.fillStyle=`rgba(255,240,200,${a})`;g.beginPath();g.arc(m.x*W,m.y*H,m.r*W/700,0,7);g.fill()}
+ requestAnimationFrame(f)})(t0);
+</script></body></html>

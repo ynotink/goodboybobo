@@ -39,7 +39,7 @@ oldHit([100,1730,1090,460],'Boosters coming soon!');oldHit([340,2200,600,110],'N
 // HUD + nav pinned to the screen like the Home page
 let UW=390;const V=v=>v/RW*UW+'px',PL=[];
 function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
-const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110],
+const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'settings.html'],
  ['../../bovo11/shop/nav',0,2440,1290,356]];
 for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
 for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[516,'toys.html'],[774,'friends.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
