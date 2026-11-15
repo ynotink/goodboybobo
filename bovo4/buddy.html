@@ -1,0 +1,95 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — build your buddy</title>
+<style>
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;font-family:Nun,system-ui;color:#123f3c;background:linear-gradient(#8fd3f4,#c9ecd0 55%,#9ed36f);min-height:100%;overscroll-behavior:none}
+header{padding:12px 10px 10px;background:rgba(18,95,90,.96);color:#fff;text-align:center;font-size:21px;text-shadow:0 2px 0 #0b3b38;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.wrap{padding:10px 12px 40px}
+#stage{position:relative;height:300px;border-radius:22px;overflow:hidden;background:url('../a/bg3_home.webp') center 62%/cover;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+#stage canvas{position:absolute;bottom:4%;height:86%;left:50%;transform:translateX(-50%);filter:drop-shadow(0 10px 8px rgba(0,0,0,.3));transition:transform .2s}
+#stage canvas.bump{transform:translateX(-50%) scale(1.04) rotate(-2deg)}
+#tag{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);background:#ffd34d;color:#5a3a00;border-radius:14px;padding:3px 14px;font-size:17px;box-shadow:0 3px 0 #c99a10}
+.panel{margin-top:12px;background:rgba(255,255,255,.9);border-radius:20px;padding:12px;box-shadow:0 6px 16px rgba(0,0,0,.1)}
+.row{margin-bottom:10px}.row b{display:block;font-size:15px;margin-bottom:6px;color:#1f6f6a}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:42px;height:42px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.25);font:inherit;font-size:10px;color:#fff;text-shadow:0 1px 2px #000}
+.sw button.on{outline:4px solid #ffb100;outline-offset:1px}
+.sw button.none{background:repeating-linear-gradient(45deg,#eee,#eee 5px,#fff 5px,#fff 10px);color:#888;text-shadow:none}
+input{width:100%;font:inherit;font-size:20px;padding:10px 12px;border-radius:14px;border:3px solid #cfe3dd;color:#1f6f6a}
+.btn{display:block;width:100%;font:inherit;font-size:21px;border:0;border-radius:18px;padding:13px;color:#fff;background:linear-gradient(#57c84d,#2f9a2b);box-shadow:0 5px 0 #1f6e1c;margin-top:12px;text-decoration:none;text-align:center}
+.btn.blue{background:linear-gradient(#3fb2e8,#1f86c4);box-shadow:0 5px 0 #145e8c}
+.btn.gold{background:linear-gradient(#ffcf4a,#f0a81c);box-shadow:0 5px 0 #b97a08;color:#5a3a00}
+#joined{display:none}
+#duo{position:relative;height:300px;border-radius:22px;overflow:hidden;background:url('../a/bg3_home.webp') center 62%/cover}
+#duo img,#duo canvas{position:absolute;bottom:5%;filter:drop-shadow(0 10px 8px rgba(0,0,0,.3))}
+#duo img{left:4%;height:80%}#duo canvas{right:4%;height:70%;animation:hop .9s ease-in-out infinite}
+@keyframes hop{50%{transform:translateY(-8px)}}
+.confetti{position:absolute;width:8px;height:12px;top:-14px;animation:fall 2.4s linear forwards}
+@keyframes fall{to{transform:translateY(340px) rotate(540deg)}}
+#title2{text-align:center;font-size:24px;margin:10px 0 0;color:#1f6f6a}
+#board{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:8px;border-radius:18px;background:rgba(20,70,90,.35);aspect-ratio:1;overflow:hidden;margin-top:10px;display:none}
+#board .c{position:relative;border-radius:10px;background:rgba(255,255,255,.35)}
+#board .c img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;transition:transform .25s,opacity .25s}
+#board .c.pop img{transform:scale(1.6);opacity:0}
+#runner{position:absolute;z-index:3;height:40%;left:-40%;display:none;filter:drop-shadow(0 6px 6px rgba(0,0,0,.35))}
+.note{font:600 13px/1.4 system-ui;color:#55706e;margin-top:10px}
+</style></head><body>
+<header id="hd">Build your buddy</header>
+<div class="wrap">
+<div id="build">
+ <div id="stage"><div id="tag">Max</div></div>
+ <div class="panel">
+  <div class="row"><b>Coat</b><div class="sw" id="coat"></div></div>
+  <div class="row"><b>Patches</b><div class="sw" id="patch"></div></div>
+  <div class="row"><b>Collar</b><div class="sw" id="collar"></div></div>
+  <div class="row"><b>Name</b><input id="name" maxlength="12" value="Max"></div>
+  <button class="btn" id="join">Join Rambo! 🐾</button>
+ </div>
+ <div class="note">This version uses Rambo's own body with new colors, so it always looks right and costs nothing per player. The full version would add breeds (ear shapes, sizes, fluffy coats), each painted once in this same style.</div>
+</div>
+<div id="joined">
+ <div id="duo"><img src="../bovo2/art/v5/bobo.png" alt=""></div>
+ <div id="title2"></div>
+ <a class="btn blue" id="mapLink" href="../bovo2/map.html?v=27&b=1">See them on the map 🗺️</a>
+ <button class="btn gold" id="moveBtn">See the buddy move ⚡</button>
+ <div id="board"><img id="runner" alt=""></div>
+ <button class="btn" id="again" style="background:linear-gradient(#9aa,#788);box-shadow:0 5px 0 #566">Change my buddy</button>
+</div>
+</div>
+<script src="buddy.js?v=1"></script>
+<script>
+'use strict';
+const st={coat:'Golden',patch:'None',collar:'Blue',name:'Max'};
+try{Object.assign(st,JSON.parse(localStorage.getItem('gbb_buddy')||'{}'))}catch(e){}
+const snd=n=>{try{new Audio('../au/'+n+'.mp3').play()}catch(e){}};
+const css=a=>`rgb(${a.map(v=>Math.round(v*255)).join(',')})`;
+let cur=null;
+function render(bump){if(!BUDDY.bd)return;const c=BUDDY.make(st);const stage=document.getElementById('stage');if(cur)cur.remove();stage.insertBefore(c,stage.firstChild);cur=c;
+ if(bump){c.classList.add('bump');setTimeout(()=>c.classList.remove('bump'),180)}document.getElementById('tag').textContent=st.name||'Buddy'}
+function swatches(id,obj,key,fill){const el=document.getElementById(id);for(const k in obj){const b=document.createElement('button');
+ if(obj[k]===null){b.className='none';b.textContent='none'}else b.style.background=fill(obj[k]);b.title=k;if(st[key]===k)b.classList.add('on');
+ b.onclick=()=>{st[key]=k;el.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');render(true);snd('tap')};el.appendChild(b)}}
+swatches('coat',BUDDY.COATS,'coat',css);swatches('patch',BUDDY.PATCHES,'patch',css);
+swatches('collar',BUDDY.COLLARS,'collar',h=>h<0?'#222':`hsl(${h},75%,48%)`);
+document.getElementById('name').value=st.name;document.getElementById('name').oninput=e=>{st.name=e.target.value.trim()||'Buddy';document.getElementById('tag').textContent=st.name};
+BUDDY.load('').then(()=>render(false));
+document.getElementById('join').onclick=()=>{localStorage.setItem('gbb_buddy',JSON.stringify(st));snd('rambo_double');
+ document.getElementById('build').style.display='none';document.getElementById('joined').style.display='block';document.getElementById('hd').textContent='A new buddy!';
+ const duo=document.getElementById('duo');duo.querySelector('canvas')?.remove();duo.appendChild(BUDDY.make(st));
+ document.getElementById('title2').textContent=`${st.name} joined Rambo! 🎉`;
+ for(let i=0;i<40;i++){const f=document.createElement('div');f.className='confetti';f.style.left=Math.random()*100+'%';f.style.background=`hsl(${Math.random()*360},85%,60%)`;f.style.animationDelay=Math.random()*.8+'s';duo.appendChild(f);setTimeout(()=>f.remove(),3500)}};
+document.getElementById('again').onclick=()=>{document.getElementById('joined').style.display='none';document.getElementById('build').style.display='block';document.getElementById('hd').textContent='Build your buddy'};
+// buddy move on the board
+const TOYS=['natural_bone','paw','ring','rope','rubber_ball','squeaky_bone','tennis'],rnd=()=>'../a/g2/'+TOYS[Math.floor(Math.random()*7)]+'.webp',board=document.getElementById('board'),cells=[];
+for(let i=0;i<49;i++){const c=document.createElement('div');c.className='c';const im=document.createElement('img');im.src=rnd();c.appendChild(im);board.appendChild(c);cells.push(c)}
+const pop=c=>{c.classList.add('pop');setTimeout(()=>{c.querySelector('img').src=rnd();c.classList.remove('pop')},320)};
+document.getElementById('moveBtn').onclick=()=>{board.style.display='grid';const r=document.getElementById('runner');r.src=BUDDY.make(st).toDataURL();
+ const col=Math.floor(Math.random()*7);setTimeout(()=>{const bb=board.getBoundingClientRect(),cb=cells[col].getBoundingClientRect();
+ // the buddy dives DOWN a column (Rambo does rows), so each dog has its own move
+ r.style.display='block';r.style.left=(cb.left-bb.left+cb.width/2-bb.height*.15)+'px';snd('rambo_bark2');const t0=performance.now();
+ (function run(t){const u=Math.min(1,(t-t0)/850);r.style.top=(-45+u*135)+'%';for(let y=0;y<7;y++){const cy=(y+.5)/7;if(u>cy-.08&&!cells[y*7+col].dataset.h){cells[y*7+col].dataset.h=1;pop(cells[y*7+col])}}
+  if(u<1)requestAnimationFrame(run);else{r.style.display='none';cells.forEach(c=>delete c.dataset.h);snd('mega')}})(t0)},250)};
+</script></body></html>
