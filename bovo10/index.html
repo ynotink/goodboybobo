@@ -71,13 +71,13 @@ void main(){vec4 m=texture2D(tM,uv);vec2 d=vec2(0.);
  float r=length((uv-vec2(.0,.23))*vec2(1.,2.2));c+=vec3(1.,.92,.65)*exp(-r*r/.03)*(.08+.05*sin(t*.7))*on;
  gl_FragColor=vec4(c,1.);}`;
 const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
-const sc=document.getElementById('sc');let motion=true,on=1,cur=0;const paw=document.createElement('img');paw.id='paw';paw.src='paw.webp';
+const sc=document.getElementById('sc');let motion=true,on=1,cur=0;try{const s=JSON.parse(localStorage.getItem('gbb_play')||'{}').stars||{};let mx=0;for(const k in s)mx=Math.max(mx,+k+1);cur=Math.min(99,mx)}catch(e){}const paw=document.createElement('img');paw.id='paw';paw.src='paw.webp';
 // build scenes top (last) to bottom (first)
 for(let i=SCENES.length-1;i>=0;i--){const S=SCENES[i];S.el=document.createElement('div');S.el.className='scene';S.art=document.createElement('div');S.art.className='art';
  S.cv=document.createElement('canvas');S.fx=document.createElement('canvas');S.art.append(S.cv,S.fx);S.el.appendChild(S.art);sc.appendChild(S.el)}
 function put(S,src,x,y,w){const i=document.createElement('img');i.src=src;i.className='o';i.style.left=x*100+'%';i.style.top=y*100+'%';i.style.width=w*100+'%';S.art.appendChild(i);return i}
 function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEach(e=>e.remove());S.spots.forEach(([x,y,w],k)=>{const L=si*5+k,st=L<cur?'done':L===cur?'cur':'lock';
- put(S,st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_lock.png',x,y+w*.18,w);
+ const mk=put(S,st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_lock.png',x,y+w*.18,w);if(st!=='lock'){mk.style.pointerEvents='auto';mk.style.cursor='pointer';mk.onclick=()=>location.href='../game_new.html?lv='+(L+1)}
  if(st!=='lock'){const n=document.createElement('div');n.className='n';n.textContent=L+1;n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(w*.33*S.art.clientWidth)+'px';S.art.appendChild(n)}})});placePaw(cur)}
 function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];S.art.appendChild(paw);paw.style.left=x*100+'%';paw.style.top=(y-w*.27)*100+'%';paw.style.width=w*.5*100+'%'}
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),H=sc.clientHeight,avail=H-innerWidth*327/1170*.92;

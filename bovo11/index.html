@@ -37,7 +37,7 @@ const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';plac
 function RRH(){return RH}
 let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');lvlN=Object.keys(g.stars||{}).length+1}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
 const go=u=>()=>location.href=u;
-document.getElementById('play').onclick=go('../bovo10/index.html');document.getElementById('map').onclick=go('../bovo10/index.html');document.getElementById('toys').onclick=go('toys.html');document.getElementById('shop').onclick=go('shop.html');document.getElementById('gear').onclick=go('settings.html');document.getElementById('friends').onclick=go('friends.html');
+document.getElementById('play').onclick=()=>location.href='../game_new.html?lv='+lvlN;document.getElementById('map').onclick=go('../bovo10/index.html');document.getElementById('toys').onclick=go('toys.html');document.getElementById('shop').onclick=go('shop.html');document.getElementById('gear').onclick=go('settings.html');document.getElementById('friends').onclick=go('friends.html');
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
  stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
  layout();lv.style.bottom=V(2796-2318-80)}
