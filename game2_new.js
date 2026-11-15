@@ -10,8 +10,8 @@ const font=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900
 const css=document.createElement('style');css.textContent=`
 #bgA,#bgB,#tint,#calm,#topw,#lvs,#pz,#bsts,#brks,#bub,#btip,#sb{display:none!important}
 #tiles,#tiles .tile{background:none!important;filter:none!important;box-shadow:none!important}
-#g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/skin.webp?v=3) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
-#g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/skin.webp?v=3) 0 0/100% 100%;z-index:0}
+#g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/skin.webp?v=4) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
+#g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/skin.webp?v=4) 0 0/100% 100%;z-index:0}
 #board{z-index:2}
 #g2hud,#g2ui{position:absolute;left:0;width:390px;height:${H*KC}px;z-index:4;pointer-events:none}
 #g2ui .h{position:absolute;pointer-events:auto;cursor:pointer;border-radius:12px}
