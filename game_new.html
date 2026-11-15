@@ -171,7 +171,7 @@ body[data-hud^="gloss"] #sb::after{z-index:2;opacity:.6}
 #card .bstars img:nth-child(2){width:62px;margin-top:-10px}
 #card .bstars img.in{transform:scale(1)}
 #card .ttl2{margin-bottom:12px!important}
-</style></head><body><div id="app">
+</style><style>body>div[style*="z-index: 99999"]{display:none!important}</style></head><body><div id="app">
 <div id="bgA"></div><div id="bgB" style="opacity:0"></div><div id="tint"></div><div id="calm"></div>
 <div id="board"><div id="tiles"></div><div id="exits"></div><div id="pcs"></div></div>
 <div id="brks"></div>
@@ -711,7 +711,7 @@ $('pz').onclick=()=>{if(!S)return;showOv(`<img class="ttl2" src="a/L_t_paused.we
 window.T={get S(){return S},findMove,localMatch,trySwap,startLevel,LEVELS,setFast:v=>FAST=v,tapCell};
 document.body.dataset.bt=Q.get('bt')||'cream70';document.getElementById('topw').style.transform=`translate(10px,${Q.get('hu')??14}px) scale(.9)`;if(Q.get('dof'))document.body.dataset.dof=Q.get('dof');if(Q.get('calm'))document.body.dataset.calm=Q.get('calm');document.body.dataset.hud=Q.get('hud')||'smoke';
 addEventListener("load",()=>startLevel(Math.max(0,(+Q.get("lv")||1)-1)));
-</script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2_new.js?v=3"></script><script>
+</script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2_new.js?v=4"></script><script>
 // NEW-LOOK PREVIEW: board sits on the map scene for this level; map/home buttons go to the new pages
 try{sessionStorage.setItem('gbb_map','bovo10/index.html')}catch(e){}
 setTimeout(()=>{if(window.BA&&BA.nav){const n=BA.nav;BA.nav=u=>n(/^(index\.html|home)/.test(u)?'bovo11/index.html':u)}},0);
