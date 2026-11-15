@@ -29,7 +29,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 <img src="L03_bone_counter.png" style="left:142px"><div class="t" style="left:198px">430</div><img src="L04_gear.png" style="right:12px"></div>
 <img id="tabs" src="tabs.png?v=1">
 <button class="btn" id="tog">Motion: ON</button><button class="btn" id="win">Win level ▶</button>
-<div id="tag">BACKYARD + NEIGHBORHOOD · levels 1–20</div><div id="hint">Swipe up to explore ↑</div>
+<div id="tag">CHAPTERS 1–3 · levels 1–30</div><div id="hint">Swipe up to explore ↑</div>
 <script>
 'use strict';
 
@@ -38,7 +38,9 @@ const SCENES=[
  {dir:'s1',gate:[.535,.44],IW:852,IH:1846,CH:775,spots:[[.53,.80,.21],[.455,.705,.17],[.565,.625,.14],[.51,.555,.115],[.527,.49,.095]],tw:[[.03,.84],[.08,.87],[.86,.79],[.93,.77],[.9,.93],[.98,.47],[.34,.45],[.12,.46]]},
  {dir:'s2',gate:[.44,.34],IW:934,IH:1684,CH:505,spots:[[.50,.86,.2],[.43,.725,.17],[.235,.625,.14],[.465,.50,.115],[.36,.44,.095]],tw:[[.03,.93],[.11,.92],[.9,.96],[.93,.69],[.75,.47],[.6,.58],[.05,.52]]},
  {dir:'s3',gate:[.5,.36],IW:852,IH:1846,CH:553,spots:[[.5,.80,.2],[.45,.70,.17],[.52,.605,.14],[.555,.515,.115],[.48,.44,.095]],tw:[[.03,.88],[.08,.9],[.95,.86],[.9,.53],[.06,.4],[.23,.43],[.72,.45]]},
- {dir:'s4',gate:[.27,.27],IW:852,IH:1846,CH:553,spots:[[.42,.775,.2],[.375,.69,.17],[.45,.60,.14],[.52,.515,.115],[.44,.445,.095]],tw:[[.03,.72],[.08,.74],[.95,.77],[.9,.42],[.05,.55],[.2,.3],[.4,.32]]}];
+ {dir:'s4',gate:[.27,.27],IW:852,IH:1846,CH:553,spots:[[.42,.775,.2],[.375,.69,.17],[.45,.60,.14],[.52,.515,.115],[.44,.445,.095]],tw:[[.03,.72],[.08,.74],[.95,.77],[.9,.42],[.05,.55],[.2,.3],[.4,.32]]},
+ {dir:'s5',gate:[.13,.31],IW:852,IH:1846,CH:553,spots:[[.62,.80,.2],[.6,.69,.17],[.56,.605,.14],[.45,.495,.115],[.24,.415,.095]],tw:[[.05,.79],[.1,.81],[.95,.5],[.9,.47],[.02,.42],[.13,.27]]},
+ {dir:'s6',gate:[.74,.31],IW:852,IH:1846,CH:553,spots:[[.45,.84,.2],[.4,.71,.17],[.41,.60,.14],[.5,.515,.115],[.57,.43,.095]],tw:[[.06,.85],[.12,.88],[.94,.83],[.3,.04],[.8,.02],[.37,.36]]}];
 const FS=`precision highp float;varying vec2 uv;uniform sampler2D tB,tM,tS,tC,tR;uniform float t,on,chf;uniform vec2 px;
 void main(){vec4 m=texture2D(tM,uv);vec2 d=vec2(0.);
  float wind=.72+.28*sin(t*.31)+.35*max(0.,sin(t*.17+1.))*max(0.,sin(t*.9));
@@ -73,7 +75,7 @@ function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false
  gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
  const U=n=>gl.getUniformLocation(pr,n);S.U=U;
  const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
-  for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=S.dir+'/'+f+'?v=3'});
+  for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=S.dir+'/'+f+'?v=5'});
  return Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
