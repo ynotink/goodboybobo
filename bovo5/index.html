@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — living painting test</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#000}
+#wrap{position:fixed;inset:0;overflow:hidden}
+#scene{position:absolute;left:50%;top:0;height:100%;transform:translateX(-50%)}
+#scene canvas{position:absolute;inset:0;width:100%;height:100%}
+#scene img.ov{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+.num{position:absolute;transform:translate(-50%,-50%);margin-top:calc(var(--w)*-26vh);font-family:Nun;font-size:calc(var(--w)*21vh);color:#fff;text-shadow:0 .1em 0 rgba(0,0,0,.35),0 0 .08em #1b3a1b;pointer-events:none}
+#tog{position:fixed;right:10px;bottom:14px;z-index:9;font:800 15px system-ui;border:0;border-radius:16px;padding:10px 14px;color:#fff;background:rgba(18,95,90,.92);box-shadow:0 3px 0 #0b3b38}
+#tog.off{background:rgba(120,120,120,.92);box-shadow:0 3px 0 #444}
+#tag{position:fixed;left:8px;bottom:14px;z-index:9;font:700 12px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:6px 9px;border-radius:10px}
+</style></head><body>
+<div id="wrap"><div id="scene"><canvas id="gl"></canvas><canvas id="fx"></canvas></div></div>
+<button id="tog">Motion: ON</button><div id="tag">FREE TEST · living painting</div>
+<script>
+'use strict';
+const IW=1536,IH=2752,CH=495;
+const scene=document.getElementById('scene'),cv=document.getElementById('gl'),fx=document.getElementById('fx'),fg=fx.getContext('2d');
+let DPR=1,SW=0,SH=0,motion=true;
+// live level buttons + Rambo on top of the painting (image fractions)
+const MK='../bovo2/approved/a/world/marker_';
+const OV=[[MK+'current_grounded.png',.47,.905,.16,1],[MK+'locked_grounded.png',.36,.735,.135,2],[MK+'locked_grounded.png',.75,.605,.115,3],
+ [MK+'locked_grounded.png',.62,.495,.10,4],[MK+'locked_grounded.png',.83,.41,.085,5],['../bovo2/art/v5/bobo.png',.74,.935,.28,0]];
+for(const [src,x,y,w,n] of OV){const i=document.createElement('img');i.className='ov';i.src=src;i.style.left=x*100+'%';i.style.top=y*100+'%';i.style.width=w*100+'%';scene.appendChild(i);
+ if(n){const d=document.createElement('div');d.className='num';d.textContent=n;d.style.left=x*100+'%';d.style.top=y*100+'%';d.style.setProperty('--w',w);scene.appendChild(d)}}
+function size(){DPR=Math.min(2.5,devicePixelRatio||1);SH=innerHeight;SW=SH*IW/IH;if(SW<innerWidth){SW=innerWidth;SH=SW*IH/IW}
+ scene.style.width=SW+'px';scene.style.height=SH+'px';cv.width=Math.round(SW*DPR);cv.height=Math.round(SH*DPR);fx.width=cv.width;fx.height=cv.height}
+size();addEventListener('resize',size);
+const gl=cv.getContext('webgl',{alpha:false,antialias:false});
+const vs=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
+const fs=`precision highp float;varying vec2 uv;uniform sampler2D tB,tM,tS,tC;uniform float t,on,chf;uniform vec2 px;
+void main(){vec4 m=texture2D(tM,uv);vec2 d=vec2(0.);
+ float ph=uv.x*5.5+uv.y*2.3;
+ d.x+=m.r*px.x*7.*(sin(t*.85+ph)+.35*sin(t*2.05+ph*1.7));
+ d.y+=m.r*px.y*2.2*sin(t*1.05+ph*1.3);
+ float w=sin(uv.x*26.-t*1.9+uv.y*34.)*.6+sin(uv.x*61.+t*2.7-uv.y*17.)*.4;
+ float gust=exp(-pow(uv.x*.55+uv.y*1.1-fract(t*.055)*2.4+.5,2.)/.012);
+ d.x+=m.g*px.x*(1.3+2.4*gust)*w;
+ d.x+=m.b*px.x*2.2*sin(t*1.6+uv.x*47.+uv.y*29.);
+ d.y+=m.b*px.y*1.2*cos(t*1.3+uv.x*39.);
+ d*=on;
+ vec2 su=uv-d;vec3 c=texture2D(tB,su).rgb;
+ c+=m.g*gust*vec3(.05,.07,.015)*on;
+ if(uv.y<chf){vec3 sky=texture2D(tS,vec2(.5,uv.y)).rgb;vec4 c0=texture2D(tC,vec2(uv.x,uv.y/chf));
+  vec3 clean=mix(c,sky,c0.a*m.a);
+  vec4 c1=texture2D(tC,vec2(fract(uv.x-t*.0085*on),uv.y/chf));
+  c=mix(clean,c1.rgb,c1.a*m.a);}
+ float r=length((uv-vec2(.02,.0))*vec2(1.,1.8));
+ c+=vec3(1.,.93,.7)*exp(-r*r/.035)*(.07+.05*sin(t*.7))*on;
+ gl_FragColor=vec4(c,1.);}`;
+function sh(k,src){const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
+const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
+const U=n=>gl.getUniformLocation(pr,n);
+function tex(src,unit,name,wrapX){return new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);
+ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.uniform1i(U(name),unit);ok()};im.src=src+'?v=3'})}
+// twinkles on flowers / the water bowl
+const TW=[[.39,.575],[.12,.405],[.2,.42],[.58,.40],[.62,.39],[.86,.47],[.84,.655],[.66,.79],[.71,.765],[.05,.695],[.22,.84],[.74,.92],[.9,.76]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.8+Math.random()*.9}));
+const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.7,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
+Promise.all([tex('bk1.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyrows.png',2,'tS'),tex('clouds.png',3,'tC')]).then(()=>{
+ gl.uniform1f(U('chf'),CH/IH);let on=1,t0=performance.now(),last=t0;
+ (function frame(now){const t=(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
+  gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  const W=fx.width,H=fx.height;fg.clearRect(0,0,W,H);fg.globalAlpha=on;
+  for(const s of TW){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,r=W*.012*a;
+   fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-r,y);fg.lineTo(x+r,y);fg.moveTo(x,y-r);fg.lineTo(x,y+r);fg.stroke();
+   fg.fillStyle=`rgba(255,255,230,${a})`;fg.beginPath();fg.arc(x,y,W*.0025,0,7);fg.fill()}
+  for(const p of POL){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.28){p.y=1;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);
+   fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
+  fg.globalAlpha=1;requestAnimationFrame(frame)})(t0)});
+document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
+</script></body></html>
