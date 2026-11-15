@@ -712,7 +712,7 @@ window.T={get S(){return S},findMove,localMatch,trySwap,startLevel,LEVELS,setFas
 document.body.dataset.bt=Q.get('bt')||'cream70';document.getElementById('topw').style.transform=`translate(10px,${Q.get('hu')??14}px) scale(.9)`;if(Q.get('dof'))document.body.dataset.dof=Q.get('dof');if(Q.get('calm'))document.body.dataset.calm=Q.get('calm');document.body.dataset.hud=Q.get('hud')||'smoke';
 addEventListener("load",()=>startLevel(Math.max(0,(+Q.get("lv")||1)-1)));
 </script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2_new.js?v=7"></script><script src="pop_gold.js?v=3"></script><script>(function(){const _sl=window.startLevel,lv0=+(new URLSearchParams(location.search).get('lv')||1);window.startLevel=function(n,o){if(Math.floor(n/10)!==Math.floor((lv0-1)/10))return location.replace('game_new.html?lv='+(n+1));return _sl(n,o)}})();
-(function(){const CH_BG=[1,2,3,4,5,6];const lv=+(new URLSearchParams(location.search).get('lv')||1),ch=Math.floor((lv-1)/10)+1;
+(function(){const CH_BG=[1,2,3,4,5,6,7,8];const lv=+(new URLSearchParams(location.search).get('lv')||1),ch=Math.floor((lv-1)/10)+1;
 if(!CH_BG.includes(ch))return;const src='bovo11/play2/sk_ch'+ch+'.webp?v=1';
 const fix=()=>{const a=document.getElementById('g2skin'),b=document.getElementById('g2top');if(!a)return setTimeout(fix,50);a.style.backgroundImage=`url(${src})`;if(b)b.style.backgroundImage=`url(${src})`};fix()})();</script><script>
 // NEW-LOOK PREVIEW: board sits on the map scene for this level; map/home buttons go to the new pages
