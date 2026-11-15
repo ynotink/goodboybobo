@@ -202,7 +202,7 @@ function fit(){const D=2796*390/1290;const k=Math.min(innerWidth/390,innerHeight
  app.style.setProperty('--k',k);app.style.height=H+'px';LY.t=0;LY.b=0;window.G2OFF=H-D;window.G2K=k;window.g2fit&&g2fit();window.relayout&&relayout()}
 addEventListener('resize',fit);fit();
 let GEN=0;const wait=ms=>{const g=GEN;return FAST?Promise.resolve():new Promise(r=>setTimeout(()=>{if(g===GEN)r()},ms))};
-const GRID9=false;const KC=390/1290,CS=136*KC,COLS=8,SY=142/136;
+const GRID9=false;const KC=390/1290,CS=150.8*KC,COLS=8,SY=165.7/150.8;
 let PIMG=['pc0','pc1','pc2','pc3','pc4'];
 const PCOL=['#f3e3c3','#c8e03a','#ee9a33','#2b5bb8','#e0302a'];
 const SPIMG={row:'sp_line',col:'sp_line',bomb:'sp_bomb',flyer:'sp_flyer',rainbow:'sp_rainbow'};
@@ -353,11 +353,11 @@ function drawPiece(p){const el=p.el;
  let rot=p.sp=='row'?'rotate:38deg':p.sp=='col'?'rotate:-52deg':'';
  el.innerHTML=`<img src="a/${src}.webp" style="${rot}">`+(p.tied?'<img class="lsh" src="a/ob_leash.webp">':'')}
 function makePiece(t,extra={}){return Object.assign({id:++uid,t,sp:null,carrot:false,tied:false},extra)}
-function boardTop(R){return (window.G2OFF||0)+859*KC}
+function boardTop(R){return (window.G2OFF||0)+752*KC}
 window.relayout=()=>{if(!S||!S.R)return;const t=boardTop(S.R);board.style.top=t+'px';S.top=t};
 function buildBoard(){
  const R=S.R,W=COLS*CS,H=R*CS;
- const top=boardTop(R);const left=102*KC;
+ const top=boardTop(R);const left=39.4*KC;
  board.style.cssText=`left:${left}px;top:${top}px;width:${W}px;height:${H}px;transform:scaleY(${SY});transform-origin:0 0`;
  S.top=top;S.left=left;
  let t='';
@@ -711,12 +711,8 @@ $('pz').onclick=()=>{if(!S)return;showOv(`<img class="ttl2" src="a/L_t_paused.we
 window.T={get S(){return S},findMove,localMatch,trySwap,startLevel,LEVELS,setFast:v=>FAST=v,tapCell};
 document.body.dataset.bt=Q.get('bt')||'cream70';document.getElementById('topw').style.transform=`translate(10px,${Q.get('hu')??14}px) scale(.9)`;if(Q.get('dof'))document.body.dataset.dof=Q.get('dof');if(Q.get('calm'))document.body.dataset.calm=Q.get('calm');document.body.dataset.hud=Q.get('hud')||'smoke';
 addEventListener("load",()=>startLevel(Math.max(0,(+Q.get("lv")||1)-1)));
-</script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2.js?v=23"></script><script>
+</script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2_new.js?v=3"></script><script>
 // NEW-LOOK PREVIEW: board sits on the map scene for this level; map/home buttons go to the new pages
 try{sessionStorage.setItem('gbb_map','bovo10/index.html')}catch(e){}
-(function(){const lv=+(new URLSearchParams(location.search).get('lv')||1),si=Math.min(20,Math.floor((lv-1)/5)+1),src='bovo11/play/sk'+si+'.webp?v=1';
- const fix=()=>{const a=document.getElementById('g2skin'),b=document.getElementById('g2top');if(!a)return setTimeout(fix,60);
-  a.style.backgroundImage=`url(${src})`;if(b)b.style.backgroundImage=`url(${src})`};fix();
- const _st=window.startLevel;if(_st)window.startLevel=function(n,o){const sj=Math.min(20,Math.floor(n/5)+1);if(sj!==si)return location.replace('game_new.html?lv='+(n+1));return _st(n,o)};
- setTimeout(()=>{if(window.BA&&BA.nav){const n=BA.nav;BA.nav=u=>n(/^(index\.html|home)/.test(u)?'bovo11/index.html':u)}},0)})();
+setTimeout(()=>{if(window.BA&&BA.nav){const n=BA.nav;BA.nav=u=>n(/^(index\.html|home)/.test(u)?'bovo11/index.html':u)}},0);
 </script></body></html>
