@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — new Backyard test</title>
+<style>
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+html,body{margin:0;height:100%;background:#2d5a1a;overflow:hidden}
+#sc{position:fixed;inset:0;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+#sc::-webkit-scrollbar{display:none}
+#w{position:relative;width:100%}
+#w>img.bg{display:block;width:100%}
+.o{position:absolute;transform:translate(-50%,-100%);pointer-events:none}
+.sh{position:absolute;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(rgba(30,40,10,.45),rgba(30,40,10,0) 70%);pointer-events:none}
+.n{position:absolute;transform:translate(-50%,-50%);font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35);pointer-events:none}
+#tag{position:fixed;left:8px;bottom:12px;z-index:9;font:700 12px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:6px 9px;border-radius:10px}
+</style></head><body>
+<div id="sc"><div id="w"><img class="bg" id="bg" src="strip.webp?v=1"></div></div>
+<div id="tag">TEST · new Pixar-style Backyard</div>
+<script>
+const W=1024,H=3012;
+const SP=[[593,2842],[768,2541],[527,2241],[224,1941],[294,1641],[510,1340],[694,1040],[614,740],[294,440],[474,140]];
+const w=document.getElementById('w');
+function put(src,x,y,wd,cls='o'){const i=document.createElement('img');i.src=src;i.className=cls;i.style.left=x/W*100+'%';i.style.top=y/H*100+'%';i.style.width=wd/W*100+'%';w.appendChild(i);return i}
+function shadow(x,y,wd){const d=document.createElement('div');d.className='sh';d.style.left=x/W*100+'%';d.style.top=y/H*100+'%';d.style.width=wd/W*100+'%';d.style.height=wd*.28/W*100+'vw';w.appendChild(d)}
+SP.forEach(([x,y],i)=>{const sc=1-(i%5)*.03,mw=150*sc;put(i?'mk_lock.png':'mk_cur.png',x,y+38,mw);
+ const n=document.createElement('div');n.className='n';n.textContent=i+1;n.style.left=x/W*100+'%';n.style.top=(y-14)/H*100+'%';n.style.fontSize=(mw*.33/W*100)+'vw';w.appendChild(n)});
+// cast (heights in strip px: doghouse is ~320 tall)
+shadow(830,2930,230);put('rambo.png',830,2935,190);
+shadow(150,2665,100);put('bunny.png',150,2670,78);
+put('cardinal.png',300,2378,52);
+shadow(700,620,150);put('buck.png',700,625,105);
+const sc=document.getElementById('sc');const go=()=>sc.scrollTop=sc.scrollHeight;document.getElementById('bg').onload=go;if(document.getElementById('bg').complete)go();
+</script></body></html>
