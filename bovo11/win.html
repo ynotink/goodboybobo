@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Level Complete (new)</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#2a5a2a}
+#stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
+#stage>*{position:absolute}
+#base{inset:0;width:100%;height:100%}
+#rb{left:21.6%;top:28.39%;width:55.4%;transform-origin:50% 100%;animation:pop .7s cubic-bezier(.3,1.6,.5,1) both,bob 1.6s .8s ease-in-out infinite}
+@keyframes pop{0%{transform:scale(.2);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-1.6%) rotate(-1.2deg)}75%{transform:translateY(-1.6%) rotate(1.2deg)}}
+#fx{inset:0;width:100%;height:100%;pointer-events:none}
+.hit{position:absolute;cursor:pointer}
+#again{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);font:700 12px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:10px}
+</style></head><body>
+<div id="stage"><img id="base" src="win/base.jpg?v=1"><canvas id="fx"></canvas><img id="rb" src="win/rambo.webp?v=1"></div>
+<div id="again">tap Rambo to replay the pop</div>
+<script>
+const IW=852,IH=1846,stage=document.getElementById('stage'),fx=document.getElementById('fx'),rb=document.getElementById('rb');
+function size(){let w=innerWidth,h=w*IH/IW;if(h>innerHeight){h=innerHeight;w=h*IW/IH}stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)/2+'px';fx.width=w*2;fx.height=h*2}
+size();addEventListener('resize',size);
+rb.onclick=()=>{rb.style.animation='none';rb.offsetHeight;rb.style.animation='';burst()};
+const g=fx.getContext('2d'),C=['#ffcc33','#ff5e8a','#36b6ff','#6fdc4a','#a66bff','#ff8a3d'];let P=[],SP=[[.2,.33],[.81,.39],[.24,.49],[.78,.55],[.5,.27],[.14,.42]].map(([x,y])=>({x,y,ph:Math.random()*6}));
+function burst(){for(let i=0;i<70;i++){const a=Math.random()*Math.PI*2,v=.004+Math.random()*.01;P.push({x:.49,y:.45,vx:Math.cos(a)*v,vy:Math.sin(a)*v-.006,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:C[i%6],life:1})}}
+setTimeout(burst,350);
+(function f(t){const W=fx.width,H=fx.height;g.clearRect(0,0,W,H);
+ for(const s of SP){const a=Math.max(0,Math.sin(t/400+s.ph))**4;if(a<.03)continue;const x=s.x*W,y=s.y*H,r=W*.022*a;g.fillStyle=`rgba(255,250,215,${a})`;g.beginPath();g.moveTo(x,y-r);g.quadraticCurveTo(x,y,x+r,y);g.quadraticCurveTo(x,y,x,y+r);g.quadraticCurveTo(x,y,x-r,y);g.quadraticCurveTo(x,y,x,y-r);g.fill()}
+ P=P.filter(p=>p.life>0);for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.00025;p.vx*=.985;p.r+=p.vr;p.life-=.007;g.save();g.translate(p.x*W,p.y*H);g.rotate(p.r);g.globalAlpha=Math.min(1,p.life*2);g.fillStyle=p.c;g.fillRect(-W*.012,-W*.005,W*.024,W*.01);g.restore()}
+ requestAnimationFrame(f)})(0);
+</script></body></html>
