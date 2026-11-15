@@ -36,3 +36,15 @@ Starting set (B): tennis, rubber_ball (red, holes), rope, ring, squeaky_bone (pu
 ## Gameplay look (scenery fix v2, 2026-11-11)
 - masters/gameplay/Gameplay_Background_1290x2796.png dc4b59d1865a8848cddfdd23008b28d6f4037d511725b9a08bca9db811be60a1
 - masters/gameplay/Gameplay_Scenery_Fixed_1290x2796.png 182e0eb1477ea37181dc05c1c037fa09d152c4becfe8195bf439fc1bffe9bbd5
+
+## Map chapters 1–5 (approved 2026-11-11, 759x2072, LOCKED — only uniform scale + side strips allowed)
+- 7338ba48c45feb3523540a0b947c06f76d2e8fbd47b188c875706fe650d1f43a  Ch01_Backyard_APPROVED.png
+- d478b0527d061c8b004804890d175411e11431dc663ad73402295895ef2be13a  Ch02_Neighborhood_APPROVED.png
+- 23a185ae3d668033d6ec8d59cc13ba15a275da7a5cc524d89941c09041dea536  Ch03_Vet_Visit_APPROVED.png
+- 5bdc9d9bcbe9b09239f63a166158e1726ae1ae1aa8c362609dab57231184cdf1  Ch04_Rainy_Day_APPROVED.png
+- f3b7fbc95b84aed2cc75a550619e61237d0718313f65c2c763689fe8d99d1a89  Ch05_Grammys_House_APPROVED.png
+
+## Gameplay board, gold frame (approved by Antonio 2026-11-15, LOCKED)
+- Source mockup: masters/gameplay/Gameplay_Gold_Board_Mockup_852x1846.png
+- Built skin: masters/gameplay/Gameplay_Gold_Board_Skin_1290x2796.webp (clean tiles, no goals divider, corners follow frame)
+- Runtime: game_new.html + game2_new.js (CS=150.8, SY=165.7/150.8, left 39.4, top 759 in 1290 units)
