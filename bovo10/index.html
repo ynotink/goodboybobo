@@ -83,6 +83,8 @@ function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];S.art.
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),H=sc.clientHeight,avail=H-innerWidth*327/1170*.92;
  for(const S of SCENES){let w=innerWidth,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
+function ensure(S){if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
+function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
 function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false});S.gl=gl;
  const sh=(k,src)=>{const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s};
  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);S.pr=pr;
@@ -90,13 +92,13 @@ function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false
  const U=n=>gl.getUniformLocation(pr,n);S.U=U;
  const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
   for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=S.dir+'/'+f+'?v=13'});
- return Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
+ return Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{if(S.gl!==gl)return;gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
-Promise.all(SCENES.map(initGL)).then(()=>{sc.scrollTop=sc.scrollHeight;let t0=performance.now(),last=t0;
+Promise.resolve().then(()=>{sc.scrollTop=sc.scrollHeight;let t0=performance.now(),last=t0;
  (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
   const vh=sc.clientHeight;
-  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom<0||r.top>vh)continue;const gl=S.gl,U=S.U;
+  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);if(r.bottom<0||r.top>vh||!S.ready)continue;const gl=S.gl,U=S.U;
    gl.viewport(0,0,S.cv.width,S.cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/S.IW,1/S.IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
    const fg=S.fx.getContext('2d'),W=S.fx.width,H=S.fx.height;fg.clearRect(0,0,W,H);fg.globalAlpha=on;
    for(const s of S.tw){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,rr=W*.012*a;fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-rr,y);fg.lineTo(x+rr,y);fg.moveTo(x,y-rr);fg.lineTo(x,y+rr);fg.stroke()}
