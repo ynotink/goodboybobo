@@ -23,9 +23,9 @@ const css=document.createElement('style');css.textContent=`
 ${RM?'.pl.up,#plRam.happy,#plRam.big{animation:none!important}#plRam.worry{transform:none}':''}`;
 document.head.appendChild(css);
 let LY=null;const hb=()=>document.getElementById('g2hud');
-fetch(P+'layers.json?v=2').then(r=>r.json()).then(j=>{LY=j;build()});
+fetch(P+'layers.json?v=3').then(r=>r.json()).then(j=>{LY=j;build()});
 const els={};
-function mk(k,src,id){const b=LY[k],i=new Image();i.src=P+src+'.webp?v=3';i.className='pl';if(id)i.id=id;
+function mk(k,src,id){const b=LY[k],i=new Image();i.src=P+src+'.webp?v=5';i.className='pl';if(id)i.id=id;
  Object.assign(i.style,{left:b[0]*KC+'px',top:b[1]*KC+'px',width:b[2]*KC+'px',height:b[3]*KC+'px'});return i}
 function build(){const h=hb();if(!h)return setTimeout(build,60);const cv=h.querySelector('canvas');
  els.ram=mk('rambo','rambo','plRam');h.insertBefore(els.ram,cv);
