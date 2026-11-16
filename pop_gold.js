@@ -49,7 +49,7 @@ function fit(){if(!stg)return;let h=innerHeight*.97,w=h*IW/IH;if(w>innerWidth*.9
  if(fx){fx.width=Math.round(w*Math.min(2,devicePixelRatio||1));fx.height=Math.round(h*Math.min(2,devicePixelRatio||1))}}
 addEventListener('resize',fit);
 const at=(e,[x,y,w,h])=>{e.style.left=pct(x,IW);e.style.top=pct(y,IH);e.style.width=pct(w,IW);e.style.height=pct(h,IH);return e};
-function img(src,box,parent=card){const i=new Image();i.className='gpL';i.src=P+src+'?v=2';at(i,box);parent.appendChild(i);return i}
+function img(src,box,parent=card){const i=new Image();i.className='gpL';i.src=P+src+'?v=3';at(i,box);parent.appendChild(i);return i}
 function tx(t,box,fs,cls='dk',parent=card){const d=document.createElement('div');d.className='gptx '+cls;d.textContent=t;d.dataset.fs=fs;at(d,box);d.style.fontSize=fs*U+'px';parent.appendChild(d);return d}
 function hit(box,fn,pressEl,repeat){const d=document.createElement('div');d.className='gphb';at(d,box);card.appendChild(d);
  if(pressEl)pressEl.classList.add('gpbtn');let on=false;

@@ -31,8 +31,7 @@ const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx
 // [file, x, y, w, h] in the original 1290x2796 layout (logo moved up and smaller so the cast shows)
 const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'gear'],
  ['L05_logo',320,395,660,325,'logo'],['L10_daily',188,1817,443,304,'daily'],['L11_events',664,1816,438,306,'events'],['L12_play',145,2135,1001,316,'play'],
- ['L13_bottom_bar',0,2450,1290,346],['L14_active_home_tile',19,2450,226,225],['L15_nav_home',43,2450,171,208],['L16_nav_map',302,2450,169,208,'map'],
- ['L17_nav_toys',562,2450,166,208,'toys'],['L18_nav_friends',800,2450,205,208,'friends'],['L19_nav_shop',1082,2450,158,208,'shop']];
+ ];
 const P=v=>v*100+'%',ui=document.getElementById('ui');let UW=390;const V=v=>v/RW*UW+'px';const PL=[];
 function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
 function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);if(h)el.style.height=V(h);
@@ -45,7 +44,7 @@ const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';plac
 function RRH(){return RH}
 let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
 const go=u=>e=>{const t=e&&e.currentTarget;if(t&&/^L1[5-9]/.test((t.src||'').split('/').pop())){t.classList.remove('up','dn');void t.offsetWidth;t.classList.add('lift');setTimeout(()=>location.href=u,140)}else location.href=u};
-document.getElementById('play').onclick=()=>setTimeout(()=>location.href='../game_new.html?lv='+lvlN,90);document.getElementById('map').onclick=go('../bovo10/index.html');document.getElementById('toys').onclick=go('toys.html');document.getElementById('shop').onclick=go('shop.html');document.getElementById('gear').onclick=go('settings.html');document.getElementById('friends').onclick=go('friends.html');
+document.getElementById('play').onclick=()=>setTimeout(()=>location.href='../game_new.html?lv='+lvlN,90);document.getElementById('gear').onclick=go('settings.html');
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
  stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
  layout();lv.style.bottom=V(2796-2318-80)}
@@ -95,4 +94,4 @@ if(!RMm){const sh=document.createElement('div');sh.id='shine';sh.innerHTML='<i><
  const pos=()=>{const r=pl.getBoundingClientRect();Object.assign(sh.style,{left:r.left+r.width*.03+'px',top:r.top+r.height*.08+'px',width:r.width*.94+'px',height:r.height*.62+'px'})};
  const shine=()=>{if(!document.hidden){pos();sh.classList.remove('go');void sh.offsetWidth;sh.classList.add('go')}setTimeout(shine,7000+Math.random()*3000)};setTimeout(shine,2200);
  const lg=document.getElementById('logo');const br=()=>{if(!document.hidden){lg.classList.remove('breath');void lg.offsetWidth;lg.classList.add('breath')}setTimeout(br,9000+Math.random()*3000)};setTimeout(br,6000)}
-</script></body></html>
+</script><script src="../nav/nav.js?v=1" data-page="home"></script></body></html>

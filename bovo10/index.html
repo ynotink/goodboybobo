@@ -27,7 +27,6 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 <div id="sc"></div>
 <div id="hud"><img src="L02_heart_counter.png" style="left:12px"><div class="t" id="hH" style="left:68px">5</div>
 <img src="L03_bone_counter.png" style="left:142px"><div class="t" id="hB" style="left:198px">430</div><img src="L04_gear.png" style="right:12px"></div>
-<img id="tabs" src="tabs.png?v=1"><div id="tabhit" style="position:fixed;left:0;right:0;bottom:0;height:calc(100vw*327/1170*.75);z-index:6;display:flex"><a href="../bovo11/index.html" style="flex:1"></a><a href="#" style="flex:1"></a><a href="../bovo11/toys.html" style="flex:1"></a><a href="../bovo11/friends.html" style="flex:1"></a><a href="../bovo11/shop.html" style="flex:1"></a></div>
 <a href="../bovo11/settings.html" style="position:fixed;right:4px;top:calc(env(safe-area-inset-top) + 26px);width:54px;height:54px;z-index:6"></a>
 <button class="btn" id="tog" style="display:none">Motion: ON</button><button class="btn" id="win" style="display:none">Win level ▶</button>
 <div id="hint">Swipe up to explore ↑</div>
@@ -126,6 +125,6 @@ function win(){const N=SCENES.length*5;if(cur>=N-1){cur=0;buttons();sc.scrollTo(
  (function hop(now){const u=Math.min(1,(now-t0)/900),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2,w=w0+(w1-w0)*e;
   paw.style.left=(x0+(x1-x0)*e)*100+'%';paw.style.top=((y0-w0*.27)+((y1-w1*.27)-(y0-w0*.27))*e-Math.sin(u*Math.PI)*.07)*100+'%';paw.style.width=w*.5*100+'%';
   if(u<1)requestAnimationFrame(hop);else{cur++;buttons()}})(t0)}
-document.getElementById('win').onclick=win;document.getElementById('tabhit').children[1].onclick=e=>{e.preventDefault()};
+document.getElementById('win').onclick=win;
 document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
-</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}</script></body></html>
+</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}</script><script src="../nav/nav.js?v=1" data-page="map"></script></body></html>
