@@ -5,7 +5,7 @@
 @font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
 html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-select:none;user-select:none}
 #stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
-#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%)}#bg{position:fixed;inset:-40px;background:url(home/scene.png?v=2) center bottom/cover;filter:blur(18px) brightness(.85)}#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}#stage canvas{position:absolute;inset:0;width:100%;height:100%}
+#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%)}#bg{position:fixed;inset:-40px;background:url(home/scene.png?v=4) center bottom/cover;filter:blur(18px) brightness(.85)}#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}#stage canvas{position:absolute;inset:0;width:100%;height:100%}
 .L{position:absolute;display:block;-webkit-user-drag:none}
 .btn{cursor:pointer;transform-origin:50% 55%;-webkit-tap-highlight-color:transparent}
 .btn.dn{transform:scale(.97);filter:brightness(.96);transition:transform 80ms ease-out,filter 80ms}
@@ -71,7 +71,7 @@ const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attac
 gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
 const U=n=>gl.getUniformLocation(pr,n);
 const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
- for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src='home/'+f+'?v=2'});
+ for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src='home/'+f+'?v=4'});
 const TW=[[.03,.6],[.05,.64],[.96,.63],[.92,.66],[.04,.58],[.1,.2],[.2,.13]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));
 const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
 Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),CH/IH);
