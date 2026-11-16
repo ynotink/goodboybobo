@@ -50,5 +50,5 @@ Starting set (B): tennis, rubber_ball (red, holes), rope, ring, squeaky_bone (pu
 - Runtime: game_new.html + game2_new.js (CS=150.8, SY=165.7/150.8, left 39.4, top 759 in 1290 units)
 
 ## Gameplay silhouette backgrounds (from Antonio 2026-11-15)
-- masters/gameplay/silhouettes/: 10 standalone silhouettes (PNG+SVG, palettes.json) + 5 woodland color options
+- masters/gameplay/approved_backgrounds/: the 10 APPROVED backgrounds (replaced the earlier silhouette pack). masters/gameplay/silhouettes/: 5 woodland color options
 - Chapter map lives in game_new.html (CHAPTER_BG). Test any with ?bgpick=s01..s10/w01..w05, gallery at bovo11/bg_picker.html
