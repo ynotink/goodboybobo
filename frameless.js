@@ -15,7 +15,7 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
  const cv=h.querySelector('canvas'),ram=document.getElementById('plRam');
  const box=(cls,x0,y0,x1,y1,rad,before)=>{const d=document.createElement('div');d.className='flp '+cls;Object.assign(d.style,{left:u(x0),top:u(y0),width:u(x1-x0),height:u(y1-y0),borderRadius:u(rad)});h.insertBefore(d,before);return d};
  // main goals bar, moves pill, level tag (852-unit layout of the approved mockup)
- const RV=new URLSearchParams(location.search).get('rv')||'peek';
+ const RV=new URLSearchParams(location.search).get('rv')||'sit';ram.dataset.ar=0.744;
  if(RV=='peek'){
   // Rambo peeks over the top of one full-width bar (bar in front of him)
   const bar=box('cream',9,213,843,393,52,h.firstChild);
@@ -26,6 +26,11 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
   const c=box('cream',606,150,846,400,120,ram);c.style.borderRadius='50%';c.style.background='radial-gradient(circle at 50% 40%,#2a8a85,#11524f)';c.style.border='5px solid #fff6e2';
   const w=document.createElement('div');w.className='flp';Object.assign(w.style,{left:u(616),top:u(160),width:u(220),height:u(220),borderRadius:'50%',overflow:'hidden'});c.after(w);
   w.appendChild(ram);const S=.82,bw=399*S;Object.assign(ram.style,{left:p(110*K-bw/2-4),top:p(-4),width:p(bw),height:p(461*S),webkitMaskImage:'none',maskImage:'none'});
+ }else if(RV=='sit'){
+  box('cream',9,213,612,393,52,h.firstChild);
+  ram.src='bovo11/play2/rambo_sit.webp?v=1';const hh=300,ww=hh*ram.dataset.ar;
+  Object.assign(ram.style,{left:u(730-ww/2),top:u(404-hh),width:u(ww),height:u(hh)});ram.style.transformOrigin='50% 100%';
+  const sh=document.createElement('div');sh.className='flp';Object.assign(sh.style,{left:u(660),top:u(380),width:u(150),height:u(22),borderRadius:'50%',background:'radial-gradient(ellipse,rgba(0,20,25,.45),rgba(0,20,25,0) 70%)'});h.insertBefore(sh,ram);
  }else box('cream',9,213,577,393,52,h.firstChild);
  box('teal',394,230,552,352,26,cv);
  const mv=document.createElement('div');mv.className='flp';mv.textContent='Moves';Object.assign(mv.style,{left:u(394),top:u(318),width:u(158),height:u(30),display:'flex',alignItems:'center',justifyContent:'center',font:`900 ${21*K*KC}px BoboNunito,Nunito,system-ui`,color:'#fdf1d6',zIndex:2});h.appendChild(mv);
