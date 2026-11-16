@@ -15,12 +15,24 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
  const cv=h.querySelector('canvas'),ram=document.getElementById('plRam');
  const box=(cls,x0,y0,x1,y1,rad,before)=>{const d=document.createElement('div');d.className='flp '+cls;Object.assign(d.style,{left:u(x0),top:u(y0),width:u(x1-x0),height:u(y1-y0),borderRadius:u(rad)});h.insertBefore(d,before);return d};
  // main goals bar, moves pill, level tag (852-unit layout of the approved mockup)
- box('cream',9,213,577,393,52,h.firstChild);
- box('teal',394,230,552,352,26,ram);
+ const RV=new URLSearchParams(location.search).get('rv')||'peek';
+ if(RV=='peek'){
+  // Rambo peeks over the top of one full-width bar (bar in front of him)
+  const bar=box('cream',9,213,843,393,52,h.firstChild);
+  h.insertBefore(ram,bar);h.insertBefore(bar,ram.nextSibling);const S=.78,bw=399*S,bh=461*S;
+  Object.assign(ram.style,{left:p(1085-bw/2),top:p(352-bh+50),width:p(bw),height:p(bh),zIndex:0});bar.style.zIndex=1;
+ }else if(RV=='badge'){
+  box('cream',9,213,600,393,52,h.firstChild);
+  const c=box('cream',606,150,846,400,120,ram);c.style.borderRadius='50%';c.style.background='radial-gradient(circle at 50% 40%,#2a8a85,#11524f)';c.style.border='5px solid #fff6e2';
+  const w=document.createElement('div');w.className='flp';Object.assign(w.style,{left:u(616),top:u(160),width:u(220),height:u(220),borderRadius:'50%',overflow:'hidden'});c.after(w);
+  w.appendChild(ram);const S=.82,bw=399*S;Object.assign(ram.style,{left:p(110*K-bw/2-4),top:p(-4),width:p(bw),height:p(461*S),webkitMaskImage:'none',maskImage:'none'});
+ }else box('cream',9,213,577,393,52,h.firstChild);
+ box('teal',394,230,552,352,26,cv);
  const mv=document.createElement('div');mv.className='flp';mv.textContent='Moves';Object.assign(mv.style,{left:u(394),top:u(318),width:u(158),height:u(30),display:'flex',alignItems:'center',justifyContent:'center',font:`900 ${21*K*KC}px BoboNunito,Nunito,system-ui`,color:'#fdf1d6',zIndex:2});h.appendChild(mv);
- box('teal',58,166,240,226,30,ram);
+ box('teal',58,166,240,226,30,cv);
  // little ledge Rambo peeks over
- const L=box('cream',583,336,848,393,24,cv);
+ if(RV=='ledge')box('cream',583,336,848,393,24,cv);
+ cv.style.zIndex=3;h.querySelectorAll('.flp.teal').forEach(e=>e.style.zIndex=2);mv.style.zIndex=4;
 }
 build();
 // plain chapter background
