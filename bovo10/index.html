@@ -78,8 +78,8 @@ for(let i=SCENES.length-1;i>=0;i--){const S=SCENES[i];S.el=document.createElemen
  S.cv=document.createElement('canvas');S.fx=document.createElement('canvas');S.art.append(S.cv,S.fx);S.el.appendChild(S.art);sc.appendChild(S.el)}
 function put(S,src,x,y,w){const i=document.createElement('img');i.src=src;i.className='o';i.style.left=x*100+'%';i.style.top=y*100+'%';i.style.width=w*100+'%';S.art.appendChild(i);return i}
 function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEach(e=>e.remove());S.spots.forEach(([x,y,w],k)=>{const L=si*5+k,st=L<cur?'done':L===cur?'cur':'lock';
- const mk=put(S,st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_lock.png',x,y+w*.18,w);if(st!=='lock'){mk.style.pointerEvents='auto';mk.style.cursor='pointer';mk.onclick=()=>location.href='../game_new.html?lv='+(L+1)}
- if(st!=='lock'){const n=document.createElement('div');n.className='n';n.textContent=L+1;n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(w*.33*S.art.clientWidth)+'px';S.art.appendChild(n)}})});placePaw(cur)}
+ const mk=put(S,st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_locknum.png',x,y+Math.max(w,.11)*.18,Math.max(w,.11));if(st!=='lock'){mk.style.pointerEvents='auto';mk.style.cursor='pointer';mk.onclick=()=>location.href='../game_new.html?lv='+(L+1)}
+ {const n=document.createElement('div');if(st==='lock')n.style.opacity='.85';n.className='n';n.textContent=L+1;n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(Math.max(w,.12)*.33*S.art.clientWidth)+'px';S.art.appendChild(n)}})});placePaw(cur)}
 function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];S.art.appendChild(paw);paw.style.left=x*100+'%';paw.style.top=(y-w*.27)*100+'%';paw.style.width=w*.5*100+'%'}
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),H=sc.clientHeight,avail=H-innerWidth*327/1170*.92;
  for(const S of SCENES){let w=innerWidth,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
@@ -96,7 +96,7 @@ function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false
  return Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{if(S.gl!==gl)return;gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
-Promise.resolve().then(()=>{sc.scrollTop=sc.scrollHeight;let t0=performance.now(),last=t0;
+Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
  (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
   const vh=sc.clientHeight;
   for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);if(r.bottom<0||r.top>vh||!S.ready)continue;const gl=S.gl,U=S.U;

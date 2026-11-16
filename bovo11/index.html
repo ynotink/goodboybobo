@@ -35,7 +35,7 @@ const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbb
 const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}t2.style.justifyContent='center';place(t2,640,222,190,123);
 const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';place(lv,145,2318,1001,0);lv.style.bottom=V(2796-2318-80);
 function RRH(){return RH}
-let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');lvlN=Object.keys(g.stars||{}).length+1}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
+let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
 const go=u=>()=>location.href=u;
 document.getElementById('play').onclick=()=>location.href='../game_new.html?lv='+lvlN;document.getElementById('map').onclick=go('../bovo10/index.html');document.getElementById('toys').onclick=go('toys.html');document.getElementById('shop').onclick=go('shop.html');document.getElementById('gear').onclick=go('settings.html');document.getElementById('friends').onclick=go('friends.html');
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
