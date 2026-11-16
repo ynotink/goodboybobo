@@ -9,7 +9,7 @@ const font=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900
 // ---- styles: hide the old HUD, keep the engine
 const css=document.createElement('style');css.textContent=`
 #bgA,#bgB,#tint,#calm,#topw,#lvs,#pz,#bsts,#brks,#bub,#btip,#sb{display:none!important}
-#tiles{background:none!important}#tiles .tile{background:url(bovo11/play2/tileA.webp) 0 0/100% 100%!important;border-radius:0!important;filter:none!important;box-shadow:none!important;backdrop-filter:none!important}#tiles .tile.a{background-image:url(bovo11/play2/tileB.webp)!important}
+#tiles{background:none!important}#tiles .tile{background:url(bovo11/play2/tileA.webp) 0 0/100% 100%!important;filter:none!important;box-shadow:none!important;backdrop-filter:none!important}#tiles .tile.a{background-image:url(bovo11/play2/tileB.webp)!important}
 #g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/plain/s02.webp?v=1) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
 #g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/plain/s02.webp?v=1) 0 0/100% 100%;z-index:0}
 #board{z-index:2}
