@@ -1,0 +1,7 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Background picker</title><style>body{margin:0;background:#1a1a1a;font:700 15px system-ui;color:#fff}
+.s{height:100vh;scroll-snap-align:start;position:relative;display:flex;justify-content:center}html{scroll-snap-type:y mandatory}
+img{height:100vh;width:auto;max-width:100vw;object-fit:contain}.l{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);padding:6px 12px;border-radius:12px;white-space:nowrap}
+a{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#2e9a2a;color:#fff;padding:9px 16px;border-radius:14px;text-decoration:none}</style></head><body>
+<script>const L=[['s01','Teal woodland'],['s02','Blue backyard'],['s03','Neighborhood rooftops'],['s04','Town streetlamps'],['s05','Layered mountains'],['s06','Clouds & rolling hills'],['s07','Lakeside reeds'],['s08','Coastal dunes'],['s09','Moonlit woodland'],['s10','Lantern night town'],['w01','Terracotta woodland'],['w02','Muted peach woodland'],['w03','Dusty rose woodland'],['w04','Sage green woodland'],['w05','Moss green woodland']];
+document.write(L.map(([k,n],i)=>`<div class="s"><img src="play2/bgs/${k}.webp?v=1"><div class="l">${i+1}/15 · ${k} · ${n}</div><a href="../game_new.html?lv=3&bgpick=${k}">Play with this one</a></div>`).join(''))</script></body></html>

@@ -48,3 +48,7 @@ Starting set (B): tennis, rubber_ball (red, holes), rope, ring, squeaky_bone (pu
 - Source mockup: masters/gameplay/Gameplay_Gold_Board_Mockup_852x1846.png
 - Built skin: masters/gameplay/Gameplay_Gold_Board_Skin_1290x2796.webp (clean tiles, no goals divider, corners follow frame)
 - Runtime: game_new.html + game2_new.js (CS=150.8, SY=165.7/150.8, left 39.4, top 759 in 1290 units)
+
+## Gameplay silhouette backgrounds (from Antonio 2026-11-15)
+- masters/gameplay/silhouettes/: 10 standalone silhouettes (PNG+SVG, palettes.json) + 5 woodland color options
+- Chapter map lives in game_new.html (CHAPTER_BG). Test any with ?bgpick=s01..s10/w01..w05, gallery at bovo11/bg_picker.html

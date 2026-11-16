@@ -712,9 +712,19 @@ window.T={get S(){return S},findMove,localMatch,trySwap,startLevel,LEVELS,setFas
 document.body.dataset.bt=Q.get('bt')||'cream70';document.getElementById('topw').style.transform=`translate(10px,${Q.get('hu')??14}px) scale(.9)`;if(Q.get('dof'))document.body.dataset.dof=Q.get('dof');if(Q.get('calm'))document.body.dataset.calm=Q.get('calm');document.body.dataset.hud=Q.get('hud')||'smoke';
 addEventListener("load",()=>startLevel(Math.max(0,(+Q.get("lv")||1)-1)));
 </script><script src="game_fx.js?v=23"></script><script src="rambo_live.js?v=23"></script><script src="game2_new.js?v=7"></script><script src="pop_gold.js?v=3"></script><script>(function(){const _sl=window.startLevel,lv0=+(new URLSearchParams(location.search).get('lv')||1);window.startLevel=function(n,o){if(Math.floor(n/10)!==Math.floor((lv0-1)/10))return location.replace('game_new.html?lv='+(n+1));return _sl(n,o)}})();
-(function(){const CH_BG=[1,2,3,4,5,6,7,8,9,10];const lv=+(new URLSearchParams(location.search).get('lv')||1),ch=Math.floor((lv-1)/10)+1;
-if(!CH_BG.includes(ch))return;const B=new URLSearchParams(location.search).get('bg')||(()=>{try{return localStorage.getItem('gbb_bg')}catch(e){}})();try{if(new URLSearchParams(location.search).get('bg'))localStorage.setItem('gbb_bg',B)}catch(e){}const src='bovo11/play2/'+(B=='blur'?'skb_ch':'sk_ch')+ch+'.webp?v=1';
-const fix=()=>{const a=document.getElementById('g2skin'),b=document.getElementById('g2top');if(!a)return setTimeout(fix,50);a.style.backgroundImage=`url(${src})`;if(b)b.style.backgroundImage=`url(${src})`};fix()})();</script><script>
+(function(){
+// ===== Which background each chapter uses (easy to swap) =====
+// s01 Teal woodland · s02 Blue backyard · s03 Rooftops · s04 Streetlamps · s05 Mountains · s06 Rolling hills
+// s07 Lakeside reeds · s08 Coastal dunes · s09 Moonlit woods · s10 Lantern town
+// w01 Terracotta · w02 Peach · w03 Dusty rose · w04 Sage · w05 Moss
+const CHAPTER_BG={1:'s02',2:'s03',3:'s04',4:'s06',5:'s10',6:'s01',7:'s09',8:'s07',9:'s05',10:'s08'};
+const Q=new URLSearchParams(location.search),lv=+(Q.get('lv')||1),ch=Math.min(10,Math.floor((lv-1)/10)+1);
+let pick=Q.get('bgpick');try{if(pick)localStorage.setItem('gbb_bgpick',pick);else pick=localStorage.getItem('gbb_bgpick')}catch(e){}
+if(pick==='off'){pick=null;try{localStorage.removeItem('gbb_bgpick')}catch(e){}}
+const src='bovo11/play2/bgs/'+(pick||CHAPTER_BG[ch])+'.webp?v=1';
+const fix=()=>{const a=document.getElementById('g2skin'),b=document.getElementById('g2top');if(!a)return setTimeout(fix,50);a.style.backgroundImage=`url(${src})`;if(b)b.style.backgroundImage=`url(${src})`};fix();
+if(pick){const t=document.createElement('div');t.textContent='BG test: '+pick+' · tap to clear';t.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:6px;z-index:300;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:4px 9px;border-radius:9px';t.onclick=()=>{try{localStorage.removeItem('gbb_bgpick')}catch(e){};location.replace('game_new.html?lv='+lv)};addEventListener('DOMContentLoaded',()=>document.body.appendChild(t));if(document.body)document.body.appendChild(t)}
+})()</script><script>
 // NEW-LOOK PREVIEW: board sits on the map scene for this level; map/home buttons go to the new pages
 try{sessionStorage.setItem('gbb_map','bovo10/index.html')}catch(e){}
 setTimeout(()=>{if(window.BA&&BA.nav){const n=BA.nav;BA.nav=u=>n(/^(index\.html|home)/.test(u)?'bovo11/index.html':u)}},0);
