@@ -66,7 +66,7 @@ function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(windo
  txt(g,'Level '+(S.li+1),[100,266,251,61],44,'center','#fdf1d6');
  txt(g,String(Math.max(0,S.moves)),[603,369,227,121],S.moves>99?91:118,'center',S.moves<=5?'#ff8a7a':'#fdf1d6');
  const n=S.goals.length,x0=n==1?189:70,x1=n==1?432:551,sw=(x1-x0)/n,cy=466;
- S.goals.forEach((go,i)=>{const sx=x0+sw*i,isz=Math.min(121,sw*.5);const ix=sx+sw*.08;contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
+ S.goals.forEach((go,i)=>{const sx=x0+sw*i,isz=Math.min(121,sw*.5);const ix=sx+sw*.08;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
   const tx=ix+isz+9,tw=sx+sw-tx-6;if(go.left>0)txt(g,String(go.left),[tx,cy-38,tw,76],n>2?48:67,'center','#0d4a4b');else check(g,tx+tw/2,cy,51)});
  [[273,2435],[580,2435],[878,2435],[1189,2435]].forEach(([x,y],k)=>{const v=SAVE.boost[k];txt(g,v?String(v):'+',[x-40,y-30,80,60],50,'center','#fdf1d6')});
  const sel=S.booster??-1;if(sel!==lastSel){lastSel=sel;ui.querySelectorAll('.bh').forEach((e,k)=>e.classList.toggle('sel',k===sel))}}
@@ -76,7 +76,7 @@ window.drawGoals=function(){_dg&&_dg.apply(this,arguments);drawHud()};
 window.drawBoosters=function(){_db&&_db.apply(this,arguments);drawHud()};
 setInterval(()=>{if(typeof S!=='undefined'&&S&&(S.booster??-1)!==lastSel)drawHud()},150);
 // tap areas (approved pixel boxes)
-const hit=(b,fn,cls='h')=>{const d=document.createElement('div');d.className=cls;Object.assign(d.style,{left:b[0]*KC+'px',top:b[1]*KC+'px',width:b[2]*KC+'px',height:b[3]*KC+'px'});d.onclick=fn;ui.appendChild(d);return d};
+window.g2hit=null;const hit=(b,fn,cls='h')=>{const d=document.createElement('div');d.className=cls;Object.assign(d.style,{left:b[0]*KC+'px',top:b[1]*KC+'px',width:b[2]*KC+'px',height:b[3]*KC+'px'});d.onclick=fn;ui.appendChild(d);return d};
 [[41, 2233, 288, 257], [348, 2233, 288, 257], [659, 2233, 285, 257], [964, 2233, 288, 257]].forEach((b,k)=>hit(b,()=>useBooster(k),'h bh'));
 hit([42,2574,157,157],()=>window.g2pause());
 
