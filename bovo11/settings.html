@@ -55,8 +55,8 @@ const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,
  ['../../bovo11/settings/nav',0,2440,1290,356]];
 for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
 for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[516,'toys.html'],[774,'friends.html'],[1032,'shop.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
-const t1=document.createElement('div');t1.className='t';t1.textContent='5';place(t1,200,228,150,111);
-const t2=document.createElement('div');t2.className='t';t2.textContent='430';place(t2,640,222,190,123);
+const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbbLive*/try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.hearts!=null)t1.textContent=g.hearts}catch(e){}place(t1,200,228,150,111);
+const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}place(t2,640,222,190,123);
 function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);el.style.height=V(h);
  if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-h);el.style.top=''}}document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px')}
 function size(){const DPR=Math.min(2,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}
