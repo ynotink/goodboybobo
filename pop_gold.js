@@ -86,7 +86,7 @@ function goalsRow(goals,[x0,y0,x1,y1],isz,fs){const n=goals.length,sw=(x1-x0)/n;
   tx(num,[ix+isz+gap-fs*.1,cy-fs*.6,tw+fs*.2,fs*1.2],fs,'dk')})}
 // ---------- READY ----------
 window.showIntro=function(){if(!BTN)return setTimeout(window.showIntro,80);open('r_base_nb.webp');
- tx('Level '+(S.li+1),[190,615,470,95],72,'cr');
+ {const t=tx('Level '+(S.li+1),[190,615,470,95],72,'cr');const T=S.lv.tier;if(T=='H'||T=='SH'){t.dataset.fs=T=='SH'?50:60;t.style.fontSize=(+t.dataset.fs*U)+'px';t.innerHTML='Level '+(S.li+1)+' <span style="color:'+(T=='SH'?'#d9a6ff':'#ff9a8a')+';font-size:.7em;margin-left:.35em">'+(T=='SH'?'SUPER HARD':'HARD')+'</span>'}}
  const n=S.goals.length;goalsRow(S.goals.map(x=>({...x,left:x.n})),[125,858,730,1005],n>2?110:132,n>2?72:86);
  tx(String(S.moves),[230,1098,380,140],S.moves>99?118:140,'cr');
  const pl=document.createElement('div');pl.className='gpL';at(pl,[118,1342,616,206]);card.appendChild(pl);
