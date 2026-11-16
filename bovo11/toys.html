@@ -44,7 +44,7 @@ let UW=390;const V=v=>v/RW*UW+'px',PL=[];
 function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
 const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'settings.html'],
  ['../../bovo11/toys/nav',0,2440,1290,356]];
-for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
+for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp?v=2';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
 for(const [x,go] of [[0,'index.html'],[258,'../bovo10/index.html'],[774,'friends.html'],[1032,'shop.html']]){const d=document.createElement('div');d.className='hit';d.onclick=()=>location.href=go;place(d,x,2450,258,230)}
 const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbbLive*/try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.hearts!=null)t1.textContent=g.hearts}catch(e){}place(t1,200,228,150,111);
 const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}place(t2,640,222,190,123);
