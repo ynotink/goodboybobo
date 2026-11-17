@@ -17,9 +17,9 @@ function build(){const h=document.getElementById('g2hud');const bar=[...document
  const DPR=Math.min(2,devicePixelRatio||1);cv.width=cv.height=Math.round(u(B.s)*DPR*(window.G2K||1));
  gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true});if(!gl)return;
  const vs=`attribute vec2 p;uniform vec4 r;varying vec2 t;void main(){t=vec2(p.x*.5+.5,.5-p.y*.5);vec2 q=r.xy+t*r.zw;gl_Position=vec4(q.x*2.-1.,1.-q.y*2.,0.,1.);}`;
- const fs=`precision mediump float;varying vec2 t;uniform sampler2D v;uniform vec2 fd;
- void main(){vec3 c=texture2D(v,t).rgb;float m=max(c.r,c.b);float g=c.g-m;
-  float a=1.-smoothstep(.10,.38,g);
+ const fs=`precision mediump float;varying vec2 t;uniform sampler2D v;uniform vec2 fd;uniform vec3 bb;
+ void main(){float Y=bb.y+t.y*bb.z;float w=1.-smoothstep(330.,520.,Y);w*=.55+.45*smoothstep(520.,120.,Y);vec2 q=t+vec2(0.,bb.x*w/bb.z);vec3 c=texture2D(v,q).rgb;float m=max(c.r,c.b);float g=c.g-m;
+  float a=1.-smoothstep(.10,.38,g);if(q.y>1.)a=0.;
   c.g=min(c.g,m+.02);                                  // remove green spill on the fur edge
   a*=1.-smoothstep(fd.x,fd.y,t.y);
   gl_FragColor=vec4(c*a,a);}`;
@@ -38,21 +38,27 @@ function build(){const h=document.getElementById('g2hud');const bar=[...document
  loop()}
 function draw(v){if(!gl||v.readyState<2)return;gl.bindTexture(gl.TEXTURE_2D,tex);
  const b=box(FRAME[CLIP[v.kind]]),B=cv.B;gl.uniform4f(gl.getUniformLocation(cv.pr,'r'),(b.x-B.x)/B.s,(b.y-B.y)/B.s,b.s/B.s,b.s/B.s);gl.uniform2f(gl.getUniformLocation(cv.pr,'fd'),b.f0,b.f1);
+ const f=FRAME[CLIP[v.kind]];gl.uniform3f(gl.getUniformLocation(cv.pr,'bb'),breath(),-f.oy/f.S,1152/f.S);
  try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,v)}catch(e){return}
  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
-let lastCombo=0;
-function loop(){if(cur&&!cur.paused)draw(cur);
- if(typeof S!=='undefined'&&S){const c=S.combo||0;if(c>=3&&lastCombo<3)play('happy');lastCombo=c}
+// breathing: a soft in-out rhythm (about 2.4s a breath); fades out while a reaction plays and back in after
+let bAmp=1,bT0=performance.now();
+function breath(){const t=(performance.now()-bT0)/1000,ph=(t%2.4)/2.4;const e=ph<.42?Math.sin(ph/.42*Math.PI/2):Math.cos((ph-.42)/.58*Math.PI/2);return 16*e*bAmp}
+let lastCombo=0,lastSp=-1,fr=0;
+function loop(){const tgt=cur?0:1;bAmp+=(tgt-bAmp)*(cur?.25:.04);if(cur&&!cur.paused)draw(cur);else if(ready&&!cur)draw(vids.happy);
+ if(typeof S!=='undefined'&&S){const c=S.combo||0;if(c>=2&&lastCombo<2)play('happy');if(c>=5&&lastCombo<5)play('cheer',true);lastCombo=c;
+  if(++fr%10==0&&typeof allCells=='function'){try{const n=allCells().filter(x=>x.p&&x.p.sp).length;if(lastSp>=0&&n>lastSp)play('happy');lastSp=n}catch(e){}}}
  // a little life when nothing has happened for a while
  if(ready&&!cur&&performance.now()-lastAct>26000&&typeof S!=='undefined'&&S&&!S.over&&!document.getElementById('gp')?.classList.contains('on'))play('happy');
  requestAnimationFrame(loop)}
-function play(k,force){const v=vids[k];if(!ready||!v)return;if(cur&&!force)return;
+let coolUntil=0;
+function play(k,force){const v=vids[k];if(!ready||!v)return;if(cur&&!force)return;if(!force&&performance.now()<coolUntil)return;coolUntil=performance.now()+2500;
  if(cur&&cur!==v){cur.pause()}cur=v;lastAct=performance.now();v.currentTime=0;const p=v.play();p&&p.catch&&p.catch(()=>{cur=null})}
 window.rReact=play;
 // game hooks: good match / goal done -> happy, rainbow / big moments -> cheer, last 5 moves -> worried (once per level)
 window.ramboReact=function(kind){if(kind==='big')play('cheer',true);else play('happy')};
 const _dm=window.drawMoves;window.drawMoves=function(){_dm&&_dm.apply(this,arguments);
  if(typeof S!=='undefined'&&S&&!S.over&&S.moves<=5&&S.moves>0&&worryShown!==S.li){worryShown=S.li;setTimeout(()=>play('worry',true),350)}};
-const _sl=window.startLevel;if(_sl)window.startLevel=function(){worryShown=-1;return _sl.apply(this,arguments)};
+const _sl=window.startLevel;if(_sl)window.startLevel=function(){worryShown=-1;lastSp=-1;return _sl.apply(this,arguments)};
 build();
 })();
