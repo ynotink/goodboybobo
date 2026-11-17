@@ -30,7 +30,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 #play .k-lbl{display:flex;flex-direction:column;align-items:center;color:#fffbe9;text-shadow:none;-webkit-text-stroke:.16em #1f6a14;paint-order:stroke fill;filter:drop-shadow(0 calc(var(--w)*2.5) 0 rgba(15,70,10,.55))}
 #play .k-lbl b{font-weight:400;font-size:calc(var(--w)*48);line-height:.92;letter-spacing:.03em}
 #play .k-lbl i{font-style:normal;font-size:calc(var(--w)*19);line-height:1;-webkit-text-stroke-width:.2em;color:#fff}
-#stage #live{position:absolute;left:0;top:0;width:100%;height:82.06933911159263%;object-fit:fill;-webkit-mask-image:linear-gradient(#000 94%,transparent);mask-image:linear-gradient(#000 94%,transparent)}#stage #fx{display:none}
+#stage .live{position:absolute;left:0;top:0;width:100%;height:82.06933911159263%;object-fit:fill;-webkit-mask-image:linear-gradient(#000 94%,transparent);mask-image:linear-gradient(#000 94%,transparent)}#stage #fx{display:none}
 </style><link rel="stylesheet" href="../uikit/kit.css?v=1"></head><body>
 <div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=1"></script>
 
@@ -90,8 +90,18 @@ const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Mat
 Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),CH/IH);
  const draw=()=>{gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),0);gl.uniform1f(U('on'),0);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)};draw();addEventListener('resize',()=>requestAnimationFrame(draw))});
 // ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
-{const v=document.createElement('video');v.id='live';v.src='home/live.mp4?v=1';v.poster='home/live_poster.jpg?v=1';v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';
- stage.insertBefore(v,fx);const go=()=>{const p=v.play();p&&p.catch(()=>{})};go();addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)go()})}
+{// two copies hand off just before the end, so the loop never pauses (iPhone pauses on a plain loop restart)
+ const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=2';v.poster='home/live_poster.jpg?v=1';v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');v.setAttribute('muted','');stage.insertBefore(v,fx);return v};
+ const V=[mk(),mk()];let cur=0;V[1].style.opacity=0;
+ const play=v=>{const p=v.play();p&&p.catch(()=>{})};
+ V[1].addEventListener('loadeddata',()=>{V[1].pause();V[1].currentTime=0},{once:true});
+ play(V[0]);
+ const tick=()=>{const a=V[cur],b=V[1-cur];
+  if(a.duration&&a.currentTime>=a.duration-0.09&&b.paused){b.currentTime=0;play(b);
+   b.addEventListener('playing',()=>{b.style.opacity=1;a.style.opacity=0;cur=1-cur;setTimeout(()=>{a.pause();a.currentTime=0},120)},{once:true})}
+  if(a.ended){play(a)}
+  requestAnimationFrame(tick)};requestAnimationFrame(tick);
+ const go=()=>play(V[cur]);addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)go()})}
 
 // ---- quiet idle rhythm: PLAY shine every ~8s, logo breath offset; nothing in unison
 const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
