@@ -43,7 +43,7 @@ function draw(v){if(!gl||v.readyState<2)return;gl.bindTexture(gl.TEXTURE_2D,tex)
  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
 // breathing: a soft in-out rhythm (about 2.4s a breath); fades out while a reaction plays and back in after
 let bAmp=1,bT0=performance.now();
-function breath(){const t=(performance.now()-bT0)/1000,ph=(t%2.4)/2.4;const e=ph<.42?Math.sin(ph/.42*Math.PI/2):Math.cos((ph-.42)/.58*Math.PI/2);return 16*e*bAmp}
+function breath(){const t=(performance.now()-bT0)/1000,ph=(t%2.4)/2.4;const e=ph<.42?Math.sin(ph/.42*Math.PI/2):Math.cos((ph-.42)/.58*Math.PI/2);return 0*e*bAmp}
 let lastCombo=0,lastSp=-1,fr=0;
 function loop(){const tgt=cur?0:1;bAmp+=(tgt-bAmp)*(cur?.25:.04);if(cur&&!cur.paused)draw(cur);else if(ready&&!cur)draw(vids.happy);
  if(typeof S!=='undefined'&&S){const c=S.combo||0;if(c>=2&&lastCombo<2)play('happy');if(c>=5&&lastCombo<5)play('cheer',true);lastCombo=c;
