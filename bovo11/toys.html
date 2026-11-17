@@ -18,8 +18,8 @@
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*8);margin-top:calc(var(--u)*11)}
 .toy{position:relative;height:calc(var(--u)*72);border-width:calc(var(--u)*18);cursor:pointer}
 .toy .pic{position:absolute;left:calc(var(--u)*-13);top:calc(var(--u)*-11);width:calc(var(--u)*54);height:calc(var(--u)*56);object-position:left center;object-fit:contain;transition:transform 120ms}
-.toy .nm{position:absolute;right:calc(var(--u)*-10);top:calc(var(--u)*-9);font-size:calc(var(--u)*13.5);color:#1b4b50;white-space:nowrap}
-.toy .ck{position:absolute;right:calc(var(--u)*-7);bottom:calc(var(--u)*-11);width:calc(var(--u)*30);height:calc(var(--u)*30)}
+.toy .nm{position:absolute;left:calc(var(--u)*44);right:calc(var(--u)*-8);top:calc(var(--u)*-6);height:calc(var(--u)*22);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*14);line-height:1;color:#1b4b50;white-space:nowrap}
+.toy .ck{position:absolute;left:calc(var(--u)*44 + (100% - var(--u)*36)/2 - var(--u)*15);bottom:calc(var(--u)*-10);width:calc(var(--u)*30);height:calc(var(--u)*30)}
 .toy.wig .pic{animation:wig 520ms cubic-bezier(.3,1.4,.5,1)}
 @keyframes wig{20%{transform:scale(1.14) rotate(-10deg)}45%{transform:scale(1.1) rotate(8deg)}70%{transform:scale(1.04) rotate(-3deg)}100%{transform:none}}
 .toy.wig .ck{animation:kBump 360ms cubic-bezier(.3,1.6,.5,1) 80ms}
@@ -57,7 +57,7 @@ chap.appendChild(sq(-1));const nm=h('div','k-pill name',chap);h('span','',nm).te
 // toys
 const grid=h('div','grid',inner);
 for(const [k,label] of TOYS){const c=seq(h('div','k-card toy',grid));const p=h('img','pic',c);p.src=`toys/items/${k}.webp?v=1`;
- const nmE=h('div','nm',c);nmE.textContent=label;if(label.length>10)nmE.style.fontSize='calc(var(--u)*12.3)';img('badge_check','ck',c);
+ const nmE=h('div','nm',c);nmE.textContent=label;if(label.length>10)nmE.style.fontSize='calc(var(--u)*12.8)';img('badge_check','ck',c);
  K.press(c,()=>{c.classList.remove('wig');void c.offsetWidth;c.classList.add('wig')});c.addEventListener('animationend',e=>{if(e.target.classList.contains('pic'))c.classList.remove('wig')})}
 // next chapter
 const nx=seq(h('div','next',inner));const pl=h('div','k-plate',nx);img('ic_lock','',pl);h('span','',pl).textContent='Next Chapter: The Park';

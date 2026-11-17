@@ -49,7 +49,7 @@ const col=h('div','',ui);col.id='col';
 let ri=0;const seq=(el,c='k-in')=>{el.classList.add(c);el.style.setProperty('--i',ri++);return el};
 const buy=()=>K.toast('Purchases are coming soon!');
 // bundle: Rambo + the bunny
-const bd=seq(h('div','cd bund',col),'k-pop');const art=h('img','art',bd);art.src='shop/bundle.webp?v=1';
+const bd=seq(h('div','cd bund',col),'k-pop');const art=h('img','art',bd);art.src='shop/bundle.webp?v=2';
 K.press(art,()=>{});
 const rt=h('div','rt',bd);h('div','t1',rt).innerHTML='Best Friend<br>Bundle';h('div','t2',rt).innerHTML='2,500 Bones +<br>Boosters';
 rt.appendChild(K.button('green_big','$4.99',buy,{shine:1,delay:'1s'}));
@@ -65,6 +65,6 @@ for(const [ic,price,name] of [['bst_paw',50,'Paw Pop'],['bst_swap',70,'Free Swap
  const b=K.button('green_sm','',()=>{wob();K.toast(name+' boosters are coming soon!')});img('ic_bone','b',b);h('div','k-lbl',b).textContent=price;d.appendChild(b)}
 // restore
 const rs=seq(h('div','k-pill k-btn rest',col));h('span','',rs).textContent='Restore Purchases';K.press(rs,()=>K.toast('Nothing to restore yet.'));
-function layout(I){const y0=I.wu*186;K.fitPanel(col,title,I,y0,y0-40*I.wu)}
+function layout(I){const y0=I.wu*198;K.fitPanel(col,title,I,y0,y0-58*I.wu)}
 K.start();
 </script><script src="../nav/nav.js?v=1" data-page="shop"></script></body></html>
