@@ -90,21 +90,29 @@ const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Mat
 Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),CH/IH);
  const draw=()=>{gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),0);gl.uniform1f(U('on'),0);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)};draw();addEventListener('resize',()=>requestAnimationFrame(draw))});
 // ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
-{// two copies hand off: the next copy is started a moment early (learned from how fast this phone starts video) and shown the instant its first frame is drawn
- const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=4';v.poster='home/live_poster.jpg?v=3';v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');v.setAttribute('muted','');stage.insertBefore(v,fx);return v};
- const V=[mk(),mk()];let cur=0,lead=0.12,busy=false;V[1].style.opacity=0;
- const play=v=>{const p=v.play();p&&p.catch(()=>{})};
+{// two copies hand off so the loop never pauses; both autoplay at load (iPhone only lets a video start on its own if it was allowed to autoplay),
+ // the copy waiting its turn is parked at the start. If a handoff ever fails, the playing copy simply loops by itself, so the scene can never freeze.
+ const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=4';v.poster='home/live_poster.jpg?v=3';
+  v.muted=true;v.defaultMuted=true;v.playsInline=true;v.autoplay=true;v.loop=true;v.preload='auto';
+  for(const k of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(k,'');stage.insertBefore(v,fx);return v};
+ const V=[mk(),mk()];let cur=0,lead=0.12,busy=false,solo=false;V[1].style.opacity=0;
+ const play=v=>{const p=v.play();return p&&p.catch?p:Promise.resolve()};
  const onFrame=(v,fn)=>{if(v.requestVideoFrameCallback)v.requestVideoFrameCallback((n,m)=>fn(m.mediaTime));else v.addEventListener('playing',()=>fn(v.currentTime),{once:true})};
- V[1].addEventListener('loadeddata',()=>{V[1].pause();V[1].currentTime=0},{once:true});
- play(V[0]);
+ // park the second copy once it has really started (that start is what unlocks it for later)
+ let parked=false;const park=()=>{if(parked)return;parked=true;V[1].pause();V[1].currentTime=0};
+ V[1].addEventListener('playing',park,{once:true});play(V[1]).catch(()=>{solo=true});
+ play(V[0]).catch(()=>{});
  const tick=()=>{const a=V[cur],b=V[1-cur];
-  if(!busy&&a.duration&&a.currentTime>=a.duration-lead){busy=true;b.currentTime=0;play(b);
-   onFrame(b,mt=>{const left=a.duration-a.currentTime;   // >0: started too early, <0: too late
-     lead=Math.min(.4,Math.max(.02,lead-left*.5+(a.ended?.05:0)));
+  if(a.paused&&!busy&&!document.hidden)play(a).catch(()=>{});
+  if(!solo&&parked&&!busy&&a.duration&&a.currentTime>=a.duration-lead&&a.currentTime<a.duration-0.005){busy=true;b.currentTime=0;let done=false;
+   const fail=setTimeout(()=>{if(done)return;done=true;b.pause();b.currentTime=0;busy=false;solo=true},400);   // phone said no: let the playing copy loop on its own
+   play(b).catch(()=>{if(done)return;done=true;clearTimeout(fail);busy=false;solo=true});
+   onFrame(b,mt=>{if(done)return;done=true;clearTimeout(fail);const left=a.duration-a.currentTime;
+     lead=Math.min(.4,Math.max(.02,lead-left*.5));
      b.style.opacity=1;a.style.opacity=0;cur=1-cur;busy=false;setTimeout(()=>{a.pause();a.currentTime=0},150)})}
-  if(a.ended&&!busy){a.currentTime=0;play(a)}
   requestAnimationFrame(tick)};requestAnimationFrame(tick);
- const go=()=>play(V[cur]);addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)go()})}
+ const go=()=>{solo=false;play(V[cur]).catch(()=>{});if(!parked)play(V[1-cur]).catch(()=>{})};
+ addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)play(V[cur]).catch(()=>{})})}
 
 // ---- quiet idle rhythm: PLAY shine every ~8s, logo breath offset; nothing in unison
 const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
