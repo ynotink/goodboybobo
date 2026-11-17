@@ -1,0 +1,81 @@
+/* Good Boy Bobo — shared UI kit. Every piece is its own element so it can press, bounce, shine and slide. */
+@font-face{font-family:KNun;src:url(../a/home/Nunito-Black.ttf)}
+:root{--u:1px;--ink:#1d4a51;--ink2:#7b5a36}
+.kui{font-family:KNun,system-ui;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.kui *{box-sizing:border-box}
+.kui img{-webkit-user-drag:none;display:block}
+
+/* 9-slice pieces */
+.k-panel{border-style:solid;border-width:calc(40*var(--u));border-image:url(panel_big.webp?v=1) 120 fill/calc(40*var(--u)) stretch;
+ filter:drop-shadow(0 calc(8*var(--u)) calc(10*var(--u)) rgba(60,25,0,.35))}
+.k-card{border-style:solid;border-image:url(card_small.webp?v=1) 64 fill/calc(20*var(--u)) stretch}
+.k-plate{border-style:solid;border-image:url(header_plate.webp?v=1) 52 54 fill/calc(15*var(--u)) calc(16*var(--u)) stretch;
+ display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.k-title{border-style:solid;border-image:url(title_plate.webp?v=1) 76 80 fill/calc(28*var(--u)) calc(30*var(--u)) stretch;
+ display:flex;align-items:center;justify-content:center;white-space:nowrap;filter:drop-shadow(0 calc(4*var(--u)) calc(5*var(--u)) rgba(60,25,0,.35))}
+.k-pill{border-style:solid;border-image:url(cream_big.webp?v=1) 80 84 fill/calc(18*var(--u)) calc(19*var(--u)) stretch}
+.k-pill.dn{border-image-source:url(cream_big_p.webp?v=1)}
+.k-counter{border-style:solid;border-image:url(counter_heart.webp?v=1) 60 120 60 130 fill/calc(17*var(--u)) calc(34*var(--u)) calc(17*var(--u)) calc(36*var(--u)) stretch}
+.k-counter.bone{border-image-source:url(counter_bone.webp?v=1)}
+
+/* buttons: normal + pressed art swap, squash on press, bounce on release */
+.k-btn{position:relative;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 90ms ease-out;will-change:transform}
+.k-btn.dn{transform:scale(.94)}
+.k-btn.up{animation:kUp 320ms cubic-bezier(.3,1.6,.5,1)}
+@keyframes kUp{0%{transform:scale(.94)}55%{transform:scale(1.05)}100%{transform:scale(1)}}
+.k-art{position:absolute;inset:0;width:100%;height:100%}
+.k-art.p{opacity:0}.k-btn.dn .k-art.p{opacity:1}.k-btn.dn .k-art.n{opacity:0}
+.k-lbl{position:relative;color:#fff;line-height:1;white-space:nowrap;
+ text-shadow:0 .09em 0 #1f6b12,.05em 0 0 #1f6b12,-.05em 0 0 #1f6b12,0 -.05em 0 #1f6b12,.04em .05em 0 #1f6b12,-.04em .05em 0 #1f6b12}
+.k-btn.dn .k-lbl{transform:translateY(.06em)}
+
+/* shine sweep, clipped to the button's own shape */
+.k-shine{position:absolute;inset:0;overflow:hidden;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%}
+.k-shine::after{content:'';position:absolute;top:-30%;bottom:-30%;width:45%;left:-60%;
+ background:linear-gradient(105deg,transparent 20%,rgba(255,255,240,.75) 50%,transparent 80%);animation:kShine 4.2s ease-in-out infinite;animation-delay:var(--sd,1.2s)}
+@keyframes kShine{0%{left:-60%}22%{left:120%}100%{left:120%}}
+
+/* toggle: track cross-fades, knob slides with a springy settle */
+.k-tg{position:relative;cursor:pointer;flex:none}
+.k-tg img{position:absolute;inset:0;width:100%;height:100%;transition:opacity 180ms}
+.k-tg .off{opacity:0}.k-tg.is-off .on{opacity:0}.k-tg.is-off .off{opacity:1}
+.k-tg .knob{position:absolute;top:6%;height:88%;width:auto;aspect-ratio:1;inset:auto;left:calc(100% - 50% - 2%);transition:left 300ms cubic-bezier(.3,1.5,.5,1),transform 120ms;
+ filter:drop-shadow(0 calc(1.5*var(--u)) calc(1.5*var(--u)) rgba(0,0,0,.25))}
+.k-tg.is-off .knob{left:4%}
+.k-tg.dn .knob{transform:scaleX(1.15)}
+.k-tg.nope{animation:kNope 360ms}
+@keyframes kNope{20%{transform:translateX(-6%)}40%{transform:translateX(6%)}60%{transform:translateX(-4%)}80%{transform:translateX(3%)}}
+
+/* entrances */
+.k-in{opacity:0}
+.k-go .k-in{animation:kIn 420ms cubic-bezier(.25,1.35,.5,1) both;animation-delay:calc(var(--i,0)*45ms + 120ms)}
+@keyframes kIn{0%{opacity:0;transform:translateX(calc(34*var(--u)))}100%{opacity:1;transform:none}}
+.k-go .k-drop{animation:kDrop 560ms cubic-bezier(.3,1.6,.5,1) both;animation-delay:calc(var(--i,0)*60ms)}
+@keyframes kDrop{0%{opacity:0;transform:translateY(calc(-40*var(--u))) scale(.9)}100%{opacity:1;transform:none}}
+.k-go .k-pop{animation:kPop 480ms cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(var(--i,0)*45ms + 60ms)}
+@keyframes kPop{0%{opacity:0;transform:scale(.88) translateY(calc(16*var(--u)))}100%{opacity:1;transform:none}}
+.k-go .k-in.k-done,.k-go .k-drop.k-done,.k-go .k-pop.k-done{animation:none;opacity:1}
+.k-pr{transition:transform 90ms ease-out}.k-pr.dn{transform:scale(.95)}.k-pr.up{animation:kUp 320ms cubic-bezier(.3,1.6,.5,1)}
+.k-bump{animation:kBump 360ms cubic-bezier(.3,1.6,.5,1)}
+@keyframes kBump{40%{transform:scale(1.18) rotate(-6deg)}100%{transform:none}}
+
+/* scene + top bar shared by every menu page */
+html.kpage,html.kpage body{margin:0;height:100%;overflow:hidden;background:#3a2412}
+#kbgb{position:fixed;inset:-40px;background-position:center bottom;background-size:cover;filter:blur(18px) brightness(.8)}
+#kstage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
+#kstage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+#kstage>*{position:absolute;inset:0;width:100%;height:100%}#kfx{pointer-events:none}
+html.kpage #ui{position:fixed;inset:0;pointer-events:none}html.kpage #ui>*{pointer-events:auto}
+.k-top{position:absolute;left:0;right:0;top:calc(var(--w)*69);height:calc(var(--w)*36);z-index:5}
+.k-top>*{position:absolute;top:0}
+.k-top .k-counter{left:calc(var(--w)*21);width:calc(var(--w)*112);height:calc(var(--w)*34)}
+.k-top .k-counter.bone{left:calc(var(--w)*143);width:calc(var(--w)*140)}
+.k-num{position:absolute;left:30%;right:24%;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--w)*21);color:var(--ink)}
+.k-counter.bone .k-num{left:30%;right:22%}
+.k-gear{right:calc(var(--w)*20);width:calc(var(--w)*36);height:calc(var(--w)*36)}
+.k-gearic{position:relative;width:62%;height:62%}
+.k-title.pg{position:absolute;left:50%;width:calc(var(--u)*212);height:calc(var(--u)*60);margin-left:calc(var(--u)*-106);font-size:calc(var(--u)*35);color:#163f45;padding-bottom:calc(var(--u)*2);z-index:3}
+.k-panel.pg{position:absolute;left:50%;width:calc(var(--u)*336);margin-left:calc(var(--u)*-168);padding:0}
+#ktoast{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%) scale(.9);background:rgba(20,80,78,.94);color:#fff;font:900 16px KNun,system-ui;padding:12px 18px;border-radius:16px;opacity:0;transition:.25s;pointer-events:none;z-index:99;text-align:center}
+#ktoast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@media (prefers-reduced-motion:reduce){.k-go .k-in,.k-go .k-drop,.k-go .k-pop,.k-shine::after,.k-btn.up{animation:none;opacity:1}}

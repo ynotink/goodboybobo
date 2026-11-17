@@ -1,60 +1,99 @@
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Good Boy Bobo — Friends (new)</title>
+<title>Good Boy Bobo — Friends</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=1">
 <style>
-html,body{margin:0;height:100%;overflow:hidden;background:#3a2412;-webkit-user-select:none;user-select:none}
-#bgb{position:fixed;inset:-40px;background:url(friends/bg.jpg) center bottom/cover;filter:blur(18px) brightness(.8)}
-#stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
-#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
-#stage>*{position:absolute}#bgi{inset:0;width:100%;height:100%}
-#fx{inset:0;width:100%;height:100%;pointer-events:none}
-#panel{filter:drop-shadow(0 1.2vh 1.4vh rgba(70,30,0,.35))}
-#title{animation:float 3.4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-6%)}}
-#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%);pointer-events:none}
-#ui>*{position:absolute;pointer-events:auto}
-.L{display:block;-webkit-user-drag:none}
-.hit{cursor:pointer}
-.t{font-family:Nun;color:#14504e;display:flex;align-items:center;justify-content:center}
-@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
-#toast{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.9);background:rgba(20,80,78,.92);color:#fff;font:800 16px system-ui;padding:12px 18px;border-radius:16px;opacity:0;transition:.25s;pointer-events:none;z-index:9;text-align:center}
-#toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#col{position:absolute;left:50%;width:calc(var(--u)*356);margin-left:calc(var(--u)*-178);display:flex;flex-direction:column;gap:calc(var(--u)*7)}
+.tabs{position:relative;height:calc(var(--u)*46);border-style:solid;border-width:0;border-image:url(../uikit/tab_strip.webp?v=1) 60 64 fill/calc(var(--u)*21) calc(var(--u)*22) stretch;
+ filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*5) rgba(60,25,0,.3))}
+.tabs .sel{position:absolute;top:calc(var(--u)*7);height:calc(var(--u)*32);width:calc(var(--u)*104);left:calc(var(--u)*7);border-style:solid;
+ border-image:url(../uikit/tab_selected.webp?v=1) 50 54 fill/calc(var(--u)*16) calc(var(--u)*17) stretch;transition:left 340ms cubic-bezier(.3,1.35,.5,1)}
+.tabs .tb{position:absolute;top:calc(var(--u)*7);height:calc(var(--u)*32);width:calc(var(--u)*104);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*18.5);color:#1b4b50;cursor:pointer}
+.tabs .dv{position:absolute;top:calc(var(--u)*14);height:calc(var(--u)*18);width:1.5px;background:rgba(150,105,55,.3)}
+.fr{border-width:calc(var(--u)*28)}
+.frin{margin:calc(var(--u)*-20) calc(var(--u)*-18) calc(var(--u)*-18)}
+.fr h2{margin:0;text-align:center;font-weight:400;font-size:calc(var(--u)*24);color:#1b4b50;line-height:1}
+.fr .sub{text-align:center;font-size:calc(var(--u)*12.5);color:#7b6a55;line-height:1;margin-top:calc(var(--u)*2)}
+.list{margin-top:calc(var(--u)*6);border-width:calc(var(--u)*18)}
+.lin{margin:calc(var(--u)*-12) calc(var(--u)*-10)}
+.pal{display:flex;align-items:center;height:calc(var(--u)*55);gap:calc(var(--u)*10);position:relative}
+.pal+.pal::before{content:'';position:absolute;left:calc(var(--u)*4);right:calc(var(--u)*4);top:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(150,105,55,.25) 8%,rgba(150,105,55,.25) 92%,transparent)}
+.av{position:relative;width:calc(var(--u)*48);height:calc(var(--u)*48);flex:none}
+.av img{width:100%;height:100%;border-radius:50%}
+.av::after{content:'';position:absolute;right:calc(var(--u)*-2);bottom:calc(var(--u)*0);width:calc(var(--u)*13);height:calc(var(--u)*13);border-radius:50%;
+ background:radial-gradient(circle at 38% 32%,#9bf06a,#2fb52c 60%,#1f8f1f);box-shadow:0 0 0 calc(var(--u)*2) #fff}
+.who{flex:1;line-height:1.05}.who b{display:block;font-weight:400;font-size:calc(var(--u)*18);color:#1b4b50}.who i{font-style:normal;font-size:calc(var(--u)*13);color:#7b6a55}
+.send{width:calc(var(--u)*94);height:calc(var(--u)*34);gap:calc(var(--u)*5)}
+.send .hi{position:relative;width:calc(var(--u)*22);height:calc(var(--u)*22)}
+.send .k-lbl{font-size:calc(var(--u)*16.5)}
+.send.sent{filter:saturate(.25) brightness(1.08);pointer-events:none}
+.fly{position:fixed;z-index:50;pointer-events:none;animation:fly 820ms cubic-bezier(.3,.7,.4,1) forwards}
+@keyframes fly{0%{transform:scale(1);opacity:1}30%{transform:translateY(calc(var(--u)*-26)) scale(1.5);opacity:1}100%{transform:translateY(calc(var(--u)*-90)) scale(.6);opacity:0}}
+.two{display:flex;gap:calc(var(--u)*8);margin-top:calc(var(--u)*7)}
+.cb{flex:1;height:calc(var(--u)*46);border-style:solid;border-width:calc(var(--u)*16);border-image:url(../uikit/booster.webp?v=1) 70 fill/calc(var(--u)*16) stretch;gap:calc(var(--u)*7)}
+.cb.dn{border-image-source:url(../uikit/booster_p.webp?v=1)}
+.cb img{width:calc(var(--u)*32);height:calc(var(--u)*32);margin:calc(var(--u)*-12) 0;object-fit:contain;flex:none}
+.cb span{margin:calc(var(--u)*-12) 0;font-size:calc(var(--u)*15.5);white-space:nowrap;color:#1b4b50;line-height:1.02}
+.cd{border-width:calc(var(--u)*20);position:relative}
+.cdin{margin:calc(var(--u)*-10) calc(var(--u)*-8);display:flex;align-items:center;gap:calc(var(--u)*10)}
+.cdin .art{flex:none;width:calc(var(--u)*80);height:calc(var(--u)*50);position:relative}
+.cdin .art img{position:absolute;object-fit:contain}
+.cdin .vd{width:1.5px;align-self:stretch;margin:calc(var(--u)*4) 0;background:rgba(150,105,55,.3)}
+.cdin .tx{flex:1;line-height:1.05}
+.cdin .t1{font-size:calc(var(--u)*20);color:#1b4b50}.cdin .t2{font-size:calc(var(--u)*12.5);color:#7b6a55;margin-top:calc(var(--u)*2)}
+.team .gb{width:calc(var(--u)*186);height:calc(var(--u)*36);margin:calc(var(--u)*6) auto calc(var(--u)*-2)}
+.team .gb .k-lbl{font-size:calc(var(--u)*18)}
+.ev .t0{font-size:calc(var(--u)*12.5);color:#1b4b50}.ev .t1{font-size:calc(var(--u)*18);white-space:nowrap}
+.ev .t2{display:flex;align-items:center;gap:calc(var(--u)*4);font-size:calc(var(--u)*12.5)}.ev .t2 img{width:calc(var(--u)*15);height:calc(var(--u)*15)}
+.ev .vb{width:calc(var(--u)*80);height:calc(var(--u)*46);flex:none}
+.ev .vb .k-lbl{font-size:calc(var(--u)*15.5);text-align:center;line-height:.95}
+.glow{animation:glow 900ms ease-out}
+@keyframes glow{0%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}35%{filter:drop-shadow(0 0 calc(var(--u)*10) rgba(255,214,90,.95))}100%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}}
 </style></head><body>
-<div id="bgb"></div>
-<div id="stage"><img id="bgi" src="friends/bg.jpg?v=6"><canvas id="fx"></canvas>
-<img id="title" class="L" src="friends/title.webp?v=1"><img id="panel" class="L" src="friends/panels.webp?v=1"></div>
-<div id="ui"></div><div id="toast"></div>
+<script src="../uikit/kit.js?v=1"></script>
 <script>
-'use strict';const pc=(v,b)=>v/b*100+'%';
-const IW=852,IH=1846,RW=1290,RH=2796,A='../a/home/';
-const stage=document.getElementById('stage'),fx=document.getElementById('fx'),ui=document.getElementById('ui');
-// panel & title in scene units (852 x 1846)
-const SC=.655,GX=426-549*SC,GY=486;            // panel group = old page x96..1194, y676..2402
-function put(el,x,y,w,h){el.style.left=pc(x,IW);el.style.top=pc(y,IH);el.style.width=pc(w,IW);el.style.height=pc(h,IH)}
-put(document.getElementById('panel'),GX,GY,1098*SC,1726*SC);put(document.getElementById('title'),426-165,366,330,330*158/529);
-const toast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1600)};
-function oldHit([x,y,w,h],msg){const d=document.createElement('div');d.className='hit';put(d,GX+(x-96)*SC,GY+(y-676)*SC,w*SC,h*SC);d.onclick=()=>toast(msg);stage.appendChild(d)}
-oldHit([100,650,1090,1790],'Friends are coming soon!');
-// HUD + nav pinned to the screen like the Home page
-let UW=390;const V=v=>v/RW*UW+'px',PL=[];
-function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
-const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'settings.html']];
-for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp?v=2';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
-const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbbLive*/try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.hearts!=null)t1.textContent=g.hearts}catch(e){}place(t1,200,228,150,111);
-const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}place(t2,640,222,190,123);
-function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);el.style.height=V(h);
- if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-h);el.style.top=''}}document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px')}
-function size(){const DPR=Math.min(2,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}
- stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';
- fx.width=Math.round(w*DPR);fx.height=Math.round(h*DPR);layout()}
-size();addEventListener('resize',size);
-// living light: dust motes drifting in the window sunbeam + soft breathing glow
-const g=fx.getContext('2d');const M=[...Array(46)].map(()=>({x:Math.random()*.6,y:.05+Math.random()*.75,r:.6+Math.random()*1.6,vx:.004+Math.random()*.01,vy:(Math.random()-.5)*.006,ph:Math.random()*6.3}));
-let t0=performance.now(),last=t0;
-(function f(now){const t=(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;const W=fx.width,H=fx.height;g.clearRect(0,0,W,H);
- const gl=.10+.05*Math.sin(t*.6);const rg=g.createRadialGradient(W*.05,H*.12,0,W*.05,H*.12,W*.9);rg.addColorStop(0,`rgba(255,214,140,${gl})`);rg.addColorStop(1,'rgba(255,214,140,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);
- for(const m of M){m.x+=m.vx*dt+Math.sin(t*.7+m.ph)*.0002;m.y+=m.vy*dt+Math.cos(t*.5+m.ph)*.0002;if(m.x>.75||m.y<0||m.y>.85){m.x=Math.random()*.2;m.y=.05+Math.random()*.7}
-  const beam=Math.max(0,1-Math.abs((m.y*H*.55)-(m.x*W))/(W*.35));const a=(.25+.35*Math.sin(t*1.7+m.ph))*(.3+.7*beam);if(a<=0)continue;
-  g.fillStyle=`rgba(255,240,200,${a})`;g.beginPath();g.arc(m.x*W,m.y*H,m.r*W/700,0,7);g.fill()}
- requestAnimationFrame(f)})(t0);
+'use strict';
+const IW=852,IH=1846,FENCE=492;     // fence top in the scene
+const ui=K.scene('friends/bg.jpg?v=2',IW,IH,layout);
+const {h,img}=K;
+K.topbar(ui,'settings.html');
+const title=h('div','k-title pg k-drop',ui);title.textContent='Friends';title.style.setProperty('--i',1);
+const col=h('div','k-pop',ui);col.id='col';
+let ri=0;const seq=el=>{el.classList.add('k-in');el.style.setProperty('--i',ri++);return el};
+// tabs: highlight slides to the tapped tab
+const tabs=h('div','tabs',col);const sel=h('div','sel',tabs);const TB=['Friends','Teams','Events'],TX=[8,126,244];
+[1,2].forEach(i=>{const d=h('div','dv',tabs);d.style.left=`calc(var(--u)*${TX[i]-3})`});
+const cards={};
+TB.forEach((n,i)=>{const t=h('div','tb',tabs);t.textContent=n;t.style.left=`calc(var(--u)*${TX[i]})`;
+ K.press(t,()=>{sel.style.left=`calc(var(--u)*${TX[i]})`;const c=cards[n];if(c){c.classList.remove('glow');void c.offsetWidth;c.classList.add('glow')}})});
+// your friends
+const fr=seq(h('div','k-panel fr',col));fr.style.filter='none';cards.Friends=fr;const fi=h('div','frin',fr);
+const h2=h('h2','',fi);h2.textContent='Your Friends';
+const PALS=[['Heather',24],['Marcus',21],['Jasmine',18]];h('div','sub',fi).textContent=PALS.length+' Friends';
+const list=h('div','k-card list',fi);const li=h('div','lin',list);
+PALS.forEach(([n,l],i)=>{const r=seq(h('div','pal',li));const a=h('div','av',r);const ai=h('img','',a);ai.src=`friends/av${i}.webp?v=1`;
+ const w=h('div','who',r);h('b','',w).textContent=n;h('i','',w).textContent='Level '+l;
+ const b=K.button('green_med','',null,{shine:1,delay:(1.4+i*.35)+'s'});b.classList.add('send');const hi=img('ic_heart','hi',b);const lb=h('div','k-lbl',b);lb.textContent='Send';r.appendChild(b);
+ b.addEventListener('pointerup',()=>setTimeout(()=>{const R=hi.getBoundingClientRect();const f=img('ic_heart','fly',document.body);
+  Object.assign(f.style,{left:R.left+'px',top:R.top+'px',width:R.width+'px',height:R.height+'px'});f.addEventListener('animationend',()=>f.remove());
+  lb.textContent='Sent!';b.classList.add('sent');K.buzz(15)},110))});
+const two=seq(h('div','two',fi));
+for(const [ic,t,m] of [['ic_ask_lives','Ask for Lives','Asking friends for lives is coming soon!'],['ic_person_add','Invite<br>Friends','Inviting friends is coming soon!']]){
+ const b=h('div','k-btn cb',two);img(ic,'',b);h('span','',b).innerHTML=t;K.press(b,()=>K.toast(m))}
+// team up
+const tm=seq(h('div','k-card cd team',col));cards.Teams=tm;const ti=h('div','',tm);ti.style.margin='calc(var(--u)*-10) calc(var(--u)*-8)';
+const row1=h('div','cdin',ti);row1.style.margin='0';const a1=h('div','art',row1);const p3=img('ic_paws3','',a1);Object.assign(p3.style,{inset:'0',width:'100%',height:'100%'});
+h('div','vd',row1);const tx=h('div','tx',row1);h('div','t1',tx).textContent='Team Up!';h('div','t2',tx).textContent='Join a team. Help each other.';
+const fb=K.button('green_big','Find a Team',()=>K.toast('Teams are coming soon!'),{shine:1,delay:'2.2s'});fb.classList.add('gb');ti.appendChild(fb);
+// weekly event
+const ev=seq(h('div','k-card cd ev',col));cards.Events=ev;const ei=h('div','cdin',ev);const a2=h('div','art',ei);
+const tr=img('ic_trophy','',a2);Object.assign(tr.style,{left:'0',bottom:'0',width:'64%',height:'100%',zIndex:2});const fl=img('ic_flag','',a2);Object.assign(fl.style,{right:'0',top:'-4%',width:'52%',height:'78%'});
+h('div','vd',ei);const et=h('div','tx',ei);h('div','t0',et).textContent='Weekly Event';h('div','t1',et).textContent='Backyard Dash';
+const t2=h('div','t2',et);img('ic_stopwatch','',t2);const left=h('span','',t2);
+const end=(()=>{const d=new Date();d.setDate(d.getDate()+((7-d.getDay())%7||7));d.setHours(0,0,0,0);return d})();
+const tick=()=>{const s=Math.max(0,(end-Date.now())/1000);const D=Math.floor(s/86400),H=Math.floor(s%86400/3600),M=Math.floor(s%3600/60);left.textContent=D?`${D}d ${H}h left`:`${H}h ${M}m left`};tick();setInterval(tick,30000);
+const vb=K.button('green_med','',()=>K.toast('Events are coming soon!'),{shine:1,delay:'2.8s'});vb.classList.add('vb');h('div','k-lbl',vb).innerHTML='View<br>Event';ei.appendChild(vb);
+function layout(I){const f=I.sy(FENCE);K.fitPanel(col,title,I,f-6*I.wu,f-50*I.wu)}
+K.start();
 </script><script src="../nav/nav.js?v=1" data-page="friends"></script></body></html>

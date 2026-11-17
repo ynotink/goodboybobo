@@ -1,73 +1,69 @@
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Good Boy Bobo — Settings (new)</title>
+<title>Good Boy Bobo — Settings</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=1">
 <style>
-html,body{margin:0;height:100%;overflow:hidden;background:#3a2412;-webkit-user-select:none;user-select:none}
-#bgb{position:fixed;inset:-40px;background:url(settings/bg.jpg) center bottom/cover;filter:blur(18px) brightness(.8)}
-#stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
-#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
-#stage>*{position:absolute}#bgi{inset:0;width:100%;height:100%}
-#fx{inset:0;width:100%;height:100%;pointer-events:none}
-#panel{filter:drop-shadow(0 1.2vh 1.4vh rgba(70,30,0,.35))}
-#title{animation:float 3.4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-6%)}}
-#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%);pointer-events:none}
-#ui>*{position:absolute;pointer-events:auto}
-.L{display:block;-webkit-user-drag:none}
-.hit{cursor:pointer}
-.t{font-family:Nun;color:#14504e;display:flex;align-items:center;justify-content:center}
-@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
-#toast{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.9);background:rgba(20,80,78,.92);color:#fff;font:800 16px system-ui;padding:12px 18px;border-radius:16px;opacity:0;transition:.25s;pointer-events:none;z-index:9;text-align:center}
-#toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* page */
+#inner{margin:calc(var(--u)*-10) calc(var(--u)*-24) calc(var(--u)*-22);display:flex;flex-direction:column;gap:calc(var(--u)*15)}
+.sec{position:relative;padding-top:calc(var(--u)*14)}
+.sec .k-plate{position:absolute;left:50%;top:calc(var(--u)*-14);transform:translateX(-50%);width:calc(var(--u)*182);height:calc(var(--u)*32);font-size:calc(var(--u)*19.5);color:#1b4b50;z-index:2}
+.sec .k-card{padding:calc(var(--u)*4) calc(var(--u)*4);border-width:calc(var(--u)*20)}
+.box{margin:calc(var(--u)*-16) calc(var(--u)*-14);padding-top:calc(var(--u)*4)}
+.row{display:flex;align-items:center;height:calc(var(--u)*39);gap:calc(var(--u)*10);padding:0 calc(var(--u)*2);cursor:pointer;position:relative}
+.row+.row::before{content:'';position:absolute;left:calc(var(--u)*4);right:calc(var(--u)*4);top:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(150,105,55,.25) 8%,rgba(150,105,55,.25) 92%,transparent)}
+.row .ic{width:calc(var(--u)*30);height:calc(var(--u)*30);object-fit:contain;flex:none}
+.row .tx{flex:1;font-size:calc(var(--u)*16);color:#24434c;white-space:nowrap}
+.row .k-tg{width:calc(var(--u)*54);height:calc(var(--u)*28)}
+.row .val{font-size:calc(var(--u)*13.5);color:#24434c;display:flex;align-items:center;gap:calc(var(--u)*4)}
+.chev{width:calc(var(--u)*10);height:calc(var(--u)*16)}
+.row .k-btn{width:calc(var(--u)*86);height:calc(var(--u)*33)}
+.row .k-btn .k-lbl{font-size:calc(var(--u)*14.5);top:calc(var(--u)*1)}
+.row.tap .ic{animation:kBump 360ms cubic-bezier(.3,1.6,.5,1)}
+.helps{display:flex;flex-direction:column;gap:calc(var(--u)*8);padding:calc(var(--u)*6) 0 calc(var(--u)*2)}
+.k-pill.k-btn{height:calc(var(--u)*37);border-width:calc(var(--u)*18) calc(var(--u)*19);gap:calc(var(--u)*9);font-size:calc(var(--u)*16);color:#24434c}
+.k-pill .ic{width:calc(var(--u)*27);height:calc(var(--u)*27);margin:calc(var(--u)*-14) 0;object-fit:contain}
+.k-pill span{margin:calc(var(--u)*-14) 0;white-space:nowrap}
+#ver{text-align:center;font-size:calc(var(--u)*12.5);color:#8a6d4c;padding:calc(var(--u)*1) 0 calc(var(--u)*5)}
 </style></head><body>
-<div id="bgb"></div>
-<div id="stage"><img id="bgi" src="settings/bg.jpg?v=4"><canvas id="fx"></canvas>
-<img id="title" class="L" src="settings/title.webp?v=1"><img id="panel" class="L" src="settings/panel.webp?v=1"></div>
-<div id="ui"></div><div id="toast"></div>
+
+<script src="../uikit/kit.js?v=1"></script>
 <script>
-'use strict';const pc=(v,b)=>v/b*100+'%';
-const IW=852,IH=1846,RW=1290,RH=2796,A='../a/home/';
-const stage=document.getElementById('stage'),fx=document.getElementById('fx'),ui=document.getElementById('ui');
-// panel & title in scene units (852 x 1846)
-const SC=.645,GX=426-(645-100)*SC,GY=482-(646-630)*SC;   // panel = old page x100..1190, y630..2410
-function put(el,x,y,w,h){el.style.left=pc(x,IW);el.style.top=pc(y,IH);el.style.width=pc(w,IW);el.style.height=pc(h,IH)}
-put(document.getElementById('panel'),GX,GY,1090*SC,1780*SC);put(document.getElementById('title'),426-165,336,330,330*160/625);
-const toast=m=>{const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),1600)};
-const O=(x,y,w,h)=>[GX+(x-100)*SC,GY+(y-630)*SC,w*SC,h*SC];
-function oldHit(r,fn){const d=document.createElement('div');d.className='hit';put(d,...O(...r));d.onclick=fn;stage.appendChild(d);return d}
-function oldImg(src,r){const i=document.createElement('img');i.src=src;i.className='L';i.style.pointerEvents='none';put(i,...O(...r));stage.appendChild(i);return i}
-let ST={music:70,sounds:80,barks:1,vib:1,hints:1};try{Object.assign(ST,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}
-const sv=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
-const TG=[{k:'music',y:802},{k:'sounds',y:934},{k:'vib',y:1069},{k:'notif',y:1204}];
-const isOn=t=>t.k=='notif'?false:t.k=='vib'?!!ST.vib:ST[t.k]>0;
-TG.forEach((t,i)=>{t.on=oldImg(`../a/pages/tg${i}_on.webp`,[880,t.y,250,120]);t.off=oldImg(`../a/pages/tg${i}_off.webp`,[880,t.y,250,120]);
- const show=()=>{const v=isOn(t);t.on.style.visibility=v?'visible':'hidden';t.off.style.visibility=v?'hidden':'visible'};show();
- oldHit([100,t.y+5,1090,115],()=>{
-  if(t.k=='notif')return toast('Notifications coming soon!');
-  if(t.k=='vib')ST.vib=ST.vib?0:1;
-  else if(ST[t.k]>0){ST['_'+t.k]=ST[t.k];ST[t.k]=0}else ST[t.k]=ST['_'+t.k]||(t.k=='music'?70:80);
-  sv();show();if(t.k=='vib'&&ST.vib&&navigator.vibrate)navigator.vibrate(30)})});
-[[1450,'Player profiles are coming soon!'],[1590,'Saving to the cloud is coming soon!'],[1700,'More languages are coming soon!'],[2025,'Help & Support is coming soon!'],[2155,'Privacy & Terms are coming soon!']].forEach(([y,m])=>oldHit([100,y,1090,115],()=>toast(m)));
-// HUD + nav pinned to the screen like the Home page
-let UW=390;const V=v=>v/RW*UW+'px',PL=[];
-function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
-const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'index.html']];
-for(const [f,x,y,w,h,go] of LAY){const i=document.createElement('img');i.src=A+f+'.webp?v=2';i.className='L';if(go){i.classList.add('hit');i.onclick=()=>location.href=go}place(i,x,y,w,h)}
-const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbbLive*/try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.hearts!=null)t1.textContent=g.hearts}catch(e){}place(t1,200,228,150,111);
-const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}place(t2,640,222,190,123);
-function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);el.style.height=V(h);
- if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-h);el.style.top=''}}document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px')}
-function size(){const DPR=Math.min(2,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}
- stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';
- fx.width=Math.round(w*DPR);fx.height=Math.round(h*DPR);layout()}
-size();addEventListener('resize',size);
-// living light: dust motes drifting in the window sunbeam + soft breathing glow
-const g=fx.getContext('2d');const M=[...Array(46)].map(()=>({x:Math.random()*.6,y:.05+Math.random()*.75,r:.6+Math.random()*1.6,vx:.004+Math.random()*.01,vy:(Math.random()-.5)*.006,ph:Math.random()*6.3}));
-let t0=performance.now(),last=t0;
-(function f(now){const t=(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;const W=fx.width,H=fx.height;g.clearRect(0,0,W,H);
- const gl=.10+.05*Math.sin(t*.6);const rg=g.createRadialGradient(W*.05,H*.12,0,W*.05,H*.12,W*.9);rg.addColorStop(0,`rgba(255,214,140,${gl})`);rg.addColorStop(1,'rgba(255,214,140,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);
- for(const m of M){m.x+=m.vx*dt+Math.sin(t*.7+m.ph)*.0002;m.y+=m.vy*dt+Math.cos(t*.5+m.ph)*.0002;if(m.x>.75||m.y<0||m.y>.85){m.x=Math.random()*.2;m.y=.05+Math.random()*.7}
-  const beam=Math.max(0,1-Math.abs((m.y*H*.55)-(m.x*W))/(W*.35));const a=(.25+.35*Math.sin(t*1.7+m.ph))*(.3+.7*beam);if(a<=0)continue;
-  g.fillStyle=`rgba(255,240,200,${a})`;g.beginPath();g.arc(m.x*W,m.y*H,m.r*W/700,0,7);g.fill()}
- requestAnimationFrame(f)})(t0);
+'use strict';
+const IW=852,IH=1846,FENCE=474;      // fence rail top in the scene
+const ui=K.scene('settings/bg.jpg?v=4',IW,IH,layout);
+const ST=K.settings();const save=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
+const {h,img}=K;
+K.topbar(ui,'index.html');
+const title=h('div','k-title pg k-drop',ui);title.id='title';title.textContent='Settings';title.style.setProperty('--i',1);
+const panel=h('div','k-panel pg k-pop',ui);panel.id='panel';
+const inner=h('div','',panel);inner.id='inner';
+let ri=0;
+function section(name){const s=h('div','sec k-in',inner);s.style.setProperty('--i',ri++);const p=h('div','k-plate',s);p.textContent=name;return s}
+function card(sec){const c=h('div','k-card',sec);const b=h('div','box',c);return b}
+const chev=()=>{const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 10 16');s.setAttribute('class','chev');s.innerHTML='<path d="M2.5 2 L8 8 L2.5 14" fill="none" stroke="#24434c" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>';return s};
+function row(box,icon,label,right,onTap){const r=h('div','row k-in',box);r.style.setProperty('--i',ri++);img(icon,'ic',r);const t=h('div','tx',r);t.textContent=label;if(right)r.appendChild(right);
+ r.addEventListener('click',()=>{r.classList.remove('tap');void r.offsetWidth;r.classList.add('tap');onTap&&onTap()});r.addEventListener('animationend',e=>{if(e.target!==r)r.classList.remove('tap')});return r}
+// Sound & Play
+const s1=card(section('Sound & Play'));
+const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}else ST[k]=ST['_'+k]||(k==='music'?70:80);save();if(k==='vib'&&v)K.buzz(30)};
+const TG=[['ic_music','Music','music'],['ic_speaker','Sound Effects','sounds'],['ic_vibrate','Vibration','vib'],['ic_bell','Notifications','notif']];
+for(const [ic,lb,k] of TG){const on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
+ const tg=K.toggle(on,k==='notif'?()=>{K.toast('Notifications are coming soon!');return false}:flip(k));
+ row(s1,ic,lb,tg,()=>tg.click())}
+// Account
+const s2=card(section('Account'));
+const val=t=>{const d=h('div','val');d.textContent=t;d.appendChild(chev());return d};
+row(s2,'ic_person','Player Profile',(()=>{const d=h('div','val');d.appendChild(chev());return d})(),()=>K.toast('Player profiles are coming soon!'));
+const con=K.button('green_sm','Connect',()=>K.toast('Saving to the cloud is coming soon!'),{shine:1,delay:'1.6s'});
+row(s2,'ic_cloud_up','Save Progress',con);
+row(s2,'ic_globe','Language',val('English'),()=>K.toast('More languages are coming soon!'));
+// Help & Info
+const s3=section('Help & Info');const c3=card(s3);const hp=h('div','helps',c3);
+for(const [ic,lb,m] of [['ic_help','Help & Support','Help & Support is coming soon!'],['ic_shield','Privacy & Terms','Privacy & Terms are coming soon!']]){
+ const b=h('div','k-pill k-btn k-in',hp);b.style.setProperty('--i',ri++);img(ic,'ic',b);const s=h('span','',b);s.textContent=lb;K.press(b,()=>K.toast(m))}
+const ver=h('div','k-in',c3);ver.id='ver';ver.textContent='Version 1.0.0';ver.style.setProperty('--i',ri++);
+// layout: title on the fence rail, panel between the fence and the menu
+function layout(I){const f=I.sy(FENCE);K.fitPanel(panel,title,I,f+10*I.wu,f-30*I.wu)}
+K.start();
 </script><script src="../nav/nav.js?v=1" data-page=""></script></body></html>

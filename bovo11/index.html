@@ -21,33 +21,45 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 .t{position:absolute;font-family:Nun;color:#14504e;display:flex;align-items:center}
 #lvl{position:absolute;font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,70,0,.45);text-align:center;pointer-events:none}
 #tag{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 4px);z-index:9;font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
-</style></head><body>
-<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui"></div>
+#ui.kui{font-family:KNun,system-ui}
+#ui .hb{position:absolute;flex-direction:column;border-style:solid;border-width:calc(var(--w)*20);border-image:url(../uikit/booster.webp?v=1) 70 fill/calc(var(--w)*20) stretch;filter:drop-shadow(0 calc(var(--w)*3) calc(var(--w)*4) rgba(40,30,0,.35))}
+.hb.dn{border-image-source:url(../uikit/booster_p.webp?v=1)}
+.hb img{width:calc(var(--w)*72);height:calc(var(--w)*56);object-fit:contain;margin-top:calc(var(--w)*-16)}
+.hb span{font-size:calc(var(--w)*24);color:#1b4b50;line-height:1;margin-top:calc(var(--w)*3);margin-bottom:calc(var(--w)*-10)}
+#play{position:absolute;filter:drop-shadow(0 calc(var(--w)*4) calc(var(--w)*5) rgba(0,50,0,.35))}
+#play .k-lbl{display:flex;flex-direction:column;align-items:center;color:#fffbe9;text-shadow:none;-webkit-text-stroke:.16em #1f6a14;paint-order:stroke fill;filter:drop-shadow(0 calc(var(--w)*2.5) 0 rgba(15,70,10,.55))}
+#play .k-lbl b{font-weight:400;font-size:calc(var(--w)*48);line-height:.92;letter-spacing:.03em}
+#play .k-lbl i{font-style:normal;font-size:calc(var(--w)*19);line-height:1;-webkit-text-stroke-width:.2em;color:#fff}
+</style><link rel="stylesheet" href="../uikit/kit.css?v=1"></head><body>
+<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=1"></script>
 
 <script>
 'use strict';
 const IW=852,IH=1846,CH=553,RW=1290,RH=2796,A='../a/home/';
 const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx=document.getElementById('fx');
 // [file, x, y, w, h] in the original 1290x2796 layout (logo moved up and smaller so the cast shows)
-const LAY=[['L02_heart_counter',70,228,360,111],['L03_bone_counter',470,222,460,123],['L04_gear',1070,229,106,110,'gear'],
- ['L05_logo',320,395,660,325,'logo'],['L10_daily',188,1817,443,304,'daily'],['L11_events',664,1816,438,306,'events'],['L12_play',145,2135,1001,316,'play'],
- ];
+const LAY=[['L05_logo',320,395,660,325,'logo']];
 const P=v=>v*100+'%',ui=document.getElementById('ui');let UW=390;const V=v=>v/RW*UW+'px';const PL=[];
 function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
 function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);if(h)el.style.height=V(h);
  if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-(h||0));el.style.top=''}}
- document.querySelectorAll('.t').forEach(e=>e.style.fontSize=UW*.054+'px');lv.style.fontSize=UW*.06+'px'}
+ const R=document.documentElement.style;R.setProperty('--w',UW/393+'px');R.setProperty('--u',UW/393+'px')}
 for(const [f,x,y,w,h,id] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L'+(id&&id!=='logo'?' btn':'');if(id)i.id=id;place(i,x,y,w,h)}
-const t1=document.createElement('div');t1.className='t';t1.textContent='5';/*gbbLive*/try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.hearts!=null)t1.textContent=g.hearts}catch(e){}t1.style.justifyContent='center';place(t1,200,228,150,111);
-const t2=document.createElement('div');t2.className='t';t2.textContent='430';try{const g=JSON.parse(localStorage.getItem('gbb')||'{}');if(g.bones!=null)t2.textContent=g.bones}catch(e){}t2.style.justifyContent='center';place(t2,640,222,190,123);
-const lv=document.createElement('div');lv.id='lvl';lv.textContent='Level 1';place(lv,145,2318,1001,0);lv.style.bottom=V(2796-2318-80);
 function RRH(){return RH}
-let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}lv.textContent='Level '+lvlN;lv.style.height='auto';
-const go=u=>e=>{const t=e&&e.currentTarget;if(t&&/^L1[5-9]/.test((t.src||'').split('/').pop())){t.classList.remove('up','dn');void t.offsetWidth;t.classList.add('lift');setTimeout(()=>location.href=u,140)}else location.href=u};
-document.getElementById('play').onclick=()=>setTimeout(()=>location.href='../game_new.html?lv='+lvlN,90);document.getElementById('gear').onclick=go('settings.html');
+let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}
+// kit buttons: daily, events, play (each its own piece: press, bounce, shine)
+K.topbar(ui,'settings.html');
+const hb=(ic,label,x,y,w,hh,msg)=>{const b=K.h('div','k-btn hb k-pop');K.img(ic,'',b);K.h('span','',b).textContent=label;K.press(b,()=>K.toast(msg));place(b,x,y,w,hh);return b};
+hb('ic_gift','Daily',196,1808,428,290,'Daily rewards are coming soon!').style.setProperty('--i',2);
+hb('ic_calendar','Events',668,1808,428,290,'Events are coming soon!').style.setProperty('--i',3);
+const play=K.button('green_big','',()=>location.href='../game_new.html?lv='+lvlN,{shine:1,delay:'1.8s'});play.id='play';play.classList.add('k-pop');play.style.setProperty('--i',4);
+{const l=K.h('div','k-lbl',play);K.h('b','',l).textContent='PLAY';K.h('i','',l).textContent='Level '+lvlN}
+place(play,152,2128,986,287);
+requestAnimationFrame(()=>requestAnimationFrame(()=>ui.classList.add('k-go')));
+document.addEventListener('animationend',e=>{if(/^k(In|Drop|Pop)$/.test(e.animationName))e.target.classList.add('k-done')});
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
  stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
- layout();lv.style.bottom=V(2796-2318-80)}
+ layout()}
 size();addEventListener('resize',size);
 const gl=cv.getContext('webgl',{alpha:false,antialias:false});
 const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
@@ -83,15 +95,8 @@ Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',
   for(const p of POL){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.25){p.y=.95;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
   requestAnimationFrame(frame)})(t0)});
 
-// ---- touch feel: press in, settle out (cancel if the finger slides away)
-document.querySelectorAll('.btn').forEach(b=>{let on=false;
- b.addEventListener('pointerdown',()=>{on=true;b.classList.remove('up');b.classList.add('dn')});
- const up=()=>{if(!on)return;on=false;b.classList.remove('dn');void b.offsetWidth;b.classList.add('up')};
- b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up)});
 // ---- quiet idle rhythm: PLAY shine every ~8s, logo breath offset; nothing in unison
 const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(!RMm){const sh=document.createElement('div');sh.id='shine';sh.innerHTML='<i></i>';document.body.appendChild(sh);const pl=document.getElementById('play');
- const pos=()=>{const r=pl.getBoundingClientRect();Object.assign(sh.style,{left:r.left+r.width*.03+'px',top:r.top+r.height*.08+'px',width:r.width*.94+'px',height:r.height*.62+'px'})};
- const shine=()=>{if(!document.hidden){pos();sh.classList.remove('go');void sh.offsetWidth;sh.classList.add('go')}setTimeout(shine,7000+Math.random()*3000)};setTimeout(shine,2200);
+if(!RMm){
  const lg=document.getElementById('logo');const br=()=>{if(!document.hidden){lg.classList.remove('breath');void lg.offsetWidth;lg.classList.add('breath')}setTimeout(br,9000+Math.random()*3000)};setTimeout(br,6000)}
 </script><script src="../nav/nav.js?v=1" data-page="home"></script></body></html>
