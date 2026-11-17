@@ -92,7 +92,7 @@ Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',
 // ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
 {// two copies hand off so the loop never pauses; both autoplay at load (iPhone only lets a video start on its own if it was allowed to autoplay),
  // the copy waiting its turn is parked at the start. If a handoff ever fails, the playing copy simply loops by itself, so the scene can never freeze.
- const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=4';v.poster='home/live_poster.jpg?v=3';
+ const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=5';v.poster='home/live_poster.jpg?v=4';
   v.muted=true;v.defaultMuted=true;v.playsInline=true;v.autoplay=true;v.loop=true;v.preload='auto';
   for(const k of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(k,'');stage.insertBefore(v,fx);return v};
  const V=[mk(),mk()];let cur=0,lead=0.12,busy=false,solo=false;V[1].style.opacity=0;
