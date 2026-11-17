@@ -8,6 +8,10 @@ const css=document.createElement('style');css.textContent=`
 #gp.on{background:rgba(2,22,24,.72);pointer-events:auto}
 #gp .gst{position:absolute;left:50%;top:50%;width:calc(var(--pu)*310);transform:translate(-50%,-50%)}
 #gp .gpc{position:relative;transform-origin:50% 60%}
+#gp .gart{position:relative;width:100%;filter:drop-shadow(0 calc(var(--pu)*10) calc(var(--pu)*14) rgba(0,0,0,.45))}
+#gp .gart .gbg{position:absolute;inset:0;width:100%;height:100%}
+#gp .gart .gpin{position:absolute;left:9%;right:9%;margin:0;justify-content:space-evenly;gap:0}
+#gp .gplt{position:absolute;left:12%;right:12%;display:flex;align-items:center;justify-content:center;font-size:calc(var(--pu)*30);color:#163f45;white-space:nowrap}
 #gp .gpan{position:relative;border-style:solid;border-width:calc(var(--pu)*34);border-image:url(${KIT}panel_big.webp?v=1) 120 fill/calc(var(--pu)*34) stretch;filter:drop-shadow(0 calc(var(--pu)*10) calc(var(--pu)*14) rgba(0,0,0,.45))}
 #gp .gpin{margin:calc(var(--pu)*-14) calc(var(--pu)*-18) calc(var(--pu)*-16);display:flex;flex-direction:column;align-items:center;gap:calc(var(--pu)*10)}
 #gp .gttl{position:relative;z-index:3;margin:0 auto calc(var(--pu)*-30);width:fit-content;min-width:calc(var(--pu)*200);height:calc(var(--pu)*62);padding:0 calc(var(--pu)*14);font-size:calc(var(--pu)*31);color:#163f45}
@@ -74,6 +78,10 @@ const css=document.createElement('style');css.textContent=`
 @keyframes gpPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:none;opacity:1}}
 @keyframes gpRise{0%{transform:translateY(40%);opacity:0}100%{transform:none;opacity:1}}
 @keyframes gpShake{0%,100%{transform:none}20%{transform:translate(-1.2%,.8%)}40%{transform:translate(1.1%,-.6%)}60%{transform:translate(-.7%,.4%)}80%{transform:translate(.4%,-.2%)}}
+@keyframes gpLeap2{0%{transform:translateY(30%) scale(.6,.45);opacity:0}45%{transform:translateY(-7%) scale(.96,1.07);opacity:1}65%{transform:translateY(1.5%) scale(1.05,.94)}100%{transform:none;opacity:1}}
+@keyframes gpWiggle2{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg) translateY(-1.2%)}75%{transform:rotate(2deg) translateY(-1.2%)}}
+#gp .gwr{transform-origin:50% 88%}#gp .gmd{z-index:2}#gp .gwt{z-index:1}
+#gp .gart.win .gpin{justify-content:flex-start;gap:calc(var(--pu)*9)}
 @keyframes gpSpin{to{transform:rotate(360deg)}}
 @keyframes gpBump{40%{transform:scale(1.2)}100%{transform:none}}
 #gp .sl{animation:kIn 420ms cubic-bezier(.25,1.35,.5,1) both;animation-delay:calc(var(--i,0)*55ms + 140ms)}
@@ -83,6 +91,7 @@ const gp=document.createElement('div');gp.id='gp';gp.className='kui';document.bo
 const h=(t,c,p)=>{const e=document.createElement(t);if(c)e.className=c;if(p)p.appendChild(e);return e};
 const kimg=(n,c,p)=>{const i=h('img',c,p);i.src=KIT+n+'.webp?v=1';i.alt='';return i};
 const pimg=(n,c,p)=>{const i=h('img',c,p);i.src=P+n+'.webp?v=1';i.alt='';return i};
+const p2=(n,c,p)=>{const i=h('img',c,p);i.src='bovo11/pop2/'+n+'.webp?v=1';i.alt='';return i};
 function fit(){const u=Math.min(innerWidth/393,innerHeight/852)*1.0;gp.style.setProperty('--pu',u+'px');if(fx){const d=Math.min(2,devicePixelRatio||1);fx.width=innerWidth*d;fx.height=innerHeight*d}}
 addEventListener('resize',fit);
 function snd(n){try{window.BA&&BA.play&&BA.play(n,{gap:60})}catch(e){}}
@@ -98,8 +107,13 @@ function close(now){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(
  if(now||!card){gp.classList.remove('on');gp.innerHTML='';st=card=fx=null;return}
  card.style.animation='gpDrop .22s ease-in both';gp.classList.remove('on');const c=card;setTimeout(()=>{if(card===c){gp.innerHTML='';st=card=fx=null}},240)}
 window.gpClose=close;
-const panel=pk=>{const p=h('div','gpan'+(pk?' pk':''),card);return h('div','gpin',p)};
-const title=(t,inside)=>{const e=h('div','k-title gttl'+(inside?' inp':''),inside||card);e.innerHTML=t;e.style.animation='kDrop .5s cubic-bezier(.3,1.6,.5,1) .1s both';return e};
+// ChatGPT art cards: [file, width, height, inner box top, inner box bottom] in the card's own pixels
+const ART={ready:['ready',823,1460,700,1395,544,686],lose:['lose',831,1390,670,1325,500,664],pause:['pause',790,1345,535,1275,380,512],win:['win_base',780,1337,800,1290,0,0]};
+const panel=k=>{const A=ART[k],p=h('div','gart '+k,card);p.style.aspectRatio=A[1]+'/'+A[2];const bg=pimg('','gbg',p);bg.src='bovo11/pop2/'+A[0]+'.webp?v=1';
+ p.style.setProperty('--sx',100/A[1]+'%');p.style.setProperty('--sy',100/A[2]+'%');
+ const pl=h('div','gplt',p);pl.style.top=A[5]/A[2]*100+'%';pl.style.height=(A[6]-A[5])/A[2]*100+'%';
+ const c=h('div','gpin',p);c.style.top=A[3]/A[2]*100+'%';c.style.bottom=(A[2]-A[4])/A[2]*100+'%';c.plate=pl;c.art=p;return c};
+const title=(t,c)=>{const e=c.plate;e.innerHTML=t;e.style.animation='kDrop .5s cubic-bezier(.3,1.6,.5,1) .25s both';return e};
 const seq=(el,i)=>{el.classList.add('sl');el.style.setProperty('--i',i);return el};
 function goals(list,parent){const g=h('div','ggoals',parent);list.forEach((go,i)=>{const d=h('div','gi',g);const im=h('img','',d);im.src=window.goalImg?('a/'+goalImg(go)+'.webp'):'';h('span','',d).textContent=go.left??go.n});return g}
 function peek(){const r=pimg('ch_rambo_peek','ch peek',card);r.style.animation='gpPeek .6s cubic-bezier(.3,1.3,.5,1) .15s both';later(900,()=>{r.style.animation='gpBob 2.8s ease-in-out infinite'});return r}
@@ -117,19 +131,18 @@ const at=el=>{const r=el.getBoundingClientRect();return[(r.left+r.width/2)/inner
 function confetti([x,y],n,spd=.9,up=.5){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=spd*(.3+Math.random()*.7);parts.push({k:'c',x,y,vx:Math.cos(a)*v*.45,vy:(Math.sin(a)*v-up)*.42,g:.62,rot:Math.random()*6,vr:(Math.random()-.5)*14,col:COL[i%COL.length],life:1,dur:1.6+Math.random()*1.2})}}
 function sparkle([x,y],n,r=.1){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=r*(1+Math.random()*2.5);parts.push({k:'s',x,y,vx:Math.cos(a)*v*.45,vy:Math.sin(a)*v*.2,g:0,rot:0,vr:0,sz:5+Math.random()*7,col:i%3?'#fff6c8':'#ffd84a',life:1,dur:.5+Math.random()*.5})}}
 // ---------- READY ----------
-window.showIntro=function(){open();peek();
- const T=S.lv.tier;const c=panel(1);title('Level '+(S.li+1)+(T=='H'||T=='SH'?`<span class="tag ${T=='SH'?'sh':''}">${T=='SH'?'SUPER HARD':'HARD'}</span>`:''),c);h('div','gsp',c);
+window.showIntro=function(){open();
+ const T=S.lv.tier;const c=panel('ready');title('Level '+(S.li+1)+(T=='H'||T=='SH'?`<span class="tag ${T=='SH'?'sh':''}">${T=='SH'?'SUPER HARD':'HARD'}</span>`:''),c);
  const pl=seq(h('div','k-plate gplate',c),0);pl.textContent='Goals';
  const bx=seq(h('div','gbox',c),1);goals(S.goals.map(x=>({...x,left:x.n})),bx);
  const mv=seq(h('div','gmoves',c),2);h('b','',mv).textContent=S.moves;h('i','',mv).textContent='Moves';
  const go=btn('green_big','Play','gb',()=>{close();window.say&&say('You got this!');window.hintArm&&hintArm()},{shine:1,delay:'1s'});seq(go,3);c.appendChild(go);
  later(1100,()=>{go.style.animation='gpPulse 2.4s ease-in-out infinite'});
- later(400,()=>sparkle(at(card.querySelector('.peek')),10,.08))};
+ later(400,()=>sparkle(at(c.art),10,.08))};
 // ---------- PAUSED ----------
 const STG=()=>{try{return Object.assign({music:70,sounds:80},JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){return{music:70,sounds:80}}};
 window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('rise');
- const b=pimg('ch_cardinal','ch bird',card);b.style.animation='gpPerch .55s cubic-bezier(.3,1.4,.5,1) .2s both';later(800,()=>{b.style.animation='gpBob 3.2s ease-in-out infinite'});
- title('Paused');const c=panel();h('div','gsp',c);
+ const c=panel('pause');title('Paused',c);
  const s=STG();const bx=seq(h('div','gbox',c),0);const rows=h('div','grows',bx);
  [['ic_music','Music','music'],['ic_speaker','Sound','sounds']].forEach(([ic,lb,k])=>{const r=h('div','grow',rows);kimg(ic,'ic',r);h('span','',r).textContent=lb;
   const t=K.toggle(s[k]>0,v=>{if(!v){s['_'+k]=s[k];s[k]=0}else s[k]=s['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(s))}catch(e){};window.BA&&BA.apply&&BA.apply()});r.appendChild(t);r.onclick=()=>t.click()});
@@ -137,8 +150,8 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('ris
  c.appendChild(seq(btn('cream_big','Restart','cb',()=>{close(true);startLevel(S.li)}),2));
  c.appendChild(seq(btn('cream_big','Quit','cb',()=>{close(true);BA.nav('map.html')}),3))};
 // ---------- OUT OF MOVES ----------
-window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();peek();
- const c=panel(1);title('Out of Moves',c);h('div','gsp',c);
+window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();
+ const c=panel('lose');title('Out of Moves',c);
  const pl=seq(h('div','k-plate gplate',c),0);pl.textContent='Still Needed';
  const bx=seq(h('div','gbox',c),1);goals(S.goals.filter(x=>x.left>0),bx);
  const p5=btn('green_big','+5 Moves','gb',()=>{close();moreMoves()},{shine:1,delay:'.9s'});seq(p5,2);c.appendChild(p5);
@@ -147,10 +160,10 @@ window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();peek();
  later(1000,()=>{p5.style.animation='gpPulse 2.2s ease-in-out infinite'})};
 // ---------- GOOD BOY! ----------
 window.g2results=function(stars,bones){open();
- const top=h('div','wtop',card);const tt=pimg('w_title','wtitle hid',top);const meds=h('div','meds',top);
- const md=[0,1,2].map(i=>kimg(i<stars?'medal_on':'medal_off','hid',meds));
- const c=panel();const stage=h('div','gstage',c);const rays=h('div','grays',stage);
- const wr=h('div','wram hid',stage);pimg('w_rambo','',wr);
+ const c=panel('win'),art=c.art;const pos=(el,x,y,w,hh)=>{Object.assign(el.style,{position:'absolute',left:x/780*100+'%',top:y/1337*100+'%',width:w/780*100+'%',height:hh/1337*100+'%'});return el};
+ const wr=pos(p2('win_rambo','gwr hid',art),60,300,660,530);
+ const tt=pos(p2('win_title','gwt hid',art),40,0,697,315);
+ const MD=[[150,162,156],[295,140,176],[472,162,156]];const md=MD.map(([x,y,z],i)=>pos(p2('medal'+i,'gmd hid',art),x,y,z,z));
  const lv=h('div','lvc hid',c);lv.textContent='Level '+(S.li+1)+' Complete!';
  const bn=h('div','gbones hid',c);kimg('ic_bone','',bn);const bt=h('span','',bn);bt.textContent='+0';
  let ready=false;const next=S.li+1<(window.LEVELS?LEVELS.length:1e9);
@@ -159,9 +172,9 @@ window.g2results=function(stars,bones){open();
  const show=(e,anim,ms)=>later(ms,()=>{e.classList.remove('hid');e.style.animation=anim});
  show(tt,'gpSlam .45s cubic-bezier(.3,1.4,.5,1) both',300);
  later(480,()=>{card.style.animation='gpShake .32s ease-out';snd('boom');sparkle(at(tt),22,.14);confetti(at(tt),40,.7,.3)});
- md.forEach((m,i)=>later(760+i*260,()=>{m.classList.remove('hid');m.style.animation=i<stars?'gpStamp .42s cubic-bezier(.3,1.4,.5,1) both':'gpPop .3s both';if(i<stars)later(200,()=>{sparkle(at(m),16,.1);snd('starland'+i)})}));
- later(1500,()=>{rays.style.opacity=1;wr.classList.remove('hid');wr.style.animation='gpLeap .7s cubic-bezier(.25,.9,.35,1) both';snd('rambo_double');
-  later(260,()=>{confetti(at(wr),90,1.1,.65)});later(720,()=>{wr.style.animation='gpWiggle 1.3s ease-in-out infinite'})});
+ md.forEach((m,i)=>{if(i<stars)later(760+i*260,()=>{m.classList.remove('hid');m.style.animation='gpStamp .42s cubic-bezier(.3,1.4,.5,1) both';later(200,()=>{sparkle(at(m),16,.1);snd('starland'+i)})})});
+ later(1500,()=>{wr.classList.remove('hid');wr.style.animation='gpLeap2 .7s cubic-bezier(.25,.9,.35,1) both';snd('rambo_double');
+  later(260,()=>{confetti(at(wr),90,1.1,.65)});later(720,()=>{wr.style.animation='gpWiggle2 1.3s ease-in-out infinite'})});
  show(lv,'gpRise .4s ease-out both',1950);
  later(2200,()=>{bn.classList.remove('hid');bn.style.animation='gpRise .3s ease-out both';const t0=performance.now(),D=700;
   (function f(now){const u=Math.min(1,(now-t0)/D);bt.textContent='+'+Math.round(bones*(1-Math.pow(1-u,3)))+' Bones';if(u<1)requestAnimationFrame(f);else{bn.style.animation='gpBump .3s';sparkle(at(bn),12,.08);snd('shimmer')}})(t0)});
@@ -169,6 +182,6 @@ window.g2results=function(stars,bones){open();
  show(rep,'gpPop .4s cubic-bezier(.3,1.5,.5,1) both',3100);later(3150,()=>ready=true);
  // tap early to skip ahead
  card.addEventListener('click',e=>{if(ready||e.target.closest('.k-btn'))return;timers.forEach(clearTimeout);timers=[];
-  [tt,lv,bn,cont,rep,wr,...md].forEach(x=>{x.classList.remove('hid');x.style.animation='none'});rays.style.opacity=1;bt.textContent='+'+bones+' Bones';
-  wr.style.animation='gpWiggle 1.3s ease-in-out infinite';cont.style.animation='gpPulse 1.6s ease-in-out infinite';ready=true})};
+  [tt,lv,bn,cont,rep,wr,...md.slice(0,stars)].forEach(x=>{x.classList.remove('hid');x.style.animation='none'});bt.textContent='+'+bones+' Bones';
+  wr.style.animation='gpWiggle2 1.3s ease-in-out infinite';cont.style.animation='gpPulse 1.6s ease-in-out infinite';ready=true})};
 })();
