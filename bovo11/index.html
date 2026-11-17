@@ -30,6 +30,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 #play .k-lbl{display:flex;flex-direction:column;align-items:center;color:#fffbe9;text-shadow:none;-webkit-text-stroke:.16em #1f6a14;paint-order:stroke fill;filter:drop-shadow(0 calc(var(--w)*2.5) 0 rgba(15,70,10,.55))}
 #play .k-lbl b{font-weight:400;font-size:calc(var(--w)*48);line-height:.92;letter-spacing:.03em}
 #play .k-lbl i{font-style:normal;font-size:calc(var(--w)*19);line-height:1;-webkit-text-stroke-width:.2em;color:#fff}
+#stage #live{position:absolute;left:0;top:0;width:100%;height:82.06933911159263%;object-fit:fill;-webkit-mask-image:linear-gradient(#000 94%,transparent);mask-image:linear-gradient(#000 94%,transparent)}#stage #fx{display:none}
 </style><link rel="stylesheet" href="../uikit/kit.css?v=1"></head><body>
 <div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=1"></script>
 
@@ -87,13 +88,10 @@ const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl
 const TW=[[.03,.6],[.05,.64],[.96,.63],[.92,.66],[.04,.58],[.1,.2],[.2,.13]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));
 const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
 Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{gl.uniform1f(U('chf'),CH/IH);
- const fg=fx.getContext('2d');let t0=performance.now(),last=t0;
- (function frame(now){const t=(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;
-  gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),1);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  const W=fx.width,H=fx.height;fg.clearRect(0,0,W,H);
-  for(const s of TW){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,r=W*.012*a;fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-r,y);fg.lineTo(x+r,y);fg.moveTo(x,y-r);fg.lineTo(x,y+r);fg.stroke()}
-  for(const p of POL){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.25){p.y=.95;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
-  requestAnimationFrame(frame)})(t0)});
+ const draw=()=>{gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),0);gl.uniform1f(U('on'),0);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)};draw();addEventListener('resize',()=>requestAnimationFrame(draw))});
+// ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
+{const v=document.createElement('video');v.id='live';v.src='home/live.mp4?v=1';v.poster='home/live_poster.jpg?v=1';v.muted=true;v.loop=true;v.playsInline=true;v.autoplay=true;v.setAttribute('playsinline','');v.setAttribute('muted','');v.preload='auto';
+ stage.insertBefore(v,fx);const go=()=>{const p=v.play();p&&p.catch(()=>{})};go();addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)go()})}
 
 // ---- quiet idle rhythm: PLAY shine every ~8s, logo breath offset; nothing in unison
 const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
