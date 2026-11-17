@@ -91,7 +91,7 @@ Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',
  const draw=()=>{gl.viewport(0,0,cv.width,cv.height);gl.uniform1f(U('t'),0);gl.uniform1f(U('on'),0);gl.uniform2f(U('px'),1/IW,1/IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)};draw();addEventListener('resize',()=>requestAnimationFrame(draw))});
 // ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
 {// two copies hand off just before the end, so the loop never pauses (iPhone pauses on a plain loop restart)
- const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=2';v.poster='home/live_poster.jpg?v=1';v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');v.setAttribute('muted','');stage.insertBefore(v,fx);return v};
+ const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=3';v.poster='home/live_poster.jpg?v=2';v.muted=true;v.playsInline=true;v.preload='auto';v.setAttribute('playsinline','');v.setAttribute('muted','');stage.insertBefore(v,fx);return v};
  const V=[mk(),mk()];let cur=0;V[1].style.opacity=0;
  const play=v=>{const p=v.play();p&&p.catch(()=>{})};
  V[1].addEventListener('loadeddata',()=>{V[1].pause();V[1].currentTime=0},{once:true});
