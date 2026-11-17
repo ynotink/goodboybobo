@@ -63,9 +63,9 @@ function contain(g,im,x,y,w,h){if(!im.complete||!im.naturalWidth)return;const k=
 let lastSel=-2;
 function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(window.G2K||1)*KC*devicePixelRatio;
  hud.width=Math.round(W*r);hud.height=Math.round(H*r);const g=hud.getContext('2d');g.setTransform(r,0,0,r,0,0);
- txt(g,'Level '+(S.li+1),[100,266,251,61],44,'center','#fdf1d6');
- txt(g,String(Math.max(0,S.moves)),[603,369,227,121],S.moves>99?91:118,'center',S.moves<=5?'#ff8a7a':'#fdf1d6');
- const n=S.goals.length,x0=n==1?189:70,x1=n==1?432:551,sw=(x1-x0)/n,cy=466;
+ txt(g,'Level '+(S.li+1),[71,251,217,73],S.li+1>99?38:42,'center','#fdf1d6');
+ txt(g,String(Math.max(0,S.moves)),[630,362,207,127],S.moves>99?82:103,'center',S.moves<=5?'#ff8a7a':'#fdf1d6');
+ const n=S.goals.length,x0=n==1?167:61,x1=n==1?500:603,sw=(x1-x0)/n,cy=460;
  S.goals.forEach((go,i)=>{const sx=x0+sw*i,isz=Math.min(121,sw*.5);const ix=sx+sw*.08;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
   const tx=ix+isz+9,tw=sx+sw-tx-6;if(go.left>0)txt(g,String(go.left),[tx,cy-38,tw,76],n>2?48:67,'center','#0d4a4b');else check(g,tx+tw/2,cy,51)});
  [[273,2435],[580,2435],[878,2435],[1189,2435]].forEach(([x,y],k)=>{const v=SAVE.boost[k];txt(g,v?String(v):'+',[x-40,y-30,80,60],50,'center','#fdf1d6')});

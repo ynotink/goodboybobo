@@ -15,8 +15,11 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
  const cv=h.querySelector('canvas'),ram=document.getElementById('plRam');
  const box=(cls,x0,y0,x1,y1,rad,before)=>{const d=document.createElement('div');d.className='flp '+cls;Object.assign(d.style,{left:u(x0),top:u(y0),width:u(x1-x0),height:u(y1-y0),borderRadius:u(rad)});h.insertBefore(d,before);return d};
  // main goals bar, moves pill, level tag (852-unit layout of the approved mockup)
- const RV=new URLSearchParams(location.search).get('rv')||'lean';ram.dataset.ar=0.744;
- if(RV=='peek'){
+ const RV=new URLSearchParams(location.search).get('rv')||'art';ram.dataset.ar=0.744;
+ if(RV=='art'){
+  const t=new Image();t.className='flp';t.src='bovo11/play2/topbar.webp?v=1';Object.assign(t.style,{left:u(0),top:u(17),width:u(852),height:u(420)});h.insertBefore(t,h.firstChild);
+  ram.style.display='none';h.dataset.art=1;
+ }else if(RV=='peek'){
   // Rambo peeks over the top of one full-width bar (bar in front of him)
   const bar=box('cream',9,213,843,393,52,h.firstChild);
   h.insertBefore(ram,bar);h.insertBefore(bar,ram.nextSibling);const S=.78,bw=399*S,bh=461*S;
@@ -36,9 +39,9 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
   Object.assign(ram.style,{left:u(730-ww/2),top:u(404-hh),width:u(ww),height:u(hh)});ram.style.transformOrigin='50% 100%';
   const sh=document.createElement('div');sh.className='flp';Object.assign(sh.style,{left:u(660),top:u(380),width:u(150),height:u(22),borderRadius:'50%',background:'radial-gradient(ellipse,rgba(0,20,25,.45),rgba(0,20,25,0) 70%)'});h.insertBefore(sh,ram);
  }else box('cream',9,213,577,393,52,h.firstChild);
- box('teal',394,230,552,352,26,cv);
- const mv=document.createElement('div');mv.className='flp';mv.textContent='Moves';Object.assign(mv.style,{left:u(394),top:u(318),width:u(158),height:u(30),display:'flex',alignItems:'center',justifyContent:'center',font:`900 ${21*K*KC}px BoboNunito,Nunito,system-ui`,color:'#fdf1d6',zIndex:2});h.appendChild(mv);
- box('teal',58,166,240,226,30,cv);
+ if(RV!='art')box('teal',394,230,552,352,26,cv);
+ const mv=document.createElement('div');mv.className='flp';mv.textContent='Moves';Object.assign(mv.style,{left:u(394),top:u(318),width:u(158),height:u(30),display:'flex',alignItems:'center',justifyContent:'center',font:`900 ${21*K*KC}px BoboNunito,Nunito,system-ui`,color:'#fdf1d6',zIndex:2});if(RV!='art')h.appendChild(mv);
+ if(RV!='art')box('teal',58,166,240,226,30,cv);
  // little ledge Rambo peeks over
  if(RV=='ledge')box('cream',583,336,848,393,24,cv);
  cv.style.zIndex=3;h.querySelectorAll('.flp.teal').forEach(e=>e.style.zIndex=2);mv.style.zIndex=4;
