@@ -108,8 +108,8 @@ function close(now){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(
  card.style.animation='gpDrop .22s ease-in both';gp.classList.remove('on');const c=card;setTimeout(()=>{if(card===c){gp.innerHTML='';st=card=fx=null}},240)}
 window.gpClose=close;
 // ChatGPT art cards: [file, width, height, inner box top, inner box bottom] in the card's own pixels
-const ART={ready:['ready',823,1460,700,1395,544,686],lose:['lose',831,1390,670,1325,500,664],pause:['pause',790,1345,535,1275,380,512],win:['win_base',780,1337,800,1290,0,0]};
-const panel=k=>{const A=ART[k],p=h('div','gart '+k,card);p.style.aspectRatio=A[1]+'/'+A[2];const bg=pimg('','gbg',p);bg.src='bovo11/pop2/'+A[0]+'.webp?v=1';
+const ART={ready:['ready',823,1460,700,1395,544,686],lose:['lose',828,1424,705,1360,540,696],pause:['pause',790,1345,535,1275,380,512],win:['win_base',780,1337,800,1290,0,0]};
+const panel=k=>{const A=ART[k],p=h('div','gart '+k,card);p.style.aspectRatio=A[1]+'/'+A[2];const bg=pimg('','gbg',p);bg.src='bovo11/pop2/'+A[0]+'.webp?v=2';
  p.style.setProperty('--sx',100/A[1]+'%');p.style.setProperty('--sy',100/A[2]+'%');
  const pl=h('div','gplt',p);pl.style.top=A[5]/A[2]*100+'%';pl.style.height=(A[6]-A[5])/A[2]*100+'%';
  const c=h('div','gpin',p);c.style.top=A[3]/A[2]*100+'%';c.style.bottom=(A[2]-A[4])/A[2]*100+'%';c.plate=pl;c.art=p;return c};
