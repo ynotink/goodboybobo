@@ -41,7 +41,7 @@ const sv=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(
 const TG=[{k:'music',y:802},{k:'sounds',y:934},{k:'vib',y:1069},{k:'notif',y:1204}];
 const isOn=t=>t.k=='notif'?false:t.k=='vib'?!!ST.vib:ST[t.k]>0;
 TG.forEach((t,i)=>{t.on=oldImg(`../a/pages/tg${i}_on.webp`,[880,t.y,250,120]);t.off=oldImg(`../a/pages/tg${i}_off.webp`,[880,t.y,250,120]);
- const show=()=>{const v=isOn(t);t.on.style.opacity=v?1:0;t.off.style.opacity=v?0:1;t.on.style.transition=t.off.style.transition='opacity .16s';t.on.style.transform=v?'':'translateX(-4%)';t.off.style.transform=v?'translateX(4%)':''};show();
+ const show=()=>{const v=isOn(t);t.on.style.visibility=v?'visible':'hidden';t.off.style.visibility=v?'hidden':'visible'};show();
  oldHit([100,t.y+5,1090,115],()=>{
   if(t.k=='notif')return toast('Notifications coming soon!');
   if(t.k=='vib')ST.vib=ST.vib?0:1;
@@ -70,4 +70,4 @@ let t0=performance.now(),last=t0;
   const beam=Math.max(0,1-Math.abs((m.y*H*.55)-(m.x*W))/(W*.35));const a=(.25+.35*Math.sin(t*1.7+m.ph))*(.3+.7*beam);if(a<=0)continue;
   g.fillStyle=`rgba(255,240,200,${a})`;g.beginPath();g.arc(m.x*W,m.y*H,m.r*W/700,0,7);g.fill()}
  requestAnimationFrame(f)})(t0);
-</script><script src="../nav/ui_feel.js?v=1"></script><script src="../nav/nav.js?v=1" data-page=""></script></body></html>
+</script><script src="../nav/nav.js?v=1" data-page=""></script></body></html>
