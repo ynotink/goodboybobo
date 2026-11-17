@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><script src="review_shim.js?v=1"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Good Boy Bobo — Review Build</title>
+<style>
+body{margin:0;background:#0d4547;color:#fff;font:600 15px system-ui;padding:52px 16px 40px}
+h1{font:900 24px system-ui;margin:4px 0 2px}p{opacity:.85;line-height:1.4;margin:6px 0 14px}
+h2{font:900 13px system-ui;color:#9fe3d6;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+.g{display:flex;flex-wrap:wrap;gap:8px}
+a,button{font:800 14px system-ui;padding:11px 14px;border:0;border-radius:12px;background:#f6ead1;color:#123;text-decoration:none;cursor:pointer}
+.warn{background:#c0392b;color:#fff;padding:10px 12px;border-radius:12px;font-weight:800}
+input{width:80px;padding:10px;border-radius:10px;border:0;font:800 15px system-ui}
+</style></head><body>
+<div class="warn">REVIEW BUILD: separate save, no real purchases. Nothing here affects the live game.</div>
+<h1>Good Boy Bobo</h1>
+<p>Best viewed on a phone, or in a desktop browser at phone size (about 390 × 850). A red <b>REVIEW</b> button in the top-right corner of every screen opens the review tools: jump to any level or chapter, fill boosters, set moves, open every pop-up, and trigger Rambo's reactions.</p>
+<h2>Screens</h2>
+<div class="g"><a href="bovo11/index.html">Home</a><a href="bovo10/index.html">Map</a><a href="bovo11/toys.html">Toy Box</a><a href="bovo11/friends.html">Friends</a><a href="bovo11/shop.html">Shop</a><a href="bovo11/settings.html">Settings</a></div>
+<h2>Play any level</h2>
+<div class="g"><input id="lv" type="number" min="1" max="100" value="1"><button onclick="location.href='game_new.html?lv='+Math.max(1,Math.min(100,+document.getElementById('lv').value||1))">Play</button></div>
+<h2>Jump to a chapter</h2>
+<div class="g" id="ch"></div>
+<h2>Notable levels</h2>
+<div class="g"><a href="game_new.html?lv=38">38 · first Hard</a><a href="game_new.html?lv=59">59 · Super Hard</a><a href="game_new.html?lv=34">34 · three goals</a><a href="game_new.html?lv=24">24 · carrots</a><a href="game_new.html?lv=100">100 · final</a></div>
+<h2>Review save</h2>
+<div class="g"><button id="unl">Unlock all levels</button><button id="rst">Reset review save</button></div>
+<script>
+const C=[...Array(10)];
+const ch=document.getElementById('ch');C.forEach((n,i)=>{const a=document.createElement('a');a.href='game_new.html?lv='+(i*10+1);a.textContent='Chapter '+(i+1);ch.appendChild(a)});
+document.getElementById('unl').onclick=()=>{localStorage.setItem('gbb_play',JSON.stringify({stars:Object.fromEntries([...Array(100)].map((_,i)=>[i,3])),boost:[9,9,9,9],sound:1}));alert('All 100 levels unlocked (review save only).')};
+document.getElementById('rst').onclick=()=>{['gbb','gbb_play','gbb_settings'].forEach(x=>localStorage.removeItem(x));alert('Review save cleared.')};
+if(!window.GBB_REVIEW){sessionStorage.setItem('gbbReview','1');location.reload()}
+</script></body></html>
