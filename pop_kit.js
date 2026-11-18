@@ -137,13 +137,17 @@ function startFx(){const g=fx.getContext('2d');let last=performance.now();
  (function f(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!fx)return;const W=fx.width,H=fx.height,s=W/393;g.clearRect(0,0,W,H);
   parts=parts.filter(p=>p.life>0);for(const p of parts){p.life-=dt/p.dur;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.vx*=Math.pow(.4,dt);p.rot+=p.vr*dt;
    g.save();g.translate(p.x*W,p.y*H);g.rotate(p.rot);g.globalAlpha=Math.min(1,p.life*2.2);
-   if(p.k=='c'){g.fillStyle=p.col;g.fillRect(-4*s,-2*s,8*s,4*s)}
+   if(p.k=='i'){if(p.img.complete&&p.img.naturalWidth){const w=s*p.sz,h=w*p.img.naturalHeight/p.img.naturalWidth;g.drawImage(p.img,-w/2,-h/2,w,h)}}
+   else if(p.k=='c'){g.fillStyle=p.col;g.fillRect(-4*s,-2*s,8*s,4*s)}
    else{const r=s*p.sz*(.6+.4*Math.sin(p.life*9));g.fillStyle=p.col;g.beginPath();g.moveTo(0,-r);g.quadraticCurveTo(0,0,r,0);g.quadraticCurveTo(0,0,0,r);g.quadraticCurveTo(0,0,-r,0);g.quadraticCurveTo(0,0,0,-r);g.fill()}
    g.restore()}
   raf=requestAnimationFrame(f)})(last)}
-const COL=['#ffcc33','#ff5e8a','#36b6ff','#6fdc4a','#a66bff','#ff8a3d','#fff3b0'];
 const at=el=>{const r=el.getBoundingClientRect();return[(r.left+r.width/2)/innerWidth,(r.top+r.height/2)/innerHeight]};
-function confetti([x,y],n,spd=.9,up=.5){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=spd*(.3+Math.random()*.7);parts.push({k:'c',x,y,vx:Math.cos(a)*v*.45,vy:(Math.sin(a)*v-up)*.42,g:.62,rot:Math.random()*6,vr:(Math.random()-.5)*14,col:COL[i%COL.length],life:1,dur:1.6+Math.random()*1.2})}}
+const PIMGS=['p_bone0','p_bone1','p_bone2','p_pawteal0','p_pawteal1','p_pawgold0','p_pawgold2','p_leaf0','p_leaf1','p_leaf2','p_heart0','p_heart1','p_ball0','p_ball2'].map(k=>{const i=new Image();i.src='fx/'+k+'.webp?v=1';return i});
+// celebration: bones, paws, leaves, hearts and tennis balls burst out to the SIDES so the centre (Rambo, reward) stays clear
+function confetti([x,y],n,spd=.9,up=.5){for(let i=0;i<n;i++){const side=i%2?1:-1,v=spd*(.45+Math.random()*.6);
+ const ang=side>0?(-0.95+Math.random()*0.9):(Math.PI+0.05+Math.random()*0.9);
+ parts.push({k:'i',img:PIMGS[Math.floor(Math.random()*PIMGS.length)],x:x+side*(.2+Math.random()*.06),y:y+(Math.random()-.5)*.08,vx:Math.cos(ang)*v*.55,vy:(Math.sin(ang)*v-up*.6)*.5,g:.55,rot:Math.random()*6,vr:(Math.random()-.5)*7,sz:15+Math.random()*12,life:1,dur:1.5+Math.random()*1})}}
 function sparkle([x,y],n,r=.1){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=r*(1+Math.random()*2.5);parts.push({k:'s',x,y,vx:Math.cos(a)*v*.45,vy:Math.sin(a)*v*.2,g:0,rot:0,vr:0,sz:5+Math.random()*7,col:i%3?'#fff6c8':'#ffd84a',life:1,dur:.5+Math.random()*.5})}}
 // ---------- READY ----------
 window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return noLives();open();
@@ -203,10 +207,10 @@ window.g2results=function(stars,bones){open();
  const rep=btn('cream_sm','Replay','cs',()=>{if(!ready)return false;close(true);startLevel(S.li)});rep.classList.add('hid');c.appendChild(rep);
  const show=(e,anim,ms)=>later(ms,()=>{e.classList.remove('hid');e.style.animation=anim});
  show(tt,'gpSlam .45s cubic-bezier(.3,1.4,.5,1) both',300);
- later(480,()=>{card.style.animation='gpShake .32s ease-out';snd('boom');sparkle(at(tt),22,.14);confetti(at(tt),40,.7,.3)});
+ later(480,()=>{card.style.animation='gpShake .32s ease-out';snd('boom');sparkle(at(tt),18,.14);confetti(at(tt),18,.8,.3)});
  md.forEach((m,i)=>{if(i<stars)later(760+i*260,()=>{m.classList.remove('hid');m.style.animation='gpStamp .42s cubic-bezier(.3,1.4,.5,1) both';later(200,()=>{sparkle(at(m),16,.1);snd('starland'+i)})})});
  later(1500,()=>{wr.classList.remove('hid');wr.style.animation='gpLeap2 .7s cubic-bezier(.25,.9,.35,1) both';snd('rambo_double');
-  later(260,()=>{confetti(at(wr),90,1.1,.65)});later(720,()=>{wr.style.animation='gpWiggle2 1.3s ease-in-out infinite'})});
+  later(260,()=>{confetti(at(wr),34,1.15,.7)});later(720,()=>{wr.style.animation='gpWiggle2 1.3s ease-in-out infinite'})});
  show(lv,'gpRise .4s ease-out both',1950);
  later(2200,()=>{bn.classList.remove('hid');bn.style.animation='gpRise .3s ease-out both';const t0=performance.now(),D=700;
   (function f(now){const u=Math.min(1,(now-t0)/D);bt.textContent='+'+Math.round(bones*(1-Math.pow(1-u,3)))+' Bones';if(u<1)requestAnimationFrame(f);else{bn.style.animation='gpBump .3s';sparkle(at(bn),12,.08);snd('shimmer')}})(t0)});

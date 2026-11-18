@@ -22,7 +22,7 @@ const R=Math.random,P=[];let running=false,last=0;
 function kick(){if(!running){running=true;last=performance.now();requestAnimationFrame(loop)}}
 function posOf(el){const a=app.getBoundingClientRect(),r=el.getBoundingClientRect(),k=a.width/W;return[(r.left+r.width/2-a.left)/k,(r.top+r.height/2-a.top)/k,r.width/k]}
 // ---- emitters ----
-function shatter(x,y,t,s,power){const c=COL[t]||COLX[t]||['#fff6c0','#ffd36b'];const n=Math.round((11+R()*4)*power);
+function shatter(x,y,t,s,power){const c=COL[t]||COLX[t]||['#fff6c0','#ffd36b'];const n=Math.round((4+R()*2)*Math.min(1.2,power));
  P.push({k:'glow',x,y,s:s*2.3,life:.3,age:0});
  for(let i=0;i<n;i++){const a=R()*Math.PI*2,v=(2.6+R()*4.2)*Math.min(1.4,power);
   P.push({k:'shard',x:x+(R()-.5)*s*.3,y:y+(R()-.5)*s*.3,vx:Math.cos(a)*v,vy:Math.sin(a)*v-1.6,r:R()*6,vr:(R()-.5)*.5,
@@ -32,11 +32,11 @@ function shatter(x,y,t,s,power){const c=COL[t]||COLX[t]||['#fff6c0','#ffd36b'];c
  kick()}
 function glow(x,y,s){P.push({k:'burst',x,y,s:s*3.2,life:.6,age:0,r:R()*6});P.push({k:'glow',x,y,s:s*2.4,life:.45,age:0});
  for(let i=0;i<10;i++){const a=i/10*Math.PI*2;P.push({k:'spark',x,y,vx:Math.cos(a)*3.2,vy:Math.sin(a)*3.2,s:s*.45,img:SPARK[i%6],life:.6,age:0,r:0})}kick()}
-function streak(x,y,dir,len){const n=22;for(let i=0;i<n;i++){const u=(i/(n-1)-.5)*len,px=dir==='row'?x+u:x,py=dir==='row'?y:y+u;
+function streak(x,y,dir,len){const n=12;for(let i=0;i<n;i++){const u=(i/(n-1)-.5)*len,px=dir==='row'?x+u:x,py=dir==='row'?y:y+u;
   P.push({k:'spark',x:px,y:py,vx:(R()-.5)*1.2,vy:(R()-.5)*1.2,s:14+R()*14,img:SPARK[(R()*6)|0],life:.45+R()*.35,age:-R()*.08,r:R()*3})}
  P.push({k:'flare',x,y,dir,len,life:.35,age:0});kick()}
 function bombFx(x,y,size){P.push({k:'burst',x,y,s:size*1.5,life:.75,age:0,r:R()*6});P.push({k:'wave',x,y,s:size,life:.5,age:0});
- for(let i=0;i<16;i++){const a=R()*Math.PI*2,v=3+R()*5;P.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:16+R()*16,img:SPARK[(R()*6)|0],life:.6+R()*.3,age:0,r:R()*3})}kick()}
+ for(let i=0;i<8;i++){const a=R()*Math.PI*2,v=3+R()*5;P.push({k:'spark',x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,s:16+R()*16,img:SPARK[(R()*6)|0],life:.6+R()*.3,age:0,r:R()*3})}kick()}
 function confetti(n,x,y,spread){for(let i=0;i<n;i++){const a=-Math.PI/2+(R()-.5)*spread,v=6+R()*8;
   P.push({k:'conf',x:x+(R()-.5)*40,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,w:8+R()*4,h:12+R()*6,c:CONF[(R()*6)|0],r:R()*6,vr:(R()-.5)*.4,ph:R()*6,life:2.2+R()*.8,age:0})}kick()}
 function bones(n,x,y,spread){for(let i=0;i<n;i++){const a=-Math.PI/2+(R()-.5)*spread,v=7+R()*8;
@@ -86,7 +86,7 @@ if(typeof ring==='function'){const o=ring;window.ring=ring=function(cell,size){o
 if(typeof comboText==='function'){const o=comboText;window.comboText=comboText=function(t){o(t);try{
    if(/CLEAR/.test(t)){sfx('popper',{gap:300});confetti(42,W*.25,H*.55,1.1);confetti(42,W*.75,H*.55,1.1)}else if(/MEGA|TASTIC/.test(t)){sfx('popper',{gap:300,vol:.85});bones(26,W/2,H*.55,1.4)}else if(/PAWSOME/.test(t)){sfx('popper',{gap:300,vol:.7});bones(14,W/2,H*.55,1.2)}}catch(e){}}}
 if(typeof hitBlock==='function'){const o=hitBlock;window.hitBlock=hitBlock=function(cell){try{if(cell&&cell.b&&!fast()){const [x,y]=center(cell);
-   const wood=cell.b.k==='crate';shatter(x,y,wood?'w':'d',CS,1.1)}}catch(e){}return o(cell)}}
+   }}catch(e){}return o(cell)}}
 // glow whenever a special piece appears on the board
 const pcs=document.getElementById('pcs');
 if(pcs)new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;
