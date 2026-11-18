@@ -165,7 +165,8 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  const at=(e,x,y,w,h)=>{Object.assign(e.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});return e};
  const word=perfect?'title_pawsome':['title_good_boy','title_top_dog','title_woof'][Math.floor(Math.random()*3)];
  const TS={title_good_boy:804/220,title_pawsome:798/222,title_top_dog:806/229,title_woof:710/239};
- const top0=Math.max(18,H*.045);
+ const sa=(()=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden';document.body.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return v})();
+ const top0=Math.max(sa+12,H*.06,30);
  const tw=W*(word==='title_woof'?.66:.86),th=tw/TS[word];
  const ttl=at(img(W2+word+'.webp'+WV,'p ttl2',sc),(W-tw)/2,top0,tw,th);
  const fs=W*.083;const sub=el('div','sub2',sc);sub.style.top=(top0+th*.86)+'px';sub.style.fontSize=fs+'px';
@@ -214,7 +215,7 @@ window.win=async function(){if(window.__wfsBusy)return;window.__wfsBusy=true;
   await goodBoy();
   // 2) Zoomies bonus: leftover moves blast across the board, tap to skip
   if(S.moves>0){mount();root.className='on';const sk=el('div','skip in',col);sk.textContent='Tap to skip';
-   const word=img('fx2/praise_woof.webp?v=1','word',col);word.style.top='16%';word.style.width='56%';word.classList.add('in');snd('rambo_bark');setTimeout(()=>{word.style.transition='opacity .4s';word.style.opacity='0'},900);
+   const word=img('fx2/praise_woof.webp?v=1','word',col);word.style.top='44%';word.style.width='60%';word.classList.add('in');snd('rambo_bark');setTimeout(()=>{word.style.transition='opacity .4s';word.style.opacity='0'},900);
    root.onclick=()=>{try{FAST=true}catch(e){}sk.remove()}}
   await engineWin();      // runs the bonus, then calls g2results -> scene()
  }finally{try{FAST=false}catch(e){}window.__wfsBusy=false}};
