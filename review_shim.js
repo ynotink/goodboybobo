@@ -1,9 +1,11 @@
-/* auto-update: if a newer build is live, reload once so the phone never runs a stale cached page */
+/* auto-update: every page carries the build it was made from (meta gbb-build). If a newer build is live,
+   reload once with a fresh URL so the phone fetches the new page instead of a cached copy. */
 (function(){try{const root=(document.currentScript&&document.currentScript.src||'').replace(/review_shim\.js.*$/,'');
+ const mine=()=>{const m=document.querySelector('meta[name=gbb-build]');return m?m.content:''};
  fetch(root+'build.txt?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{t=(t||'').trim();if(!t)return;
-  let have='';try{have=localStorage.getItem('gbb_build')||''}catch(e){}
-  if(have!==t){try{localStorage.setItem('gbb_build',t)}catch(e){}
-   if(have){const u=new URL(location.href);u.searchParams.set('b',t);location.replace(u.toString())}}}).catch(()=>{})}catch(e){}})();
+  const go=()=>{const have=mine();const u=new URL(location.href);if(have===t||u.searchParams.get('b')===t)return;
+   u.searchParams.set('b',t);location.replace(u.toString())};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go()}).catch(()=>{})}catch(e){}})();
 /* Good Boy Bobo — REVIEW MODE.
    Opened from review.html. While on, every saved value (progress, bones, settings) is kept under its own
    "rv_" names, so nothing here touches the real game's save. Purchases never run in review mode. */
