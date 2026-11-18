@@ -15,8 +15,18 @@ K.press=(el,fn)=>{let down=false;if(!el.classList.contains('k-btn'))el.classList
  el.addEventListener('pointerup',()=>end(1));el.addEventListener('pointerleave',()=>end(0));el.addEventListener('pointercancel',()=>end(0));
  el.addEventListener('animationend',()=>el.classList.remove('up'));return el};
 // a kit button: art = 'green_sm' etc. (has a pressed _p twin), label text, shine on/off
-K.button=(art,label,fn,opt={})=>{const b=h('div','k-btn');K.img(art,'k-art n',b);K.img(art+'_p','k-art p',b);
- if(opt.shine){const s=h('div','k-shine',b);const m=`url(${base}${art}.webp?v=1)`;s.style.webkitMaskImage=m;s.style.maskImage=m;if(opt.delay)s.style.setProperty('--sd',opt.delay)}
+// new modern parts (ui2): old art names map onto them. s = source slice px, r = corner as share of the button height
+const U2=base.replace(/uikit\/$/,'ui2/');
+const MAP={green_big:['btn_wide',70,.5],green_med:['btn_pill',50,.5],green_sm:['btn_pill',50,.5],cream_big:['btn_cream',70,.5],cream_sm:['btn_cream',70,.5],booster:['sq_cream',44,.3],round:['round_cream',0,0]};
+K.MAP=MAP;K.U2=U2;
+const s9=(b,src,sl,r)=>{const d=h('div','k-art',b);if(!sl){d.style.background=`url(${U2}${src}.webp?v=1) center/100% 100% no-repeat`;return d}
+ d.style.borderStyle='solid';d.style.borderImage=`url(${U2}${src}.webp?v=1) ${sl} fill / var(--bh) stretch`;d.style.boxSizing='border-box';return d};
+const fitR=(b,r)=>{const f=()=>{const hh=b.offsetHeight||40;b.style.setProperty('--bh',Math.max(4,Math.min(hh*r,(b.offsetWidth||hh)*.5)-.5)+'px')};f();try{new ResizeObserver(f).observe(b)}catch(e){addEventListener('resize',f)}requestAnimationFrame(f)};
+K.s9=(el,art)=>{const m=MAP[art]||[art,44,.3];const d=s9(el,m[0],m[1],m[2]);fitR(el,m[2]||.3);return d};
+K.button=(art,label,fn,opt={})=>{const b=h('div','k-btn');const m=MAP[art];
+ if(m){const n=s9(b,m[0],m[1],m[2]);n.classList.add('n');const pp=s9(b,m[0]+'_p',m[1],m[2]);pp.classList.add('p');b.classList.add('u2',/^cream|booster|round/.test(art)?'u2c':'u2o');fitR(b,m[2]||.5)}
+ else{K.img(art,'k-art n',b);K.img(art+'_p','k-art p',b)}
+ if(opt.shine){const s=h('div','k-shine',b);const m=`url(${MAP[art]?U2+MAP[art][0]:base+art}.webp?v=1)`;s.style.webkitMaskImage=m;s.style.maskImage=m;if(opt.delay)s.style.setProperty('--sd',opt.delay)}
  if(label){const l=h('div','k-lbl',b);l.textContent=label}
  b.setAttribute('role','button');b.tabIndex=0;if(opt.aria||label)b.setAttribute('aria-label',opt.aria||label);
  b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn&&fn()}});
@@ -29,12 +39,14 @@ K.toggle=(on,onChange)=>{const t=h('div','k-tg'+(on?'':' is-off'));K.img('toggle
  return t};
 // top bar: hearts, bones, gear (cream round button)
 K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb')||'{}')}catch(e){}
- const bar=h('div','k-top',parent);
- const c1=h('div','k-counter k-drop',bar);c1.setAttribute('role','button');c1.style.setProperty('--i',0);const n1=h('div','k-num',c1);n1.textContent=window.Eco?Eco.hearts():(g.hearts!=null?g.hearts:5);const tm=h('div','k-timer',c1);
- const c2=h('div','k-counter bone k-drop',bar);c2.setAttribute('role','button');c2.style.setProperty('--i',1);const n2=h('div','k-num',c2);n2.textContent=window.Eco?Eco.bones():(g.bones!=null?g.bones:430);
- const gear=K.button('round','',()=>{location.href=gearHref},{aria:'Settings'});gear.classList.add('k-gear','k-drop');gear.style.setProperty('--i',2);K.img('ic_gear','k-gearic',gear);bar.appendChild(gear);
+ const bar=h('div','k-top',parent),U3=base.replace(/uikit\/$/,'ui3/');
+ const mk=(cls,art,i)=>{const c=h('div','k-counter3 '+cls+' k-drop',bar);c.setAttribute('role','button');c.style.setProperty('--i',i);const im=h('img','k-art',c);im.src=U3+art+'.webp?v=1';im.alt='';im.draggable=false;return c};
+ const c1=mk('heart','cnt_heart',0);const n1=h('div','k-num3',c1);n1.textContent=window.Eco?Eco.hearts():(g.hearts!=null?g.hearts:5);const tm=h('div','k-timer',c1);
+ const c2=mk('bone','cnt_bone',1);const n2=h('div','k-num3',c2);n2.textContent=window.Eco?Eco.bones():(g.bones!=null?g.bones:430);
+ const gear=h('div','k-gear3 k-drop',bar);gear.style.setProperty('--i',2);gear.setAttribute('role','button');gear.setAttribute('aria-label','Settings');{const im=h('img','k-art',gear);im.src=U3+'gear.webp?v=1';im.alt='';im.draggable=false}
+ K.press(gear,()=>{location.href=gearHref});
  c1.setAttribute('aria-label',n1.textContent+' lives');c2.setAttribute('aria-label',n2.textContent+' bones');
- const upd=()=>{if(!window.Eco)return;const H=Eco.hearts();n1.textContent=H;n2.textContent=Eco.bones();tm.textContent=H<Eco.MAX?Eco.fmt(Eco.nextIn()):'Full';c1.setAttribute('aria-label',H+' lives');c2.setAttribute('aria-label',n2.textContent+' bones')};
+ const upd=()=>{if(!window.Eco)return;const H=Eco.hearts();n1.textContent=H;n2.textContent=Eco.bones();tm.textContent=H<Eco.MAX?Eco.fmt(Eco.nextIn()):'';c1.setAttribute('aria-label',H+' lives');c2.setAttribute('aria-label',n2.textContent+' bones')};
  if(window.Eco){Eco.on(upd);upd();setInterval(upd,1000)}
  K.press(c1,()=>{if(!window.Eco)return;const H=Eco.hearts();K.toast(H>=Eco.MAX?'Your lives are full!':'Next life in '+Eco.fmt(Eco.nextIn()))});
  K.press(c2,()=>{if(!/shop\.html/.test(location.pathname))location.href='shop.html'});
