@@ -6,10 +6,11 @@ const KC=390/1290,K=1290/852,u=v=>v*K*KC;
 const BASE='bovo11/play2/react/',V='?v=3';
 // video square in 852-units (see topbar2x crop: bar px * .45, video covers bar x 1052..1772, y -80..640)
 const FRAME={std:{S:1.6,ox:109,oy:128},low:{S:1.2,ox:226,oy:384}};
-const box=f=>{const X0=1120-f.ox/f.S,Y0=-f.oy/f.S,size=1152/f.S;return{x:43+X0*.45,y:118+Y0*.45,s:size*.45,f0:(590-Y0)/size,f1:(616-Y0)/size}};
+const K2=.45*.846;   // new ChatGPT peach bar: video mapped so its ledge (bar Y 560) sits on the new ledge and Rambo matches the mockup size
+const box=f=>{const X0=1120-f.ox/f.S,Y0=-f.oy/f.S,size=1152/f.S;return{x:644.8+(X0-1362.8)*K2,y:373.6+(Y0-560)*K2,s:size*K2,f0:(596-Y0)/size,f1:(604-Y0)/size,X0,Y0,size}};
 const CLIP={happy:'std',cheer:'low',worry:'std',pant:'std'};
 let cv,gl,tex,vids={},cur=null,ready=false,lastAct=performance.now(),worryShown=-1;
-function build(){const h=document.getElementById('g2hud');const bar=[...document.querySelectorAll('img.flp')].find(i=>/topbar2x/.test(i.src));
+function build(){const h=document.getElementById('g2hud');const bar=[...document.querySelectorAll('img.flp')].find(i=>/topbar3/.test(i.src));
  if(!h||!bar)return setTimeout(build,80);
  const B=box(FRAME.low);   // the canvas covers the roomier framing; the standard clips are drawn into their own square inside it
  cv=document.createElement('canvas');cv.id='rReact';Object.assign(cv.style,{position:'absolute',left:u(B.x)+'px',top:u(B.y)+'px',width:u(B.s)+'px',height:u(B.s)+'px',pointerEvents:'none',filter:'drop-shadow(0 5px 7px rgba(0,25,30,.35))'});
@@ -17,10 +18,16 @@ function build(){const h=document.getElementById('g2hud');const bar=[...document
  const DPR=Math.min(2,devicePixelRatio||1);cv.width=cv.height=Math.round(u(B.s)*DPR*(window.G2K||1));
  gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true});if(!gl)return;
  const vs=`attribute vec2 p;uniform vec4 r;varying vec2 t;void main(){t=vec2(p.x*.5+.5,.5-p.y*.5);vec2 q=r.xy+t*r.zw;gl_Position=vec4(q.x*2.-1.,1.-q.y*2.,0.,1.);}`;
- const fs=`precision mediump float;varying vec2 t;uniform sampler2D v;uniform vec2 fd;uniform vec3 bb;uniform float op;
+ const fs=`precision mediump float;varying vec2 t;uniform sampler2D v;uniform vec2 fd;uniform vec3 bb;uniform float op;uniform float bx;
+ float toe(float X,float Y,float cx,float rx,float ry){float d=length(vec2((X-cx)/rx,(Y-557.)/ry));return 1.-smoothstep(.9,1.04,d);}
  void main(){float Y=bb.y+t.y*bb.z;float w=1.-smoothstep(330.,520.,Y);w*=.55+.45*smoothstep(520.,120.,Y);vec2 q=t+vec2(0.,bb.x*w/bb.z);vec3 c=texture2D(v,q).rgb;float m=max(c.r,c.b);float g=c.g-m;
   float a=1.-smoothstep(.10,.38,g);if(q.y>1.)a=0.;
   c.g=min(c.g,m+.02);                                  // remove green spill on the fur edge
+  float X=bx+t.x*bb.z;
+  if(Y>390.&&(X<1146.||(X<1172.&&(c.r-c.b)>.085)||(X<1172.&&Y<480.)))a=0.;                              // old cream bar end inside the clip
+  if(Y>557.){float k=0.;            // ledge: keep only Rambo's toes (they rest on the new bar), drop the clip's old cream sign
+   k=max(k,toe(X,Y,1158.,21.,24.));k=max(k,toe(X,Y,1208.,29.,30.));k=max(k,toe(X,Y,1261.,20.,24.));
+   k=max(k,toe(X,Y,1502.,22.,25.));k=max(k,toe(X,Y,1556.,30.,30.));k=max(k,toe(X,Y,1610.,23.,24.));a*=k;}
   a*=1.-smoothstep(fd.x,fd.y,t.y);
   a*=op;gl_FragColor=vec4(c*a,a);}`;
  const sh=(k,s)=>{const o=gl.createShader(k);gl.shaderSource(o,s);gl.compileShader(o);return o};
@@ -33,11 +40,11 @@ function build(){const h=document.getElementById('g2hud');const bar=[...document
   for(const a of ['muted','playsinline','webkit-playsinline'])v.setAttribute(a,'');v.crossOrigin='anonymous';vids[k]=v;
   v.kind=k;if(k!=='pant')v.addEventListener('ended',()=>{if(cur===v){fadeFrom=v;fadeT=0;cur=null;resumePant();lastAct=performance.now()}})}
  const h0=vids.pant;
- const first=()=>{if(ready)return;ready=true;resumePant(0);draw(h0);bar.src='bovo11/play2/topbar_noram.webp?v=2'};   // swap the bar only once live Rambo is on screen
+ const first=()=>{if(ready)return;ready=true;resumePant(0);draw(h0);bar.src='bovo11/play2/topbar3_noram.webp?v=1'};   // swap the bar only once live Rambo is on screen
  h0.addEventListener('loadeddata',()=>{h0.currentTime=0;setTimeout(first,60)});h0.load();
  loop()}
 function draw(v,op=1,keep=false){if(!gl||v.readyState<2)return;gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1f(gl.getUniformLocation(cv.pr,'op'),op);
- const b=box(FRAME[CLIP[v.kind]]),B=cv.B;gl.uniform4f(gl.getUniformLocation(cv.pr,'r'),(b.x-B.x)/B.s,(b.y-B.y)/B.s,b.s/B.s,b.s/B.s);gl.uniform2f(gl.getUniformLocation(cv.pr,'fd'),b.f0,b.f1);
+ const b=box(FRAME[CLIP[v.kind]]),B=cv.B;gl.uniform4f(gl.getUniformLocation(cv.pr,'r'),(b.x-B.x)/B.s,(b.y-B.y)/B.s,b.s/B.s,b.s/B.s);gl.uniform2f(gl.getUniformLocation(cv.pr,'fd'),b.f0,b.f1);gl.uniform1f(gl.getUniformLocation(cv.pr,'bx'),b.X0);
  const f=FRAME[CLIP[v.kind]];gl.uniform3f(gl.getUniformLocation(cv.pr,'bb'),breath(),-f.oy/f.S,1152/f.S);
  try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,v)}catch(e){return}
  gl.viewport(0,0,cv.width,cv.height);if(!keep){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT)}gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
