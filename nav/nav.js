@@ -9,7 +9,7 @@ const ITEMS=[['home','Home',91,'bovo11/index.html'],['map','Map',260,'bovo10/ind
 const art=ITEMS.some(i=>i[0]===page)?page:'none';
 const css=document.createElement('style');css.textContent=`
 #gbnav{position:fixed;left:0;right:0;bottom:0;z-index:60;pointer-events:none;-webkit-user-select:none;user-select:none}
-#gbnav .barimg{position:absolute;display:block;-webkit-user-drag:none;filter:drop-shadow(0 calc(var(--k)*5px) calc(var(--k)*5px) rgba(35,22,4,.5)) drop-shadow(0 calc(var(--k)*10px) calc(var(--k)*14px) rgba(30,20,0,.25))}
+#gbnav .barimg{position:absolute;display:block;-webkit-user-drag:none;filter:drop-shadow(0 calc(var(--k)*7px) calc(var(--k)*5px) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--k)*16px) calc(var(--k)*20px) rgba(25,14,0,.38))}
 #gbnav .it{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:calc(var(--k)*30px)}
 #gbnav .it::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,30,0,.12);opacity:0;transition:opacity 90ms}
 #gbnav .it.dn::after{opacity:1}`;

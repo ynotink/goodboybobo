@@ -30,7 +30,7 @@ K.mock=(ui,o)=>{
 };
 const css=document.createElement('style');css.textContent=`
 .mk-box{position:absolute;pointer-events:none}
-.mk-p{position:absolute;display:block;-webkit-user-drag:none;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*5px) calc(var(--s)*5px) rgba(35,22,4,.45)) drop-shadow(0 calc(var(--s)*10px) calc(var(--s)*16px) rgba(30,20,0,.22));transition:transform 90ms ease-out}
+.mk-p{position:absolute;display:block;-webkit-user-drag:none;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*5px) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--s)*16px) calc(var(--s)*20px) rgba(25,14,0,.38));transition:transform 90ms ease-out}
 .mk-p.dn{transform:scale(.97)}
 .mk-z{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mk-z::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,25,0,.14);opacity:0;transition:opacity 90ms}

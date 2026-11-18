@@ -8,7 +8,7 @@ const css=document.createElement('style');css.textContent=`
 .flp{position:absolute;pointer-events:none;box-sizing:border-box}
 .flp.cream{background:linear-gradient(180deg,#fffaf0 0%,#fbefd6 55%,#f2e0bc 100%);border:2px solid rgba(255,255,255,.85);box-shadow:0 6px 14px rgba(0,30,35,.32),inset 0 -3px 0 rgba(170,120,60,.22)}
 .flp.teal{background:linear-gradient(180deg,#1d7672 0%,#11524f 100%);border:2px solid rgba(255,246,226,.9);box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,30,35,.25)}
-#g2hud .pl{filter:drop-shadow(0 4px 6px rgba(0,25,30,.35))}
+#g2hud .pl{filter:drop-shadow(0 4px 3px rgba(0,14,18,.6)) drop-shadow(0 9px 12px rgba(0,14,18,.4))}
 #plRam{filter:drop-shadow(0 5px 7px rgba(0,25,30,.35))!important}`;
 document.head.appendChild(css);
 function build(){const h=document.getElementById('g2hud');if(!h||!document.getElementById('plRam'))return setTimeout(build,60);if(h.dataset.fl)return;h.dataset.fl=1;
