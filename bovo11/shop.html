@@ -37,7 +37,7 @@
 .rest{align-self:center;width:calc(var(--u)*204);height:calc(var(--u)*38);border-width:calc(var(--u)*16) calc(var(--u)*17);margin-top:calc(var(--u)*-1)}
 .rest span{margin:calc(var(--u)*-16) 0;font-size:calc(var(--u)*16);color:#1b4b50;white-space:nowrap}
 </style></head><body>
-<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=4"></script>
+<script src="../uikit/kit.js?v=11"></script><script src="../ui3/mock.js?v=4"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -47,7 +47,7 @@ K.topbar(ui,'settings.html');
 const buy=()=>K.toast('Purchases are coming soon!');
 const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
 // pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',v:4,parts:[
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',v:5,parts:[
  {n:'title',x:218,y:174,w:496,h:120,i:0,row:0},
  {n:'bundle',x:50,y:283,w:834,h:420,i:1,row:1},
  {row:2,n:'b100',x:55,y:721,w:265,h:274,i:2},{row:2,n:'b550',x:337,y:722,w:260,h:273,i:3},{row:2,n:'b1200',x:614,y:721,w:263,h:274,i:4},
@@ -64,4 +64,4 @@ const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',v:4,parts:[
  {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=8" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=9" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

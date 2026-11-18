@@ -236,7 +236,7 @@ window.g2results=function(stars,bones){open();
 #gp .pc3 .z3::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,20,0,.15);opacity:0;transition:opacity 90ms}#gp .pc3 .z3.dn::after{opacity:1}
 #gp .pc3 .pulse3{animation:gpPulse 2.2s ease-in-out infinite}`;document.head.appendChild(css)}
 const C3={ready:[724,1231,104,304],lose:[737,1182,97,325]};
-function card3(k){const [W,H,ox,oy]=C3[k];const p=h('div','pc3',card);const bg=h('img','bgc',p);bg.src='bovo11/pop3/'+k+'.webp?v=1';bg.alt='';
+function card3(k){const [W,H,ox,oy]=C3[k];const p=h('div','pc3',card);const bg=h('img','bgc',p);bg.src='bovo11/pop3/'+k+'.webp?v=2';bg.alt='';
  const at=(el,x0,y0,x1,y1)=>{Object.assign(el.style,{left:(x0-ox)/W*100+'%',top:(y0-oy)/H*100+'%',width:(x1-x0)/W*100+'%',height:(y1-y0)/H*100+'%'});p.appendChild(el);return el};
  const zone=(x0,y0,x1,y1,label,fn)=>{const z=at(h('div','z3'),x0,y0,x1,y1);z.setAttribute('role','button');z.setAttribute('aria-label',label);
   z.addEventListener('pointerdown',()=>z.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>z.addEventListener(e,()=>z.classList.remove('dn')));

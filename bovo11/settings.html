@@ -27,7 +27,7 @@
 #ver{text-align:center;font-size:calc(var(--u)*12.5);color:#8a6d4c;padding:calc(var(--u)*1) 0 calc(var(--u)*5)}
 </style></head><body>
 
-<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=4"></script>
+<script src="../uikit/kit.js?v=11"></script><script src="../ui3/mock.js?v=4"></script>
 <script>
 'use strict';
 const IW=852,IH=1846,FENCE=474;      // fence rail top in the scene
@@ -37,7 +37,7 @@ const {h,img}=K;
 K.topbar(ui,'index.html');
 const say=m=>()=>K.toast(m);
 // pieces cut straight from ChatGPT's approved Settings mockup (934 px wide), title without the platform
-const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings/',maxGap:14,parts:[
+const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings/',v:2,maxGap:14,parts:[
  {n:'title',x:257,y:337,w:406,h:122,i:0,row:0},
  {n:'panel',x:72,y:461,w:790,h:945,i:1,row:1}],
  zones:[
@@ -52,11 +52,11 @@ const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}
  let on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
  const t=document.createElement('div');t.className='mk-tg k-pop';t.style.setProperty('--i',2+i);t.setAttribute('role','switch');t.setAttribute('aria-label',lb);
  const im=document.createElement('img');im.alt='';im.draggable=false;t.appendChild(im);
- const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=1';t.setAttribute('aria-checked',on?'true':'false')};draw();
+ const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=2';t.setAttribute('aria-checked',on?'true':'false')};draw();
  t.addEventListener('click',()=>{if(k==='notif'){K.toast('Notifications are coming soon!');t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');return}on=!on;draw();flip(k)(on);K.buzz(10)});
  M.add(t,666,y,135,63);
  // tapping the row also flips it
  M.add((()=>{const z=document.createElement('div');z.className='mk-z';z.addEventListener('click',()=>t.click());return z})(),110,y-10,540,84)});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=8" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=9" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
