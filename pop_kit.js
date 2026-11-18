@@ -287,7 +287,7 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('ris
  const bx=c.at(h('div','box3'),150,520,780,725);
  const st=STG();
  [['ic_music','Music','music',535],['ic_speaker','Sound','sounds',630]].forEach(([ic,lb,k,y])=>{const r=c.at(h('div','row3'),185,y,745,y+76);kimg(ic,'ic',r);h('span','',r).textContent=lb;
-  let on=st[k]>0;const t=h('img','tg3',r);const draw=()=>{t.src='ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=2'};draw();
+  let on=st[k]>0;const t=h('img','tg3',r);const draw=()=>{t.src='ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=3'};draw();
   r.setAttribute('role','switch');r.setAttribute('aria-label',lb);
   r.addEventListener('click',e=>{e.stopPropagation();on=!on;if(!on){st['_'+k]=st[k];st[k]=0}else st[k]=st['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(st))}catch(_){}window.BA&&BA.apply&&BA.apply();draw();snd('tap')})});
  btn3(c,170,755,760,895,'o','Resume',()=>close());

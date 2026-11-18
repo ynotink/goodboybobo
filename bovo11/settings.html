@@ -52,7 +52,7 @@ const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}
  let on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
  const t=document.createElement('div');t.className='mk-tg k-pop';t.style.setProperty('--i',2+i);t.setAttribute('role','switch');t.setAttribute('aria-label',lb);
  const im=document.createElement('img');im.alt='';im.draggable=false;t.appendChild(im);
- const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=2';t.setAttribute('aria-checked',on?'true':'false')};draw();
+ const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=3';t.setAttribute('aria-checked',on?'true':'false')};draw();
  t.addEventListener('click',()=>{if(k==='notif'){K.toast('Notifications are coming soon!');t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');return}on=!on;draw();flip(k)(on);K.buzz(10)});
  M.add(t,666,y,135,63);
  // tapping the row also flips it
