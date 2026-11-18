@@ -92,7 +92,8 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 function ensure(S){if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
-function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false});
+function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
+ const gl=S.cv.getContext('webgl',{alpha:true,premultipliedAlpha:false,antialias:false});
  if(!gl){if(!S.still){const im=new Image();im.src=S.dir+'/scene.png';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.cv);S.still=im}return Promise.resolve()}   // no WebGL: show the painted scene still
  S.gl=gl;
  const sh=(k,src)=>{const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s};
