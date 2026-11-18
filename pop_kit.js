@@ -220,4 +220,42 @@ window.g2results=function(stars,bones){open();
  card.addEventListener('click',e=>{if(ready||e.target.closest('.k-btn'))return;timers.forEach(clearTimeout);timers=[];
   [tt,lv,bn,cont,rep,wr,...md.slice(0,stars)].forEach(x=>{x.classList.remove('hid');x.style.animation='none'});bt.textContent='+'+bones+' Bones';
   wr.style.animation='gpWiggle2 1.3s ease-in-out infinite';cont.style.animation='gpPulse 1.6s ease-in-out infinite';ready=true})};
+
+// ===== ChatGPT peach cards (Level Start, Out of Moves): the approved mockup art, live numbers on top =====
+{const css=document.createElement('style');css.textContent=`
+#gp .pc3{position:relative;width:100%;filter:drop-shadow(0 calc(var(--pu)*10) calc(var(--pu)*14) rgba(0,0,0,.45))}
+#gp .pc3>img.bgc{display:block;width:100%;height:auto;-webkit-user-drag:none}
+#gp .pc3 .ov3{position:absolute;display:flex;align-items:center;justify-content:center;pointer-events:none;white-space:nowrap;line-height:1}
+#gp .pc3 .lvl3{color:#17474d;font-size:calc(var(--pu)*35)}
+#gp .pc3 .lvl3 .tag{margin-left:.35em;font-size:.42em;padding:.28em .55em;border-radius:.8em;background:#e2483a;color:#fff}#gp .pc3 .lvl3 .tag.sh{background:#7d3bd0}
+#gp .pc3 .g3{gap:calc(var(--pu)*14)}#gp .pc3 .g3 div{display:flex;align-items:center;gap:calc(var(--pu)*6);font-size:calc(var(--pu)*31);color:#17474d}
+#gp .pc3 .g3 img{height:calc(var(--pu)*40);width:auto}
+#gp .pc3 .mv3{color:#fff;font-size:calc(var(--pu)*45)}
+#gp .pc3 .z3{position:absolute;pointer-events:auto;cursor:pointer;border-radius:calc(var(--pu)*30);-webkit-tap-highlight-color:transparent;transition:transform 90ms}
+#gp .pc3 .z3.dn{transform:scale(.95)}
+#gp .pc3 .z3::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,20,0,.15);opacity:0;transition:opacity 90ms}#gp .pc3 .z3.dn::after{opacity:1}
+#gp .pc3 .pulse3{animation:gpPulse 2.2s ease-in-out infinite}`;document.head.appendChild(css)}
+const C3={ready:[724,1231,104,304],lose:[737,1182,97,325]};
+function card3(k){const [W,H,ox,oy]=C3[k];const p=h('div','pc3',card);const bg=h('img','bgc',p);bg.src='bovo11/pop3/'+k+'.webp?v=1';bg.alt='';
+ const at=(el,x0,y0,x1,y1)=>{Object.assign(el.style,{left:(x0-ox)/W*100+'%',top:(y0-oy)/H*100+'%',width:(x1-x0)/W*100+'%',height:(y1-y0)/H*100+'%'});p.appendChild(el);return el};
+ const zone=(x0,y0,x1,y1,label,fn)=>{const z=at(h('div','z3'),x0,y0,x1,y1);z.setAttribute('role','button');z.setAttribute('aria-label',label);
+  z.addEventListener('pointerdown',()=>z.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>z.addEventListener(e,()=>z.classList.remove('dn')));
+  z.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn()===false){once=false;return}snd('tap')});return z};
+ const goals3=(list,y0,y1)=>{const g=at(h('div','ov3 g3'),130,y0,(W+ox)-30,y1);list.forEach(go=>{const d=h('div','',g);const im=h('img','',d);im.src=window.goalImg?('a/'+goalImg(go)+'.webp'):'';h('span','',d).textContent=go.left??go.n});
+  requestAnimationFrame(()=>{let f=1;while(g.scrollWidth>g.clientWidth+1&&f>.5){f-=.05;g.style.transform='scale('+f+')'}});return g};
+ return {p,at,zone,goals3}}
+window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return noLives();open();
+ const T=S.lv.tier;const c=card3('ready');
+ const lv=c.at(h('div','ov3 lvl3'),190,760,746,848);lv.innerHTML='Level '+(S.li+1)+(T=='H'||T=='SH'?` <span class="tag ${T=='SH'?'sh':''}">${T=='SH'?'SUPER HARD':'HARD'}</span>`:'');
+ requestAnimationFrame(()=>{let f=parseFloat(getComputedStyle(lv).fontSize);while(lv.scrollWidth>lv.clientWidth+1&&f>10){f-=1;lv.style.fontSize=f+'px'}});
+ c.goals3(S.goals.map(x=>({...x,left:x.n})),955,1072);
+ const mv=c.at(h('div','ov3 mv3'),300,1110,640,1203);mv.textContent=S.moves;
+ const go=c.zone(163,1300,767,1471,'Play',()=>{close();window.say&&say('You got this!');window.hintArm&&hintArm()});
+ later(1100,()=>go.classList.add('pulse3'))};
+window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();
+ const c=card3('lose');c.goals3(S.goals.filter(x=>x.left>0),990,1102);
+ const PM=window.Eco?Eco.PRICE.moves:90;
+ const p5=c.zone(140,1133,784,1269,'Get 5 more moves for '+PM+' bones',()=>{if(window.Eco&&!Eco.spend(PM)){p5.style.animation='none';void p5.offsetWidth;p5.style.animation='kNope .36s';K.toast('You need '+PM+' bones. You have '+Eco.bones()+'.');return false}close();moreMoves()});
+ c.zone(163,1304,764,1433,'Give up, costs one life',()=>{window.Eco&&Eco.loseHeart();close(true);BA.nav('map.html')});
+ later(1000,()=>p5.classList.add('pulse3'))};
 })();

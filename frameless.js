@@ -17,7 +17,7 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
  // main goals bar, moves pill, level tag (852-unit layout of the approved mockup)
  const RV=new URLSearchParams(location.search).get('rv')||'art';ram.dataset.ar=0.744;
  if(RV=='art'){
-  const t=new Image();t.className='flp';t.src='bovo11/play2/topbar2x.webp?v=2';Object.assign(t.style,{left:u(43),top:u(118),width:u(766.8000000000001),height:u(378.0)});h.insertBefore(t,h.firstChild);
+  const t=new Image();t.className='flp';t.src='bovo11/play2/topbar2x.webp?v=3';Object.assign(t.style,{left:u(43),top:u(118),width:u(766.8000000000001),height:u(378.0)});h.insertBefore(t,h.firstChild);
   ram.style.display='none';h.dataset.art=1;
  }else if(RV=='peek'){
   // Rambo peeks over the top of one full-width bar (bar in front of him)

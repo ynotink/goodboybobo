@@ -33,7 +33,7 @@ function build(){const h=document.getElementById('g2hud');const bar=[...document
   for(const a of ['muted','playsinline','webkit-playsinline'])v.setAttribute(a,'');v.crossOrigin='anonymous';vids[k]=v;
   v.kind=k;if(k!=='pant')v.addEventListener('ended',()=>{if(cur===v){fadeFrom=v;fadeT=0;cur=null;resumePant();lastAct=performance.now()}})}
  const h0=vids.pant;
- const first=()=>{if(ready)return;ready=true;resumePant(0);draw(h0);bar.src='bovo11/play2/topbar_noram.webp?v=1'};   // swap the bar only once live Rambo is on screen
+ const first=()=>{if(ready)return;ready=true;resumePant(0);draw(h0);bar.src='bovo11/play2/topbar_noram.webp?v=2'};   // swap the bar only once live Rambo is on screen
  h0.addEventListener('loadeddata',()=>{h0.currentTime=0;setTimeout(first,60)});h0.load();
  loop()}
 function draw(v,op=1,keep=false){if(!gl||v.readyState<2)return;gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1f(gl.getUniformLocation(cv.pr,'op'),op);
