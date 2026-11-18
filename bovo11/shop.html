@@ -47,9 +47,9 @@ K.topbar(ui,'settings.html');
 const buy=()=>K.toast('Purchases are coming soon!');
 const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
 // pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',v:3,parts:[
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',v:4,parts:[
  {n:'title',x:218,y:174,w:496,h:120,i:0,row:0},
- {n:'bundle',x:50,y:287,w:834,h:416,i:1,row:1},
+ {n:'bundle',x:50,y:283,w:834,h:420,i:1,row:1},
  {row:2,n:'b100',x:55,y:721,w:265,h:274,i:2},{row:2,n:'b550',x:337,y:722,w:260,h:273,i:3},{row:2,n:'b1200',x:614,y:721,w:263,h:274,i:4},
  {row:3,n:'boost',x:50,y:1012,w:834,h:342,i:5},
  {row:4,n:'restore',x:236,y:1371,w:462,h:86,i:6}],
