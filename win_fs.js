@@ -79,7 +79,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const el=(t,c,p)=>{const e=document.createElement(t);if(c)e.className=c;if(p)p.appendChild(e);return e};
 const img=(src,c,p)=>{const i=el('img',c,p);i.src=src;i.alt='';i.draggable=false;return i};
 // confetti: our own bones, paws, balls, hearts + paper bits
-const PI=['p_bone0','p_bone1','p_bone2','p_pawgold0','p_pawgold1','p_pawteal0','p_ball0','p_ball2','p_heart0','p_leaf0'].map(k=>{const i=new Image();i.src='fx/'+k+'.webp?v=1';return i});
+const PI=['confetti_bone','confetti_bone','confetti_paw_orange','confetti_paw_teal','confetti_tennis_ball','confetti_heart','confetti_twinkle'].map(k=>{const i=new Image();i.src='fx2/'+k+'.webp?v=1';return i});
 const COL=['#ff7a3d','#ffc93c','#2bb3a3','#ff5d8f','#7ad3ff','#ffffff','#a77bff'];
 let root,col,cv,g,parts=[],raf=0,K=1;
 function mount(){if(root)return;root=el('div','',document.body);root.id='wfs';col=el('div','col',root);cv=el('canvas','',col);g=cv.getContext('2d');size();addEventListener('resize',size)}

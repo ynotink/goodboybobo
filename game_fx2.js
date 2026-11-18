@@ -32,7 +32,7 @@ window.particles=particles=function(cell,color,n){if(fast()||typeof center!=='fu
 // ---- praise words: our own art instead of plain text
 const WORD={'GOOD BOY!':'w_goodboy','PAWSOME!':'w_pawsome','BOBO-TASTIC!':'w_topdog','MEGA COMBO!':'w_fetch','WOOF!':'w_woof'};
 const _ct=window.comboText;let lastWord=0;
-function word(k){const app=$('app');if(!app||fast())return;const now=performance.now();if(now-lastWord<650)return;lastWord=now;
+function word(k){if(window.gfx3)return gfx3.word({w_goodboy:'praise_good_boy',w_pawsome:'praise_pawsome',w_woof:'praise_woof',w_fetch:'praise_fetch',w_topdog:'praise_top_dog'}[k]);const app=$('app');if(!app||fast())return;const now=performance.now();if(now-lastWord<650)return;lastWord=now;
  const t=(typeof S!=='undefined'&&S&&S.top)?S.top:300,bh=(typeof S!=='undefined'&&S&&S.R&&typeof CS!=='undefined')?S.R*CS*(typeof SY!=='undefined'?SY:1):360;
  const w=k==='w_woof'?170:k==='w_fetch'?270:240;const i=IM[k].cloneNode();i.className='gxw';Object.assign(i.style,{width:w+'px',marginLeft:(-w/2)+'px',top:(t+bh*.38)+'px'});app.appendChild(i);
  i.animate([{transform:'scale(.2) rotate(-8deg)',opacity:0},{transform:'scale(1.15) rotate(3deg)',opacity:1,offset:.22},{transform:'scale(.96) rotate(-1deg)',opacity:1,offset:.36},{transform:'scale(1) rotate(0)',opacity:1,offset:.7},{transform:'scale(1.04) translateY(-26px)',opacity:0}],{duration:1150,easing:'ease-out',fill:'forwards'}).onfinish=()=>i.remove();
@@ -42,7 +42,7 @@ window.comboText=comboText=function(t){const k=WORD[String(t).toUpperCase()];if(
 let lc=0;setInterval(()=>{if(typeof S==='undefined'||!S)return;const c=S.combo||0;if(c===3&&lc<3)word('w_woof');lc=c},60);
 // ---- special toys
 const _fire=window.fire;
-window.fire=fire=async function(p,cell,o){try{if(!fast()&&p&&cell&&typeof center==='function'){const [x,y]=center(cell),cs=CS,W=COLS*cs,Hh=S.R*cs*(typeof SY!=='undefined'?SY:1);
+window.fire=fire=async function(p,cell,o){try{if(!window.GFX3&&!fast()&&p&&cell&&typeof center==='function'){const [x,y]=center(cell),cs=CS,W=COLS*cs,Hh=S.R*cs*(typeof SY!=='undefined'?SY:1);
  if(p.sp==='row'||p.sp==='col'){const row=p.sp==='row';
   for(const dir of [-1,1]){const i=spr('wind',x,y,cs*2.2,row?[{transform:`translateX(0) scaleX(${dir})`,opacity:.95},{transform:`translateX(${dir*W*.55}px) scaleX(${dir})`,opacity:0}]:[{transform:`translateY(0) rotate(90deg) scaleX(${dir})`,opacity:.95},{transform:`translateY(${dir*Hh*.55}px) rotate(90deg) scaleX(${dir})`,opacity:0}],380,'ease-out')}
   poof(x,y,cs*1.1);if(Math.random()<.6)burst(['p_leaf0','p_leaf1','p_leaf2'][Math.floor(Math.random()*3)],x,y,2,cs*.4,cs*1.1,620,200)}
