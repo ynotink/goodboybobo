@@ -37,34 +37,31 @@
 .rest{align-self:center;width:calc(var(--u)*204);height:calc(var(--u)*38);border-width:calc(var(--u)*16) calc(var(--u)*17);margin-top:calc(var(--u)*-1)}
 .rest span{margin:calc(var(--u)*-16) 0;font-size:calc(var(--u)*16);color:#1b4b50;white-space:nowrap}
 </style></head><body>
-<script src="../uikit/kit.js?v=9"></script>
+<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=3"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
 const ui=K.scene('shop/bg.jpg?v=3',IW,IH,layout);
 const {h,img}=K;
 K.topbar(ui,'settings.html');
-const title=h('div','k-title pg k-drop',ui);title.textContent='Shop';title.style.setProperty('--i',1);
-const col=h('div','',ui);col.id='col';
-let ri=0;const seq=(el,c='k-in')=>{el.classList.add(c);el.style.setProperty('--i',ri++);return el};
 const buy=()=>K.toast('Purchases are coming soon!');
-// bundle: Rambo + the bunny
-const bd=seq(h('div','cd bund',col),'k-pop');const art=h('img','art',bd);art.src='shop/bundle.webp?v=2';
-K.press(art,()=>{});
-const rt=h('div','rt',bd);h('div','t1',rt).innerHTML='Best Friend<br>Bundle';h('div','t2',rt).innerHTML='2,500 Bones +<br>Boosters';
-rt.appendChild(K.button('green_big','$4.99',buy,{shine:1,delay:'1s'}));
-// bones
-const three=h('div','three',col);
-for(const [ic,n,p] of [['ic_bones_s','100 Bones','$0.99'],['ic_bones_m','550 Bones','$4.99'],['ic_bones_l','1,200 Bones','$9.99']]){
- const c=seq(h('div','cd bn',three));img(ic,'pic',c);h('div','nm',c).textContent=n;c.appendChild(K.button('green_sm',p,buy,{shine:1,delay:(2+ri*.3)+'s'}))}
-// boosters
-const bs=seq(h('div','bsec',col));h('div','k-plate',bs).textContent='Boosters';const bc=h('div','cd',bs);const row=h('div','bst',bc);
-for(const [ic,price,name,bk] of [['bst_paw',50,'Paw Tap',0],['bst_swap',70,'Free Swap',1],['bst_bomb',90,'Bomb',2]]){
- const d=h('div','',row);const p=img(ic,'pic',d);
- const wob=()=>{p.classList.remove('wob');void p.offsetWidth;p.classList.add('wob')};p.onclick=wob;
- const b=K.button('green_sm','',()=>{wob();if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')},{aria:'Buy one '+name+' for '+price+' bones'});img('ic_bone','b',b);h('div','k-lbl',b).textContent=price;d.appendChild(b)}
-// restore
-const rs=seq(h('div','k-pill k-btn rest',col));h('span','',rs).textContent='Restore Purchases';K.press(rs,()=>K.toast('Nothing to restore yet.'));
-function layout(I){const y0=I.wu*198;K.fitPanel(col,title,I,y0,y0-58*I.wu)}
+const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
+// pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop/',parts:[
+ {n:'title',x:218,y:174,w:496,h:120,i:0,row:0},
+ {n:'bundle',x:50,y:287,w:834,h:416,i:1,row:1},
+ {row:2,n:'b100',x:55,y:721,w:265,h:274,i:2},{row:2,n:'b550',x:337,y:722,w:260,h:273,i:3},{row:2,n:'b1200',x:614,y:721,w:263,h:274,i:4},
+ {row:3,n:'boost',x:50,y:1012,w:834,h:342,i:5},
+ {row:4,n:'restore',x:236,y:1371,w:462,h:86,i:6}],
+ zones:[
+ {x:472,y:578,w:358,h:98,r:49,fn:buy,aria:'Buy the Best Friend Bundle for $4.99'},
+ {x:78,y:912,w:222,h:64,r:32,fn:buy,aria:'Buy 100 bones for $0.99'},
+ {x:360,y:912,w:216,h:64,r:32,fn:buy,aria:'Buy 550 bones for $4.99'},
+ {x:637,y:912,w:220,h:64,r:32,fn:buy,aria:'Buy 1,200 bones for $9.99'},
+ {x:93,y:1250,w:216,h:68,r:34,fn:bst(50,'Paw Tap',0),aria:'Buy one Paw Tap for 50 bones'},
+ {x:357,y:1250,w:220,h:68,r:34,fn:bst(70,'Free Swap',1),aria:'Buy one Free Swap for 70 bones'},
+ {x:626,y:1250,w:218,h:68,r:34,fn:bst(90,'Bomb',2),aria:'Buy one Bomb for 90 bones'},
+ {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
+function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
 </script><script src="../nav/nav.js?v=7" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

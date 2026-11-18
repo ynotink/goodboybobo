@@ -51,49 +51,32 @@
 .glow{animation:glow 900ms ease-out}
 @keyframes glow{0%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}35%{filter:drop-shadow(0 0 calc(var(--u)*10) rgba(255,214,90,.95))}100%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}}
 </style></head><body>
-<script src="../uikit/kit.js?v=9"></script>
+<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=3"></script>
 <script>
 'use strict';
 const IW=852,IH=1846,FENCE=492;     // fence top in the scene
 const ui=K.scene('friends/bg.jpg?v=2',IW,IH,layout);
 const {h,img}=K;
 K.topbar(ui,'settings.html');
-const title=h('div','k-title pg k-drop',ui);title.textContent='Friends';title.style.setProperty('--i',1);
-const col=h('div','k-pop',ui);col.id='col';
-let ri=0;const seq=el=>{el.classList.add('k-in');el.style.setProperty('--i',ri++);return el};
-// tabs: highlight slides to the tapped tab
-const tabs=h('div','tabs',col);const sel=h('div','sel',tabs);const TB=['Friends','Teams','Events'],TX=[8,126,244];
-[1,2].forEach(i=>{const d=h('div','dv',tabs);d.style.left=`calc(var(--u)*${TX[i]-3})`});
-const cards={};
-TB.forEach((n,i)=>{const t=h('div','tb',tabs);t.textContent=n;t.style.left=`calc(var(--u)*${TX[i]})`;
- K.press(t,()=>{sel.style.left=`calc(var(--u)*${TX[i]})`;const c=cards[n];if(c){c.classList.remove('glow');void c.offsetWidth;c.classList.add('glow')}})});
-// your friends
-const fr=seq(h('div','k-panel fr',col));fr.style.filter='none';cards.Friends=fr;const fi=h('div','frin',fr);
-const h2=h('h2','',fi);h2.textContent='Your Friends';
-const PALS=[['Heather',24],['Marcus',21],['Jasmine',18]];h('div','sub',fi).textContent=PALS.length+' Friends';
-const list=h('div','k-card list',fi);const li=h('div','lin',list);
-PALS.forEach(([n,l],i)=>{const r=seq(h('div','pal',li));const a=h('div','av',r);const ai=h('img','',a);ai.src=`friends/av${i}.webp?v=1`;
- const w=h('div','who',r);h('b','',w).textContent=n;h('i','',w).textContent='Level '+l;
- const b=K.button('green_med','',null,{shine:1,delay:(1.4+i*.35)+'s'});b.classList.add('send');const hi=img('ic_heart','hi',b);const lb=h('div','k-lbl',b);lb.textContent='Send';r.appendChild(b);
- b.addEventListener('pointerup',()=>setTimeout(()=>{const R=hi.getBoundingClientRect();const f=img('ic_heart','fly',document.body);
-  Object.assign(f.style,{left:R.left+'px',top:R.top+'px',width:R.width+'px',height:R.height+'px'});f.addEventListener('animationend',()=>f.remove());
-  lb.textContent='Sent!';b.classList.add('sent');K.buzz(15)},110))});
-const two=seq(h('div','two',fi));
-for(const [ic,t,m] of [['ic_ask_lives','Ask for Lives','Asking friends for lives is coming soon!'],['ic_person_add','Invite<br>Friends','Inviting friends is coming soon!']]){
- const b=h('div','k-btn cb',two);img(ic,'',b);h('span','',b).innerHTML=t;K.press(b,()=>K.toast(m))}
-// team up
-const tm=seq(h('div','k-card cd team',col));cards.Teams=tm;const ti=h('div','',tm);ti.style.margin='calc(var(--u)*-10) calc(var(--u)*-8)';
-const row1=h('div','cdin',ti);row1.style.margin='0';const a1=h('div','art',row1);const p3=img('ic_paws3','',a1);Object.assign(p3.style,{inset:'0',width:'100%',height:'100%'});
-h('div','vd',row1);const tx=h('div','tx',row1);h('div','t1',tx).textContent='Team Up!';h('div','t2',tx).textContent='Join a team. Help each other.';
-const fb=K.button('green_big','Find a Team',()=>K.toast('Teams are coming soon!'),{shine:1,delay:'2.2s'});fb.classList.add('gb');ti.appendChild(fb);
-// weekly event
-const ev=seq(h('div','k-card cd ev',col));cards.Events=ev;const ei=h('div','cdin',ev);const a2=h('div','art',ei);
-const tr=img('ic_trophy','',a2);Object.assign(tr.style,{left:'0',bottom:'0',width:'64%',height:'100%',zIndex:2});const fl=img('ic_flag','',a2);Object.assign(fl.style,{right:'0',top:'-4%',width:'52%',height:'78%'});
-h('div','vd',ei);const et=h('div','tx',ei);h('div','t0',et).textContent='Weekly Event';h('div','t1',et).textContent='Backyard Dash';
-const t2=h('div','t2',et);img('ic_stopwatch','',t2);const left=h('span','',t2);
-const end=(()=>{const d=new Date();d.setDate(d.getDate()+((7-d.getDay())%7||7));d.setHours(0,0,0,0);return d})();
-const tick=()=>{const s=Math.max(0,(end-Date.now())/1000);const D=Math.floor(s/86400),H=Math.floor(s%86400/3600),M=Math.floor(s%3600/60);left.textContent=D?`${D}d ${H}h left`:`${H}h ${M}m left`};tick();setInterval(tick,30000);
-const vb=K.button('green_med','',()=>K.toast('Events are coming soon!'),{shine:1,delay:'2.8s'});vb.classList.add('vb');h('div','k-lbl',vb).innerHTML='View<br>Event';ei.appendChild(vb);
-function layout(I){const f=I.sy(FENCE);K.fitPanel(col,title,I,f-6*I.wu,f-50*I.wu)}
+const say=m=>()=>K.toast(m);
+const sent=new Set();const send=n=>()=>{if(sent.has(n)){K.toast('You already sent '+n+' a life today.');return}sent.add(n);K.toast('Sent a life to '+n+'!')};
+// pieces cut straight from ChatGPT's approved Friends mockup (934 px wide)
+const M=K.mock(ui,{MW:934,y0:238,y1:1460,base:'../ui3/friends/',parts:[
+ {n:'title',x:223,y:240,w:471,h:124,i:0,row:0},
+ {n:'tabs',x:77,y:391,w:779,h:91,i:1,row:1},
+ {n:'panel',x:70,y:497,w:794,h:593,i:2,row:2},
+ {n:'team',x:69,y:1104,w:795,h:193,i:3,row:3},
+ {n:'weekly',x:69,y:1309,w:796,h:149,i:4,row:4}],
+ zones:[
+ {x:356,y:400,w:240,h:72,r:36,fn:say('Teams are coming soon!'),aria:'Teams'},
+ {x:612,y:400,w:236,h:72,r:36,fn:say('Events are coming soon!'),aria:'Events'},
+ {x:612,y:628,w:212,h:72,r:30,fn:send('Heather'),aria:'Send Heather a life'},
+ {x:612,y:745,w:212,h:72,r:30,fn:send('Marcus'),aria:'Send Marcus a life'},
+ {x:612,y:862,w:212,h:72,r:30,fn:send('Jasmine'),aria:'Send Jasmine a life'},
+ {x:94,y:975,w:362,h:94,r:30,fn:say('Asked your friends for lives!'),aria:'Ask for Lives'},
+ {x:478,y:975,w:362,h:94,r:30,fn:say('Inviting friends is coming soon!'),aria:'Invite Friends'},
+ {x:266,y:1212,w:402,h:64,r:32,fn:say('Teams are coming soon!'),aria:'Find a Team'},
+ {x:650,y:1338,w:194,h:94,r:30,fn:say('The Backyard Dash starts soon!'),aria:'View Event'}]});
+function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
 </script><script src="../nav/nav.js?v=7" data-page="friends"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

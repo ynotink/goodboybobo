@@ -35,36 +35,25 @@
 .sils img{height:calc(var(--u)*50);max-width:78%;object-fit:contain;margin-top:calc(var(--u)*8);opacity:.92}
 .sils .wig img{animation:kNope 360ms}
 </style></head><body>
-<script src="../uikit/kit.js?v=9"></script>
+<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=3"></script>
 <script>
 'use strict';
 const IW=852,IH=1846,SHELF=505;     // the cardinal's & bunny's shelves in the scene
 const ui=K.scene('toys/bg.jpg?v=6',IW,IH,layout);
 const {h,img}=K;
 K.topbar(ui,'settings.html');
-const title=h('div','k-title pg k-drop',ui);title.textContent='Toy Box';title.style.setProperty('--i',1);
-const panel=h('div','k-panel pg k-pop',ui);const inner=h('div','',panel);inner.id='inner';
-let ri=0;const seq=el=>{el.classList.add('k-in');el.style.setProperty('--i',ri++);return el};
-const TOYS=[['tennis','Tennis Ball'],['rope','Rope Tug'],['ring','Chew Ring'],['frisbee','Frisbee'],['duck','Rubber Duck'],['bone','Chew Bone']];
-const got=TOYS.length,total=30;
-const cnt=seq(h('div','',inner));cnt.id='count';cnt.textContent=`${got} / ${total} Toys Collected`;
-const bar=seq(h('div','prog',inner));h('div','tr',bar);const fill=h('div','fl',bar);
-// chapter picker
-const tri=d=>{const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 20 20');s.innerHTML=`<path d="${d<0?'M15 3 L4 10 L15 17Z':'M5 3 L16 10 L5 17Z'}" fill="#145a5b" stroke="#145a5b" stroke-width="2.5" stroke-linejoin="round"/>`;return s};
-const chap=seq(h('div','chap',inner));
-const sq=d=>{const b=K.button('booster','',()=>K.toast('More chapters are coming soon!'));b.classList.add('sq');b.appendChild(tri(d));return b};
-chap.appendChild(sq(-1));const nm=h('div','k-pill name',chap);h('span','',nm).textContent='The Backyard';chap.appendChild(sq(1));
-// toys
-const grid=h('div','grid',inner);
-for(const [k,label] of TOYS){const c=seq(h('div','k-card toy',grid));const p=h('img','pic',c);p.src=`toys/items/${k}.webp?v=1`;
- const nmE=h('div','nm',c);nmE.textContent=label;if(label.length>10)nmE.style.fontSize='calc(var(--u)*12.8)';img('badge_check','ck',c);
- K.press(c,()=>{c.classList.remove('wig');void c.offsetWidth;c.classList.add('wig')});c.addEventListener('animationend',e=>{if(e.target.classList.contains('pic'))c.classList.remove('wig')})}
-// next chapter
-const nx=seq(h('div','next',inner));const pl=h('div','k-plate',nx);img('ic_lock','',pl);h('span','',pl).textContent='Next Chapter: The Park';
-const nc=h('div','k-card',nx);const sl=h('div','sils',nc);
-for(const k of ['sil1','sil2','sil3']){const d=h('div','',sl);const i=h('img','',d);i.src=`toys/items/${k}.webp?v=1`;
- d.onclick=()=>{d.classList.remove('wig');void d.offsetWidth;d.classList.add('wig');K.buzz(15);K.toast('Finish The Backyard to unlock The Park!')}}
-setTimeout(()=>{fill.style.width=Math.max(8,got/total*100)+'%'},50);
-function layout(I){const s=I.sy(SHELF);K.fitPanel(panel,title,I,s+12*I.wu,s-34*I.wu)}
+const soon=m=>()=>K.toast(m);
+// pieces cut straight from ChatGPT's approved Toy Box mockup (934 px wide)
+const M=K.mock(ui,{MW:934,y0:270,y1:1452,base:'../ui3/toys/',maxGap:0,parts:[
+ {n:'title',x:229,y:275,w:468,h:125,i:0,row:0},
+ {n:'panel',x:79,y:438,w:766,h:1012,i:1,row:0}],
+ zones:[
+ {x:120,y:583,w:84,h:84,r:20,fn:soon('More chapters are coming soon!'),aria:'Previous chapter'},
+ {x:724,y:583,w:84,h:84,r:20,fn:soon('More chapters are coming soon!'),aria:'Next chapter'},
+ {x:118,y:700,w:338,h:136,r:26,fn:soon('Tennis Ball: collected!')},{x:474,y:700,w:338,h:136,r:26,fn:soon('Rope Tug: collected!')},
+ {x:118,y:855,w:338,h:136,r:26,fn:soon('Chew Ring: collected!')},{x:474,y:855,w:338,h:136,r:26,fn:soon('Frisbee: collected!')},
+ {x:118,y:1010,w:338,h:136,r:26,fn:soon('Rubber Duck: collected!')},{x:474,y:1010,w:338,h:136,r:26,fn:soon('Chew Bone: collected!')},
+ {x:110,y:1250,w:700,h:150,r:30,fn:soon('Finish The Backyard to unlock the Neighborhood!'),aria:'Next chapter toys'}]});
+function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
 </script><script src="../nav/nav.js?v=7" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

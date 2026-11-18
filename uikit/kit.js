@@ -60,7 +60,7 @@ K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');
  function size(){const DPR=Math.min(2,devicePixelRatio||1);const CW=window.GBB_COL?GBB_COL():innerWidth,CX=(innerWidth-CW)/2;ui.style.left=CX+'px';ui.style.width=CW+'px';ui.style.right='auto';let w=innerWidth,hh=w*IH/IW;if(hh<innerHeight){hh=innerHeight;w=hh*IW/IH}else if(hh>innerHeight*1.04){hh=innerHeight;w=hh*IW/IH}
   st.classList.toggle('fit',w<innerWidth-2);st.style.width=w+'px';st.style.height=hh+'px';const top=innerHeight-hh;st.style.top=top+'px';
   fx.width=Math.round(w*DPR);fx.height=Math.round(hh*DPR);const wu=Math.min(CW,w)/393;R.setProperty('--w',wu+'px');R.setProperty('--u',wu+'px');
-  if(started&&onSize)onSize({top,h:hh,w,wu,navTop:innerHeight-346/1290*CW,cx:CX,sy:y=>top+y/IH*hh})}
+  if(started&&onSize)onSize({top,h:hh,w,wu,navTop:innerHeight-223/852*CW,cw:CW,cx:CX,sy:y=>top+y/IH*hh})}
  size();addEventListener('resize',size);
  document.addEventListener('animationend',e=>{if(/^k(In|Drop|Pop)$/.test(e.animationName))e.target.classList.add('k-done')});
  K.start=()=>{started=true;size();requestAnimationFrame(()=>requestAnimationFrame(()=>ui.classList.add('k-go')))};

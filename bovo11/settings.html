@@ -27,7 +27,7 @@
 #ver{text-align:center;font-size:calc(var(--u)*12.5);color:#8a6d4c;padding:calc(var(--u)*1) 0 calc(var(--u)*5)}
 </style></head><body>
 
-<script src="../uikit/kit.js?v=9"></script>
+<script src="../uikit/kit.js?v=10"></script><script src="../ui3/mock.js?v=3"></script>
 <script>
 'use strict';
 const IW=852,IH=1846,FENCE=474;      // fence rail top in the scene
@@ -35,35 +35,28 @@ const ui=K.scene('settings/bg.jpg?v=4',IW,IH,layout);
 const ST=K.settings();const save=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
 const {h,img}=K;
 K.topbar(ui,'index.html');
-const title=h('div','k-title pg k-drop',ui);title.id='title';title.textContent='Settings';title.style.setProperty('--i',1);
-const panel=h('div','k-panel pg k-pop',ui);panel.id='panel';
-const inner=h('div','',panel);inner.id='inner';
-let ri=0;
-function section(name){const s=h('div','sec k-in',inner);s.style.setProperty('--i',ri++);const p=h('div','k-plate',s);p.textContent=name;return s}
-function card(sec){const c=h('div','k-card',sec);const b=h('div','box',c);return b}
-const chev=()=>{const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 10 16');s.setAttribute('class','chev');s.innerHTML='<path d="M2.5 2 L8 8 L2.5 14" fill="none" stroke="#24434c" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>';return s};
-function row(box,icon,label,right,onTap){const r=h('div','row k-in',box);r.style.setProperty('--i',ri++);img(icon,'ic',r);const t=h('div','tx',r);t.textContent=label;if(right)r.appendChild(right);
- r.addEventListener('click',()=>{r.classList.remove('tap');void r.offsetWidth;r.classList.add('tap');onTap&&onTap()});r.addEventListener('animationend',e=>{if(e.target!==r)r.classList.remove('tap')});return r}
-// Sound & Play
-const s1=card(section('Sound & Play'));
+const say=m=>()=>K.toast(m);
+// pieces cut straight from ChatGPT's approved Settings mockup (934 px wide), title without the platform
+const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings/',maxGap:14,parts:[
+ {n:'title',x:257,y:337,w:406,h:122,i:0,row:0},
+ {n:'panel',x:72,y:461,w:790,h:945,i:1,row:1}],
+ zones:[
+ {x:110,y:870,w:720,h:80,r:24,fn:say('Player profiles are coming soon!'),aria:'Player Profile'},
+ {x:590,y:962,w:214,h:70,r:35,fn:say('Saving to the cloud is coming soon!'),aria:'Save Progress: Connect'},
+ {x:110,y:1045,w:720,h:80,r:24,fn:say('More languages are coming soon!'),aria:'Language: English'},
+ {x:110,y:1135,w:720,h:80,r:24,fn:say('Help & Support is coming soon!'),aria:'Help & Support'},
+ {x:110,y:1222,w:720,h:80,r:24,fn:say('Privacy & Terms are coming soon!'),aria:'Privacy & Terms'}]});
+// live toggles over the panel (ChatGPT's own on/off art)
 const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}else ST[k]=ST['_'+k]||(k==='music'?70:80);save();if(k==='vib'&&v)K.buzz(30)};
-const TG=[['ic_music','Music','music'],['ic_speaker','Sound Effects','sounds'],['ic_vibrate','Vibration','vib'],['ic_bell','Notifications','notif']];
-for(const [ic,lb,k] of TG){const on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
- const tg=K.toggle(on,k==='notif'?()=>{K.toast('Notifications are coming soon!');return false}:flip(k));
- tg.setAttribute('aria-label',lb);row(s1,ic,lb,tg,()=>tg.click())}
-// Account
-const s2=card(section('Account'));
-const val=t=>{const d=h('div','val');d.textContent=t;d.appendChild(chev());return d};
-row(s2,'ic_person','Player Profile',(()=>{const d=h('div','val');d.appendChild(chev());return d})(),()=>K.toast('Player profiles are coming soon!'));
-const con=K.button('green_sm','Connect',()=>K.toast('Saving to the cloud is coming soon!'),{shine:1,delay:'1.6s'});
-row(s2,'ic_cloud_up','Save Progress',con);
-row(s2,'ic_globe','Language',val('English'),()=>K.toast('More languages are coming soon!'));
-// Help & Info
-const s3=section('Help & Info');const c3=card(s3);const hp=h('div','helps',c3);
-for(const [ic,lb,m] of [['ic_help','Help & Support','Help & Support is coming soon!'],['ic_shield','Privacy & Terms','Privacy & Terms are coming soon!']]){
- const b=h('div','k-pill k-btn k-in',hp);b.style.setProperty('--i',ri++);img(ic,'ic',b);const s=h('span','',b);s.textContent=lb;K.press(b,()=>K.toast(m))}
-const ver=h('div','k-in',c3);ver.id='ver';ver.textContent='Version 1.0.0';ver.style.setProperty('--i',ri++);
-// layout: title on the fence rail, panel between the fence and the menu
-function layout(I){const f=I.sy(FENCE);K.fitPanel(panel,title,I,f+10*I.wu,f-30*I.wu)}
+[['Music','music',515],['Sound Effects','sounds',603],['Vibration','vib',691],['Notifications','notif',778]].forEach(([lb,k,y],i)=>{
+ let on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
+ const t=document.createElement('div');t.className='mk-tg k-pop';t.style.setProperty('--i',2+i);t.setAttribute('role','switch');t.setAttribute('aria-label',lb);
+ const im=document.createElement('img');im.alt='';im.draggable=false;t.appendChild(im);
+ const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=1';t.setAttribute('aria-checked',on?'true':'false')};draw();
+ t.addEventListener('click',()=>{if(k==='notif'){K.toast('Notifications are coming soon!');t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');return}on=!on;draw();flip(k)(on);K.buzz(10)});
+ M.add(t,666,y,135,63);
+ // tapping the row also flips it
+ M.add((()=>{const z=document.createElement('div');z.className='mk-z';z.addEventListener('click',()=>t.click());return z})(),110,y-10,540,84)});
+function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
 </script><script src="../nav/nav.js?v=7" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
