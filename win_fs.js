@@ -214,7 +214,7 @@ window.win=async function(){if(window.__wfsBusy)return;window.__wfsBusy=true;
   await goodBoy();
   // 2) Zoomies bonus: leftover moves blast across the board, tap to skip
   if(S.moves>0){mount();root.className='on';const sk=el('div','skip in',col);sk.textContent='Tap to skip';
-   const word=img('fx/w_woof.webp?v=1','word',col);word.style.top='16%';word.style.width='56%';word.classList.add('in');snd('rambo_bark');setTimeout(()=>{word.style.transition='opacity .4s';word.style.opacity='0'},900);
+   const word=img('fx2/praise_woof.webp?v=1','word',col);word.style.top='16%';word.style.width='56%';word.classList.add('in');snd('rambo_bark');setTimeout(()=>{word.style.transition='opacity .4s';word.style.opacity='0'},900);
    root.onclick=()=>{try{FAST=true}catch(e){}sk.remove()}}
   await engineWin();      // runs the bonus, then calls g2results -> scene()
  }finally{try{FAST=false}catch(e){}window.__wfsBusy=false}};

@@ -102,5 +102,12 @@ function word(k){if(!app||fast())return;const now=performance.now();if(now-lastW
   d.animate([{transform:'scale(0) rotate(0)',opacity:1},{transform:'scale(1) rotate(40deg)',opacity:1,offset:.4},{transform:'scale(.2) rotate(80deg)',opacity:0}],{duration:420,delay:120+j*70,easing:'ease-out',fill:'both'}).onfinish=()=>d.remove()}}}
 const _ct=window.comboText;
 window.comboText=comboText=function(t){const k=WORD[String(t).toUpperCase()];if(k)return word(k);if(/LEVEL CLEAR/i.test(t))return;return _ct&&_ct.apply(this,arguments)};
+// old text pop-ups off: Rambo's speech bubble, "+180" score numbers and the "Bobo Bonus!" toast.
+// Praise in the bubble becomes the new 3D word art; everything else is dropped.
+const SAYW={'GOOD BOY!':'praise_good_boy','WOOF!':'praise_woof','PAWSOME!':'praise_pawsome'};
+window.say=say=function(t){const k=SAYW[String(t).toUpperCase()];if(k)word(k)};
+window.floater=floater=function(){};
+const _toast=window.toast;window.toast=toast=function(t){if(/bonus/i.test(t))return;return _toast&&_toast.apply(this,arguments)};
+{const b=document.getElementById('bub');if(b)b.style.display='none'}
 window.gfx3={word,pop,spr};
 })();
