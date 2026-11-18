@@ -88,6 +88,10 @@ const css=document.createElement('style');css.textContent=`
 #gp .gbuy{display:flex;align-items:center;gap:calc(var(--pu)*12);margin:calc(var(--pu)*-6) calc(var(--pu)*-4) calc(var(--pu)*-10);font-size:calc(var(--pu)*17)}
 #gp .gbuy img{width:calc(var(--pu)*64);height:calc(var(--pu)*64);object-fit:contain}
 #gp .gcost span{white-space:nowrap}
+#gp .gprice{position:relative;display:flex;align-items:center;gap:calc(var(--pu)*4);margin-left:calc(var(--pu)*12);padding:calc(var(--pu)*4) calc(var(--pu)*12) calc(var(--pu)*4) calc(var(--pu)*8);border-radius:999px;
+ background:rgba(18,80,14,.42);box-shadow:inset 0 calc(var(--pu)*2) calc(var(--pu)*3) rgba(0,0,0,.25);color:#fff;font-size:calc(var(--pu)*20);line-height:1;top:calc(var(--pu)*-1)}
+#gp .gprice img{width:calc(var(--pu)*26);height:calc(var(--pu)*18);object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+#gp .gb .k-lbl{font-size:calc(var(--pu)*30)}#gp .gb.pr .k-lbl{font-size:calc(var(--pu)*26)}
 @keyframes gpLeap2{0%{transform:translateY(30%) scale(.6,.45);opacity:0}45%{transform:translateY(-7%) scale(.96,1.07);opacity:1}65%{transform:translateY(1.5%) scale(1.05,.94)}100%{transform:none;opacity:1}}
 @keyframes gpWiggle2{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg) translateY(-1.2%)}75%{transform:rotate(2deg) translateY(-1.2%)}}
 #gp .gwr{transform-origin:50% 88%}#gp .gmd{z-index:2}#gp .gwt{z-index:1}
@@ -119,6 +123,7 @@ function close(now){timers.forEach(clearTimeout);timers=[];cancelAnimationFrame(
 window.gpClose=close;
 // ChatGPT art cards: [file, width, height, inner box top, inner box bottom] in the card's own pixels
 const ART={ready:['ready',823,1460,700,1395,544,686],lose:['lose',828,1424,705,1360,540,696],pause:['pause',790,1345,535,1275,380,512],win:['win_base',780,1337,800,1290,0,0]};
+const priced=(b,n)=>{b.classList.add('pr');const ch=h('div','gprice',b);kimg('ic_bone','',ch);h('span','',ch).textContent=n;return b};
 const panel=k=>{const A=ART[k],p=h('div','gart '+k,card);p.style.aspectRatio=A[1]+'/'+A[2];const bg=pimg('','gbg',p);bg.src='bovo11/pop2/'+A[0]+'.webp?v=2';
  p.style.setProperty('--sx',100/A[1]+'%');p.style.setProperty('--sy',100/A[2]+'%');
  const pl=h('div','gplt',p);pl.style.top=A[5]/A[2]*100+'%';pl.style.height=(A[6]-A[5])/A[2]*100+'%';
@@ -167,8 +172,7 @@ window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();
  const pl=seq(h('div','k-plate gplate',c),0);pl.textContent='Still Needed';
  const bx=seq(h('div','gbox',c),1);goals(S.goals.filter(x=>x.left>0),bx);
  const PM=window.Eco?Eco.PRICE.moves:90;
- const p5=btn('green_big','+5 Moves','gb',()=>{if(window.Eco&&!Eco.spend(PM)){cost.classList.add('short');cost.style.animation='none';void cost.offsetWidth;cost.style.animation='kNope .36s';K.toast('You need '+PM+' bones. You have '+Eco.bones()+'.');return false}close();moreMoves()},{shine:1,delay:'.9s',aria:'Get 5 more moves for '+PM+' bones'});seq(p5,2);c.appendChild(p5);
- const cost=seq(h('div','gcost',c),3);kimg('ic_bone','',cost);h('span','',cost).textContent=PM+'  ·  you have '+(window.Eco?Eco.bones():'');
+ const p5=btn('green_big','+5 Moves','gb',()=>{if(window.Eco&&!Eco.spend(PM)){cost.classList.add('short');cost.style.animation='none';void cost.offsetWidth;cost.style.animation='kNope .36s';K.toast('You need '+PM+' bones. You have '+Eco.bones()+'.');return false}close();moreMoves()},{shine:1,delay:'.9s',aria:'Get 5 more moves for '+PM+' bones'});priced(p5,PM);seq(p5,2);c.appendChild(p5);const cost=p5.querySelector('.gprice');
  c.appendChild(seq(btn('cream_big','Give Up','cb',()=>{window.Eco&&Eco.loseHeart();close(true);BA.nav('map.html')},{aria:'Give up, costs one life'}),4));
  later(1000,()=>{p5.style.animation='gpPulse 2.2s ease-in-out infinite'})};
 // ---------- OUT OF LIVES ----------
@@ -176,8 +180,7 @@ function noLives(){if(typeof S!=='undefined'&&S)S.over=true;open();const c=panel
  const bx=seq(h('div','gbox',c),0);const t=h('div','gtimer',bx);
  const tick=()=>{if(!window.Eco)return;if(Eco.hearts()>0){close(true);if(S)S.over=false;showIntro();return}t.innerHTML='<b>Next life in</b><span>'+Eco.fmt(Eco.nextIn())+'</span>';later(1000,tick)};tick();
  const PL=window.Eco?Eco.PRICE.lives:90;
- const go=btn('green_big','Refill Lives','gb',()=>{if(!Eco.spend(PL)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+PL+' bones. You have '+Eco.bones()+'.');return false}Eco.refillHearts();close(true);if(S)S.over=false;showIntro()},{shine:1,aria:'Refill lives for '+PL+' bones'});seq(go,1);c.appendChild(go);
- const cst=seq(h('div','gcost',c),2);kimg('ic_bone','',cst);h('span','',cst).textContent=PL+'  ·  you have '+Eco.bones();
+ const go=btn('green_big','Refill Lives','gb',()=>{if(!Eco.spend(PL)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+PL+' bones. You have '+Eco.bones()+'.');return false}Eco.refillHearts();close(true);if(S)S.over=false;showIntro()},{shine:1,aria:'Refill lives for '+PL+' bones'});priced(go,PL);seq(go,1);c.appendChild(go);const cst=go.querySelector('.gprice');
  c.appendChild(seq(btn('cream_big','Back to Map','cb',()=>{close(true);BA.nav('map.html')}),3))}
 window.gpNoLives=noLives;
 // ---------- GET A BOOSTER ----------
@@ -185,8 +188,7 @@ const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_
 window.gpBuy=function(k){open('rise');const c=panel('pause');title(BN[k],c);
  const bx=seq(h('div','gbox',c),0);const r=h('div','gbuy',bx);kimg(BI[k],'',r);h('span','',r).textContent="You're out of this booster";
  const P=window.Eco?Eco.PRICE.boost[k]:50;
- const b=btn('green_big','Buy 1','gb',()=>{if(!Eco.spend(P)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+P+' bones. You have '+Eco.bones()+'.');return false}if(typeof SAVE!=='undefined'&&SAVE.boost){SAVE.boost[k]=(SAVE.boost[k]||0)+1;typeof save==='function'&&save()}else Eco.addBoost(k,1);window.drawBoosters&&drawBoosters();close();K.toast(BN[k]+' added!')},{shine:1,aria:'Buy one '+BN[k]+' for '+P+' bones'});seq(b,1);c.appendChild(b);
- const cst=seq(h('div','gcost',c),2);kimg('ic_bone','',cst);h('span','',cst).textContent=P+'  ·  you have '+Eco.bones();
+ const b=btn('green_big','Buy 1','gb',()=>{if(!Eco.spend(P)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+P+' bones. You have '+Eco.bones()+'.');return false}if(typeof SAVE!=='undefined'&&SAVE.boost){SAVE.boost[k]=(SAVE.boost[k]||0)+1;typeof save==='function'&&save()}else Eco.addBoost(k,1);window.drawBoosters&&drawBoosters();close();K.toast(BN[k]+' added!')},{shine:1,aria:'Buy one '+BN[k]+' for '+P+' bones'});priced(b,P);seq(b,1);c.appendChild(b);const cst=b.querySelector('.gprice');
  c.appendChild(seq(btn('cream_big','Not Now','cb',()=>close()),3))};
 // ---------- GOOD BOY! ----------
 window.g2results=function(stars,bones){open();
