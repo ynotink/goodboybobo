@@ -100,46 +100,110 @@ function rain(n){for(let i=0;i<n;i++)parts.push({k:Math.random()<.3?'i':'p',img:
 function sparkle(x,y,n,r=.12){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=r*(1+Math.random()*2.2);parts.push({k:'s',x,y,vx:Math.cos(a)*v*.5,vy:Math.sin(a)*v*.25,g:0,rot:0,vr:0,ph:0,fl:0,sz:5+Math.random()*8,col:i%3?'#fff6c8':'#ffd84a',life:1,dur:.55+Math.random()*.5})}}
 const at=e=>{const r=e.getBoundingClientRect(),c=cv.getBoundingClientRect();return[(r.left+r.width/2-c.left)/c.width,(r.top+r.height/2-c.top)/c.height]};
 
-// ---------- 1) "Good Boy!" moment ----------
+// ---------- 1) "Good Boy!" moment over the board ----------
 async function goodBoy(){mount();root.className='on';col.querySelectorAll(':scope>:not(canvas)').forEach(e=>e.remove());parts=[];loop();
- const dim=el('div','dim',col);const word=img('fx/w_goodboy.webp?v=1','word',col);const sub=el('div','sub1',col);sub.textContent='Level complete!';
- const ram=img('bovo11/pop2/win_rambo_cut.webp?v=1','ram1',col);
+ const dim=el('div','dim',col);dim.style.background='radial-gradient(ellipse at 50% 45%,rgba(10,40,45,.25),rgba(6,22,30,.62))';
+ const word=img('fx2/praise_good_boy.webp?v=1','word',col);word.style.top='40%';word.style.width='80%';
  requestAnimationFrame(()=>dim.classList.add('in'));snd('win');buzz([30,40,30]);
- await sleep(220);ram.classList.add('in');snd('rambo_double',{delay:.2});
- await sleep(260);word.classList.add('in');sub.classList.add('in');snd('popper');buzz(25);
- await sleep(200);burst(.18,.62,26);burst(.82,.62,26);sparkle(.5,.24,16,.16);
- await sleep(1500);ram.classList.remove('in');ram.classList.add('out');word.style.transition='opacity .3s,transform .3s';word.style.opacity='0';sub.style.transition='opacity .3s';sub.style.opacity='0';
- await sleep(220);dim.classList.remove('in');await sleep(300);[dim,word,sub,ram].forEach(e=>e.remove());root.className=''}
+ await sleep(180);word.classList.add('in');snd('popper');buzz(25);
+ await sleep(160);burst(.2,.5,22);burst(.8,.5,22);sparkle(.5,.38,16,.16);
+ await sleep(1150);word.style.transition='opacity .3s,transform .3s';word.style.opacity='0';
+ await sleep(200);dim.classList.remove('in');await sleep(300);[dim,word].forEach(e=>e.remove());root.className=''}
 
-// ---------- 3) full-screen Level Complete ----------
-function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FAST=false}catch(e){}col.querySelectorAll(':scope>:not(canvas)').forEach(e=>e.remove());parts=[];loop();
- const sc=el('div','scene',col);el('div','rays',sc);el('div','glow',sc);
- [[-.08,.86,.5,.07],[.62,.9,.5,.08],[.25,.95,.6,.09],[-.15,.12,.34,.05],[.78,.2,.3,.045]].forEach(([x,y,w,h])=>{const c=el('div','cloud',sc);Object.assign(c.style,{left:x*100+'%',top:y*100+'%',width:w*100+'%',height:h*100+'%'})});
- const ttl=el('div','ttl',col);ttl.textContent='Level Complete!';
- const sub=el('div','sub',col);sub.innerHTML=['Good boy!','Pawsome!','Top dog!','Woof! Nice job!'][stars%4]+'<br>Rambo is so proud of you.';
- const bd=el('div','badge',col);img('bovo10/mk2_cur.png?v=1','',bd);el('b','',bd).textContent=S.li+1;
- const meds=el('div','meds',col);const MS=[[8,74,'medal0'],[100,92,'medal1'],[208,74,'medal2']];
- const md=MS.map(([x,w,f],i)=>{const m=img('bovo11/pop2/'+f+'.webp?v=2','med'+(i<stars?'':' off'),meds);Object.assign(m.style,{left:x*K+'px',width:w*K+'px',bottom:(i==1?14:0)*K+'px'});if(i>=stars)m.style.opacity='0';return m});
- const bo=el('div','bones',col);img('uikit/ic_bone.webp?v=1','',bo);const bt=el('span','',bo);bt.textContent='+0';
- const ram=img('bovo11/pop2/win_rambo_cut.webp?v=1','ram3',col);
- const fr=el('div','front',col);[[0,.25,.42,.7],[.3,.1,.45,.85],[.62,.3,.42,.7]].forEach(([x,y,w,h])=>{const c=el('div','cloud',fr);Object.assign(c.style,{left:x*100+'%',top:y*100+'%',width:w*100+'%',height:h*100+'%'})});
- const tap=el('div','tap',col);tap.textContent='Tap to continue';
- const nextN=S.li+2,hasNext=typeof LEVELS!=='undefined'?S.li+1<LEVELS.length:true;
- const nx=el('div','next',col);el('i','',nx);el('div','',nx).textContent=hasNext?'Level '+nextN:'All done!';
+// ---------- 3) full-screen win: ChatGPT's approved win screen, built live ----------
+const W2='win2/',WV='?v=1';
+{const st=document.createElement('style');st.textContent=`
+@font-face{font-family:WinLil;src:url(a/lilita-one-latin-400-normal.woff2) format('woff2')}
+#wfs .w2{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .35s}
+#wfs .w2.in{opacity:1}
+#wfs .w2 .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 70%}
+#wfs .w2 .glow{position:absolute;left:50%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,244,205,.55),rgba(255,236,180,.18) 40%,rgba(255,236,180,0) 66%);pointer-events:none}
+#wfs .w2 .p{position:absolute;display:block;-webkit-user-drag:none;pointer-events:none}
+#wfs .w2 .ttl2{transform:scale(0) rotate(-6deg);filter:drop-shadow(0 6px 8px rgba(20,40,10,.45))}
+#wfs .w2 .ttl2.in{animation:w2Slam .55s cubic-bezier(.25,1.7,.5,1) forwards}
+#wfs .w2 .sub2{position:absolute;left:0;right:0;text-align:center;font-family:WinLil,KNun,system-ui;line-height:1;white-space:nowrap;transform:rotate(-2.5deg) scale(0);opacity:0}
+#wfs .w2 .sub2 span{position:relative;display:inline-block;color:#fdf1d2}
+#wfs .w2 .sub2 span::before{content:attr(data-t);position:absolute;inset:0;z-index:-1;color:#0f4a3e;-webkit-text-stroke:.2em #0f4a3e;text-shadow:0 .09em 0 #0b382f,0 .14em .12em rgba(0,0,0,.35)}
+#wfs .w2 .sub2.in{animation:w2Sub .45s cubic-bezier(.25,1.7,.5,1) forwards}
+#wfs .w2 .med{transform:scale(0);opacity:0;filter:drop-shadow(0 6px 6px rgba(40,20,0,.4))}
+#wfs .w2 .med.in{animation:w2Stamp .5s cubic-bezier(.3,1.8,.5,1) forwards}
+#wfs .w2 .med.unearn{filter:drop-shadow(0 4px 4px rgba(40,20,0,.25));}
+#wfs .w2 .ram{transform-origin:50% 100%;filter:drop-shadow(0 10px 12px rgba(20,30,0,.35));opacity:0}
+#wfs .w2 .ram.in{animation:w2Jump .7s cubic-bezier(.2,1.45,.45,1) forwards}
+#wfs .w2 .ram.in.cheer{animation:w2Jump .7s cubic-bezier(.2,1.45,.45,1) forwards,w2Bounce 1.15s ease-in-out .75s infinite}
+#wfs .w2 .ram.in.leap{animation:w2Jump .7s cubic-bezier(.2,1.45,.45,1) forwards,w2Float 2.2s ease-in-out .75s infinite}
+#wfs .w2 .bones2{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:.25em;font-family:WinLil,KNun,system-ui;color:#fdf1d2;opacity:0;transform:scale(.4)}
+#wfs .w2 .bones2 img{height:1.15em}
+#wfs .w2 .bones2 b{font-weight:400;position:relative}
+#wfs .w2 .bones2 b::before{content:attr(data-t);position:absolute;inset:0;z-index:-1;color:#0f4a3e;-webkit-text-stroke:.2em #0f4a3e;text-shadow:0 .08em 0 #0b382f,0 .12em .1em rgba(0,0,0,.35)}
+#wfs .w2 .bones2.in{animation:w2Pop .45s cubic-bezier(.25,1.7,.5,1) forwards}
+#wfs .w2 .cont{position:absolute;cursor:pointer;opacity:0;transform:translateY(60%);-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 6px 5px rgba(120,30,0,.35)) drop-shadow(0 12px 16px rgba(40,20,0,.25))}
+#wfs .w2 .cont img{position:absolute;inset:0;width:100%;height:100%}
+#wfs .w2 .cont b{position:absolute;left:0;right:0;top:0;bottom:12%;display:flex;align-items:center;justify-content:center;font-family:WinLil,KNun,system-ui;font-weight:400;color:#fff6e4;text-shadow:0 .06em 0 rgba(150,40,10,.65),0 .1em .14em rgba(120,30,0,.35);letter-spacing:.01em}
+#wfs .w2 .cont.in{animation:w2Rise .45s cubic-bezier(.25,1.4,.5,1) forwards,w2Pulse 1.8s ease-in-out .6s infinite}
+#wfs .w2 .cont.dn{filter:brightness(.92) drop-shadow(0 3px 3px rgba(120,30,0,.35))}
+#wfs .w2 .rep{position:absolute;left:0;right:0;text-align:center;cursor:pointer;opacity:0;transition:opacity .35s;-webkit-tap-highlight-color:transparent}
+#wfs .w2 .rep span{position:relative;display:inline-block;font-family:WinLil,KNun,system-ui;color:#fdf1d2;padding:.1em .3em}
+#wfs .w2 .rep span::before{content:attr(data-t);position:absolute;inset:0;padding:.1em .3em;z-index:-1;color:#0f4a3e;-webkit-text-stroke:.18em #0f4a3e}
+#wfs .w2 .rep span::after{content:'';position:absolute;left:12%;right:12%;bottom:-.05em;height:.09em;border-radius:1em;background:#fdf1d2;box-shadow:0 0 0 .05em #0f4a3e}
+#wfs .w2 .rep.in{opacity:1}
+@keyframes w2Slam{0%{transform:scale(2.2) rotate(-8deg);opacity:0}55%{transform:scale(.92) rotate(1deg);opacity:1}75%{transform:scale(1.05)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes w2Sub{0%{transform:rotate(-2.5deg) scale(0);opacity:0}70%{transform:rotate(-2.5deg) scale(1.1);opacity:1}100%{transform:rotate(-2.5deg) scale(1);opacity:1}}
+@keyframes w2Stamp{0%{transform:scale(2.4) rotate(-20deg);opacity:0}60%{transform:scale(.88) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes w2Jump{0%{transform:translateY(40%) scale(.85);opacity:0}60%{opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes w2Bounce{0%,100%{transform:translateY(0) scale(1,1)}35%{transform:translateY(-4%) scale(.985,1.02)}70%{transform:translateY(0) scale(1.02,.98)}}
+@keyframes w2Float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3.5%) rotate(-2deg)}}
+@keyframes w2Pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes w2Rise{0%{transform:translateY(60%);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes w2Pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@media (prefers-reduced-motion:reduce){#wfs .w2 .ram.in.cheer,#wfs .w2 .ram.in.leap,#wfs .w2 .cont.in{animation:w2Jump .3s forwards}}`;document.head.appendChild(st)}
+function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FAST=false}catch(e){}
+ col.querySelectorAll(':scope>:not(canvas)').forEach(e=>e.remove());parts=[];loop();
+ const perfect=stars>=3;
+ const W=col.clientWidth||innerWidth,H=innerHeight;
+ const sc=el('div','w2',col);const bg=img(W2+(perfect?'background_teal_forest.jpg':'background_backyard.jpg')+WV,'bg',sc);
+ const at=(e,x,y,w,h)=>{Object.assign(e.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});return e};
+ const word=perfect?'title_pawsome':['title_good_boy','title_top_dog','title_woof'][Math.floor(Math.random()*3)];
+ const TS={title_good_boy:804/220,title_pawsome:798/222,title_top_dog:806/229,title_woof:710/239};
+ const top0=Math.max(18,H*.045);
+ const tw=W*(word==='title_woof'?.66:.86),th=tw/TS[word];
+ const ttl=at(img(W2+word+'.webp'+WV,'p ttl2',sc),(W-tw)/2,top0,tw,th);
+ const fs=W*.083;const sub=el('div','sub2',sc);sub.style.top=(top0+th*.86)+'px';sub.style.fontSize=fs+'px';
+ const lvT='Level '+(S.li+1)+' Complete!';const sp=el('span','',sub);sp.textContent=lvT;sp.dataset.t=lvT;
+ // medals
+ const mTop=top0+th*.86+fs*1.35;const MR=762/616;
+ const MS=[[.255,.2,.06],[.5,.255,0],[.745,.2,.06]];
+ const md=MS.map(([cx,w,dy],i)=>{const mw=W*w,mh=mw*MR;const m=at(img(W2+(i<stars?'medal_earned':'medal_unearned')+'.webp'+WV,'p med'+(i<stars?'':' unearn'),sc),W*cx-mw/2,mTop+W*dy,mw,mh);return m});
+ const mBot=mTop+W*.255*MR;
+ // bottom stack
+ const safeB=18;const repFs=W*.068;const repH=repFs*1.5;const repTop=H-safeB-repH-H*.012;
+ const cw=W*.72,ch=cw*228/900;const cTop=repTop-ch-W*.02;
+ const bFs=W*.1;const bTop=cTop-bFs*1.55;
+ const glow=el('div','glow',sc);glow.style.top=(mTop+W*.12)+'px';
+ // Rambo fills the space between the medals and the bones
+ const rTopMin=mBot-W*.04,rBot=bTop+bFs*.25;const RA=perfect?1082/900:1199/900;
+ let rh=rBot-rTopMin,rw=rh/RA;if(rw>W*.92){rw=W*.92;rh=rw*RA}
+ const ram=at(img(W2+(perfect?'rambo_crowned_leap':'rambo_cheering')+'.webp'+WV,'p ram '+(perfect?'leap':'cheer'),sc),(W-rw)/2+(perfect?-W*.02:0),rBot-rh,rw,rh);
+ sc.insertBefore(ram,md[0]);   // Rambo under the medals
+ const bo=el('div','bones2',sc);bo.style.top=bTop+'px';bo.style.fontSize=bFs+'px';img(W2+'icon_bone.webp'+WV,'',bo);const bt=el('b','',bo);const setB=n=>{const t='+'+n+' Bones';bt.textContent=t;bt.dataset.t=t};setB(0);
+ const ct=at(el('div','cont',sc),(W-cw)/2,cTop,cw,ch);img(W2+'button_continue_blank.webp'+WV,'',ct);const cl=el('b','',ct);cl.textContent='Continue';cl.style.fontSize=(ch*.42)+'px';ct.setAttribute('role','button');ct.setAttribute('aria-label','Continue');
+ const rp=el('div','rep',sc);rp.style.top=repTop+'px';rp.style.fontSize=repFs+'px';const rs=el('span','',rp);rs.textContent='Replay';rs.dataset.t='Replay';rp.setAttribute('role','button');
  const fade=el('div','fadeout',col);
- let done=false,T=[];const later=(ms,f)=>T.push(setTimeout(f,ms));
- const go=()=>{if(done)return;done=true;T.forEach(clearTimeout);if(!nx.classList.contains('in')){ttl.classList.add('hideT');sub.classList.add('hideT');nx.classList.add('in');snd('shimmer')}
-  setTimeout(()=>{fade.style.opacity='1'},650);setTimeout(()=>{cancelAnimationFrame(raf);window.BA&&BA.nav?BA.nav('map.html'):location.href='map.html'},1150)};
+ let T=[],done=false,ready=false;const later=(ms,f)=>T.push(setTimeout(f,ms));
+ const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,sub,bo,ram,...md].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');rp.classList.add('in');ready=true};
+ const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');fade.style.opacity='1';setTimeout(()=>{cancelAnimationFrame(raf);fn()},480)};
+ ct.addEventListener('pointerdown',()=>ct.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>ct.addEventListener(e,()=>ct.classList.remove('dn')));
+ ct.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>window.BA&&BA.nav?BA.nav('map.html'):location.href='map.html')});
+ rp.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>{try{root.className='';col.querySelectorAll(':scope>:not(canvas)').forEach(x=>x.remove());parts=[];startLevel(S.li)}catch(_){location.reload()}})});
+ sc.addEventListener('click',()=>{if(!ready)finish()});
  requestAnimationFrame(()=>sc.classList.add('in'));snd('mega');buzz(40);
- later(150,()=>{ram.classList.add('in');snd('rambo_triple',{delay:.3})});
- later(300,()=>{ttl.classList.add('in');snd('popper');rain(60)});
- later(650,()=>sub.classList.add('in'));
- later(850,()=>{bd.classList.add('in');snd('star');sparkle(...at(bd),18,.18);buzz(20)});
- for(let i=0;i<3;i++)later(1300+i*420,()=>{if(i<stars){md[i].classList.add('in');snd('starland'+i);buzz(35);setTimeout(()=>{sparkle(...at(md[i]),22,.2);burst(at(md[i])[0],at(md[i])[1],10,.7)},260)}else{md[i].style.transition='opacity .3s';md[i].style.opacity='1'}});
- later(2600,()=>{bo.classList.add('in');snd('buy');let n=0;const step=Math.max(1,Math.round(bones/18));const iv=setInterval(()=>{n=Math.min(bones,n+step);bt.textContent='+'+n+' Bones';if(n>=bones){clearInterval(iv)}else snd('tap',{gap:40})},45)});
- later(3100,()=>{tap.classList.add('in');root.onclick=go});
- later(3700,()=>{ttl.classList.add('hideT');sub.classList.add('hideT');nx.classList.add('in');snd('shimmer')});
- later(5600,go);
+ later(250,()=>{ttl.classList.add('in');snd('popper');buzz(25);rain(perfect?45:30);sparkle(.5,(top0+th/2)/H,14,.18)});
+ later(500,()=>{ram.classList.add('in');snd(perfect?'rambo_triple':'rambo_double',{delay:.15})});
+ later(650,()=>{sub.classList.add('in')});
+ for(let i=0;i<3;i++)later(1050+i*380,()=>{md[i].classList.add('in');if(i<stars){snd('starland'+i);buzz(35);setTimeout(()=>{const r=md[i].getBoundingClientRect(),c=cv.getBoundingClientRect();const x=(r.left+r.width/2-c.left)/c.width,y=(r.top+r.height*.4-c.top)/c.height;sparkle(x,y,20,.2);burst(x,y,8,.6)},230)}});
+ later(2300,()=>{bo.classList.add('in');snd('buy');let n=0;const step=Math.max(1,Math.round(bones/16));const iv=setInterval(()=>{n=Math.min(bones,n+step);setB(n);if(n>=bones)clearInterval(iv);else snd('tap',{gap:40})},50)});
+ later(2800,()=>{ct.classList.add('in');snd('shimmer')});
+ later(3100,()=>{rp.classList.add('in');ready=true});
 }
 
 // ---------- hook into the game ----------
@@ -154,6 +218,6 @@ window.win=async function(){if(window.__wfsBusy)return;window.__wfsBusy=true;
    root.onclick=()=>{try{FAST=true}catch(e){}sk.remove()}}
   await engineWin();      // runs the bonus, then calls g2results -> scene()
  }finally{try{FAST=false}catch(e){}window.__wfsBusy=false}};
-window.wfsTest=(stars=3,bones=30)=>scene(stars,bones);   // review helper
+window.wfsTest=(stars=3,bones=30)=>scene(stars,bones);   // review: wfsTest(2,20)   // review helper
 window.wfsGoodBoy=goodBoy;
 })();
