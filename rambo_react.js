@@ -10,7 +10,7 @@ const K2=.45*.846;   // new ChatGPT peach bar: video mapped so its ledge (bar Y 
 const box=f=>{const X0=1120-f.ox/f.S,Y0=-f.oy/f.S,size=1152/f.S;return{x:644.8+(X0-1362.8)*K2,y:373.6+(Y0-560)*K2,s:size*K2,f0:(596-Y0)/size,f1:(604-Y0)/size,X0,Y0,size}};
 const CLIP={happy:'std',cheer:'low',worry:'std',pant:'std'};
 let cv,gl,tex,vids={},cur=null,ready=false,lastAct=performance.now(),worryShown=-1;
-function build(){const h=document.getElementById('g2hud');const bar=[...document.querySelectorAll('img.flp')].find(i=>/topbar3/.test(i.src));
+function build(){if(window.NO_RREACT)return;const h=document.getElementById('g2hud');const bar=[...document.querySelectorAll('img.flp')].find(i=>/topbar3/.test(i.src));
  if(!h||!bar)return setTimeout(build,80);
  const B=box(FRAME.low);   // the canvas covers the roomier framing; the standard clips are drawn into their own square inside it
  cv=document.createElement('canvas');cv.id='rReact';Object.assign(cv.style,{position:'absolute',left:u(B.x)+'px',top:u(B.y)+'px',width:u(B.s)+'px',height:u(B.s)+'px',pointerEvents:'none',filter:'drop-shadow(0 5px 7px rgba(0,25,30,.35))'});

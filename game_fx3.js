@@ -94,7 +94,7 @@ new MutationObserver(ms=>{if(fast()||RM)return;for(const m of ms)for(const n of 
 // ---- praise words: the new art (one at a time)
 const WORD={'GOOD BOY!':'praise_good_boy','PAWSOME!':'praise_pawsome','BOBO-TASTIC!':'praise_top_dog','MEGA COMBO!':'praise_fetch','WOOF!':'praise_woof'};
 let lastW=0;
-function word(k){if(!app||fast())return;const now=performance.now();if(now-lastW<800)return;lastW=now;sfx('popper',{gap:300,vol:.7});
+function word(k){if(!app||fast())return;const now=performance.now();if(now-lastW<800)return;lastW=now;try{dispatchEvent(new Event('gbbPraise'))}catch(e){}sfx('popper',{gap:300,vol:.7});
  const t=(S&&S.top)||300,bh=(S&&S.R)?S.R*cs()*sy():360;const w=k==='praise_woof'?190:k==='praise_pawsome'?280:260;
  const i=document.createElement('img');i.src=IM[k].src;i.className='g3w';Object.assign(i.style,{width:w+'px',marginLeft:(-w/2)+'px',top:(t+bh*.36)+'px'});app.appendChild(i);
  i.animate([{transform:'translateX(-60px) scale(.6) rotate(-6deg)',opacity:0},{transform:'translateX(6px) scale(1.08) rotate(2deg)',opacity:1,offset:.2},{transform:'translateX(0) scale(.98) rotate(0)',opacity:1,offset:.32},{transform:'scale(1)',opacity:1,offset:.72},{transform:'translateY(-22px) scale(1.03)',opacity:0}],{duration:RM?600:880,easing:'ease-out',fill:'forwards'}).onfinish=()=>i.remove();

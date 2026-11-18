@@ -63,11 +63,16 @@ function contain(g,im,x,y,w,h){if(!im.complete||!im.naturalWidth)return;const k=
 let lastSel=-2;
 function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(window.G2K||1)*KC*devicePixelRatio;
  hud.width=Math.round(W*r);hud.height=Math.round(H*r);const g=hud.getContext('2d');g.setTransform(r,0,0,r,0,0);
- txt(g,'Level '+(S.li+1),[143,388,225,69],S.li+1>99?36:41,'center','#fdf1d6');
- txt(g,String(Math.max(0,S.moves)),[587,486,211,110],S.moves>99?76:96,'center',S.moves<=5?'#ffe08a':'#fff8ec');
- const n=S.goals.length,x0=n==1?220:132,x1=n==1?500:570,sw=(x1-x0)/n,cy=577;
- S.goals.forEach((go,i)=>{const sx=x0+sw*i,isz=Math.min(110,sw*.5);const ix=sx+sw*.08;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
-  const tx=ix+isz+9,tw=sx+sw-tx-6;if(go.left>0)txt(g,String(go.left),[tx,cy-38,tw,76],n>2?48:67,'center','#0d4a4b');else check(g,tx+tw/2,cy,51)});
+ // raised-paw HUD (ChatGPT layout, 360-px reference -> 1290 units: x*L*U, y*L*U-12*U)
+ const L=390/360,U=1290/390,X=v=>v*L*U,Y=v=>(v*L-12)*U;
+ const lv='Level '+(S.li+1);txt(g,lv,[X(68)-140,Y(122)-34,280,68],lv.length>8?40:46,'center','#fdf1d6');
+ txt(g,String(Math.max(0,S.moves)),[X(209)-110,Y(156)-52,220,104],S.moves>99?84:104,'center',S.moves<=5?'#ffe08a':'#fff8ec');
+ txt(g,'Moves',[X(209)-110,Y(177)-24,220,48],40,'center','#fff1d6');
+ txt(g,'RAMBO',[X(291)-160,Y(187)-34,320,68],58,'center','#0f4a52');
+ const n=S.goals.length,gap=45*(n==1?1:n==2?1.15:1),isz=X(n==1?26:n==2?22:18),fsz=X(n==1?19:n==2?16:14)*1.08,cx0=X(99),cy=Y(165);
+ S.goals.forEach((go,i)=>{const pc=cx0+(i-(n-1)/2)*X(gap);const ic=pc-X(n==1?12:n==2?10:8),tc=pc+X(n==1?17:n==2?15:13);
+  const ix=ic-isz/2;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
+  if(go.left>0)txt(g,String(go.left),[tc-X(14),cy-fsz*.7,X(28),fsz*1.4],fsz,'center','#0d4a4b');else check(g,tc,cy,fsz*.9)});
  [[273,2435],[580,2435],[878,2435],[1189,2435]].forEach(([x,y],k)=>{const v=SAVE.boost[k];txt(g,v?String(v):'+',[x-40,y-30,80,60],50,'center','#fdf1d6')});
  const sel=S.booster??-1;if(sel!==lastSel){lastSel=sel;ui.querySelectorAll('.bh').forEach((e,k)=>e.classList.toggle('sel',k===sel))}}
 const _dm=window.drawMoves,_dg=window.drawGoals,_db=window.drawBoosters;
