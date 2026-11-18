@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795037504"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795040125"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Toy Box</title>
@@ -54,6 +54,13 @@ const M=K.mock(ui,{MW:934,y0:270,y1:1452,base:'../ui3/toys/',v:2,maxGap:0,parts:
  {x:118,y:855,w:338,h:136,r:26,fn:soon('Chew Ring: collected!')},{x:474,y:855,w:338,h:136,r:26,fn:soon('Frisbee: collected!')},
  {x:118,y:1010,w:338,h:136,r:26,fn:soon('Rubber Duck: collected!')},{x:474,y:1010,w:338,h:136,r:26,fn:soon('Chew Bone: collected!')},
  {x:110,y:1250,w:700,h:150,r:30,fn:soon('Finish The Backyard to unlock the Neighborhood!'),aria:'Next chapter toys'}]});
+// crisp overlays for the toys and check badges (the mockup's own were soft/blotchy when scaled up)
+{const st=document.createElement('style');st.textContent=`.ck3{position:absolute;border-radius:50%;background:radial-gradient(circle at 38% 30%,#9df06a 0%,#5fcf2e 38%,#3faa16 72%,#2f8a10 100%);box-shadow:0 calc(var(--s)*4px) calc(var(--s)*4px) rgba(30,80,10,.35),inset 0 calc(var(--s)*-4px) calc(var(--s)*4px) rgba(20,70,0,.35),inset 0 calc(var(--s)*3px) calc(var(--s)*3px) rgba(255,255,255,.35);pointer-events:none}
+.ck3 svg{position:absolute;inset:18%;width:64%;height:64%;filter:drop-shadow(0 calc(var(--s)*2px) calc(var(--s)*1.5px) rgba(20,70,0,.4))}
+.tb3{position:absolute;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*4px) calc(var(--s)*4px) rgba(60,80,0,.3))}`;document.head.appendChild(st)}
+const CK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+for(const [x,y] of [[349,801],[709,801],[349,956],[709,956],[349,1113],[709,1113]]){const d=document.createElement('div');d.className='ck3';d.innerHTML=CK;M.add(d,x-32,y-32,64,64)}
+{const t=document.createElement('img');t.className='tb3';t.src='../a/g2/tennis.webp';t.alt='';M.add(t,191-60,778-60,120,120)}
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
 </script><script src="../nav/nav.js?v=9" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
