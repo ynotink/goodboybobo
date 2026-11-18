@@ -12,8 +12,8 @@ const css=document.createElement('style');css.textContent=`
 #plRam{filter:drop-shadow(0 5px 7px rgba(0,25,30,.35))!important}
 #rambo4{animation:r4Idle 2.6s ease-in-out infinite}
 #rambo4.hop{animation:r4Hop .7s cubic-bezier(.3,1.5,.5,1)}
-@keyframes r4Idle{0%,100%{transform:translateY(0) rotate(0) scale(1)}45%{transform:translateY(-1.5%) rotate(-1.2deg) scale(1.012)}}
-@keyframes r4Hop{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-12%) rotate(-4deg) scale(1.06)}60%{transform:translateY(0) scale(1.04,.96)}100%{transform:translateY(0) scale(1)}}
+@keyframes r4Idle{0%,100%{transform:translateY(0) rotate(0) scale(1)}45%{transform:translateY(-1.2%) rotate(-1deg) scale(1.01)}}
+@keyframes r4Hop{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-9%) rotate(-3deg) scale(1.04)}60%{transform:translateY(1%) scale(1.03,.97)}100%{transform:translateY(0) scale(1)}}
 @media (prefers-reduced-motion:reduce){#rambo4{animation:none}}`;
 document.head.appendChild(css);
 function build(){const h=document.getElementById('g2hud');if(!h||!document.getElementById('plRam'))return setTimeout(build,60);if(h.dataset.fl)return;h.dataset.fl=1;
@@ -25,7 +25,8 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
   // ChatGPT raised-paw HUD (360-px reference layout, scaled to the 390-px app, lifted 12px to keep the board clear)
   const L=390/360,LY=-12,px=v=>v+'px';
   const t=new Image();t.className='flp';t.id='hud4';t.src='bovo11/play2/hud4.webp?v=1';Object.assign(t.style,{left:px(16*L),top:px(101*L+LY),width:px(328*L),height:px(328*L*724/2172),filter:'drop-shadow(0 4px 3px rgba(0,18,22,.5)) drop-shadow(0 10px 12px rgba(0,18,22,.3))'});h.insertBefore(t,h.firstChild);
-  const r4=new Image();r4.className='flp';r4.id='rambo4';r4.src='bovo11/play2/rambo4.webp?v=1';Object.assign(r4.style,{left:px(237*L),top:px(76*L+LY),width:px(108*L),height:px(108*L*1190/1322),zIndex:5,transformOrigin:'72% 92%',filter:'drop-shadow(0 4px 4px rgba(0,18,22,.4))'});h.appendChild(r4);
+  const RW=140,RH=RW*1190/1322,RB=192;   // bigger Rambo, standing behind the ledge (body hidden by the bar)
+  const r4=new Image();r4.className='flp';r4.id='rambo4';r4.src='bovo11/play2/rambo4.webp?v=1';Object.assign(r4.style,{left:px((293-RW/2)*L),top:px((RB-RH)*L+LY),width:px(RW*L),height:px(RH*L),transformOrigin:'50% 100%',filter:'drop-shadow(0 4px 5px rgba(0,18,22,.35))'});h.insertBefore(r4,t);
   window.NO_RREACT=true;
   ram.style.display='none';h.dataset.art=1;
  }else if(RV=='peek'){
