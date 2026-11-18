@@ -34,6 +34,7 @@ addEventListener('DOMContentLoaded',()=>{
    b('Out of moves',G(()=>{gpClose&&gpClose(true);S.moves=0;lose()})),b('Win 1★',G(()=>{gpClose&&gpClose(true);g2results(1,15)})),b('Win 2★',G(()=>{gpClose&&gpClose(true);g2results(2,30)})),b('Win 3★',G(()=>{gpClose&&gpClose(true);g2results(3,45)})),b('Close pop-up',G(()=>gpClose(true)))]);
   sec('Boosters & moves',[b('Fill boosters (9 each)',G(()=>{SAVE.boost=[9,9,9,9];save();drawBoosters()})),b('Moves = 5',G(()=>{S.moves=5;drawMoves()})),b('Moves = 1',G(()=>{S.moves=1;drawMoves()})),b('+10 moves',G(()=>{S.moves+=10;drawMoves()})),b('Goals almost done',G(()=>{S.goals.forEach(g=>g.left=Math.min(g.left,1));drawGoals()}))]);
   sec('Rambo',[b('Happy',G(()=>rReact('happy',true))),b('Cheer',G(()=>rReact('cheer',true))),b('Worried',G(()=>rReact('worry',true)))]);}
+ sec('Lives & bones',[b('+1000 bones',()=>{Eco.addBones(1000)}),b('Bones = 0',()=>{Eco.spend(Eco.bones())}),b('Lives = 0',()=>{for(let i=0;i<5;i++)Eco.loseHeart()}),b('Lives full',()=>Eco.refillHearts())]);
  sec('Review save',[b('Unlock all levels',()=>{localStorage.setItem('gbb_play',JSON.stringify({stars:Object.fromEntries([...Array(100)].map((_,i)=>[i,3])),boost:[9,9,9,9],sound:1}));alert('All 100 levels unlocked (review save only).')}),
   b('Reset review save',()=>{['gbb','gbb_play','gbb_settings'].forEach(x=>localStorage.removeItem(x));alert('Review save cleared.')}),
   b('Exit review mode',()=>{sessionStorage.removeItem('gbbReview');location.href=root+'review.html?review=0'})]);

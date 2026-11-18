@@ -30,11 +30,14 @@ K.toggle=(on,onChange)=>{const t=h('div','k-tg'+(on?'':' is-off'));K.img('toggle
 // top bar: hearts, bones, gear (cream round button)
 K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb')||'{}')}catch(e){}
  const bar=h('div','k-top',parent);
- const c1=h('div','k-counter k-drop',bar);c1.setAttribute('role','button');c1.style.setProperty('--i',0);const n1=h('div','k-num',c1);n1.textContent=g.hearts!=null?g.hearts:5;
- const c2=h('div','k-counter bone k-drop',bar);c2.setAttribute('role','button');c2.style.setProperty('--i',1);const n2=h('div','k-num',c2);n2.textContent=g.bones!=null?g.bones:430;
+ const c1=h('div','k-counter k-drop',bar);c1.setAttribute('role','button');c1.style.setProperty('--i',0);const n1=h('div','k-num',c1);n1.textContent=window.Eco?Eco.hearts():(g.hearts!=null?g.hearts:5);const tm=h('div','k-timer',c1);
+ const c2=h('div','k-counter bone k-drop',bar);c2.setAttribute('role','button');c2.style.setProperty('--i',1);const n2=h('div','k-num',c2);n2.textContent=window.Eco?Eco.bones():(g.bones!=null?g.bones:430);
  const gear=K.button('round','',()=>{location.href=gearHref},{aria:'Settings'});gear.classList.add('k-gear','k-drop');gear.style.setProperty('--i',2);K.img('ic_gear','k-gearic',gear);bar.appendChild(gear);
  c1.setAttribute('aria-label',n1.textContent+' lives');c2.setAttribute('aria-label',n2.textContent+' bones');
- [c1,c2].forEach(c=>K.press(c,()=>K.toast(c===c1?'More lives are coming soon!':'The Shop has more bones!')));
+ const upd=()=>{if(!window.Eco)return;const H=Eco.hearts();n1.textContent=H;n2.textContent=Eco.bones();tm.textContent=H<Eco.MAX?Eco.fmt(Eco.nextIn()):'Full';c1.setAttribute('aria-label',H+' lives');c2.setAttribute('aria-label',n2.textContent+' bones')};
+ if(window.Eco){Eco.on(upd);upd();setInterval(upd,1000)}
+ K.press(c1,()=>{if(!window.Eco)return;const H=Eco.hearts();K.toast(H>=Eco.MAX?'Your lives are full!':'Next life in '+Eco.fmt(Eco.nextIn()))});
+ K.press(c2,()=>{if(!/shop\.html/.test(location.pathname))location.href='shop.html'});
  return bar};
 // the scene: bottom-anchored painted background with drifting light motes; calls onSize(info) on every resize
 K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');

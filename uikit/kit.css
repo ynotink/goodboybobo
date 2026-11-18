@@ -71,6 +71,7 @@ html.kpage #ui{position:fixed;inset:0;pointer-events:none}html.kpage #ui>*{point
 .k-top .k-counter{left:calc(var(--w)*21);width:calc(var(--w)*112);height:calc(var(--w)*34)}
 .k-top .k-counter.bone{left:calc(var(--w)*143);width:calc(var(--w)*140)}
 .k-num{position:absolute;left:30%;right:24%;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--w)*21);color:var(--ink)}
+.k-timer{position:absolute;left:30%;right:24%;top:100%;margin-top:calc(var(--w)*1);text-align:center;font-size:calc(var(--w)*11);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6);white-space:nowrap}
 .k-counter.bone .k-num{left:30%;right:22%}
 .k-gear{right:calc(var(--w)*20);width:calc(var(--w)*36);height:calc(var(--w)*36)}
 .k-gearic{position:relative;width:62%;height:62%}

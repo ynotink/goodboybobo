@@ -82,6 +82,12 @@ const css=document.createElement('style');css.textContent=`
 @keyframes gpPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:none;opacity:1}}
 @keyframes gpRise{0%{transform:translateY(40%);opacity:0}100%{transform:none;opacity:1}}
 @keyframes gpShake{0%,100%{transform:none}20%{transform:translate(-1.2%,.8%)}40%{transform:translate(1.1%,-.6%)}60%{transform:translate(-.7%,.4%)}80%{transform:translate(.4%,-.2%)}}
+#gp .gnote{font-size:calc(var(--pu)*13);color:#8a6d4c;text-align:center}
+#gp .gtimer{display:flex;flex-direction:column;align-items:center;margin:calc(var(--pu)*-6) 0 calc(var(--pu)*-10);line-height:1.05}
+#gp .gtimer b{font-weight:400;font-size:calc(var(--pu)*18);color:#7b6a55}#gp .gtimer span{font-size:calc(var(--pu)*42);color:#1b4b50}
+#gp .gbuy{display:flex;align-items:center;gap:calc(var(--pu)*12);margin:calc(var(--pu)*-6) calc(var(--pu)*-4) calc(var(--pu)*-10);font-size:calc(var(--pu)*17)}
+#gp .gbuy img{width:calc(var(--pu)*64);height:calc(var(--pu)*64);object-fit:contain}
+#gp .gcost span{white-space:nowrap}
 @keyframes gpLeap2{0%{transform:translateY(30%) scale(.6,.45);opacity:0}45%{transform:translateY(-7%) scale(.96,1.07);opacity:1}65%{transform:translateY(1.5%) scale(1.05,.94)}100%{transform:none;opacity:1}}
 @keyframes gpWiggle2{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg) translateY(-1.2%)}75%{transform:rotate(2deg) translateY(-1.2%)}}
 #gp .gwr{transform-origin:50% 88%}#gp .gmd{z-index:2}#gp .gwt{z-index:1}
@@ -135,7 +141,7 @@ const at=el=>{const r=el.getBoundingClientRect();return[(r.left+r.width/2)/inner
 function confetti([x,y],n,spd=.9,up=.5){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=spd*(.3+Math.random()*.7);parts.push({k:'c',x,y,vx:Math.cos(a)*v*.45,vy:(Math.sin(a)*v-up)*.42,g:.62,rot:Math.random()*6,vr:(Math.random()-.5)*14,col:COL[i%COL.length],life:1,dur:1.6+Math.random()*1.2})}}
 function sparkle([x,y],n,r=.1){for(let i=0;i<n;i++){const a=Math.random()*6.283,v=r*(1+Math.random()*2.5);parts.push({k:'s',x,y,vx:Math.cos(a)*v*.45,vy:Math.sin(a)*v*.2,g:0,rot:0,vr:0,sz:5+Math.random()*7,col:i%3?'#fff6c8':'#ffd84a',life:1,dur:.5+Math.random()*.5})}}
 // ---------- READY ----------
-window.showIntro=function(){open();
+window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return noLives();open();
  const T=S.lv.tier;const c=panel('ready');title('<span>Level '+(S.li+1)+'</span>'+(T=='H'||T=='SH'?`<span class="tag ${T=='SH'?'sh':''}">${T=='SH'?'SUPER HARD':'HARD'}</span>`:''),c);
  const pl=seq(h('div','k-plate gplate',c),0);pl.textContent='Goals';
  const bx=seq(h('div','gbox',c),1);goals(S.goals.map(x=>({...x,left:x.n})),bx);
@@ -151,17 +157,37 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('ris
  [['ic_music','Music','music'],['ic_speaker','Sound','sounds']].forEach(([ic,lb,k])=>{const r=h('div','grow',rows);kimg(ic,'ic',r);h('span','',r).textContent=lb;
   const t=K.toggle(s[k]>0,v=>{if(!v){s['_'+k]=s[k];s[k]=0}else s[k]=s['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(s))}catch(e){};window.BA&&BA.apply&&BA.apply()});t.setAttribute('aria-label',lb);r.appendChild(t);r.onclick=()=>t.click()});
  c.appendChild(seq(btn('green_big','Resume','gb',()=>close(),{shine:1,delay:'1.4s'}),1));
- c.appendChild(seq(btn('cream_big','Restart','cb',()=>{close(true);startLevel(S.li)}),2));
- c.appendChild(seq(btn('cream_big','Quit','cb',()=>{close(true);BA.nav('map.html')}),3))};
+ const moved=()=>S&&S.lv&&S.moves<S.lv.moves;
+ c.appendChild(seq(btn('cream_big','Restart','cb',()=>{if(moved()&&window.Eco)Eco.loseHeart();close(true);if(window.Eco&&Eco.hearts()<1)return noLives();startLevel(S.li)}),2));
+ c.appendChild(seq(btn('cream_big','Quit','cb',()=>{if(moved()&&window.Eco)Eco.loseHeart();close(true);BA.nav('map.html')}),3));
+ if(moved()){const n=h('div','gnote',c);n.textContent='Restarting or quitting now uses 1 life';seq(n,4)}};
 // ---------- OUT OF MOVES ----------
 window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();
  const c=panel('lose');title('Out of Moves',c);
  const pl=seq(h('div','k-plate gplate',c),0);pl.textContent='Still Needed';
  const bx=seq(h('div','gbox',c),1);goals(S.goals.filter(x=>x.left>0),bx);
- const p5=btn('green_big','+5 Moves','gb',()=>{close();moreMoves()},{shine:1,delay:'.9s'});seq(p5,2);c.appendChild(p5);
- const cost=seq(h('div','gcost',c),3);kimg('ic_heart','',cost);h('span','',cost).textContent='1';
- c.appendChild(seq(btn('cream_big','Give Up','cb',()=>{close(true);BA.nav('map.html')}),4));
+ const PM=window.Eco?Eco.PRICE.moves:90;
+ const p5=btn('green_big','+5 Moves','gb',()=>{if(window.Eco&&!Eco.spend(PM)){cost.classList.add('short');cost.style.animation='none';void cost.offsetWidth;cost.style.animation='kNope .36s';K.toast('You need '+PM+' bones. You have '+Eco.bones()+'.');return false}close();moreMoves()},{shine:1,delay:'.9s',aria:'Get 5 more moves for '+PM+' bones'});seq(p5,2);c.appendChild(p5);
+ const cost=seq(h('div','gcost',c),3);kimg('ic_bone','',cost);h('span','',cost).textContent=PM+'  ·  you have '+(window.Eco?Eco.bones():'');
+ c.appendChild(seq(btn('cream_big','Give Up','cb',()=>{window.Eco&&Eco.loseHeart();close(true);BA.nav('map.html')},{aria:'Give up, costs one life'}),4));
  later(1000,()=>{p5.style.animation='gpPulse 2.2s ease-in-out infinite'})};
+// ---------- OUT OF LIVES ----------
+function noLives(){if(typeof S!=='undefined'&&S)S.over=true;open();const c=panel('ready');title('Out of Lives',c);
+ const bx=seq(h('div','gbox',c),0);const t=h('div','gtimer',bx);
+ const tick=()=>{if(!window.Eco)return;if(Eco.hearts()>0){close(true);if(S)S.over=false;showIntro();return}t.innerHTML='<b>Next life in</b><span>'+Eco.fmt(Eco.nextIn())+'</span>';later(1000,tick)};tick();
+ const PL=window.Eco?Eco.PRICE.lives:90;
+ const go=btn('green_big','Refill Lives','gb',()=>{if(!Eco.spend(PL)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+PL+' bones. You have '+Eco.bones()+'.');return false}Eco.refillHearts();close(true);if(S)S.over=false;showIntro()},{shine:1,aria:'Refill lives for '+PL+' bones'});seq(go,1);c.appendChild(go);
+ const cst=seq(h('div','gcost',c),2);kimg('ic_bone','',cst);h('span','',cst).textContent=PL+'  ·  you have '+Eco.bones();
+ c.appendChild(seq(btn('cream_big','Back to Map','cb',()=>{close(true);BA.nav('map.html')}),3))}
+window.gpNoLives=noLives;
+// ---------- GET A BOOSTER ----------
+const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'];
+window.gpBuy=function(k){open('rise');const c=panel('pause');title(BN[k],c);
+ const bx=seq(h('div','gbox',c),0);const r=h('div','gbuy',bx);kimg(BI[k],'',r);h('span','',r).textContent="You're out of this booster";
+ const P=window.Eco?Eco.PRICE.boost[k]:50;
+ const b=btn('green_big','Buy 1','gb',()=>{if(!Eco.spend(P)){cst.style.animation='none';void cst.offsetWidth;cst.style.animation='kNope .36s';K.toast('You need '+P+' bones. You have '+Eco.bones()+'.');return false}if(typeof SAVE!=='undefined'&&SAVE.boost){SAVE.boost[k]=(SAVE.boost[k]||0)+1;typeof save==='function'&&save()}else Eco.addBoost(k,1);window.drawBoosters&&drawBoosters();close();K.toast(BN[k]+' added!')},{shine:1,aria:'Buy one '+BN[k]+' for '+P+' bones'});seq(b,1);c.appendChild(b);
+ const cst=seq(h('div','gcost',c),2);kimg('ic_bone','',cst);h('span','',cst).textContent=P+'  ·  you have '+Eco.bones();
+ c.appendChild(seq(btn('cream_big','Not Now','cb',()=>close()),3))};
 // ---------- GOOD BOY! ----------
 window.g2results=function(stars,bones){open();
  const c=panel('win'),art=c.art;const pos=(el,x,y,w,hh)=>{Object.assign(el.style,{position:'absolute',left:x/780*100+'%',top:y/1337*100+'%',width:w/780*100+'%',height:hh/1337*100+'%'});return el};

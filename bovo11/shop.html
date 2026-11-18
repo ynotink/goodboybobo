@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset="utf-8"><script src="../review_shim.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<!doctype html><html><head><meta charset="utf-8"><script src="../review_shim.js?v=2"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=1">
+<link rel="stylesheet" href="../uikit/kit.css?v=3">
 <style>
 #col{position:absolute;left:50%;width:calc(var(--u)*352);margin-left:calc(var(--u)*-176);display:flex;flex-direction:column;gap:calc(var(--u)*10)}
 .cd{border-style:solid;border-width:calc(var(--u)*20);border-image:url(../uikit/card_small.webp?v=1) 64 fill/calc(var(--u)*20) stretch;filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*5) rgba(60,25,0,.3))}
@@ -37,7 +37,7 @@
 .rest{align-self:center;width:calc(var(--u)*204);height:calc(var(--u)*38);border-width:calc(var(--u)*16) calc(var(--u)*17);margin-top:calc(var(--u)*-1)}
 .rest span{margin:calc(var(--u)*-16) 0;font-size:calc(var(--u)*16);color:#1b4b50;white-space:nowrap}
 </style></head><body>
-<script src="../uikit/kit.js?v=4"></script>
+<script src="../uikit/kit.js?v=6"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -59,10 +59,10 @@ for(const [ic,n,p] of [['ic_bones_s','100 Bones','$0.99'],['ic_bones_m','550 Bon
  const c=seq(h('div','cd bn',three));img(ic,'pic',c);h('div','nm',c).textContent=n;c.appendChild(K.button('green_sm',p,buy,{shine:1,delay:(2+ri*.3)+'s'}))}
 // boosters
 const bs=seq(h('div','bsec',col));h('div','k-plate',bs).textContent='Boosters';const bc=h('div','cd',bs);const row=h('div','bst',bc);
-for(const [ic,price,name] of [['bst_paw',50,'Paw Pop'],['bst_swap',70,'Free Swap'],['bst_bomb',90,'Bone Bomb']]){
+for(const [ic,price,name,bk] of [['bst_paw',50,'Paw Tap',0],['bst_swap',70,'Free Swap',1],['bst_bomb',90,'Bomb',2]]){
  const d=h('div','',row);const p=img(ic,'pic',d);
  const wob=()=>{p.classList.remove('wob');void p.offsetWidth;p.classList.add('wob')};p.onclick=wob;
- const b=K.button('green_sm','',()=>{wob();K.toast(name+' boosters are coming soon!')});img('ic_bone','b',b);h('div','k-lbl',b).textContent=price;d.appendChild(b)}
+ const b=K.button('green_sm','',()=>{wob();if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')},{aria:'Buy one '+name+' for '+price+' bones'});img('ic_bone','b',b);h('div','k-lbl',b).textContent=price;d.appendChild(b)}
 // restore
 const rs=seq(h('div','k-pill k-btn rest',col));h('span','',rs).textContent='Restore Purchases';K.press(rs,()=>K.toast('Nothing to restore yet.'));
 function layout(I){const y0=I.wu*198;K.fitPanel(col,title,I,y0,y0-58*I.wu)}

@@ -134,7 +134,7 @@ window.win=async function(){
  // reuse the engine's bonus sequence, then the approved celebration + results
  const _show=window.showOv;window.showOv=()=>{};await _win();window.showOv=_show;
  const kk=S.score/target3(),stars=kk>=1?3:kk>=.65?2:1;
- const bones=10*stars;try{const G0=JSON.parse(localStorage.getItem('gbb')||'{}');const GG=typeof G!=='undefined'?G:{};G0.bones=(G0.bones!=null?+G0.bones:(+GG.bones||430))+bones;G0.hearts=G0.hearts??(GG.hearts??3);localStorage.setItem('gbb',JSON.stringify(G0));GG.bones=G0.bones}catch(e){}
+ const bones=10*stars;if(window.Eco){Eco.addBones(bones)}else try{const G0=JSON.parse(localStorage.getItem('gbb')||'{}');const GG=typeof G!=='undefined'?G:{};G0.bones=(G0.bones!=null?+G0.bones:(+GG.bones||430))+bones;G0.hearts=G0.hearts??(GG.hearts??3);localStorage.setItem('gbb',JSON.stringify(G0));GG.bones=G0.bones}catch(e){}
  window.g2results?window.g2results(stars,bones):results(stars,bones)};
 function results(stars,bones){openPop('Win_Results',({P,g,put,btn})=>{
  put(A+'P_Win_Rambo.webp',PM.P_Win_Rambo);
