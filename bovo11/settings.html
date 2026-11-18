@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><script src="../review_shim.js?v=1"></script>
+<!doctype html><html><head><meta charset="utf-8"><script src="../review_shim.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Settings</title>
@@ -27,7 +27,7 @@
 #ver{text-align:center;font-size:calc(var(--u)*12.5);color:#8a6d4c;padding:calc(var(--u)*1) 0 calc(var(--u)*5)}
 </style></head><body>
 
-<script src="../uikit/kit.js?v=1"></script>
+<script src="../uikit/kit.js?v=4"></script>
 <script>
 'use strict';
 const IW=852,IH=1846,FENCE=474;      // fence rail top in the scene
@@ -50,7 +50,7 @@ const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}
 const TG=[['ic_music','Music','music'],['ic_speaker','Sound Effects','sounds'],['ic_vibrate','Vibration','vib'],['ic_bell','Notifications','notif']];
 for(const [ic,lb,k] of TG){const on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
  const tg=K.toggle(on,k==='notif'?()=>{K.toast('Notifications are coming soon!');return false}:flip(k));
- row(s1,ic,lb,tg,()=>tg.click())}
+ tg.setAttribute('aria-label',lb);row(s1,ic,lb,tg,()=>tg.click())}
 // Account
 const s2=card(section('Account'));
 const val=t=>{const d=h('div','val');d.textContent=t;d.appendChild(chev());return d};
@@ -66,4 +66,4 @@ const ver=h('div','k-in',c3);ver.id='ver';ver.textContent='Version 1.0.0';ver.st
 // layout: title on the fence rail, panel between the fence and the menu
 function layout(I){const f=I.sy(FENCE);K.fitPanel(panel,title,I,f+10*I.wu,f-30*I.wu)}
 K.start();
-</script><script src="../nav/nav.js?v=1" data-page=""></script></body></html>
+</script><script src="../nav/nav.js?v=4" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

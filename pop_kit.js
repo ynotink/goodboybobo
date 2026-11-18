@@ -91,7 +91,7 @@ const css=document.createElement('style');css.textContent=`
 #gp .sl{animation:kIn 420ms cubic-bezier(.25,1.35,.5,1) both;animation-delay:calc(var(--i,0)*55ms + 140ms)}
 @media (prefers-reduced-motion: reduce){#gp *{animation:none!important}}`;
 document.head.appendChild(css);
-const gp=document.createElement('div');gp.id='gp';gp.className='kui';document.body.appendChild(gp);
+const gp=document.createElement('div');gp.id='gp';gp.className='kui';gp.setAttribute('role','dialog');gp.setAttribute('aria-modal','true');document.body.appendChild(gp);
 const h=(t,c,p)=>{const e=document.createElement(t);if(c)e.className=c;if(p)p.appendChild(e);return e};
 const kimg=(n,c,p)=>{const i=h('img',c,p);i.src=KIT+n+'.webp?v=1';i.alt='';return i};
 const pimg=(n,c,p)=>{const i=h('img',c,p);i.src=P+n+'.webp?v=1';i.alt='';return i};
@@ -149,7 +149,7 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('ris
  const c=panel('pause');title('Paused',c);
  const s=STG();const bx=seq(h('div','gbox',c),0);const rows=h('div','grows',bx);
  [['ic_music','Music','music'],['ic_speaker','Sound','sounds']].forEach(([ic,lb,k])=>{const r=h('div','grow',rows);kimg(ic,'ic',r);h('span','',r).textContent=lb;
-  const t=K.toggle(s[k]>0,v=>{if(!v){s['_'+k]=s[k];s[k]=0}else s[k]=s['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(s))}catch(e){};window.BA&&BA.apply&&BA.apply()});r.appendChild(t);r.onclick=()=>t.click()});
+  const t=K.toggle(s[k]>0,v=>{if(!v){s['_'+k]=s[k];s[k]=0}else s[k]=s['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(s))}catch(e){};window.BA&&BA.apply&&BA.apply()});t.setAttribute('aria-label',lb);r.appendChild(t);r.onclick=()=>t.click()});
  c.appendChild(seq(btn('green_big','Resume','gb',()=>close(),{shine:1,delay:'1.4s'}),1));
  c.appendChild(seq(btn('cream_big','Restart','cb',()=>{close(true);startLevel(S.li)}),2));
  c.appendChild(seq(btn('cream_big','Quit','cb',()=>{close(true);BA.nav('map.html')}),3))};

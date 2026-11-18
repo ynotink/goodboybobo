@@ -20,9 +20,9 @@ const css=document.createElement('style');css.textContent=`
 document.head.appendChild(css);
 const nav=document.createElement('div');nav.id='gbnav';
 const bar=new Image();bar.className='bar';bar.src=base+'bar.webp?v=1';nav.appendChild(bar);
-function build(){const W=innerWidth,k=W/1290;nav.style.height=346*k+'px';
+function build(){const W=window.GBB_COL?GBB_COL():innerWidth,k=W/1290;nav.style.height=346*k+'px';nav.style.left=(innerWidth-W)/2+'px';nav.style.right='auto';nav.style.width=W+'px';
  nav.querySelectorAll('.it').forEach(e=>e.remove());
- for(const [key,label,x,w,url] of ITEMS){const on=key===page;const it=document.createElement('div');it.className='it'+(on?' on':'');
+ for(const [key,label,x,w,url] of ITEMS){const on=key===page;const it=document.createElement('div');it.className='it'+(on?' on':'');it.setAttribute('role','link');it.setAttribute('aria-label',label);if(on)it.setAttribute('aria-current','page');
   const cx=(x+w/2)*k;Object.assign(it.style,{left:(cx-129*k)+'px',width:258*k+'px',top:0,height:240*k+'px'});
   if(on){const t=new Image();t.className='tile';t.src=base+'tile.webp?v=1';Object.assign(t.style,{left:(129-113)*k+'px',top:0,width:226*k+'px',height:225*k+'px'});it.appendChild(t)}
   const ic=new Image();ic.className='ic';ic.src=base+key+'.webp?v=3';const h={home:152,map:142,toys:144,friends:142,shop:144}[key];
@@ -33,7 +33,7 @@ function build(){const W=innerWidth,k=W/1290;nav.style.height=346*k+'px';
   ['pointerleave','pointercancel'].forEach(e=>it.addEventListener(e,()=>{down=false;it.classList.remove('dn')}));
   it.addEventListener('pointerup',()=>{it.classList.remove('dn')});
   it.addEventListener('click',()=>{if(on||nav.dataset.go)return;nav.dataset.go=1;it.classList.add('lift');try{window.BA&&BA.play&&BA.play('tap',{gap:60})}catch(e){}
-   setTimeout(()=>location.href=root+url,140)});
+   setTimeout(()=>(window.BA&&BA.nav?BA.nav(root+url):location.href=root+url),140)});
   nav.appendChild(it)}}
 const go=()=>{document.body.appendChild(nav);build()};
 if(document.body)go();else addEventListener('DOMContentLoaded',go);

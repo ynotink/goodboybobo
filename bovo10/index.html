@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><script src="../review_shim.js?v=1"></script>
+<html><head><meta charset="utf-8"><script src="../review_shim.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -24,10 +24,10 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #tag{position:fixed;z-index:9;left:8px;top:calc(env(safe-area-inset-top) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 #hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 130px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
 </style></head><body>
-<div id="sc"></div>
+<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/scene.png) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
 <div id="hud"><img src="L02_heart_counter.png" style="left:12px"><div class="t" id="hH" style="left:68px">5</div>
 <img src="L03_bone_counter.png" style="left:142px"><div class="t" id="hB" style="left:198px">430</div><img src="L04_gear.png" style="right:12px"></div>
-<a href="../bovo11/settings.html" style="position:fixed;right:4px;top:calc(env(safe-area-inset-top) + 26px);width:54px;height:54px;z-index:6"></a>
+<a id="gearA" href="../bovo11/settings.html" style="position:fixed;right:4px;top:calc(env(safe-area-inset-top) + 26px);width:54px;height:54px;z-index:6"></a>
 <button class="btn" id="tog" style="display:none">Motion: ON</button><button class="btn" id="win" style="display:none">Win level ▶</button>
 <div id="hint">Swipe up to explore ↑</div>
 <script>
@@ -80,12 +80,14 @@ function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEa
  const mk=put(S,st==='done'?'mk_done.png':st==='cur'?'mk_cur.png':'mk_locknum.png',x,y+Math.max(w,.11)*.18,Math.max(w,.11));if(st!=='lock'){mk.style.pointerEvents='auto';mk.style.cursor='pointer';mk.onclick=()=>location.href='../game_new.html?lv='+(L+1)}
  {const n=document.createElement('div');if(st==='lock')n.style.opacity='.85';n.className='n';n.textContent=L+1;n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(Math.max(w,.12)*.33*S.art.clientWidth)+'px';S.art.appendChild(n)}})});placePaw(cur)}
 function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];S.art.appendChild(paw);paw.style.left=x*100+'%';paw.style.top=(y-w*.27)*100+'%';paw.style.width=w*.5*100+'%'}
-function size(){const DPR=Math.min(2.5,devicePixelRatio||1),H=sc.clientHeight,avail=H-innerWidth*327/1170*.92;
- for(const S of SCENES){let w=innerWidth,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
+function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GBB_COL():innerWidth;const CX=(innerWidth-CW)/2;for(const e of [sc,document.getElementById('hud')]){e.style.left=CX+'px';e.style.right='auto';e.style.width=CW+'px'}document.getElementById('gearA').style.right=(CX+4)+'px';const H=sc.clientHeight,avail=H-CW*327/1170*.92;
+ for(const S of SCENES){let w=CW,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 function ensure(S){if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
-function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false});S.gl=gl;
+function initGL(S){const gl=S.cv.getContext('webgl',{alpha:false,antialias:false});
+ if(!gl){if(!S.still){const im=new Image();im.src=S.dir+'/scene.png';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.cv);S.still=im}return Promise.resolve()}   // no WebGL: show the painted scene still
+ S.gl=gl;
  const sh=(k,src)=>{const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s};
  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);S.pr=pr;
  gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
@@ -127,4 +129,4 @@ function win(){const N=SCENES.length*5;if(cur>=N-1){cur=0;buttons();sc.scrollTo(
   if(u<1)requestAnimationFrame(hop);else{cur++;buttons()}})(t0)}
 document.getElementById('win').onclick=win;
 document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
-</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}</script><script src="../nav/nav.js?v=1" data-page="map"></script></body></html>
+</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}</script><script src="../nav/nav.js?v=4" data-page="map"></script><script>window.BA&&BA.music("Theme")</script></body></html>

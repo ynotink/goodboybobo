@@ -1,12 +1,13 @@
 window.GBB_BUILD=23;
 // temporary build tag (bottom-left) so we always know which version the phone is showing
-addEventListener('DOMContentLoaded',()=>{const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
+addEventListener('DOMContentLoaded',()=>{if(!window.GBB_REVIEW)return;const t=document.createElement('div');t.textContent='build '+GBB_BUILD+' · '+(location.protocol==='file:'?'built-in copy':'live');t.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font:700 11px system-ui;color:#fff;background:rgba(0,0,0,.55);padding:3px 7px;border-radius:8px;pointer-events:none';document.body.appendChild(t)});
 /* Good Boy Bobo — audio engine.
    Music: seamless loops, songs fade in from their start, crossfade when the song changes,
    fade out before leaving a page, and only continue mid-song when hopping straight between screens
    that share the same song. Effects: decoded ahead of time (never late), musical ones pre-rendered
    in the key of the song that is playing. Voice and barks gently dip the music. */
 (function(){
+const AB=(document.currentScript&&document.currentScript.src||'').replace(/audio\.js.*$/,'');
 const MUS={home:'Theme',rooms:'inside_myself',
  ch:['Backyard_Groove','Things_to_Do','On_My_Mind','Breezy_Love','Groove','Rainy_Day_Love','Groove_2','Find_a_Way','Love_on_the_Way','Always_with_You']};
 const TONAL=['swap','match','special','rainbow','star','win','lose','buy','combo0','combo1','combo2','combo3','combo4','combo5','combo6','combo7','starland0','starland1','starland2'];
@@ -30,8 +31,8 @@ function apply(){if(!AC)return;const s=ST(),m=muted()?0:1,t=AC.currentTime;
  bus.voice.gain.setTargetAtTime((s.sounds/100)*m,t,.08)}
 function load(path){if(buf[path])return Promise.resolve(buf[path]);if(loading[path])return loading[path];
  loading[path]=fetch(path).then(r=>r.arrayBuffer()).then(a=>new Promise((res,rej)=>ctx().decodeAudioData(a,res,rej))).then(b=>(buf[path]=b)).catch(()=>null);return loading[path]}
-const pathOf=n=>TONAL.includes(n)?`au/k${shift}/${n}.mp3`:`au/${n}.mp3`;
-async function meta(){if(META)return META;try{META=await (await fetch('au/mus/music.json?v='+window.GBB_BUILD)).json()}catch(e){META={}}return META}
+const pathOf=n=>TONAL.includes(n)?`${AB}au/k${shift}/${n}.mp3`:`${AB}au/${n}.mp3`;
+async function meta(){if(META)return META;try{META=await (await fetch(AB+'au/mus/music.json?v='+window.GBB_BUILD)).json()}catch(e){META={}}return META}
 // decode everything ahead of time, a few at a time so gameplay never stutters
 let qBusy=false;const queue=[];
 function preloadAll(){const list=[...PLAIN,...TONAL,...VOICE,...BARK].map(pathOf);list.forEach(p=>{if(!buf[p]&&!queue.includes(p))queue.push(p)});pump()}
@@ -45,7 +46,7 @@ function bake(b,m){if(b._baked)return;b._baked=1;const sr=b.sampleRate,N=Math.ro
   for(let i=0;i<N;i++){const t=(i+.5)/N,g1=Math.cos(t*Math.PI/2),g2=Math.sin(t*Math.PI/2);d[e2-N+i]=d[e2-N+i]*g1+d[s0-N+i]*g2}}}
 async function music(name){want=name;if(!unlocked)return;const ac=ctx();if(!ac)return;const M=await meta();const m=M[name];if(!m)return;
  if(cur&&cur.name==name)return;
- const b=await load('au/mus/'+m.file+'?v='+window.GBB_BUILD);if(!b||want!==name||leaving)return;bake(b,m);
+ const b=await load(AB+'au/mus/'+m.file+'?v='+window.GBB_BUILD);if(!b||want!==name||leaving)return;bake(b,m);
  const newShift=m.shift||0;if(newShift!==shift){shift=newShift;preloadAll()}
  let pos=0,fade=FADE_IN;
  try{const r=JSON.parse(sessionStorage.getItem('gbb_mus')||'null');

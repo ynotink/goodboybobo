@@ -18,19 +18,22 @@ K.press=(el,fn)=>{let down=false;if(!el.classList.contains('k-btn'))el.classList
 K.button=(art,label,fn,opt={})=>{const b=h('div','k-btn');K.img(art,'k-art n',b);K.img(art+'_p','k-art p',b);
  if(opt.shine){const s=h('div','k-shine',b);const m=`url(${base}${art}.webp?v=1)`;s.style.webkitMaskImage=m;s.style.maskImage=m;if(opt.delay)s.style.setProperty('--sd',opt.delay)}
  if(label){const l=h('div','k-lbl',b);l.textContent=label}
+ b.setAttribute('role','button');b.tabIndex=0;if(opt.aria||label)b.setAttribute('aria-label',opt.aria||label);
+ b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn&&fn()}});
  return K.press(b,fn)};
 // a toggle: get() -> bool, set(bool)
 K.toggle=(on,onChange)=>{const t=h('div','k-tg'+(on?'':' is-off'));K.img('toggle_on','on',t);K.img('toggle_off','off',t);K.img('toggle_knob','knob',t);
- t.set=v=>t.classList.toggle('is-off',!v);t.get=()=>!t.classList.contains('is-off');
+ t.setAttribute('role','switch');t.tabIndex=0;t.set=v=>{t.classList.toggle('is-off',!v);t.setAttribute('aria-checked',v?'true':'false')};t.setAttribute('aria-checked',on?'true':'false');t.get=()=>!t.classList.contains('is-off');
  t.addEventListener('pointerdown',()=>t.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(ev=>t.addEventListener(ev,()=>t.classList.remove('dn')));
- t.addEventListener('click',e=>{e.stopPropagation();const r=onChange?onChange(!t.get()):true;if(r===false){t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');K.buzz(20);return}t.set(!t.get());K.buzz(10)});
+ t.addEventListener('click',e=>{e.stopPropagation();const r=onChange?onChange(!t.get()):true;if(r===false){t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');K.buzz(20);return}t.set(!t.get());K.buzz(10)});t.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click()}});
  return t};
 // top bar: hearts, bones, gear (cream round button)
 K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb')||'{}')}catch(e){}
  const bar=h('div','k-top',parent);
- const c1=h('div','k-counter k-drop',bar);c1.style.setProperty('--i',0);const n1=h('div','k-num',c1);n1.textContent=g.hearts!=null?g.hearts:5;
- const c2=h('div','k-counter bone k-drop',bar);c2.style.setProperty('--i',1);const n2=h('div','k-num',c2);n2.textContent=g.bones!=null?g.bones:430;
- const gear=K.button('round','',()=>{location.href=gearHref},{});gear.classList.add('k-gear','k-drop');gear.style.setProperty('--i',2);K.img('ic_gear','k-gearic',gear);bar.appendChild(gear);
+ const c1=h('div','k-counter k-drop',bar);c1.setAttribute('role','button');c1.style.setProperty('--i',0);const n1=h('div','k-num',c1);n1.textContent=g.hearts!=null?g.hearts:5;
+ const c2=h('div','k-counter bone k-drop',bar);c2.setAttribute('role','button');c2.style.setProperty('--i',1);const n2=h('div','k-num',c2);n2.textContent=g.bones!=null?g.bones:430;
+ const gear=K.button('round','',()=>{location.href=gearHref},{aria:'Settings'});gear.classList.add('k-gear','k-drop');gear.style.setProperty('--i',2);K.img('ic_gear','k-gearic',gear);bar.appendChild(gear);
+ c1.setAttribute('aria-label',n1.textContent+' lives');c2.setAttribute('aria-label',n2.textContent+' bones');
  [c1,c2].forEach(c=>K.press(c,()=>K.toast(c===c1?'More lives are coming soon!':'The Shop has more bones!')));
  return bar};
 // the scene: bottom-anchored painted background with drifting light motes; calls onSize(info) on every resize
@@ -39,10 +42,10 @@ K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');
  const st=h('div','',document.body);st.id='kstage';const bi=h('img','',st);bi.src=bg;const fx=h('canvas','',st);fx.id='kfx';
  let ui=document.getElementById('ui');if(!ui){ui=h('div','kui',document.body);ui.id='ui'}document.body.appendChild(ui);
  const R=document.documentElement.style;let started=false;
- function size(){const DPR=Math.min(2,devicePixelRatio||1);let w=innerWidth,hh=w*IH/IW;if(hh<innerHeight){hh=innerHeight;w=hh*IW/IH}else if(hh>innerHeight*1.04){hh=innerHeight;w=hh*IW/IH}
+ function size(){const DPR=Math.min(2,devicePixelRatio||1);const CW=window.GBB_COL?GBB_COL():innerWidth,CX=(innerWidth-CW)/2;ui.style.left=CX+'px';ui.style.width=CW+'px';ui.style.right='auto';let w=innerWidth,hh=w*IH/IW;if(hh<innerHeight){hh=innerHeight;w=hh*IW/IH}else if(hh>innerHeight*1.04){hh=innerHeight;w=hh*IW/IH}
   st.classList.toggle('fit',w<innerWidth-2);st.style.width=w+'px';st.style.height=hh+'px';const top=innerHeight-hh;st.style.top=top+'px';
-  fx.width=Math.round(w*DPR);fx.height=Math.round(hh*DPR);const wu=Math.min(innerWidth,w)/393;R.setProperty('--w',wu+'px');R.setProperty('--u',wu+'px');
-  if(started&&onSize)onSize({top,h:hh,w,wu,navTop:innerHeight-346/1290*innerWidth,sy:y=>top+y/IH*hh})}
+  fx.width=Math.round(w*DPR);fx.height=Math.round(hh*DPR);const wu=Math.min(CW,w)/393;R.setProperty('--w',wu+'px');R.setProperty('--u',wu+'px');
+  if(started&&onSize)onSize({top,h:hh,w,wu,navTop:innerHeight-346/1290*CW,cx:CX,sy:y=>top+y/IH*hh})}
  size();addEventListener('resize',size);
  document.addEventListener('animationend',e=>{if(/^k(In|Drop|Pop)$/.test(e.animationName))e.target.classList.add('k-done')});
  K.start=()=>{started=true;size();requestAnimationFrame(()=>requestAnimationFrame(()=>ui.classList.add('k-go')))};
