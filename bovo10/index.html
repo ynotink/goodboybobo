@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795040125"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795045158"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -26,7 +26,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #tag{position:fixed;z-index:9;left:8px;top:calc(env(safe-area-inset-top) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 #hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 130px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
 </style></head><body>
-<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/scene.png) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
+<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/scene.png?v=2) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
 <div id="hud"><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/cnt_heart.webp?v=3" alt=""><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
 <div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img src="../ui3/cnt_bone.webp?v=3" alt=""><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
 <div class="c3" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img src="../ui3/gear.webp?v=3" alt=""></div></div>
@@ -92,9 +92,9 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 function ensure(S){if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
-function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
+function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=2';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
  const gl=S.cv.getContext('webgl',{alpha:true,premultipliedAlpha:false,antialias:false});
- if(!gl){if(!S.still){const im=new Image();im.src=S.dir+'/scene.png';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.cv);S.still=im}return Promise.resolve()}   // no WebGL: show the painted scene still
+ if(!gl){if(!S.still){const im=new Image();im.src=S.dir+'/scene.png?v=2';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.cv);S.still=im}return Promise.resolve()}   // no WebGL: show the painted scene still
  S.gl=gl;
  const sh=(k,src)=>{const s=gl.createShader(k);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s};
  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);S.pr=pr;
@@ -102,7 +102,7 @@ function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png';i
  const U=n=>gl.getUniformLocation(pr,n);S.U=U;
  const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
   for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=S.dir+'/'+f+'?v=13'});
- return Promise.all([tex('scene.png',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{if(S.gl!==gl)return;gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
+ return Promise.all([tex('scene.png?v=2',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{if(S.gl!==gl)return;gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
 Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
