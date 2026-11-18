@@ -1,3 +1,9 @@
+/* auto-update: if a newer build is live, reload once so the phone never runs a stale cached page */
+(function(){try{const root=(document.currentScript&&document.currentScript.src||'').replace(/review_shim\.js.*$/,'');
+ fetch(root+'build.txt?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(t=>{t=(t||'').trim();if(!t)return;
+  let have='';try{have=localStorage.getItem('gbb_build')||''}catch(e){}
+  if(have!==t){try{localStorage.setItem('gbb_build',t)}catch(e){}
+   if(have){const u=new URL(location.href);u.searchParams.set('b',t);location.replace(u.toString())}}}).catch(()=>{})}catch(e){}})();
 /* Good Boy Bobo — REVIEW MODE.
    Opened from review.html. While on, every saved value (progress, bones, settings) is kept under its own
    "rv_" names, so nothing here touches the real game's save. Purchases never run in review mode. */
