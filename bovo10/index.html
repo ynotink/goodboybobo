@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795060535"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795060713"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -120,11 +120,13 @@ size();addEventListener('resize',size);
 Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
  (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
   const vh=sc.clientHeight;
-  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);if(r.bottom>-vh*.6&&r.top<vh*1.6)liveOn(S);else liveOff(S);if(r.bottom<0||r.top>vh||!S.ready||S.live)continue;const gl=S.gl,U=S.U;
-   gl.viewport(0,0,S.cv.width,S.cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/S.IW,1/S.IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);if(r.bottom>-vh*.6&&r.top<vh*1.6)liveOn(S);else liveOff(S);if(r.bottom<0||r.top>vh||!S.ready||(S.live&&!S.rain))continue;const gl=S.gl,U=S.U;
+   if(!S.live){gl.viewport(0,0,S.cv.width,S.cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/S.IW,1/S.IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
    const fg=S.fx.getContext('2d'),W=S.fx.width,H=S.fx.height;fg.clearRect(0,0,W,H);fg.globalAlpha=on;
+   if(!S.live){
    for(const s of S.tw){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,rr=W*.012*a;fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-rr,y);fg.lineTo(x+rr,y);fg.moveTo(x,y-rr);fg.lineTo(x,y+rr);fg.stroke()}
    for(const p of S.pol){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.36){p.y=1;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
+   }
    if(S.rain){if(!S.drops)S.drops=[...Array(Math.round(170*S.rain))].map(()=>({x:Math.random(),y:Math.random(),l:.015+Math.random()*.02,v:.55+Math.random()*.35}));
     fg.globalAlpha=1;fg.strokeStyle='rgba(230,238,255,.75)';fg.lineWidth=Math.max(1.2,W*.002);fg.lineCap='round';fg.beginPath();
     for(const d of S.drops){d.y+=d.v*dt;if(d.y>1.02){d.y=-.03;d.x=Math.random()}const x=d.x*W,y=d.y*H;fg.moveTo(x,y);fg.lineTo(x-W*.004,y+d.l*H)}fg.stroke();
