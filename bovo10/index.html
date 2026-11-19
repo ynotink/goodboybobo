@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795059287"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795060535"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -94,7 +94,7 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
-const LIVEV='?v=1';
+const LIVEV='?v=2';
 function liveOn(S){if(S.lv||!window.SeamLoop||!motion)return;const v=document.createElement('video');
  Object.assign(v,{muted:true,defaultMuted:true,playsInline:true,autoplay:true,preload:'auto'});
  for(const k of ['muted','playsinline','webkit-playsinline','autoplay','disablepictureinpicture'])v.setAttribute(k,'');
