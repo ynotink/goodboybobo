@@ -4,7 +4,7 @@
    a separate piece with nothing showing behind it. Respects reduced motion. */
 (function(){
 let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches||JSON.parse(localStorage.getItem('gbb_settings')||'{}').motion===0}catch(e){}
-const me=document.currentScript,root=me.src.replace(/ui_life\.js.*$/,''),PR=root+'ui3/press/',V='?v=11';
+const me=document.currentScript,root=me.src.replace(/ui_life\.js.*$/,''),PR=root+'ui3/press/',V='?v=12';
 const css=document.createElement('style');css.textContent=`
 .mk-z::after,#gbnav .it::after{display:none!important}
 .ul-pc,.ul-pt{position:absolute;pointer-events:none;display:block;-webkit-user-drag:none}

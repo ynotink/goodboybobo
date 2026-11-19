@@ -11,7 +11,7 @@ function build(){const r4=document.getElementById('rambo4'),hud=document.getElem
  cv=document.createElement('canvas');cv.id='rambo4v';cv.className='flp';
  Object.assign(cv.style,{left:(L-SX*size)+'px',top:(T-SY*size)+'px',width:size+'px',height:size+'px',pointerEvents:'none',transformOrigin:`${(SX+SW/2)*100}% ${(SY+SH)*100}%`,filter:'drop-shadow(0 4px 5px rgba(0,18,22,.35))',opacity:0,transition:'opacity .25s'});
  hud.parentNode.insertBefore(cv,hud);
- const DPR=Math.min(2.5,devicePixelRatio||1),k=(window.G2K||1);cv.width=cv.height=Math.round(size*DPR*k);
+ const DPR=Math.min(3,devicePixelRatio||1),k=(window.G2K||1);cv.width=cv.height=Math.round(size*DPR*k);
  gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true});if(!gl)return;
  const vs=`attribute vec2 p;varying vec2 t;void main(){t=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
  const fs=`precision mediump float;varying vec2 t;uniform sampler2D v;uniform float op;
@@ -35,10 +35,10 @@ function build(){const r4=document.getElementById('rambo4'),hud=document.getElem
 function draw(v,op=1,keep=false){if(!gl||v.readyState<2)return;gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1f(gl.getUniformLocation(pr,'op'),op);
  try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,v)}catch(e){return}
  gl.viewport(0,0,cv.width,cv.height);if(!keep){gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT)}gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
-let lastCombo=0,lastSp=-1,fr=0,coolUntil=0;
+let lastV=null,lastT=-1,lastCombo=0,lastSp=-1,fr=0,coolUntil=0;
 function loop(){const pv=vids.pant;
  if(ready&&pv){if(pv.paused&&!cur&&!document.hidden){const p=pv.play();p&&p.catch&&p.catch(()=>{})}
-  const v=cur||pv;if(fadeT<1&&fadeFrom){fadeT+=1/6;draw(fadeFrom);draw(v,Math.min(1,fadeT),true)}else draw(v)}
+  const v=cur||pv;if(fadeT<1&&fadeFrom){fadeT+=1/6;draw(fadeFrom);draw(v,Math.min(1,fadeT),true);lastV=null}else if(v!==lastV||v.currentTime!==lastT){draw(v);lastV=v;lastT=v.currentTime}}   // only upload a new texture when the clip has a new frame
  if(typeof S!=='undefined'&&S){const c=S.combo||0;if(c>=2&&lastCombo<2)play('happy');if(c>=5&&lastCombo<5)play('cheer',true);lastCombo=c;
   if(++fr%10==0&&typeof allCells=='function'){try{const n=allCells().filter(x=>x.p&&x.p.sp).length;if(lastSp>=0&&n>lastSp)play('happy');lastSp=n}catch(e){}}}
  if(ready&&!cur&&performance.now()-lastAct>24000&&typeof S!=='undefined'&&S&&!S.over&&!document.getElementById('gp')?.classList.contains('on'))play('happy');

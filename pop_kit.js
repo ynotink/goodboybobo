@@ -236,7 +236,7 @@ window.g2results=function(stars,bones){open();
 #gp .pc3 .z3::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,20,0,.15);opacity:0;transition:opacity 90ms}#gp .pc3 .z3.dn::after{opacity:1}
 #gp .pc3 .pulse3{animation:gpPulse 2.2s ease-in-out infinite}`;document.head.appendChild(css)}
 const C3={ready:[724,1241,104,294],lose:[737,1182,97,325],blank:[724,1241,104,-10]};
-function card3(k){const [W,H,ox,oy]=C3[k];const p=h('div','pc3',card);const bg=h('img','bgc',p);bg.src='bovo11/pop3/'+k+'.webp?v=4';bg.alt='';
+function card3(k){const [W,H,ox,oy]=C3[k];const p=h('div','pc3',card);const bg=h('img','bgc',p);bg.src='bovo11/pop3/'+k+'.webp?v=5';bg.alt='';
  const at=(el,x0,y0,x1,y1)=>{Object.assign(el.style,{left:(x0-ox)/W*100+'%',top:(y0-oy)/H*100+'%',width:(x1-x0)/W*100+'%',height:(y1-y0)/H*100+'%'});p.appendChild(el);return el};
  const zone=(x0,y0,x1,y1,label,fn)=>{const z=at(h('div','z3'),x0,y0,x1,y1);z.setAttribute('role','button');z.setAttribute('aria-label',label);
   z.addEventListener('pointerdown',()=>z.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>z.addEventListener(e,()=>z.classList.remove('dn')));
@@ -276,7 +276,7 @@ window.lose=function(){S.over=true;window.fx&&window.fx('lose');open();
 #gp .pc3 .btn3 .pr3{display:inline-flex;align-items:center;gap:.15em;font-size:.72em;background:rgba(150,40,10,.28);padding:.1em .45em;border-radius:1em}
 #gp .pc3 .btn3 .pr3 img{position:static;width:1.1em;height:auto}
 #gp .pc3 .big3{color:#fff;font-size:calc(var(--pu)*44);text-shadow:0 2px 0 rgba(0,60,60,.3)}`;document.head.appendChild(css)}
-function btn3(c,x0,y0,x1,y1,kind,label,fn,aria){const b=c.at(h('div','btn3 '+kind),x0,y0,x1,y1);const im=h('img','',b);im.src=kind=='o'?'ui2/btn_wide.webp?v=1':'ui2/btn_cream.webp?v=1';im.alt='';
+function btn3(c,x0,y0,x1,y1,kind,label,fn,aria){const b=c.at(h('div','btn3 '+kind),x0,y0,x1,y1);const im=h('img','',b);im.src=kind=='o'?'ui2/btn_wide.webp?v=2':'ui2/btn_cream.webp?v=2';im.alt='';
  const t=h('b','',b);t.innerHTML=label;b.setAttribute('role','button');b.setAttribute('aria-label',aria||t.textContent);
  b.addEventListener('pointerdown',()=>b.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>b.addEventListener(e,()=>b.classList.remove('dn')));
  b.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn()===false){once=false;return}snd('tap')});return b}
@@ -287,7 +287,7 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;open('ris
  const bx=c.at(h('div','box3'),150,520,780,725);
  const st=STG();
  [['ic_music','Music','music',535],['ic_speaker','Sound','sounds',630]].forEach(([ic,lb,k,y])=>{const r=c.at(h('div','row3'),185,y,745,y+76);kimg(ic,'ic',r);h('span','',r).textContent=lb;
-  let on=st[k]>0;const t=h('img','tg3',r);const draw=()=>{t.src='ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=3'};draw();
+  let on=st[k]>0;const t=h('img','tg3',r);const draw=()=>{t.src='ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=4'};draw();
   r.setAttribute('role','switch');r.setAttribute('aria-label',lb);
   r.addEventListener('click',e=>{e.stopPropagation();on=!on;if(!on){st['_'+k]=st[k];st[k]=0}else st[k]=st['_'+k]||(k=='music'?70:80);try{localStorage.setItem('gbb_settings',JSON.stringify(st))}catch(_){}window.BA&&BA.apply&&BA.apply();draw();snd('tap')})});
  btn3(c,170,755,760,895,'o','Resume',()=>close());
@@ -312,3 +312,5 @@ window.gpBuy=function(k){open('rise');const c=card3('blank');
  const b=btn3(c,170,800,760,945,'o','Buy 1 '+bone3(P),()=>{if(!Eco.spend(P)){b.style.animation='none';void b.offsetWidth;b.style.animation='kNope .36s';K.toast('You need '+P+' bones. You have '+Eco.bones()+'.');return false}if(typeof SAVE!=='undefined'&&SAVE.boost){SAVE.boost[k]=(SAVE.boost[k]||0)+1;typeof save==='function'&&save()}else Eco.addBoost(k,1);window.drawBoosters&&drawBoosters();close();K.toast(BN[k]+' added!')},'Buy one '+BN[k]+' for '+P+' bones');
  btn3(c,190,970,740,1080,'c','Not Now',()=>close())};
 })();
+// decode the other Rambo cards ahead of time so the first Pause / Out of Moves opens without a decode hitch
+addEventListener('load',()=>setTimeout(()=>['lose','blank'].forEach(k=>{const i=new Image();i.src='bovo11/pop3/'+k+'.webp?v=5';i.decode&&i.decode().catch(()=>{});(window.__gpPre=window.__gpPre||[]).push(i)}),1500));

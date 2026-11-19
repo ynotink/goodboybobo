@@ -111,7 +111,7 @@ async function goodBoy(){mount();root.className='on';col.querySelectorAll(':scop
  await sleep(200);dim.classList.remove('in');await sleep(300);[dim,word].forEach(e=>e.remove());root.className=''}
 
 // ---------- 3) full-screen win: ChatGPT's approved win screen, built live ----------
-const W2='win2/',WV='?v=1';
+const W2='win2/',WV='?v=2';
 {const st=document.createElement('style');st.textContent=`
 @font-face{font-family:WinLil;src:url(a/lilita-one-latin-400-normal.woff2) format('woff2')}
 #wfs .w2{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .35s}
