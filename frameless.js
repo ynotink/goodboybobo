@@ -2,9 +2,9 @@
 (function(){
 const KC=390/1290,K=1290/852,u=v=>v*K*KC+'px',p=v=>v*KC+'px';
 const css=document.createElement('style');css.textContent=`
-#app #tiles .tile{background:rgba(9,52,56,.80)!important;background-image:none!important}
-#app #tiles .tile.a{background:rgba(17,68,72,.80)!important}
-#app #tiles{filter:drop-shadow(0 0 1.5px rgba(255,246,226,.55)) drop-shadow(0 6px 10px rgba(0,25,30,.35))}
+#app #tiles .tile{background:rgba(7,44,48,.84)!important;background-image:none!important;box-shadow:inset 0 0 0 .6px rgba(0,0,0,.18)!important}
+#app #tiles .tile.a{background:rgba(25,82,86,.84)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 0 .6px rgba(0,0,0,.18)!important}
+#app #tiles{filter:drop-shadow(0 0 1px rgba(255,246,226,.85)) drop-shadow(0 0 1px rgba(255,246,226,.6)) drop-shadow(0 6px 10px rgba(0,25,30,.4))}
 .flp{position:absolute;pointer-events:none;box-sizing:border-box}
 .flp.cream{background:linear-gradient(180deg,#fffaf0 0%,#fbefd6 55%,#f2e0bc 100%);border:2px solid rgba(255,255,255,.85);box-shadow:0 6px 14px rgba(0,30,35,.32),inset 0 -3px 0 rgba(170,120,60,.22)}
 .flp.teal{background:linear-gradient(180deg,#1d7672 0%,#11524f 100%);border:2px solid rgba(255,246,226,.9);box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 2px 4px rgba(0,30,35,.25)}

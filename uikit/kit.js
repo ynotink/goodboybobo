@@ -44,12 +44,12 @@ K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb
  const c1=mk('heart','cnt_heart',0);const n1=h('div','k-num3',c1);n1.textContent=window.Eco?Eco.hearts():(g.hearts!=null?g.hearts:5);const tm=h('div','k-timer',c1);
  const c2=mk('bone','cnt_bone',1);const n2=h('div','k-num3',c2);n2.textContent=window.Eco?Eco.bones():(g.bones!=null?g.bones:430);
  const gear=h('div','k-gear3 k-drop',bar);gear.style.setProperty('--i',2);gear.setAttribute('role','button');gear.setAttribute('aria-label','Settings');{const im=h('img','k-art',gear);im.src=U3+'gear.webp?v=4';im.alt='';im.draggable=false}
- K.press(gear,()=>{location.href=gearHref});
+ K.press(gear,()=>{(window.BA&&BA.nav?BA.nav(gearHref):location.href=gearHref)});
  c1.setAttribute('aria-label',n1.textContent+' lives');c2.setAttribute('aria-label',n2.textContent+' bones');
  const upd=()=>{if(!window.Eco)return;const H=Eco.hearts();n1.textContent=H;n2.textContent=Eco.bones();tm.textContent=H<Eco.MAX?Eco.fmt(Eco.nextIn()):'';c1.setAttribute('aria-label',H+' lives');c2.setAttribute('aria-label',n2.textContent+' bones')};
  if(window.Eco){Eco.on(upd);upd();setInterval(upd,1000)}
  K.press(c1,()=>{if(!window.Eco)return;const H=Eco.hearts();K.toast(H>=Eco.MAX?'Your lives are full!':'Next life in '+Eco.fmt(Eco.nextIn()))});
- K.press(c2,()=>{if(!/shop\.html/.test(location.pathname))location.href='shop.html'});
+ K.press(c2,()=>{if(!/shop\.html/.test(location.pathname))(window.BA&&BA.nav?BA.nav('shop.html'):location.href='shop.html')});
  return bar};
 // the scene: bottom-anchored painted background with drifting light motes; calls onSize(info) on every resize
 K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');

@@ -1,4 +1,61 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795127592"><script src="review_shim.js?v=4"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Good Boy Bobo</title><style>html,body{margin:0;background:#0e2a2b}</style>
-<script>location.replace('bovo11/index.html'+location.search.replace(/([?&])b=\d+&?/,'$1').replace(/[?&]$/,''))</script></head><body></body></html>
+<title>Good Boy Bobo</title>
+<style>
+html,body{margin:0;height:100%;background:#0e2a2b;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+#sa{position:fixed;left:0;top:0;width:1px;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none}
+#sb{position:fixed;left:0;bottom:0;width:1px;height:env(safe-area-inset-bottom);visibility:hidden;pointer-events:none}
+iframe.scr{position:fixed;left:0;top:0;width:100%;height:100%;border:0;margin:0;padding:0;display:block;background:#0e2a2b;z-index:1}
+iframe.scr.off{visibility:hidden;pointer-events:none;z-index:0}
+</style>
+<script>
+/* Good Boy Bobo — app shell.
+   Every screen lives in its own frame inside this one page. The audio engine lives here, so the music keeps
+   playing straight through screen changes and nothing pops. Screens already opened stay alive in the background
+   (paused, costing nothing), so going back to them is instant. A screen reloads only if the save changed since it
+   was last shown (new progress, bones spent...), and the old screen stays on until the new one has painted. */
+window.GBB_SHELL_HOST=true;
+</script>
+<script src="audio.js?v=26"></script>
+</head><body><div id="sa"></div><div id="sb"></div>
+<script>
+(function(){
+const ROOT=location.href.replace(/[?#].*$/,'').replace(/[^/]*$/,'');
+const HOME='bovo11/index.html',MAP='bovo10/index.html';
+const frames={};let shown=null,pending=null;
+const sat=()=>document.getElementById('sa').getBoundingClientRect().height,sab=()=>document.getElementById('sb').getBoundingClientRect().height;
+function norm(u){const x=new URL(u,ROOT);x.searchParams.delete('b');x.searchParams.delete('start');let rel=x.href.slice(ROOT.length);
+ if(rel===''||/^index\.html/.test(rel))rel=HOME+rel.replace(/^index\.html/,'');
+ if(/^map\.html/.test(rel))rel=MAP+rel.replace(/^map\.html/,'');
+ return rel}
+const keyOf=rel=>/^game_new\.html/.test(rel)?'game':rel.replace(/[?#].*$/,'');
+const snap=()=>{const a=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(gbb|rv_)/.test(k)&&!/settings/.test(k))a.push(k+'='+localStorage.getItem(k))}}catch(e){}return a.sort().join('|')};
+function make(rel,key){const f=document.createElement('iframe');f.className='scr off';f.setAttribute('allow','autoplay');f.setAttribute('scrolling','no');
+ f._key=key;f._ready=false;f.src=ROOT+rel;document.body.appendChild(f);frames[key]=f;return f}
+function swapTo(f){log([Date.now()%100000,'swap',f._key]);
+ if(shown&&shown!==f){const o=shown;o._snap=snap();o.classList.add('off');try{o.contentWindow.GBB_hide&&o.contentWindow.GBB_hide()}catch(e){}
+  if(o._key==='game'){setTimeout(()=>{o.remove();if(frames.game===o)delete frames.game},0)}}
+ f.classList.remove('off');shown=f;pending=null;try{f.contentWindow.GBB_show&&f.contentWindow.GBB_show()}catch(e){}
+ try{f.contentWindow.focus()}catch(e){}
+ if(!prewarmed)setTimeout(prewarm,2500)}
+const LOG=[];const log=a=>{LOG.push(a);if(LOG.length>60)LOG.shift()};function go(u){const rel=norm(u),key=keyOf(rel);let f=frames[key];log([Date.now()%100000,'go',key,f?(f._snap===snap()?'same':'changed'):'new',f&&f._ready]);
+ if(f&&f===shown&&key!=='game')return;
+ if(f&&(key==='game'||f._snap!==snap())){if(f!==shown){f.remove();delete frames[key];f=null}else{f.contentWindow.location.replace(ROOT+rel);return}}
+ if(key==='game'&&frames.game){const g=frames.game;g.remove();delete frames.game}
+ if(!f)f=make(rel,key);
+ pending=f;f._pre=false;if(f._ready)swapTo(f)}
+function ready(win){for(const k in frames){const f=frames[k];if(f.contentWindow===win){f._ready=true;
+  if(pending===f)swapTo(f);else if(f!==shown){try{win.GBB_hide&&win.GBB_hide()}catch(e){}}}}}
+function startHidden(win){for(const k in frames){const f=frames[k];if(f.contentWindow===win)return !!f._pre&&pending!==f}return false}
+function active(win){return !!shown&&shown.contentWindow===win}
+// after the first screen is up, quietly open the Map (hidden and paused) so the first trip there is instant; other tabs stay alive once opened
+let prewarmed=false;const WARM=[MAP];
+function prewarm(){prewarmed=true;if(pending)return setTimeout(prewarm,1500);const rel=WARM.find(r=>!frames[r]);if(!rel)return;
+ const f=make(rel,rel);f._pre=true;f._snap=snap();const t0=Date.now();(function wait(){if(f._ready||Date.now()-t0>8000)setTimeout(prewarm,1200);else setTimeout(wait,300)})()}
+window.GBB_SHELL={LOG,go,ready,active,startHidden,get sat(){return sat()},get sab(){return sab()}};
+// keep the shell's own frame from ever showing a stale "pending" screen if a frame fails to report
+setInterval(()=>{if(pending&&!pending._ready){try{const d=pending.contentDocument;if(d&&d.readyState==='complete')ready(pending.contentWindow)}catch(e){}}},500);
+const q=new URLSearchParams(location.search);go(q.get('start')||HOME);
+})();
+</script></body></html>

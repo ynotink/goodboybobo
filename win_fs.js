@@ -165,7 +165,7 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  const at=(e,x,y,w,h)=>{Object.assign(e.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});return e};
  const word=perfect?'title_pawsome':['title_good_boy','title_top_dog','title_woof'][Math.floor(Math.random()*3)];
  const TS={title_good_boy:804/220,title_pawsome:798/222,title_top_dog:806/229,title_woof:710/239};
- const sa=(()=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:0;height:env(safe-area-inset-top);visibility:hidden';document.body.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return v})();
+ const sa=(()=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:0;height:var(--sat,env(safe-area-inset-top));visibility:hidden';document.body.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return v})();
  const top0=Math.max(sa+12,H*.06,30);
  const tw=W*(word==='title_woof'?.66:.86),th=tw/TS[word];
  const ttl=at(img(W2+word+'.webp'+WV,'p ttl2',sc),(W-tw)/2,top0,tw,th);
