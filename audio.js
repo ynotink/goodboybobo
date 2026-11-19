@@ -60,8 +60,8 @@ async function music(name){want=name;if(!unlocked)return;const ac=ctx();if(!ac)r
 function musPos(){if(!cur||!AC)return 0;let p=AC.currentTime-cur.t0;const m=cur.m;if(p>m.loopEnd)p=m.loopStart+((p-m.loopStart)%(m.loopEnd-m.loopStart));return Math.max(0,p)}
 function remember(){if(cur)try{sessionStorage.setItem('gbb_mus',JSON.stringify({name:cur.name,pos:musPos(),at:Date.now()}))}catch(e){}}
 // leave a page smoothly: short fade, then go
-function nav(url){if(leaving)return;try{const m=sessionStorage.getItem('gbb_map');if(m&&/^map\.html/.test(url))url=m+url.slice(8)}catch(e){}url=url.replace(/([?&])b=\d+&?/,'$1').replace(/[?&]$/,'');url+=(url.includes('?')?'&':'?')+'b='+window.GBB_BUILD;leaving=true;remember();window.FX&&FX.out();
- if(AC&&cur&&unlocked){ramp(bus.master,0,.45);setTimeout(()=>location.href=url,450)}else setTimeout(()=>location.href=url,window.FX?260:0)}
+function nav(url){if(leaving)return;try{const m=sessionStorage.getItem('gbb_map');if(m&&/^map\.html/.test(url))url=m+url.slice(8)}catch(e){}url=url.replace(/([?&])b=\d+&?/,'$1').replace(/[?&]$/,'');url+=(url.includes('?')?'&':'?')+'b='+window.GBB_BUILD;leaving=true;remember();
+ location.href=url}
 addEventListener('pagehide',remember);
 addEventListener('pageshow',e=>{if(e.persisted&&AC){leaving=false;ramp(bus.master,1,.4)}});
 document.addEventListener('visibilitychange',()=>{if(!AC)return;if(document.hidden){remember();AC.suspend()}else if(unlocked)AC.resume()});

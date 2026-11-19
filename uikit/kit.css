@@ -97,3 +97,5 @@ html.kpage #ui{position:fixed;inset:0;pointer-events:none}html.kpage #ui>*{point
 .k-num3{position:absolute;top:0;height:97%;display:flex;align-items:center;justify-content:center;font-family:KNun,system-ui;font-size:calc(var(--w)*20.6);line-height:1;color:#134442;letter-spacing:.01em}
 .heart .k-num3{left:36%;width:34%;height:91%}.bone .k-num3{left:32%;width:43%}
 .k-top .k-counter3.dn,.k-top .k-gear3.dn{transform:scale(.94)}
+/* screens appear instantly: no fade/pop-in on arrival */
+.k-in,.k-drop,.k-pop,.k-go .k-in,.k-go .k-drop,.k-go .k-pop{animation:none!important;opacity:1!important}

@@ -192,7 +192,7 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  const fade=el('div','fadeout',col);
  let T=[],done=false,ready=false;const later=(ms,f)=>T.push(setTimeout(f,ms));
  const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,sub,bo,ram,...md].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');rp.classList.add('in');ready=true};
- const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');fade.style.opacity='1';setTimeout(()=>{cancelAnimationFrame(raf);fn()},480)};
+ const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');cancelAnimationFrame(raf);fn()};
  ct.addEventListener('pointerdown',()=>ct.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>ct.addEventListener(e,()=>ct.classList.remove('dn')));
  ct.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>window.BA&&BA.nav?BA.nav('map.html'):location.href='map.html')});
  rp.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>{try{root.className='';col.querySelectorAll(':scope>:not(canvas)').forEach(x=>x.remove());parts=[];startLevel(S.li)}catch(_){location.reload()}})});

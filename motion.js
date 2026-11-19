@@ -6,8 +6,8 @@ const Q=new URLSearchParams(location.search);
 let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches||JSON.parse(localStorage.getItem('gbb_settings')||'{}').motion===0}catch(e){}
 if(Q.get('fx')==='0')RM=true;
 const css=`
-html.fx-pre #app{opacity:0}
-html.fx-in #app{animation:fxAppIn .42s cubic-bezier(.2,.8,.2,1) both}
+html.fx-pre #app{}
+html.fx-in #app{}
 @keyframes fxAppIn{from{opacity:0;filter:brightness(1.08)}to{opacity:1;filter:none}}
 .fx-rise{animation:fxRise .55s cubic-bezier(.2,1.25,.35,1) both}
 @keyframes fxRise{from{opacity:0;translate:0 18px;scale:.94}to{opacity:1;translate:0 0;scale:1}}
@@ -15,7 +15,7 @@ html.fx-in #app{animation:fxAppIn .42s cubic-bezier(.2,.8,.2,1) both}
 @keyframes fxDrop{from{opacity:0;translate:0 -22px;scale:.9}to{opacity:1;translate:0 0;scale:1}}
 .fx-pop{animation:fxPop .5s cubic-bezier(.2,1.5,.4,1) both}
 @keyframes fxPop{from{opacity:0;scale:.6}to{opacity:1;scale:1}}
-html.fx-out #app{animation:fxAppOut .3s ease-in both}
+html.fx-out #app{}
 @keyframes fxAppOut{to{opacity:0;scale:.985;filter:brightness(1.06)}}
 .fx-press{transition:scale .09s ease-out!important;scale:.93}
 .fx-breathe{animation:fxBreathe 2.6s ease-in-out infinite}
@@ -65,7 +65,7 @@ addEventListener('pointerdown',e=>{const el=e.target.closest&&e.target.closest(P
  const up=()=>{el.classList.remove('fx-press');if(!RM)el.animate([{scale:.93},{scale:1.06},{scale:.99},{scale:1}],{duration:340,easing:'ease-out'});removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
  addEventListener('pointerup',up);addEventListener('pointercancel',up)},true);
 // leaving a screen: quick fade (works with the audio fade in BA.nav)
-window.FX={out(){if(RM)return;document.documentElement.classList.add('fx-out');const A=document.getElementById('app');if(!A||getComputedStyle(A).display==='contents')document.body.animate([{opacity:1},{opacity:0}],{duration:280,fill:'forwards'})},addShine};
+window.FX={out(){return;document.documentElement.classList.add('fx-out');const A=document.getElementById('app');if(!A||getComputedStyle(A).display==='contents')document.body.animate([{opacity:1},{opacity:0}],{duration:280,fill:'forwards'})},addShine};
 addEventListener('pageshow',e=>{if(e.persisted){document.documentElement.classList.remove('fx-out')}});
 if(document.readyState==='loading')addEventListener('DOMContentLoaded',()=>requestAnimationFrame(enter));else requestAnimationFrame(enter);
 })();

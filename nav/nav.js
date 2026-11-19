@@ -27,7 +27,7 @@ function build(){const W=window.GBB_COL?GBB_COL():innerWidth,u=W/852;
   it.addEventListener('pointerdown',()=>it.classList.add('dn'));
   ['pointerleave','pointercancel','pointerup'].forEach(e=>it.addEventListener(e,()=>it.classList.remove('dn')));
   it.addEventListener('click',()=>{if(on||nav.dataset.go)return;nav.dataset.go=1;try{window.BA&&BA.play&&BA.play('tap',{gap:60})}catch(e){}
-   setTimeout(()=>(window.BA&&BA.nav?BA.nav(root+url):location.href=root+url),120)});
+   (window.BA&&BA.nav?BA.nav(root+url):location.href=root+url)});
   nav.appendChild(it)})}
 const go=()=>{document.body.appendChild(nav);build()};
 if(document.body)go();else addEventListener('DOMContentLoaded',go);

@@ -11,15 +11,8 @@ const css=document.createElement('style');css.textContent=`
 .ul-pc{transform-origin:50% 55%;will-change:transform}
 #ulFade{position:fixed;inset:0;z-index:2147483000;pointer-events:none;background:#fff1df;opacity:0}`;document.head.appendChild(css);
 
-/* ---------- screen fades ---------- */
-const fade=document.createElement('div');fade.id='ulFade';
-const addFade=()=>{if(!document.body)return requestAnimationFrame(addFade);document.body.appendChild(fade);
- if(!RM&&sessionStorage.getItem('ul_in')){fade.style.opacity=1;requestAnimationFrame(()=>requestAnimationFrame(()=>fade.animate([{opacity:1},{opacity:0}],{duration:340,easing:'cubic-bezier(.3,.6,.3,1)',fill:'forwards'})))}
- sessionStorage.removeItem('ul_in')};
-addFade();
-addEventListener('pageshow',e=>{if(e.persisted){fade.getAnimations().forEach(a=>a.cancel());fade.style.opacity=0}});
-if(!window.FX)window.FX={out(){if(RM)return;try{sessionStorage.setItem('ul_in','1')}catch(e){}fade.animate([{opacity:0},{opacity:1}],{duration:240,easing:'ease-in',fill:'forwards'})}};
-else{const o=FX.out;FX.out=function(){try{sessionStorage.setItem('ul_in','1')}catch(e){}return o.apply(this,arguments)}}
+/* screen changes are instant (no fades) */
+if(!window.FX)window.FX={out(){}};else FX.out=function(){};
 
 /* ---------- which pre-cut piece belongs to each tap area ---------- */
 const PAGE=(location.pathname.match(/(shop|toys|friends|settings)\.html/)||[])[1];
