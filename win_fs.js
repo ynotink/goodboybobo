@@ -57,7 +57,7 @@ const css=document.createElement('style');css.textContent=`
 #wfs .front{position:absolute;left:-10%;right:-10%;bottom:-2%;height:12%;z-index:3;pointer-events:none}
 #wfs .front .cloud{opacity:1}
 #wfs .ttl,#wfs .sub{transition:opacity .35s}#wfs .hideT{opacity:0!important}
-#wfs .fadeout{position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .45s;z-index:9}
+#wfs .fadeout{position:absolute;inset:0;background:#fff;opacity:0;transition:opacity .45s;z-index:9;pointer-events:none}
 @keyframes wfWord{0%{transform:translate(-50%,-50%) scale(0) rotate(-8deg)}70%{transform:translate(-50%,-50%) scale(1.12) rotate(2deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(0)}}
 @keyframes wfFade{to{opacity:1}}
 @keyframes wfPulse{0%,100%{opacity:1}50%{opacity:.55}}
