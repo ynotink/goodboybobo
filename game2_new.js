@@ -43,14 +43,14 @@ let TOYS=SETS[0];
 window.g2level=()=>{TOYS=SETS[(S.lv.ch||0)%SETS.length];drawHud();allCells().forEach(c=>{if(c.p&&c.p.el)drawPiece(c.p)})};
 const toySrc=t=>A+(TOYS[t]||'tennis')+'.webp';
 window.drawPiece=function(p){const el=p.el;
- if(p.blk){el.className='pc blk';const b=p.blk;el.innerHTML=`<img src="${A}${b.k=='crate'?(b.hp>1?'crate_full':'crate_cracked'):(b.hp>1?'mud_full':'mud_partial')}.webp">`;return}
+ if(p.blk){el.className='pc blk';const b=p.blk;el.innerHTML=`<img src="${A}${b.k=='crate'?(b.hp>1?'crate_full':'crate_cracked'):(b.hp>1?'dirt_full':'dirt_partial')}.webp">`;return}
  el.className='pc'+(p.sp?' sp':'');let src;
  if(p.carrot)src=A+'carrot.webp';
  else if(p.sp=='row'||p.sp=='col')src=A+(TOYS[p.dc]||TOYS[0])+(p.sp=='row'?'_row_blast':'_column_blast')+'.webp';
  else if(p.sp)src=A+{bomb:'bomb',flyer:'flyer',rainbow:'rainbow'}[p.sp]+'.webp';
  else src=toySrc(p.t);
  el.innerHTML=`<img src="${src}">`+(p.tied?`<img class="lsh" src="${A}leash.webp">`:'')};
-window.goalImg=g=>g.k=='piece'?'g2/'+(TOYS[g.t]||'tennis'):g.k=='crate'?'g2/crate_full':g.k=='dirt'?'g2/mud_full':g.k=='tied'?'g2/leash':'g2/carrot';
+window.goalImg=g=>g.k=='piece'?'g2/'+(TOYS[g.t]||'tennis'):g.k=='crate'?'g2/crate_full':g.k=='dirt'?'g2/dirt_full':g.k=='tied'?'g2/leash':'g2/carrot';
 const goalSrc=g=>'a/'+goalImg(g)+'.webp';
 
 // ---- live gameplay values (approved spec: Nunito Black, #005156)
