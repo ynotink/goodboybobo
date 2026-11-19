@@ -30,7 +30,7 @@ function spr(k,x,y,w,frames,dur,ease='cubic-bezier(.2,.7,.3,1)',opt={}){const L=
  frames=frames.map((f,j)=>j<frames.length-1&&!f.easing?Object.assign({},f,{easing:ease}):f);const a=i.animate(frames,{duration:RM?dur*.6:dur,easing:'linear',fill:'forwards',delay:opt.delay||0});a.onfinish=()=>{i.remove();live--};return i}
 function glint(x,y,size,delay=0){if(RM)return;spr(Math.random()<.5?'sparkle_star':'sparkle_glint',x,y,size,[{transform:'scale(0) rotate(0)',opacity:1},{transform:'scale(1) rotate(30deg)',opacity:1,offset:.45},{transform:'scale(.15) rotate(70deg)',opacity:0}],380,'ease-out',{delay,blend:'screen'})}
 // ---- which colour is this toy?
-const TOYCOL={paw:'orange',tennis:'yellow',rope:'blue',ring:'green',squeaky_bone:'purple',rubber_ball:'red',natural_bone:'yellow'};
+const TOYCOL={paw:'orange',tennis:'yellow',rope:'blue',ring:'green',squeaky_bone:'purple',rubber_ball:'red',natural_bone:'yellow',duck:'yellow',frisbee:'red'};
 function toyColor(p){try{const i=p&&p.el&&p.el.querySelector('img');const n=i?i.src.split('/').pop().replace(/(_s)?\.webp.*$/,''):'';for(const k in TOYCOL)if(n.indexOf(k)===0)return TOYCOL[k]}catch(e){}return ['orange','yellow','blue','green','purple','red'][(p&&p.t)||0]}
 // ---- ordinary match burst: about one tile wide, 200 ms
 function pop(cell,p){const [x,y]=center(cell),c=cs();const col=toyColor(p);

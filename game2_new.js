@@ -38,7 +38,8 @@ app.prepend(skin);app.prepend(top);app.appendChild(hudBox);app.appendChild(ui);a
 const hud=document.createElement('canvas');hudBox.appendChild(hud);Object.assign(hud.style,{position:'absolute',left:0,top:0,width:'390px',height:H*KC+'px'});
 
 // ---- toys per chapter (5 per board; every toy rotates in)
-const SETS=[['paw','tennis','rope','ring','squeaky_bone'],['paw','rubber_ball','natural_bone','tennis','rope'],['rubber_ball','tennis','rope','ring','squeaky_bone']];
+// one set per chapter: a new toy joins as you go (red ball ch2, cream bone ch3, duck ch4, frisbee ch6); look-alike colours never share a board
+const SETS=[['paw','tennis','rope','ring','squeaky_bone'],['paw','tennis','rope','rubber_ball','squeaky_bone'],['tennis','rope','ring','rubber_ball','natural_bone'],['paw','ring','rubber_ball','natural_bone','duck'],['ring','rope','squeaky_bone','natural_bone','duck'],['rope','ring','natural_bone','duck','frisbee'],['tennis','rope','squeaky_bone','natural_bone','frisbee'],['paw','ring','rope','duck','frisbee'],['tennis','rubber_ball','natural_bone','squeaky_bone','rope'],['ring','rope','squeaky_bone','duck','frisbee']];
 let TOYS=SETS[0];
 window.g2level=()=>{TOYS=SETS[(S.lv.ch||0)%SETS.length];drawHud();allCells().forEach(c=>{if(c.p&&c.p.el)drawPiece(c.p)})};
 const toySrc=t=>A+(TOYS[t]||'tennis')+'.webp';
