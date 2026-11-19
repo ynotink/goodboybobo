@@ -26,7 +26,7 @@ function build(){const h=document.getElementById('g2hud');if(!h||!document.getEl
   const L=390/360,LY=-12,px=v=>v+'px';
   const t=new Image();t.className='flp';t.id='hud4';t.src='bovo11/play2/hud4.webp?v=1';Object.assign(t.style,{left:px(16*L),top:px(101*L+LY),width:px(328*L),height:px(328*L*724/2172),filter:'drop-shadow(0 4px 3px rgba(0,18,22,.5)) drop-shadow(0 10px 12px rgba(0,18,22,.3))'});h.insertBefore(t,h.firstChild);
   const RW=140,RH=RW*1190/1322,RB=192;   // bigger Rambo, standing behind the ledge (body hidden by the bar)
-  const r4=new Image();r4.className='flp';r4.id='rambo4';r4.src='bovo11/play2/rambo4.webp?v=1';Object.assign(r4.style,{left:px((293-RW/2)*L),top:px((RB-RH)*L+LY),width:px(RW*L),height:px(RH*L),transformOrigin:'50% 100%',filter:'drop-shadow(0 4px 5px rgba(0,18,22,.35))'});h.insertBefore(r4,t);
+  const r4=new Image();r4.className='flp';r4.id='rambo4';r4.src='bovo11/play2/rambo4.webp?v=1';Object.assign(r4.style,{left:px((293-RW/2)*L),top:px((RB-RH)*L+LY),width:px(RW*L),height:px(RH*L),transformOrigin:'50% 100%',filter:'drop-shadow(0 4px 5px rgba(0,18,22,.35))'});r4.style.translate='-8px 0';h.insertBefore(r4,t);
   window.NO_RREACT=true;
   ram.style.display='none';h.dataset.art=1;
  }else if(RV=='peek'){

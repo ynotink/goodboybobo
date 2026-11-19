@@ -68,7 +68,7 @@ function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(windo
  const lv='Level '+(S.li+1);txt(g,lv,[X(68)-140,Y(122)-34,280,68],lv.length>8?40:46,'center','#fdf1d6');
  txt(g,String(Math.max(0,S.moves)),[X(209)-110,Y(156)-52,220,104],S.moves>99?84:104,'center',S.moves<=5?'#ffe08a':'#fff8ec');
  txt(g,'Moves',[X(209)-110,Y(177)-24,220,48],40,'center','#fff1d6');
- {const cx=X(298),by=Y(195),fs=76;g.save();g.font=`900 ${fs}px BoboNunito`;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';
+ {const cx=X(294),by=Y(195),fs=76;g.save();g.font=`900 ${fs}px BoboNunito`;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';
   g.shadowColor='rgba(120,50,10,.38)';g.shadowOffsetY=6;g.shadowBlur=8;g.lineWidth=14;g.strokeStyle='#ffe9d2';g.strokeText('RAMBO',cx,by);
   g.shadowColor='transparent';const gr=g.createLinearGradient(0,by-fs*.75,0,by);gr.addColorStop(0,'#237a7c');gr.addColorStop(.55,'#0f5458');gr.addColorStop(1,'#0a3e42');
   g.fillStyle=gr;g.fillText('RAMBO',cx,by);g.globalAlpha=.35;g.lineWidth=3;g.strokeStyle='#7fc4c0';g.strokeText('RAMBO',cx,by-2);g.restore()}
