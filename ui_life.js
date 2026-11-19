@@ -51,12 +51,17 @@ function wire(z){if(z._ul)return;z._ul=1;let L=null,t=0,own=null;
  const down=()=>{if(RM)return;t=performance.now();own=z.classList.contains('mk-z')?ownPart(z):null;
   if(own){own.getAnimations().forEach(a=>a.cancel());own.animate([{scale:1},{scale:.95}],{duration:110,easing:'cubic-bezier(.2,.7,.3,1)',fill:'forwards'});return}
   if(L){L.pc.remove();L.pt.remove()}L=lift(z);if(!L)return;
+  {const zr=z.getBoundingClientRect(),cx=zr.left+zr.width/2,cy=zr.top+zr.height*.55;L.ov=[...z.parentNode.querySelectorAll('.ck3,.tb3')].filter(e=>{const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;return x>zr.left&&x<zr.right&&y>zr.top&&y<zr.bottom});
+   const ty=-parseFloat(L.pc.style.height)*(L.nav?.05:.03);L.ty=ty;
+   for(const e of L.ov){const r=e.getBoundingClientRect();e.style.transformOrigin=(cx-r.left)+'px '+(cy-r.top)+'px';e.getAnimations().forEach(a=>a.cancel());
+    e.animate([{scale:1,translate:'0 0'},{scale:1.05,translate:'0 '+ty+'px'}],{duration:120,easing:'cubic-bezier(.2,.8,.3,1)',fill:'forwards'})}}
   L.pc.animate([{scale:1,translate:'0 0',filter:'brightness(1)'},{scale:L.nav?1.08:1.05,translate:L.nav?'0 -5%':'0 -3%',filter:'brightness(1.03)'}],{duration:120,easing:'cubic-bezier(.2,.8,.3,1)',fill:'forwards'})};
  const up=()=>{const wait=Math.max(0,90-(performance.now()-t));
   if(own){const o=own;own=null;setTimeout(()=>{o.getAnimations().forEach(a=>a.cancel());o.animate([{scale:.95},{scale:1.03,offset:.5},{scale:1}],{duration:320,easing:'ease-out'})},wait);return}
   if(!L)return;const m=L;L=null;
   setTimeout(()=>{const s=m.nav?1.08:1.05,y=m.nav?'0 -5%':'0 -3%';
    const a=m.pc.animate([{scale:s,translate:y},{scale:.985,translate:'0 0',offset:.55},{scale:1.006,translate:'0 0',offset:.8},{scale:1,translate:'0 0'}],{duration:360,easing:'ease-out',fill:'forwards'});
+   for(const e of (m.ov||[]))e.animate([{scale:s,translate:'0 '+m.ty+'px'},{scale:.985,translate:'0 0',offset:.55},{scale:1.006,translate:'0 0',offset:.8},{scale:1,translate:'0 0'}],{duration:360,easing:'ease-out',fill:'forwards'});
    a.onfinish=()=>{m.pc.remove();m.pt.remove()}},wait)};
  z.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(e=>z.addEventListener(e,up))}
 const scan=()=>document.querySelectorAll('.mk-z,#gbnav .it').forEach(wire);
