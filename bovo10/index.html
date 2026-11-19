@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795053598"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795055714"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=24"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -15,6 +15,8 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 .n.nl{color:#f4f4f2;text-shadow:0 .05em .04em rgba(0,0,0,.45)}.n.nc{color:#fff;text-shadow:0 .05em .05em rgba(150,50,10,.5)}
 #paw{position:absolute;transform:translate(-50%,-50%);filter:drop-shadow(0 0 10px #ffe27a) drop-shadow(0 0 4px #ffd34d) drop-shadow(0 4px 3px rgba(0,0,0,.35));animation:bob 1.2s ease-in-out infinite;pointer-events:none;z-index:3}
 @keyframes bob{50%{margin-top:-6px}}
+#chn{position:absolute;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + var(--w)*80);background:linear-gradient(#1d6a68,#0f4d4c);border:calc(var(--w)*2.5) solid #fbe8cf;border-radius:999px;padding:calc(var(--w)*5) calc(var(--w)*18) calc(var(--w)*6);font-family:Nun;color:#fdf1d6;font-size:calc(var(--w)*17);white-space:nowrap;box-shadow:0 calc(var(--w)*5) calc(var(--w)*4) rgba(30,16,2,.5),0 calc(var(--w)*10) calc(var(--w)*16) rgba(25,14,0,.3);text-align:center;line-height:1;transition:opacity .25s}
+#chn small{display:block;font-size:calc(var(--w)*10);letter-spacing:.15em;color:#a9dcd5;margin-bottom:calc(var(--w)*2)}
 #hud{position:fixed;left:0;right:0;top:0;height:120px;pointer-events:none;z-index:5}
 #hud .c3{position:absolute;top:calc(env(safe-area-inset-top) + 34px);filter:drop-shadow(0 calc(var(--w)*2.6) calc(var(--w)*2) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--w)*6) calc(var(--w)*8) rgba(25,14,0,.35))}
 #hud .c3 img{display:block;width:100%;height:100%}
@@ -24,10 +26,10 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #win{right:10px;bottom:calc(27vw + 14px);font-size:16px;background:linear-gradient(#57c84d,#2f9a2b);box-shadow:0 4px 0 #1f6e1c}
 #tog{right:10px;top:calc(env(safe-area-inset-top) + 84px);background:rgba(18,95,90,.9)}#tog.off{background:rgba(120,120,120,.9)}
 #tag{position:fixed;z-index:9;left:8px;top:calc(env(safe-area-inset-top) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
-#hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 130px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
+#hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 150px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
 </style></head><body>
 <div id="scbg" style="position:fixed;inset:-40px;background:url(s1/scene.png?v=5) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
-<div id="hud"><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/cnt_heart.webp?v=3" alt=""><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
+<div id="hud"><div id="chn"><small>CHAPTER 1</small><span>The Backyard</span></div><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/cnt_heart.webp?v=3" alt=""><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
 <div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img src="../ui3/cnt_bone.webp?v=3" alt=""><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
 <div class="c3" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img src="../ui3/gear.webp?v=3" alt=""></div></div>
 <a id="gearA" href="../bovo11/settings.html" style="position:fixed;right:4px;top:calc(env(safe-area-inset-top) + 26px);width:54px;height:54px;z-index:6"></a>
@@ -121,6 +123,13 @@ Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSn
     S.rip=S.rip.filter(r=>r.t<.9)}
    fg.globalAlpha=1}
   requestAnimationFrame(frame)})(t0)});
+
+// chapter name tag (2 scenes per chapter)
+const CHN=['The Backyard','The Neighborhood','Vet Visit','Rainy Day',"Grammy's House",'Dog Park','Sunny Woods','Lakeside','Picnic Park','Beach Day'];
+let chnI=-1;function chUpd(){const mid=sc.scrollTop+sc.clientHeight*.55;let best=0;SCENES.forEach((S,i)=>{const t=S.el.offsetTop;if(t<=mid&&t+S.el.offsetHeight>mid)best=i});const c=Math.floor(best/2);if(c===chnI)return;const e=document.getElementById('chn');
+ const set=()=>{e.querySelector('small').textContent='CHAPTER '+(c+1);e.querySelector('span').textContent=CHN[c]||'';e.style.opacity=1};
+ if(chnI<0)set();else{e.style.opacity=0;setTimeout(set,250)}chnI=c}
+sc.addEventListener('scroll',chUpd,{passive:true});setTimeout(chUpd,300);setTimeout(chUpd,1500);
 sc.addEventListener('scroll',()=>{if(sc.scrollTop<sc.scrollHeight-sc.clientHeight*1.5)document.getElementById('hint').style.opacity=0},{passive:true});
 function win(){const N=SCENES.length*5;if(cur>=N-1){cur=0;buttons();sc.scrollTo({top:sc.scrollHeight,behavior:'smooth'});return}
  try{new Audio('../au/rambo_bark.mp3').play()}catch(e){}

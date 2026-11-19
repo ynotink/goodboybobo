@@ -43,7 +43,12 @@ function loop(){const pv=vids.pant;
   if(++fr%10==0&&typeof allCells=='function'){try{const n=allCells().filter(x=>x.p&&x.p.sp).length;if(lastSp>=0&&n>lastSp)play('happy');lastSp=n}catch(e){}}}
  if(ready&&!cur&&performance.now()-lastAct>24000&&typeof S!=='undefined'&&S&&!S.over&&!document.getElementById('gp')?.classList.contains('on'))play('happy');
  requestAnimationFrame(loop)}
-function play(k,force){const v=vids[k];if(!ready||!v||v.readyState<2)return;if(cur&&!force)return;if(!force&&performance.now()<coolUntil)return;coolUntil=performance.now()+2500;lastAct=performance.now();
+// iPhone Safari ignores preload on videos that aren't playing, so the reaction clips never loaded there:
+// warm every clip up on the first touch, and if one still isn't ready, load it and retry.
+let warmed=false;function warm(){if(warmed)return;warmed=true;for(const k of ['happy','cheer','worry']){const v=vids[k];if(!v)continue;try{v.load();const p=v.play();p&&p.then&&p.then(()=>{if(cur!==v){v.pause();v.currentTime=0}}).catch(()=>{})}catch(e){}}}
+addEventListener('pointerdown',warm,{passive:true});addEventListener('touchstart',warm,{passive:true});
+function play(k,force){const v=vids[k];if(!ready||!v)return;
+ if(v.readyState<2){if(!v._retry){v._retry=1;try{v.load();const p=v.play();p&&p.then&&p.then(()=>{v.pause();v._retry=0;play(k,force)}).catch(()=>{v._retry=0})}catch(e){v._retry=0}}return}if(cur&&!force)return;if(!force&&performance.now()<coolUntil)return;coolUntil=performance.now()+2500;lastAct=performance.now();
  fadeFrom=cur||vids.pant;fadeT=0;if(cur&&cur!==v)cur.pause();cur=v;v.currentTime=0;const p=v.play();p&&p.catch&&p.catch(()=>{cur=null})}
 window.rReact=play;window.rVids=vids;
 window.ramboReact=function(kind){if(kind==='big')play('cheer',true);else play('happy')};
