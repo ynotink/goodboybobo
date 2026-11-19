@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795100607"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=25"></script><script src="../ui_life.js?v=5"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795112837"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../audio.js?v=25"></script><script src="../ui_life.js?v=5"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -28,7 +28,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #tag{position:fixed;z-index:9;left:8px;top:calc(env(safe-area-inset-top) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 #hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top) + 150px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
 </style></head><body>
-<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/scene.png?v=6) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
+<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/still.jpg?v=1) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
 <div id="hud"><div id="chn"><small>CHAPTER 1</small><span>The Backyard</span></div><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/cnt_heart.webp?v=3" alt=""><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
 <div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img src="../ui3/cnt_bone.webp?v=3" alt=""><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
 <div class="c3" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img src="../ui3/gear.webp?v=3" alt=""></div></div>
@@ -94,7 +94,7 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
-const LIVEV='?v=7';
+const LIVEV='?v=8';
 function liveOn(S){if(S.lv||!window.SeamLoop||!motion)return;const v=document.createElement('video');
  Object.assign(v,{muted:true,defaultMuted:true,playsInline:true,autoplay:true,preload:'auto'});
  for(const k of ['muted','playsinline','webkit-playsinline','autoplay','disablepictureinpicture'])v.setAttribute(k,'');
@@ -104,7 +104,8 @@ function liveOn(S){if(S.lv||!window.SeamLoop||!motion)return;const v=document.cr
   rv.addEventListener('playing',()=>{if(S.lv)rv.style.opacity=S.rain>.5?.6:.44},{once:true});RL.play()}
  v.addEventListener('playing',()=>{if(!S.lv)return;v.style.opacity=1;S.live=1;setTimeout(()=>{const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)},650)},{once:true});L.play()}
 function liveOff(S){if(!S.lv)return;S.lv.L.pause();if(S.lv.RL){S.lv.RL.pause();for(const e of S.lv.RL.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}}for(const e of S.lv.L.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}S.lv=null;S.live=0}
-function ensure(S){if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
+function ensure(S){if(window.SeamLoop&&motion){if(!S.under){const im=new Image();im.decoding='async';im.src=S.dir+'/still.jpg?v=1';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}return}  // living scenes: a light still under the video, no WebGL textures
+ if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
 function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=6';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
  const gl=S.cv.getContext('webgl',{alpha:true,premultipliedAlpha:false,antialias:false});
@@ -122,7 +123,8 @@ size();addEventListener('resize',size);
 Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
  (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
   const vh=sc.clientHeight;
-  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);if(r.bottom>-vh*.6&&r.top<vh*1.6)liveOn(S);else liveOff(S);if(r.bottom<0||r.top>vh||!S.ready||S.live)continue;const gl=S.gl,U=S.U;
+  const visLive=SCENES.every(S=>{const r=S.el.getBoundingClientRect();return !(r.bottom>0&&r.top<vh)||S.live});
+  for(const S of SCENES){const r=S.el.getBoundingClientRect();if(r.bottom>-vh*1.2&&r.top<vh*2.2)ensure(S);else drop(S);{const vis=r.bottom>0&&r.top<vh,near=r.bottom>-vh*.6&&r.top<vh*1.6;if(vis||(near&&visLive))liveOn(S);else if(!near)liveOff(S)}if(r.bottom<0||r.top>vh||!S.ready||S.live)continue;const gl=S.gl,U=S.U;
    if(!S.live){gl.viewport(0,0,S.cv.width,S.cv.height);gl.uniform1f(U('t'),t);gl.uniform1f(U('on'),on);gl.uniform2f(U('px'),1/S.IW,1/S.IH);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
    const fg=S.fx.getContext('2d'),W=S.fx.width,H=S.fx.height;fg.clearRect(0,0,W,H);fg.globalAlpha=on;
    if(!S.live){
