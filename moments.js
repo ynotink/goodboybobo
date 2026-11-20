@@ -4,10 +4,10 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=6',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=7',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[63,1009,974,898],"11_mr_bunny":[853,1201,392,416],"20_title_accents":[102,178,1081,434],"21_title":[268,253,754,278],"30_primary_button_blank":[221,2348,848,246],"31_hard_blank":[483,665,324,110],"32_super_hard_blank":[483,666,324,109]},
  "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
- "fail":{"10_rambo":[182,778,695,1268],"11_mr_cardinal":[713,1432,454,515],"20_title_accents":[78,242,1107,444],"21_title":[152,322,984,319],"22_minus_1_life_tag":[445,627,404,129],"30_primary_button":[172,2038,946,280],"31_secondary_button":[203,2343,884,232]},
+ "fail":{},
  "lives":{"20_title_accents":[135,178,994,399],"21_title":[93,250,1104,290],"30_primary_button":[61,2218,1168,246],"31_secondary_button":[237,2483,816,178]},
  "boost":{},
  "bones":{"20_title_accents":[207,182,876,352],"21_title":[277,193,736,360],"30_primary_button":[190,2170,910,217],"31_secondary_button":[245,2400,800,189]},
@@ -25,6 +25,7 @@ const css=document.createElement('style');css.textContent=`
 #gm .bt.art img{filter:drop-shadow(0 calc(var(--s)*14px) calc(var(--s)*12px) rgba(40,25,0,.38))}
 #gm .tg{position:absolute;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*8px) calc(var(--s)*8px) rgba(30,40,0,.35))}
 #gm .bt.dn{transform:scale(.95)}
+#gm .zn.dn{transform:none;background:rgba(60,20,0,.18)}
 #gm .bt .lb{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:.25em;white-space:nowrap;line-height:1;color:#fff1cb;font-weight:900;pointer-events:none}
 #gm .gr{position:absolute;display:flex;align-items:center;transform:translate(-50%,-50%);pointer-events:none}
 #gm .gr img{display:block;object-fit:contain}
@@ -51,7 +52,7 @@ function want(k){if(done[k])return done[k];const names=['bg',...Object.keys(L[k]
 want('ready');addEventListener('load',()=>setTimeout(()=>{want('pause');want('lose')},1200));
 // ---------- layout ----------
 let s=1,stage=null,items=[],timers=[],once=false,kind=null;
-const FLAT={lives:1,bones:1,boost:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
+const FLAT={lives:1,bones:1,boost:1,fail:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
 function fit(){if(!stage)return;const W=innerWidth,H=innerHeight;s=Math.min(W/DW,H/DH);const sb=Math.max(W/DW,H/DH);
  const bg=gm.querySelector('.bg:not(.bgb)'),bb=gm.querySelector('.bgb');const sc=FLAT[kind]?s:sb;
  if(bg)Object.assign(bg.style,{width:DW*sc+'px',height:DH*sc+'px',left:(W-DW*sc)/2+'px',top:(H-DH*sc)/2+'px'});
@@ -149,11 +150,10 @@ function imgButton(k,n,fn,aria){const b=L[k][n],el=h('div','bt art',stage);el.se
 function onButton(el,k,n,str,x,y,cap){const b=L[k][n],t=h('div','tx',el);items.push(()=>{Object.assign(t.style,{left:(x-b[0])*s+'px',top:(y-b[1])*s+'px'});GBBFont&&GBBFont.draw(t,str,cap*s,{style:'button'})});return t}
 // ---------- LEVEL FAILED ("So Close!") ----------
 window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
- want('fail').then(()=>{open('fail','tap');const k='fail';
-  layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');layer(k,'22_minus_1_life_tag');
-  const t=imgButton(k,'30_primary_button',()=>{close();if(window.Eco&&Eco.hearts()<1)return gpNoLives();startLevel(S.li)},'Try again');
-  imgButton(k,'31_secondary_button',()=>{close();BA.nav('map.html')},'Back to map');
-  later(1000,()=>t.classList.add('pulse'));show()})};
+ want('fail').then(()=>{open('fail','tap');
+  const t=zoneAt(159,2051,969,265,()=>{close();if(window.Eco&&Eco.hearts()<1)return gpNoLives();startLevel(S.li)},'Try again');
+  zoneAt(209,2354,871,220,()=>{close();BA.nav('map.html')},'Back to map');
+  show()})};
 // ---------- OUT OF LIVES ----------
 window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
  want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;
@@ -166,7 +166,7 @@ window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
   later(1000,()=>p.classList.add('pulse'));show();tick()})};
 // ---------- GET A BOOSTER ----------
 const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'];
-function zoneAt(x,y,w,hh,fn,aria){const el=h('div','bt',stage);el.setAttribute('role','button');el.setAttribute('aria-label',aria);
+function zoneAt(x,y,w,hh,fn,aria){const el=h('div','bt zn',stage);el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));el.setAttribute('role','button');el.setAttribute('aria-label',aria);
  items.push(()=>Object.assign(el.style,{left:x*s+'px',top:y*s+'px',width:w*s+'px',height:hh*s+'px',borderRadius:hh*s/2+'px'}));
  el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
 window.gpBuy=function(bk){want('boost').then(()=>{open('boost','tap');const k='boost',P=window.Eco?Eco.PRICE.boost[bk]:50;
