@@ -4,7 +4,7 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=7',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=8',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[63,1009,974,898],"11_mr_bunny":[853,1201,392,416],"20_title_accents":[102,178,1081,434],"21_title":[268,253,754,278],"30_primary_button_blank":[221,2348,848,246],"31_hard_blank":[483,665,324,110],"32_super_hard_blank":[483,666,324,109]},
  "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
  "fail":{},
