@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795176688"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=27"></script><script src="../ui_life.js?v=7"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795178032"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=27"></script><script src="../ui_life.js?v=7"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -100,7 +100,7 @@ function liveOn(S){if(S.lv||!window.SeamLoop||!motion)return;const v=document.cr
  for(const k of ['muted','playsinline','webkit-playsinline','autoplay','disablepictureinpicture'])v.setAttribute(k,'');
  v.src=S.dir+'/live.mp4'+LIVEV;v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:fill;display:block;pointer-events:none;opacity:0;transition:opacity .6s';
  S.art.insertBefore(v,S.fx);const L=SeamLoop(v,{lead:1.5});S.lv={v,L};
- if(S.rain){const rv=v.cloneNode();rv.src='rain.mp4?v=1';rv.style.mixBlendMode='screen';rv.style.opacity=0;S.art.insertBefore(rv,S.fx);const RL=SeamLoop(rv,{lead:1.5});S.lv.rv=rv;S.lv.RL=RL;
+ if(false&&S.rain){const rv=v.cloneNode();rv.src='rain.mp4?v=1';rv.style.mixBlendMode='screen';rv.style.opacity=0;S.art.insertBefore(rv,S.fx);const RL=SeamLoop(rv,{lead:1.5});S.lv.rv=rv;S.lv.RL=RL;
   rv.addEventListener('playing',()=>{if(S.lv)rv.style.opacity=S.rain>.5?.6:.44},{once:true});RL.play()}
  v.addEventListener('playing',()=>{if(!S.lv)return;v.style.opacity=1;S.live=1;setTimeout(()=>{const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)},650)},{once:true});L.play()}
 function liveOff(S){if(!S.lv)return;S.lv.L.pause();if(S.lv.RL){S.lv.RL.pause();for(const e of S.lv.RL.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}}for(const e of S.lv.L.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}S.lv=null;S.live=0}
@@ -131,11 +131,13 @@ Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSn
    for(const s of S.tw){const a=Math.max(0,Math.sin(t*s.sp+s.ph))**6;if(a<.02)continue;const x=s.x*W,y=s.y*H,rr=W*.012*a;fg.strokeStyle=`rgba(255,255,240,${.9*a})`;fg.lineWidth=Math.max(1,W*.0018);fg.beginPath();fg.moveTo(x-rr,y);fg.lineTo(x+rr,y);fg.moveTo(x,y-rr);fg.lineTo(x,y+rr);fg.stroke()}
    for(const p of S.pol){p.x+=p.vx*dt+Math.sin(t+p.ph)*.0003;p.y+=p.vy*dt;if(p.y<.36){p.y=1;p.x=Math.random()}const a=.35+.35*Math.sin(t*2+p.ph);fg.fillStyle=`rgba(255,250,210,${a*.8})`;fg.beginPath();fg.arc(p.x*W,p.y*H,W*.0022,0,7);fg.fill()}
    }
-   if(S.rain){if(!S.drops)S.drops=[...Array(Math.round(170*S.rain))].map(()=>({x:Math.random(),y:Math.random(),l:.015+Math.random()*.02,v:.55+Math.random()*.35}));
-    fg.globalAlpha=1;fg.strokeStyle='rgba(230,238,255,.75)';fg.lineWidth=Math.max(1.2,W*.002);fg.lineCap='round';fg.beginPath();
-    for(const d of S.drops){d.y+=d.v*dt;if(d.y>1.02){d.y=-.03;d.x=Math.random()}const x=d.x*W,y=d.y*H;fg.moveTo(x,y);fg.lineTo(x-W*.004,y+d.l*H)}fg.stroke();
+   if(S.rain){   // fine drizzle: thin, soft streaks in two depths so it sits behind the art instead of on top of it
+    if(!S.drops)S.drops=[...Array(Math.round(150*S.rain))].map((_,i)=>{const far=i%3!==0;return{x:Math.random(),y:Math.random(),far,l:far?.010+Math.random()*.008:.016+Math.random()*.012,v:far?.42+Math.random()*.15:.62+Math.random()*.2}});
+    fg.lineCap='round';
+    for(const far of [true,false]){fg.strokeStyle=far?'rgba(225,235,250,.16)':'rgba(235,242,255,.30)';fg.lineWidth=Math.max(.6,W*(far?.0007:.0011));fg.beginPath();
+     for(const d of S.drops){if(d.far!==far)continue;d.y+=d.v*dt;if(d.y>1.02){d.y=-.04;d.x=Math.random()}const x=d.x*W,y=d.y*H;fg.moveTo(x,y);fg.lineTo(x-W*.0025,y+d.l*H)}fg.stroke()}
     if(!S.rip)S.rip=[];if(Math.random()<.35*S.rain){const sp=S.spots[Math.floor(Math.random()*5)];S.rip.push({x:sp[0]+(Math.random()-.5)*.25,y:sp[1]+(Math.random()-.5)*.08,t:0})}
-    for(const r of S.rip){r.t+=dt;const a=Math.max(0,1-r.t/.9);fg.strokeStyle=`rgba(235,240,255,${.5*a})`;fg.beginPath();fg.ellipse(r.x*W,r.y*H,W*.03*r.t,W*.009*r.t,0,0,7);fg.stroke()}
+    for(const r of S.rip){r.t+=dt;const a=Math.max(0,1-r.t/.9);fg.lineWidth=Math.max(.6,W*.0009);fg.strokeStyle=`rgba(235,240,255,${.32*a})`;fg.beginPath();fg.ellipse(r.x*W,r.y*H,W*.03*r.t,W*.009*r.t,0,0,7);fg.stroke()}
     S.rip=S.rip.filter(r=>r.t<.9)}
    fg.globalAlpha=1}
   requestAnimationFrame(frame)})(t0)});
