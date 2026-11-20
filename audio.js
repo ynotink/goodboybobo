@@ -111,6 +111,11 @@ function unlock(){if(unlocked)return;const ac=ctx();if(!ac)return;
  try{const s=ac.createBufferSource();s.buffer=ac.createBuffer(1,1,22050);s.connect(ac.destination);s.start(0)}catch(e){}
  ac.resume();unlocked=true;meta().then(()=>{if(want)music(want)});preloadAll()}
 ['pointerdown','touchstart','touchend','keydown'].forEach(e=>addEventListener(e,unlock,{capture:true,passive:true}));
+// start the music as soon as the game opens (the iPhone app allows sound without a tap; a plain browser may still wait for the first tap)
+function autoStart(){if(unlocked)return;const ac=ctx();if(!ac)return;
+ const go=()=>{if(unlocked||ac.state!=='running')return;unlocked=true;meta().then(()=>{if(want)music(want)});preloadAll()};
+ if(ac.state==='running')go();else{const p=ac.resume();p&&p.then&&p.then(go).catch(()=>{});setTimeout(go,300)}}
+autoStart();addEventListener('load',autoStart);addEventListener('pageshow',autoStart);
 // soft tap on buttons (only real buttons, never the game board)
 addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.tap,.imgbtn,.bimg,.gnav .it,.nav .it,.qb,.btn');if(el&&!el.dataset.nosnd)play(el.dataset.snd||'tap',{gap:80})},true);
 window.BA={music,play,apply,nav:u=>window.GBB_SHELL?GBB_SHELL.go(new URL(u,location.href).href):nav(u),unlock,MUS,get shift(){return shift},get playing(){return cur?cur.name+'@'+musPos().toFixed(1):null},get state(){return AC?AC.state:'none'},
