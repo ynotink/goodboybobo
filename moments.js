@@ -4,9 +4,13 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=3',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=4',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[63,1009,974,898],"11_mr_bunny":[853,1201,392,416],"20_title_accents":[102,178,1081,434],"21_title":[268,253,754,278],"30_primary_button_blank":[221,2348,848,246],"31_hard_blank":[483,665,324,110],"32_super_hard_blank":[483,666,324,109]},
  "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
+ "fail":{"10_rambo":[182,778,695,1268],"11_mr_cardinal":[713,1432,454,515],"20_title_accents":[78,242,1107,444],"21_title":[152,322,984,319],"22_minus_1_life_tag":[445,627,404,129],"30_primary_button":[172,2038,946,280],"31_secondary_button":[203,2343,884,232]},
+ "lives":{"10_rambo":[130,678,959,608],"20_title_accents":[135,178,994,399],"21_title":[93,250,1104,290],"30_primary_button":[61,2158,1168,246],"31_secondary_button":[237,2423,816,178]},
+ "boost":{"10_rambo":[10,1122,374,575],"11_mr_buck":[898,831,384,717],"20_title_accents":[78,255,1109,445],"21_title":[175,193,939,504],"24_out_of_booster_note":[141,1900,1008,70],"30_primary_button":[110,2028,1070,289],"31_secondary_button":[275,2348,740,221]},
+ "bones":{"10_rambo":[199,783,820,753],"20_title_accents":[123,325,1019,409],"21_title":[217,338,856,419],"30_primary_button":[190,2108,910,217],"31_secondary_button":[245,2338,800,189]},
  "lose":{"10_rambo":[108,582,764,1125],"11_mr_cardinal":[826,1136,376,376],"20_title_accents":[102,178,1081,434],"21_title":[61,198,1169,297],"22_still_needed_title":[375,1741,540,128],"30_primary_button_blank":[82,2145,1129,234],"31_give_up_button_blank":[301,2426,688,158],"50_bone_icon":[838,2212,119,95]}};
 const ART={ready_play:[885,261],pause_resume:[1115,250],pause_restart:[577,180],pause_quit:[547,185],pause_on:[345,117],pause_off:[343,117],lose_plus5:[1144,241],lose_giveup:[691,169]};
 const css=document.createElement('style');css.textContent=`
@@ -56,7 +60,7 @@ const later=(ms,fn)=>timers.push(setTimeout(fn,ms));
 function layer(k,n,cls){const b=L[k][n],im=h('img','ly'+(cls?' '+cls:''),stage);im.src=IM[k+'/'+n]?IM[k+'/'+n].src:R+k+'_'+n+'.webp'+V;im.alt='';im.draggable=false;
  items.push(()=>Object.assign(im.style,{left:b[0]*s+'px',top:b[1]*s+'px',width:b[2]*s+'px',height:b[3]*s+'px'}));return im}
 function text(str,x,y,size,o={}){const t=h('div','tx',stage);
- if(window.GBBFont&&!o.plain){items.push(()=>{Object.assign(t.style,{left:x*s+'px',top:y*s+'px'});GBBFont.draw(t,str,size*s*.86)});return t}   // painted lettering
+ if(window.GBBFont&&!o.plain){items.push(()=>{Object.assign(t.style,{left:x*s+'px',top:y*s+'px'});let c=size*s*.86;const cv=GBBFont.draw(t,str,c,{style:o.style});if(o.maxW){const w=parseFloat(cv.style.width);if(w>o.maxW*s)GBBFont.draw(t,str,c*o.maxW*s/w,{style:o.style})}});t.set=v=>{str=v;fit()};return t}   // painted lettering
  t.textContent=str;
  items.push(()=>{Object.assign(t.style,{left:x*s+'px',top:y*s+'px',fontSize:size*s+'px',textShadow:outline(size*s*(o.ol||.085),o.col,o.drop)});if(o.color)t.style.color=o.color});return t}
 function button(k,n,label,size,fn,o={}){const b=L[k][n],el=h('div','bt',stage);el.setAttribute('role','button');el.setAttribute('aria-label',o.aria||label);
@@ -120,14 +124,68 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;
   if(moved)text('Restarting or quitting now uses 1 life.',645,2625,40,{ol:.1});
   show()})};
 // ---------- OUT OF MOVES ----------
-window.lose=function(){S.over=true;window.fx&&window.fx('lose');
+window.lose=function(again){S.over=true;if(!again)window.fx&&window.fx('lose');
  want('lose').then(()=>{open('lose','tap');const k='lose';
   layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');layer(k,'22_still_needed_title');
   goals(S.goals.filter(x=>x.left>0),1990);
   const PM=window.Eco?Eco.PRICE.moves:90;
-  const buy=el=>{if(window.Eco&&!Eco.spend(PM)){el.classList.remove('pulse','nope');void el.offsetWidth;el.classList.add('nope');window.K&&K.toast&&K.toast('You need '+PM+' bones. You have '+Eco.bones()+'.');return false}close();moreMoves()};
+  const buy=el=>{if(window.Eco&&!Eco.spend(PM)){el.classList.remove('pulse','nope');void el.offsetWidth;close();needBones(PM,()=>lose(1));return}close();moreMoves()};
   const p5=PM===90?artButton(k,'30_primary_button_blank','lose_plus5',buy,'Get 5 more moves for '+PM+' bones'):button(k,'30_primary_button_blank','',84,buy,
    {aria:'Get 5 more moves for '+PM+' bones',inner:['50_bone_icon'],html:'<span style="position:absolute;left:33.7%;transform:translateX(-50%)">+5 MOVES</span><span style="position:absolute;left:84.5%;transform:translateX(-50%)">'+PM+'</span>'});
-  artButton(k,'31_give_up_button_blank','lose_giveup',()=>{window.Eco&&Eco.loseHeart();close();BA.nav('map.html')},'Give up, costs one life');
+  artButton(k,'31_give_up_button_blank','lose_giveup',()=>{window.Eco&&Eco.loseHeart();showFail()},'Give up, costs one life');
   later(1000,()=>p5.classList.add('pulse'));show()})};
+
+// ---------- painted-word buttons (words are part of the art) ----------
+function imgButton(k,n,fn,aria){const b=L[k][n],el=h('div','bt art',stage);el.setAttribute('role','button');el.setAttribute('aria-label',aria);
+ const im=h('img','',el);im.src=IM[k+'/'+n]?IM[k+'/'+n].src:R+k+'_'+n+'.webp'+V;im.alt='';
+ items.push(()=>{Object.assign(el.style,{left:b[0]*s+'px',top:b[1]*s+'px',width:b[2]*s+'px',height:b[3]*s+'px'});gm.style.setProperty('--s',s)});
+ el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));
+ el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
+// a live word painted ON a button (price), centred at x,y in art pixels, riding along with the button when pressed
+function onButton(el,k,n,str,x,y,cap){const b=L[k][n],t=h('div','tx',el);items.push(()=>{Object.assign(t.style,{left:(x-b[0])*s+'px',top:(y-b[1])*s+'px'});GBBFont&&GBBFont.draw(t,str,cap*s,{style:'button'})});return t}
+// ---------- LEVEL FAILED ("So Close!") ----------
+window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
+ want('fail').then(()=>{open('fail','tap');const k='fail';
+  layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');layer(k,'22_minus_1_life_tag');
+  const t=imgButton(k,'30_primary_button',()=>{close();if(window.Eco&&Eco.hearts()<1)return gpNoLives();startLevel(S.li)},'Try again');
+  imgButton(k,'31_secondary_button',()=>{close();BA.nav('map.html')},'Back to map');
+  later(1000,()=>t.classList.add('pulse'));show()})};
+// ---------- OUT OF LIVES ----------
+window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
+ want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;
+  layer(k,'10_rambo');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');
+  const tm=text('Next life in --:--',645,1660,120,{maxW:1160});
+  const tick=()=>{if(kind!=='lives'||!window.Eco)return;if(Eco.hearts()>0){close();if(S)S.over=false;showIntro();return}tm.set('Next life in '+Eco.fmt(Eco.nextIn()));later(1000,tick)};
+  const p=imgButton(k,'30_primary_button',()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
+  onButton(p,k,'30_primary_button',String(PL),1082,2276,74);
+  imgButton(k,'31_secondary_button',()=>{close();BA.nav('map.html')},'Back to map');
+  later(1000,()=>p.classList.add('pulse'));show();tick()})};
+// ---------- GET A BOOSTER ----------
+const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'];
+window.gpBuy=function(bk){want('boost').then(()=>{open('boost','tap');const k='boost',P=window.Eco?Eco.PRICE.boost[bk]:50;
+  layer(k,'10_rambo');layer(k,'11_mr_buck');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');layer(k,'24_out_of_booster_note');
+  const ic=h('img','ly',stage);ic.src='uikit/'+BI[bk]+'.webp?v=1';ic.alt='';items.push(()=>Object.assign(ic.style,{left:(645-200)*s+'px',top:(1350-195)*s+'px',width:400*s+'px',height:390*s+'px',objectFit:'contain',filter:`drop-shadow(0 ${10*s}px ${10*s}px rgba(30,20,0,.45))`}));
+  text(BN[bk],645,1600,124,{maxW:640});
+  const b=imgButton(k,'30_primary_button',()=>{if(!Eco.spend(P)){close();needBones(P,()=>gpBuy(bk));return}
+    if(typeof SAVE!=='undefined'&&SAVE.boost){SAVE.boost[bk]=(SAVE.boost[bk]||0)+1;typeof save==='function'&&save()}else Eco.addBoost(bk,1);window.drawBoosters&&drawBoosters();close()},'Buy one '+BN[bk]+' for '+P+' bones');
+  onButton(b,k,'30_primary_button',String(P),1045,2167,80);
+  imgButton(k,'31_secondary_button',()=>{close()},'Not now');
+  later(1000,()=>b.classList.add('pulse'));show()})};
+// ---------- NOT ENOUGH BONES ----------
+window.needBones=function(need,back){want('bones').then(()=>{open('bones','tap');const k='bones',have=window.Eco?Eco.bones():0;
+  layer(k,'10_rambo');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');
+  text('You have '+have+' / need '+need,645,1740,112,{maxW:1160});
+  const g=imgButton(k,'30_primary_button',()=>{close();BA.nav('bovo11/shop.html')},'Go to shop');
+  imgButton(k,'31_secondary_button',()=>{close();back&&back()},'Not now');
+  later(1000,()=>g.classList.add('pulse'));show()})};
+// ---------- BANNERS over the board ----------
+const bcss=document.createElement('style');bcss.textContent=`#gmb{position:fixed;left:50%;top:40%;z-index:250;pointer-events:none;transform:translate(-50%,-50%);width:min(88vw,430px);opacity:0}
+#gmb img{display:block;width:100%;height:auto}
+#gmb.on{animation:gmBan 1.5s cubic-bezier(.25,1.4,.5,1) both}
+@keyframes gmBan{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}14%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}22%{transform:translate(-50%,-50%) scale(1)}82%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(.96)}}`;document.head.appendChild(bcss);
+const BAN={shuffle:'08a',bonus:'08b',tap:'08c'};Object.values(BAN).forEach(n=>{const i=new Image();i.src=R+'banner_'+n+'.webp'+V});
+window.gmBanner=function(n){let b=document.getElementById('gmb');if(!b){b=document.createElement('div');b.id='gmb';document.body.appendChild(b)}
+ b.innerHTML='<img alt="" src="'+R+'banner_'+BAN[n]+'.webp'+V+'">';b.classList.remove('on');void b.offsetWidth;b.classList.add('on')};
+const _toast=window.toast;window.toast=function(t){if(/^No moves/i.test(t))return gmBanner('shuffle');if(/^Bobo Bonus/i.test(t))return gmBanner('bonus');return _toast&&_toast(t)};
+{let last=-1;setInterval(()=>{const k=(typeof S!=='undefined'&&S)?(S.booster??-1):-1;if(k!==last){if(k>=0&&k<3)gmBanner('tap');last=k}},120)}
 })();
