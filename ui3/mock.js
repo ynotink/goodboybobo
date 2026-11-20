@@ -5,7 +5,9 @@
 const K=window.K;
 K.mock=(ui,o)=>{
  const box=K.h('div','mk-box',ui);const MW=o.MW,y0=o.y0,y1=o.y1;const els=[];
- for(const p of o.parts){const im=K.h('img','mk-p'+(p.cls?' '+p.cls:''),box);im.src=o.base+p.n+'.webp?v='+(o.v||1);im.alt='';im.draggable=false;
+ const SHP=50;   // baked shadow images (sh_*.webp) carry 50 mockup px of padding on every side
+ for(const p of o.parts){if(!p.noShadow){const sh=K.h('img','mk-sh',box);sh.src=o.base+'sh_'+p.n+'.webp?v='+(o.v||1);sh.alt='';sh.draggable=false;sh.onerror=()=>sh.remove();p._sh=sh;box.insertBefore(sh,box.querySelector('.mk-p'))}
+  const im=K.h('img','mk-p'+(p.cls?' '+p.cls:''),box);im.src=o.base+p.n+'.webp?v='+(o.v||1);im.alt='';im.draggable=false;
   if(p.i!=null){im.classList.add('k-pop');im.style.setProperty('--i',p.i)}els.push([im,p])}
  const zs=[];
  for(const z of (o.zones||[])){const d=K.h('div','mk-z',box);d.setAttribute('role','button');if(z.aria)d.setAttribute('aria-label',z.aria);
@@ -23,6 +25,7 @@ K.mock=(ui,o)=>{
   const Y=(y,row)=>(y-y0)*s+(row!=null?row:rowOf(y))*gap;
   Object.assign(box.style,{left:left+'px',top:t+'px',width:MW*s+'px',height:H+gap*(nr-1)+'px'});box.style.setProperty('--s',s);
   for(const [im,p] of els)Object.assign(im.style,{left:p.x*s+'px',top:Y(p.y,rows.indexOf(p.row||0))+'px',width:p.w*s+'px',height:p.h*s+'px'});
+  for(const [im,p] of els)if(p._sh)Object.assign(p._sh.style,{left:(p.x-SHP)*s+'px',top:Y(p.y,rows.indexOf(p.row||0))-SHP*s+'px',width:(p.w+2*SHP)*s+'px',height:(p.h+2*SHP)*s+'px'});
   for(const [d,z] of zs)Object.assign(d.style,{left:z.x*s+'px',top:Y(z.y)+'px',width:z.w*s+'px',height:z.h*s+'px',borderRadius:(z.r||20)*s+'px'});
   for(const e of extra)Object.assign(e.el.style,{left:e.x*s+'px',top:Y(e.y)+'px',width:e.w*s+'px',height:e.h*s+'px',fontSize:(e.fs||30)*s+'px'});
  };
@@ -30,7 +33,8 @@ K.mock=(ui,o)=>{
 };
 const css=document.createElement('style');css.textContent=`
 .mk-box{position:absolute;pointer-events:none}
-.mk-p{position:absolute;display:block;-webkit-user-drag:none;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*7px) calc(var(--s)*5px) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--s)*16px) calc(var(--s)*20px) rgba(25,14,0,.38));transition:transform 90ms ease-out}
+.mk-p{position:absolute;display:block;-webkit-user-drag:none;pointer-events:none;transition:transform 90ms ease-out}
+.mk-sh{position:absolute;display:block;pointer-events:none;-webkit-user-drag:none}
 .mk-p.dn{transform:scale(.97)}
 .mk-z{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .mk-z::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,25,0,.14);opacity:0;transition:opacity 90ms}
