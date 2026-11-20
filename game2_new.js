@@ -71,10 +71,11 @@ function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(windo
  const lv='Level '+(S.li+1);ptxt(g,lv,[X(68)-140,Y(122)-34,280,68],lv.length>8?40:46,'center','#fdf1d6','badge');
  ptxt(g,String(Math.max(0,S.moves)),[X(209)-110,Y(156)-52,220,104],S.moves>99?84:104,'center',S.moves<=5?'#ffe08a':'#fff8ec','badge');
  ptxt(g,'Moves',[X(209)-110,Y(177)-24,220,48],40,'center','#fff1d6','badge');
- {const cx=X(289.5),by=Y(189),fs=76;g.save();g.font=`900 ${fs}px BoboNunito`;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';
+ {const cx=X(289.5),by=Y(189),fs=76;if(!(window.GBBFont&&GBBFont.paint(g,'RAMBO',cx,by-fs*.36,fs*.86,{style:'title',redraw:drawHud})))   // painted Title lettering; old drawn name until the sheet loads
+ {g.save();g.font=`900 ${fs}px BoboNunito`;g.textAlign='center';g.textBaseline='alphabetic';g.lineJoin='round';
   g.shadowColor='rgba(120,50,10,.38)';g.shadowOffsetY=6;g.shadowBlur=8;g.lineWidth=14;g.strokeStyle='#ffe9d2';g.strokeText('RAMBO',cx,by);
   g.shadowColor='transparent';const gr=g.createLinearGradient(0,by-fs*.75,0,by);gr.addColorStop(0,'#237a7c');gr.addColorStop(.55,'#0f5458');gr.addColorStop(1,'#0a3e42');
-  g.fillStyle=gr;g.fillText('RAMBO',cx,by);g.globalAlpha=.35;g.lineWidth=3;g.strokeStyle='#7fc4c0';g.strokeText('RAMBO',cx,by-2);g.restore()}
+  g.fillStyle=gr;g.fillText('RAMBO',cx,by);g.globalAlpha=.35;g.lineWidth=3;g.strokeStyle='#7fc4c0';g.strokeText('RAMBO',cx,by-2);g.restore()}}
  const n=S.goals.length,gap=45*(n==1?1:n==2?1.15:1),isz=X(n==1?26:n==2?22:18),fsz=X(n==1?19:n==2?16:14)*1.08,cx0=X(99),cy=Y(165);
  S.goals.forEach((go,i)=>{const pc=cx0+(i-(n-1)/2)*X(gap);const ic=pc-X(n==1?12:n==2?10:8),tc=pc+X(n==1?17:n==2?15:13);
   const ix=ic-isz/2;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
