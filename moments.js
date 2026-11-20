@@ -4,13 +4,13 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=8',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=9',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[63,1009,974,898],"11_mr_bunny":[853,1201,392,416],"20_title_accents":[102,178,1081,434],"21_title":[268,253,754,278],"30_primary_button_blank":[221,2348,848,246],"31_hard_blank":[483,665,324,110],"32_super_hard_blank":[483,666,324,109]},
  "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
  "fail":{},
- "lives":{"20_title_accents":[135,178,994,399],"21_title":[93,250,1104,290],"30_primary_button":[61,2218,1168,246],"31_secondary_button":[237,2483,816,178]},
+ "lives":{},
  "boost":{},
- "bones":{"20_title_accents":[207,182,876,352],"21_title":[277,193,736,360],"30_primary_button":[190,2170,910,217],"31_secondary_button":[245,2400,800,189]},
+ "bones":{},
  "lose":{"10_rambo":[108,582,764,1125],"11_mr_cardinal":[826,1136,376,376],"20_title_accents":[102,178,1081,434],"21_title":[61,198,1169,297],"22_still_needed_title":[375,1741,540,128],"30_primary_button_blank":[82,2145,1129,234],"31_give_up_button_blank":[301,2426,688,158],"50_bone_icon":[838,2212,119,95]}};
 const ART={ready_play:[885,261],pause_resume:[1115,250],pause_restart:[577,180],pause_quit:[547,185],pause_on:[345,117],pause_off:[343,117],lose_plus5:[1144,241],lose_giveup:[691,169]};
 const css=document.createElement('style');css.textContent=`
@@ -157,13 +157,12 @@ window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
 // ---------- OUT OF LIVES ----------
 window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
  want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;
-  layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');
-  const tm=text('Next life in --:--',645,2112,104,{maxW:1150});
+  const tm=text('Next life in --:--',645,2030,104,{maxW:900,style:'ink'});
   const tick=()=>{if(kind!=='lives'||!window.Eco)return;if(Eco.hearts()>0){close();if(S)S.over=false;showIntro();return}tm.set('Next life in '+Eco.fmt(Eco.nextIn()));later(1000,tick)};
-  const p=imgButton(k,'30_primary_button',()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
-  onButton(p,k,'30_primary_button',String(PL),1082,2336,74);
-  imgButton(k,'31_secondary_button',()=>{close();BA.nav('map.html')},'Back to map');
-  later(1000,()=>p.classList.add('pulse'));show();tick()})};
+  const p=zoneAt(65,2161,1162,239,()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
+  const pr=h('div','tx',stage);items.push(()=>{Object.assign(pr.style,{left:1080*s+'px',top:2272*s+'px'});GBBFont&&GBBFont.draw(pr,String(PL),104*s,{style:'button'})});
+  zoneAt(239,2427,809,163,()=>{close();BA.nav('map.html')},'Back to map');
+  show();tick()})};
 // ---------- GET A BOOSTER ----------
 const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'];
 function zoneAt(x,y,w,hh,fn,aria){const el=h('div','bt zn',stage);el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));el.setAttribute('role','button');el.setAttribute('aria-label',aria);
@@ -180,12 +179,11 @@ window.gpBuy=function(bk){want('boost').then(()=>{open('boost','tap');const k='b
   zoneAt(292,2495,707,170,()=>{close()},'Not now');
   show()})};
 // ---------- NOT ENOUGH BONES ----------
-window.needBones=function(need,back){want('bones').then(()=>{open('bones','tap');const k='bones',have=window.Eco?Eco.bones():0;
-  layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');
-  text('You have '+have+' / need '+need,645,2068,104,{maxW:1150});
-  const g=imgButton(k,'30_primary_button',()=>{close();BA.nav('bovo11/shop.html')},'Go to shop');
-  imgButton(k,'31_secondary_button',()=>{close();back&&back()},'Not now');
-  later(1000,()=>g.classList.add('pulse'));show()})};
+window.needBones=function(need,back){want('bones').then(()=>{open('bones','tap');const have=window.Eco?Eco.bones():0;
+  text('You have '+have+' / need '+need,645,1996,100,{maxW:900,style:'ink'});
+  zoneAt(193,2112,902,207,()=>{close();BA.nav('bovo11/shop.html')},'Go to shop');
+  zoneAt(248,2340,792,180,()=>{close();back&&back()},'Not now');
+  show()})};
 // ---------- BANNERS over the board ----------
 const bcss=document.createElement('style');bcss.textContent=`#gmb{position:fixed;left:50%;top:40%;z-index:250;pointer-events:none;transform:translate(-50%,-50%);width:min(88vw,430px);opacity:0}
 #gmb img{display:block;width:100%;height:auto}
