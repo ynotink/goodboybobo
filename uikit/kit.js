@@ -40,11 +40,11 @@ K.toggle=(on,onChange)=>{const t=h('div','k-tg'+(on?'':' is-off'));K.img('toggle
 // top bar: hearts, bones, gear (cream round button)
 K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb')||'{}')}catch(e){}
  const bar=h('div','k-top',parent),U3=base.replace(/uikit\/$/,'ui3/');
- const mk=(cls,art,i)=>{const c=h('div','k-counter3 '+cls+' k-drop',bar);c.setAttribute('role','button');c.style.setProperty('--i',i);const im=h('img','k-art',c);im.src=U3+art+'.webp?v=4';im.alt='';im.draggable=false;return c};
+ const mk=(cls,art,i)=>{const c=h('div','k-counter3 '+cls+' k-drop',bar);c.setAttribute('role','button');c.style.setProperty('--i',i);const im=h('img','k-art',c);im.src=U3+art+'.webp?v=5';im.alt='';im.draggable=false;return c};
  const c1=mk('heart','cnt_heart',0);const n1=h('div','k-num3',c1);n1.textContent=window.Eco?Eco.hearts():(g.hearts!=null?g.hearts:5);const tm=h('div','k-timer',c1);
  const c2=mk('bone','cnt_bone',1);const n2=h('div','k-num3',c2);n2.textContent=window.Eco?Eco.bones():(g.bones!=null?g.bones:430);
  if(window.GBBFont){GBBFont.bind(n1,'ink');GBBFont.bind(n2,'ink');GBBFont.bind(tm,'badge',.9)}   // painted Ink lettering on the counters
- const gear=h('div','k-gear3 k-drop',bar);gear.style.setProperty('--i',2);gear.setAttribute('role','button');gear.setAttribute('aria-label','Settings');{const im=h('img','k-art',gear);im.src=U3+'gear.webp?v=4';im.alt='';im.draggable=false}
+ const gear=h('div','k-gear3 k-drop',bar);gear.style.setProperty('--i',2);gear.setAttribute('role','button');gear.setAttribute('aria-label','Settings');{const im=h('img','k-art',gear);im.src=U3+'gear.webp?v=5';im.alt='';im.draggable=false}
  K.press(gear,()=>{(window.BA&&BA.nav?BA.nav(gearHref):location.href=gearHref)});
  c1.setAttribute('aria-label',n1.textContent+' lives');c2.setAttribute('aria-label',n2.textContent+' bones');
  const upd=()=>{if(!window.Eco)return;const H=Eco.hearts();n1.textContent=H;n2.textContent=Eco.bones();tm.textContent=H<Eco.MAX?Eco.fmt(Eco.nextIn()):'';c1.setAttribute('aria-label',H+' lives');c2.setAttribute('aria-label',n2.textContent+' bones')};

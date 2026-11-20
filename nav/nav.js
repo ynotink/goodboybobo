@@ -3,7 +3,7 @@
 (function(){
 const me=document.currentScript,page=me.dataset.page||'',base=me.src.replace(/nav\.js.*$/,'');
 const root=base.replace(/nav\/$/,'');
-const V='?v=3';
+const V='?v=4';
 // centres of each item inside the 840x191 bar art
 const ITEMS=[['home','Home',91,'bovo11/index.html'],['map','Map',260,'bovo10/index.html'],['toys','Toys',421,'bovo11/toys.html'],['friends','Friends',588,'bovo11/friends.html'],['shop','Shop',751,'bovo11/shop.html']];
 const art=ITEMS.some(i=>i[0]===page)?page:'none';
