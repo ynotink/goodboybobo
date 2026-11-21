@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795178032"><script src="review_shim.js?v=4"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795265031"><script src="review_shim.js?v=4"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo</title>
@@ -8,6 +8,8 @@ html,body{margin:0;height:100%;background:#0e2a2b;overflow:hidden;overscroll-beh
 #sb{position:fixed;left:0;bottom:0;width:1px;height:env(safe-area-inset-bottom);visibility:hidden;pointer-events:none}
 iframe.scr{position:fixed;left:0;top:0;width:100%;height:100%;border:0;margin:0;padding:0;display:block;background:#0e2a2b;z-index:1}
 iframe.scr.off{visibility:hidden;pointer-events:none;z-index:0}
+iframe.scr.peek{visibility:visible;pointer-events:none;z-index:1}
+#swbar{position:fixed;z-index:5;pointer-events:none;display:block}
 </style>
 <script>
 /* Good Boy Bobo — app shell.
@@ -39,7 +41,7 @@ function swapTo(f){log([Date.now()%100000,'swap',f._key]);
   if(o._key==='game'){setTimeout(()=>{o.remove();if(frames.game===o)delete frames.game},0)}}
  f.classList.remove('off');shown=f;pending=null;try{f.contentWindow.GBB_show&&f.contentWindow.GBB_show()}catch(e){}
  try{f.contentWindow.focus()}catch(e){}
- if(!prewarmed)setTimeout(prewarm,2500)}
+ if(!prewarmed)setTimeout(prewarm,2500);setTimeout(warmNeighbors,900)}
 const LOG=[];const log=a=>{LOG.push(a);if(LOG.length>60)LOG.shift()};function go(u){const rel=norm(u),key=keyOf(rel);let f=frames[key];log([Date.now()%100000,'go',key,f?(f._snap===snap()?'same':'changed'):'new',f&&f._ready]);
  if(f&&f===shown&&key!=='game')return;
  if(f&&(key==='game'||f._snap!==snap())){if(f!==shown){f.remove();delete frames[key];f=null}else{f.contentWindow.location.replace(ROOT+rel);return}}
@@ -54,7 +56,51 @@ function active(win){return !!shown&&shown.contentWindow===win}
 let prewarmed=false;const WARM=[MAP];
 function prewarm(){prewarmed=true;if(pending)return setTimeout(prewarm,1500);const rel=WARM.find(r=>!frames[r]);if(!rel)return;
  const f=make(rel,rel);f._pre=true;f._snap=snap();const t0=Date.now();(function wait(){if(f._ready||Date.now()-t0>8000)setTimeout(prewarm,1200);else setTimeout(wait,300)})()}
-window.GBB_SHELL={LOG,go,ready,active,startHidden,get sat(){return sat()},get sab(){return sab()}};
+/* ---- thumb swipe between the five main screens (Home, Map, Toys, Friends, Shop) ----
+   The screen follows the thumb; the next screen slides in beside it; the bottom menu stays put and its lit tile
+   switches when the new screen lands. The screens either side of the current one are kept open (hidden, paused)
+   so a swipe always has something to show. */
+const TABS=[HOME,MAP,'bovo11/toys.html','bovo11/friends.html','bovo11/shop.html'],TABN=['home','map','toys','friends','shop'];
+let drag=null,settling=false;
+function tabFrame(i,create){const rel=TABS[i];if(!rel)return null;let f=frames[rel];
+ if(f&&f!==shown&&f!==pending&&f._snap!==snap()){if(!create)return null;f.remove();delete frames[rel];f=null}
+ if(!f&&create){f=make(rel,rel);f._pre=true;f._snap=snap()}return f}
+function warmNeighbors(){if(drag||settling||pending||!shown)return;const i=TABS.indexOf(shown._key);if(i<0)return;tabFrame(i-1,true);tabFrame(i+1,true)}
+setInterval(warmNeighbors,2000);
+let bar=null;
+function navOf(f){try{return f.contentDocument.getElementById('gbnav')}catch(e){return null}}
+function barOn(cur){try{const b=cur.contentDocument.querySelector('#gbnav .barimg');if(!b)return;const r=b.getBoundingClientRect();
+ bar=new Image();bar.id='swbar';bar.src=b.src;Object.assign(bar.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',filter:getComputedStyle(b).filter});
+ document.body.appendChild(bar);TABN.forEach(n=>{const p=new Image();p.src=b.src.replace(/nav_[a-z]+/,'nav_'+n)})}catch(e){bar=null}}
+function barsHidden(fs,h){fs.forEach(f=>{const n=f&&navOf(f);if(n)n.style.visibility=h?'hidden':''})}
+const swipe={
+ start(win,idx){log([Date.now()%100000,'sw-start',idx,!!drag,settling,!!pending,!!shown&&shown.contentWindow===win]);if(drag||settling||pending||!shown||shown.contentWindow!==win)return false;
+  const p=tabFrame(idx-1,false),n=tabFrame(idx+1,false);
+  drag={idx,cur:shown,prev:p&&p._ready?p:null,next:n&&n._ready?n:null,W:innerWidth,x:0};
+  [drag.cur,drag.prev,drag.next].forEach(f=>{if(f){f.style.transition='none';f.style.willChange='transform'}});
+  barOn(drag.cur);if(bar)barsHidden([drag.cur,drag.prev,drag.next],true);return true},
+ move(dx){const d=drag;if(!d)return;const W=d.W;let x=dx;const nb=x<0?d.next:d.prev;
+  if(!nb){const a=Math.abs(x);x=Math.sign(x)*W*.16*(1-Math.exp(-a/(W*.35)))}
+  d.x=x;d.cur.style.transform='translate3d('+x+'px,0,0)';
+  [[d.prev,1-W],[d.next,W-1]].forEach(([f,off])=>{if(!f)return;const on=(off<0&&x>0)||(off>0&&x<0);
+   if(on){f.classList.remove('off');f.classList.add('peek');f.style.transform='translate3d('+(x+off)+'px,0,0)'}else{f.classList.add('off');f.classList.remove('peek')}})},
+ end(dx,v){const d=drag;if(!d)return;drag=null;settling=true;const W=d.W,x=d.x,dir=x<0?1:-1,nb=dir>0?d.next:d.prev;
+  const fling=Math.abs(v)>.35&&Math.sign(v)===Math.sign(x);
+  const commit=!!nb&&(Math.abs(x)>W*.22||fling);
+  const want=!nb&&TABS[d.idx+dir]&&(Math.abs(dx)>W*.22||(Math.abs(v)>.35&&Math.sign(v)===Math.sign(dx)));
+  log([Date.now()%100000,'swipe',d.idx,Math.round(x),Math.round(dx),+v.toFixed(2),!!nb,commit,!!want]);
+  const tx=commit?-dir*W:0,ms=Math.round(Math.max(150,Math.min(300,Math.abs(tx-x)/W*320)));
+  const ease='transform '+ms+'ms cubic-bezier(.22,.9,.3,1)';
+  [d.cur,d.prev,d.next].forEach(f=>{if(f)f.style.transition=ease});
+  d.cur.style.transform='translate3d('+tx+'px,0,0)';
+  if(nb&&nb.classList.contains('peek'))nb.style.transform='translate3d('+(tx+dir*(W-1))+'px,0,0)';
+  if(commit&&bar)bar.src=bar.src.replace(/nav_[a-z]+/,'nav_'+TABN[d.idx+dir]);
+  setTimeout(()=>{
+   [d.cur,d.prev,d.next].forEach(f=>{if(!f)return;f.style.transition='';f.style.transform='';f.style.willChange='';f.classList.remove('peek');if(f!==shown)f.classList.add('off')});
+   if(commit){pending=nb;nb._pre=false;swapTo(nb)}
+   barsHidden([d.cur,d.prev,d.next],false);const b=bar;bar=null;if(b)requestAnimationFrame(()=>requestAnimationFrame(()=>b.remove()));
+   settling=false;if(want)go(TABS[d.idx+dir])},ms+20)}};
+window.GBB_SHELL={LOG,go,ready,active,startHidden,swipe,get sat(){return sat()},get sab(){return sab()}};
 // keep the shell's own frame from ever showing a stale "pending" screen if a frame fails to report
 setInterval(()=>{if(pending&&!pending._ready){try{const d=pending.contentDocument;if(d&&d.readyState==='complete')ready(pending.contentWindow)}catch(e){}}},500);
 const q=new URLSearchParams(location.search);go(q.get('start')||HOME);
