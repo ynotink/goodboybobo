@@ -4,10 +4,10 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=12',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=13',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
  "pause":{"10_rambo":[321,844,969,785],"11_mr_bunny":[0,1229,661,404],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2357,822,223],"bt_restart_p":[0,2357,822,223],"bt_quit":[495,2356,795,224],"bt_quit_p":[495,2356,795,224]},
- "fail":{},
+ "fail":{"10_rambo":[0,794,1048,1250],"11_mr_cardinal":[693,1419,517,512],"21_title":[0,234,1290,477],"22_life":[362,623,571,149],"bt_try_again":[0,2029,1290,329],"bt_try_again_p":[0,2029,1290,329],"bt_back_to_map":[8,2336,1275,269],"bt_back_to_map_p":[8,2336,1275,269]},
  "lives":{},
  "boost":{},
  "bones":{},
@@ -159,10 +159,11 @@ function imgButton(k,n,fn,aria){const b=L[k][n],el=h('div','bt art',stage);el.se
 function onButton(el,k,n,str,x,y,cap){const b=L[k][n],t=h('div','tx',el);items.push(()=>{Object.assign(t.style,{left:(x-b[0])*s+'px',top:(y-b[1])*s+'px'});GBBFont&&GBBFont.draw(t,str,cap*s,{style:'button'})});return t}
 // ---------- LEVEL FAILED ("So Close!") ----------
 window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
- want('fail').then(()=>{open('fail','tap');
-  const t=zoneAt(159,2051,969,265,()=>{close();if(window.Eco&&Eco.hearts()<1)return gpNoLives();startLevel(S.li)},'Try again');
-  zoneAt(209,2354,871,220,()=>{close();BA.nav('map.html')},'Back to map');
-  show()})};
+ want('fail').then(()=>{open('fail','tap');const k='fail';
+  layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'21_title','ttl');layer(k,'22_life');
+  const t=sdBtn(k,'bt_try_again',[153,2045,979,284],()=>{close();if(window.Eco&&Eco.hearts()<1)return gpNoLives();startLevel(S.li)},'Try again');
+  sdBtn(k,'bt_back_to_map',[205,2352,878,230],()=>{close();BA.nav('map.html')},'Back to map');
+  later(1000,()=>t.classList.add('pulse'));show()})};
 // ---------- OUT OF LIVES ----------
 window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
  want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;
