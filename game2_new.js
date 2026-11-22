@@ -72,7 +72,7 @@ function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(windo
  ptxt(g,String(Math.max(0,S.moves)),[X(209)-110,Y(156)-52,220,104],S.moves>99?84:104,'center',S.moves<=5?'#ffe08a':'#fff8ec','badge');
  ptxt(g,'Moves',[X(209)-110,Y(177)-24,220,48],40,'center','#fff1d6','badge');
  {const nm=window.GBB_NAME||(window.GBB_NAME=Object.assign(new Image(),{src:'bovo11/play2/rambo_name.webp?v=1',onload:()=>drawHud()}));   // painted "Rambo" logo on the ledge under him
-  if(nm.complete&&nm.naturalWidth){const w=X(84),h=w*nm.naturalHeight/nm.naturalWidth,cx=X(293.5),cy=Y(183.5);g.save();g.shadowColor='rgba(90,35,10,.35)';g.shadowOffsetY=5;g.shadowBlur=8;g.drawImage(nm,cx-w/2,cy-h/2,w,h);g.restore()}}
+  if(nm.complete&&nm.naturalWidth){const w=X(84),h=w*nm.naturalHeight/nm.naturalWidth,cx=X(289.5),cy=Y(183.5);g.save();g.shadowColor='rgba(90,35,10,.35)';g.shadowOffsetY=5;g.shadowBlur=8;g.drawImage(nm,cx-w/2,cy-h/2,w,h);g.restore()}}
  const n=S.goals.length,gap=45*(n==1?1:n==2?1.15:1),isz=X(n==1?26:n==2?22:18),fsz=X(n==1?19:n==2?16:14)*1.08,cx0=X(99),cy=Y(165);
  S.goals.forEach((go,i)=>{const pc=cx0+(i-(n-1)/2)*X(gap);const ic=pc-X(n==1?12:n==2?10:8),tc=pc+X(n==1?17:n==2?15:13);
   const ix=ic-isz/2;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
