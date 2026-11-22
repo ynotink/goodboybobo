@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795358802"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=12"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795360840"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=1"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=15"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -18,7 +18,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #chn{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--sat,env(safe-area-inset-top)) + var(--w)*80);background:linear-gradient(rgba(29,106,104,.5),rgba(15,77,76,.5));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);border:calc(var(--w)*2) solid rgba(251,232,207,.6);border-radius:999px;padding:calc(var(--w)*5) calc(var(--w)*18) calc(var(--w)*6);font-family:Nun;color:#fdf1d6;font-size:calc(var(--w)*17);white-space:nowrap;box-shadow:0 calc(var(--w)*4) calc(var(--w)*8) rgba(25,14,0,.22);text-shadow:0 1px 2px rgba(0,0,0,.45);text-align:center;line-height:1;transition:opacity .25s}
 #chn small{display:block;font-size:calc(var(--w)*10);letter-spacing:.15em;color:#d6f1ec;margin-bottom:calc(var(--w)*2)}
 #hud{position:fixed;left:0;right:0;top:0;height:120px;pointer-events:none;z-index:5}
-#hud .c3{position:absolute;top:calc(var(--sat,env(safe-area-inset-top)) + 34px);filter:drop-shadow(0 calc(var(--w)*4.9) calc(var(--w)*6.1) rgba(0,0,0,.5))}
+#hud .c3{position:absolute;top:calc(var(--sat,env(safe-area-inset-top)) + 34px);filter:drop-shadow(0 calc(var(--w)*4.9) calc(var(--w)*6.1) rgba(0,0,0,.66))}
 #hud .c3 img{display:block;width:100%;height:100%}
 #hud .t{position:absolute;top:0;height:91%;display:flex;align-items:center;justify-content:center;font-family:Nun;font-size:calc(var(--w)*20.6);line-height:1;color:#134442}
 #tabs{position:fixed;left:0;bottom:0;width:100%;pointer-events:none;z-index:5}
@@ -164,4 +164,4 @@ function win(){const N=SCENES.length*5;if(cur>=N-1){cur=0;buttons();sc.scrollTo(
   if(u<1)requestAnimationFrame(hop);else{cur++;buttons()}})(t0)}
 document.getElementById('win').onclick=win;
 document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
-</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}if(window.GBBFont){GBBFont.bind(hH,'ink');GBBFont.bind(hB,'ink')}</script><script src="../nav/nav.js?v=19" data-page="map"></script><script>window.BA&&BA.music("Theme");if(window.Eco){const u=()=>{document.getElementById("hH").textContent=Eco.hearts();document.getElementById("hB").textContent=Eco.bones()};u();Eco.on(u)}</script></body></html>
+</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}if(window.GBBFont){GBBFont.bind(hH,'ink');GBBFont.bind(hB,'ink')}</script><script src="../nav/nav.js?v=20" data-page="map"></script><script>window.BA&&BA.music("Theme");if(window.Eco){const u=()=>{document.getElementById("hH").textContent=Eco.hearts();document.getElementById("hB").textContent=Eco.bones()};u();Eco.on(u)}</script></body></html>

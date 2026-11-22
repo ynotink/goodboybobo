@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795358802"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=12"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795360840"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=15"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Toy Box</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=10">
+<link rel="stylesheet" href="../uikit/kit.css?v=11">
 <style>
 #inner{margin:calc(var(--u)*-22) calc(var(--u)*-26) calc(var(--u)*-10);display:flex;flex-direction:column;align-items:stretch}
 #count{text-align:center;font-size:calc(var(--u)*21);color:#1b4b50;line-height:1;margin-top:calc(var(--u)*2)}
@@ -44,9 +44,9 @@ const {h,img}=K;
 K.topbar(ui,'settings.html');
 const soon=m=>()=>K.toast(m);
 // pieces cut straight from ChatGPT's approved Toy Box mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:270,y1:1452,base:'../ui3/toys2/',v:1,maxGap:0,parts:[
- {n:'title',x:229,y:275,w:468,h:125,i:0,row:0},
- {n:'panel',x:79,y:438,w:766,h:1012,i:1,row:0}],
+const M=K.mock(ui,{MW:934,y0:270,y1:1452,base:'../ui3/toys2/',v:3,maxGap:0,parts:[
+ {n:'title',x:228.08,y:274.64,w:469.9,h:126.71,i:0,row:0},
+ {n:'panel',x:78.23,y:436.85,w:766.75,h:1015.82,i:1,row:0}],
  zones:[
  {x:120,y:583,w:84,h:84,r:20,fn:soon('More chapters are coming soon!'),aria:'Previous chapter'},
  {x:724,y:583,w:84,h:84,r:20,fn:soon('More chapters are coming soon!'),aria:'Next chapter'},
@@ -57,4 +57,4 @@ const M=K.mock(ui,{MW:934,y0:270,y1:1452,base:'../ui3/toys2/',v:1,maxGap:0,parts
 // toy cards, badges and lettering are part of the approved Soft Depth panel art (exact ChatGPT layers)
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=19" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=20" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

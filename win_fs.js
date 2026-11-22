@@ -160,7 +160,7 @@ const W2='win2/',WV='?v=2';
 /* phase 3: Soft Depth win screen (ChatGPT's exact kit, 1290x2796 art). The picture is scaled as one piece so nothing
    drifts; the forest fills any side bars. Level number and bone count are written live in the game's title lettering
    between the kit's own "Level"/"Complete!" and "+"/"Bones" pieces. */
-const W3='win3/',V3='?v=1',WB={"title":[0,157,1290,353],"bobo":[97,912,1024,1233],"rib_left":[189,642,282,342],"rib_left_off":[189,642,282,342],"rib_center":[468,568,353,430],"rib_center_off":[468,568,353,430],"rib_right":[819,642,282,342],"rib_right_off":[819,642,282,342],"bone":[166,2106,335,166],"bt_continue":[0,2296,1290,278],"bt_continue_p":[0,2296,1290,278],"bt_replay":[369,2586,553,137],"bt_replay_p":[369,2586,553,137],"lvl_a":[32,409,500,149],"lvl_b":[532,407,727,151],"bon_a":[138,2133,478,130],"bon_b":[616,2121,674,143]};
+const W3='win3/',V3='?v=2',WB={"title":[0,157,1290,365],"bobo":[94,912,1031,1246],"rib_left":[179,641,302,359],"rib_left_off":[179,641,302,359],"rib_center":[458,566,374,448],"rib_center_off":[458,566,374,448],"rib_right":[809,641,302,359],"rib_right_off":[809,641,302,359],"bone":[166,2103,335,190],"bt_continue":[0,2296,1290,290],"bt_continue_p":[0,2296,1290,290],"bt_replay":[369,2586,553,150],"bt_replay_p":[369,2586,553,150],"lvl_a":[32,409,500,171],"lvl_b":[532,403,727,167],"bon_a":[138,2130,478,139],"bon_b":[616,2116,674,167]};
 const css3=document.createElement('style');css3.textContent=`
 #wfs .w3{position:absolute;inset:0;opacity:0;transition:opacity .3s;overflow:hidden}
 #wfs .w3.in{opacity:1}

@@ -18,7 +18,7 @@ const css=document.createElement('style');css.textContent=`
 document.head.appendChild(css);
 // preload every page's bar so switching pages never flashes
 // pages whose bar is the approved Soft Depth finish (exact ChatGPT layers, shadows included)
-const V2={home:1,map:1,toys:1,friends:1,shop:1,none:1},barSrc=k=>V2[k]?root+'ui3/v2/nav_'+k+'.webp?v=1':root+'ui3/nav_'+k+'.webp'+V;
+const V2={home:1,map:1,toys:1,friends:1,shop:1,none:1},barSrc=k=>V2[k]?root+'ui3/v2/nav_'+k+'.webp?v=2':root+'ui3/nav_'+k+'.webp'+V;
 
 const nav=document.createElement('div');nav.id='gbnav';
 const img=new Image();img.className='barimg'+(V2[art]?' v2':'');img.alt='';img.draggable=false;img.src=barSrc(art);nav.appendChild(img);

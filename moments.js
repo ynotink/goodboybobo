@@ -4,16 +4,16 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=16',DW=1290,DH=2796;
-const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
- "pause":{"10_rambo":[321,844,969,785],"11_mr_bunny":[0,1229,661,404],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2357,822,223],"bt_restart_p":[0,2357,822,223],"bt_quit":[495,2356,795,224],"bt_quit_p":[495,2356,795,224]},
- "fail":{"10_rambo":[0,794,1048,1250],"11_mr_cardinal":[693,1419,517,512],"21_title":[0,234,1290,477],"22_life":[362,623,571,149],"bt_try_again":[0,2029,1290,329],"bt_try_again_p":[0,2029,1290,329],"bt_back_to_map":[8,2336,1275,269],"bt_back_to_map_p":[8,2336,1275,269]},
- "lives":{"10_cuddle":[0,721,1290,1259],"21_title":[0,167,1290,389],"30_timer_panel":[0,1908,1290,245],"bt_refill_lives":[0,2140,1290,289],"bt_refill_lives_p":[0,2140,1290,289],"bt_back_to_map":[2,2409,1287,214],"bt_back_to_map_p":[2,2409,1287,214]},
- "boost":{"10_rambo":[0,580,1209,1550],"21_title":[0,134,1290,546],"22_notice":[187,2124,913,78],"40_paw":[953,594,317,298],"bt_buy":[0,2190,1290,305],"bt_buy_p":[0,2190,1290,305],"bt_not_now":[101,2483,1089,222],"bt_not_now_p":[101,2483,1089,222]},
- "bones":{"10_dig":[0,763,1290,1167],"21_title":[7,319,1277,482],"30_panel":[0,1887,1290,212],"bt_go_to_shop":[0,2091,1290,256],"bt_go_to_shop_p":[0,2091,1290,256],"bt_not_now":[27,2336,1241,216],"bt_not_now_p":[27,2336,1241,216]},
- "lose":{"10_rambo":[0,567,1096,1140],"11_mr_cardinal":[772,1127,443,391],"21_title":[0,146,1290,487],"22_still_needed_title":[250,1728,791,153],"bt_buy_moves":[0,2127,1290,286],"bt_buy_moves_p":[0,2127,1290,286],"bt_give_up":[134,2407,1013,213],"bt_give_up_p":[134,2407,1013,213]}};
+const R='bovo11/mom/',V='?v=17',DW=1290,DH=2796;
+const L={"ready":{"10_rambo":[0,1001,1237,922],"11_mr_bunny":[953,1190,312,434],"21_title":[230,241,814,319],"30_primary_button_blank":[6,2316,1284,320],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
+ "pause":{"10_rambo":[321,844,969,799],"11_mr_bunny":[0,1229,661,416],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2356,822,226],"bt_restart_p":[0,2356,822,226],"bt_quit":[495,2356,795,229],"bt_quit_p":[495,2356,795,229]},
+ "fail":{"10_rambo":[0,794,1048,1258],"11_mr_cardinal":[688,1419,522,526],"21_title":[0,234,1290,477],"22_life":[362,620,571,173],"bt_try_again":[0,2029,1290,333],"bt_try_again_p":[0,2029,1290,333],"bt_back_to_map":[8,2336,1275,278],"bt_back_to_map_p":[8,2336,1275,278]},
+ "lives":{"10_cuddle":[0,721,1290,1273],"21_title":[0,167,1290,403],"30_timer_panel":[0,1908,1290,257],"bt_refill_lives":[0,2140,1290,297],"bt_refill_lives_p":[0,2140,1290,297],"bt_back_to_map":[2,2409,1287,224],"bt_back_to_map_p":[2,2409,1287,224]},
+ "boost":{"10_rambo":[0,580,1209,1554],"21_title":[0,134,1290,546],"22_notice":[187,2124,913,78],"40_paw":[953,594,317,298],"bt_buy":[0,2190,1290,314],"bt_buy_p":[0,2190,1290,314],"bt_not_now":[101,2483,1089,222],"bt_not_now_p":[101,2483,1089,222]},
+ "bones":{"10_dig":[0,763,1290,1175],"21_title":[7,319,1277,492],"30_panel":[0,1887,1290,228],"bt_go_to_shop":[0,2091,1290,266],"bt_go_to_shop_p":[0,2091,1290,266],"bt_not_now":[27,2336,1241,216],"bt_not_now_p":[27,2336,1241,216]},
+ "lose":{"10_rambo":[0,567,1096,1150],"11_mr_cardinal":[772,1127,446,407],"21_title":[0,146,1290,487],"22_still_needed_title":[250,1728,791,170],"bt_buy_moves":[0,2127,1290,288],"bt_buy_moves_p":[0,2127,1290,288],"bt_give_up":[134,2407,1013,215],"bt_give_up_p":[134,2407,1013,215]}};
 const SD={ready_play:1};   // buttons from the Soft Depth kits (pressed art supplied)
-const ART={ready_play:[1284,283],_:[1,1]};
+const ART={ready_play:[1284,320],_:[1,1]};
 const css=document.createElement('style');css.textContent=`
 #gm{position:fixed;inset:0;z-index:300;display:none;overflow:hidden;font-family:KNun,BoboNunito,system-ui;-webkit-user-select:none;user-select:none;touch-action:none;background:#2d5a20}
 #gm.on{display:block}

@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795358802"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=12"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795360840"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=28"></script><script src="../ui_life.js?v=15"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=10">
+<link rel="stylesheet" href="../uikit/kit.css?v=11">
 <style>
 #col{position:absolute;left:50%;width:calc(var(--u)*352);margin-left:calc(var(--u)*-176);display:flex;flex-direction:column;gap:calc(var(--u)*10)}
 .cd{border-style:solid;border-width:calc(var(--u)*20);border-image:url(../uikit/card_small.webp?v=1) 64 fill/calc(var(--u)*20) stretch;filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*5) rgba(60,25,0,.3))}
@@ -47,12 +47,12 @@ K.topbar(ui,'settings.html');
 const buy=()=>K.toast('Purchases are coming soon!');
 const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
 // pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:1,parts:[
- {n:'title',x:218,y:174,w:496,h:120,i:0,row:0},
- {n:'bundle',x:50,y:283,w:834,h:420,i:1,row:1},
- {row:2,n:'b100',x:55,y:721,w:265,h:274,i:2},{row:2,n:'b550',x:337,y:722,w:260,h:273,i:3},{row:2,n:'b1200',x:614,y:721,w:263,h:274,i:4},
- {row:3,n:'boost',x:50,y:1012,w:834,h:342,i:5},
- {row:4,n:'restore',x:236,y:1371,w:462,h:86,i:6}],
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:3,parts:[
+ {n:'title',x:217.22,y:173.44,w:498.13,h:120.91,i:0,row:0},
+ {n:'bundle',x:49.97,y:281.54,w:834.08,h:422.11,i:1,row:1},
+ {row:2,n:'b100',x:54.32,y:719.85,w:265.72,h:280.92,i:2},{row:2,n:'b550',x:336.69,y:721.29,w:264.27,h:279.48,i:3},{row:2,n:'b1200',x:613.98,y:719.85,w:265.72,h:280.92,i:4},
+ {row:3,n:'boost',x:49.97,y:999.54,w:834.08,h:355.5,i:5},
+ {row:4,n:'restore',x:234.62,y:1370.49,w:463.38,h:86.88,i:6}],
  zones:[
  {x:472,y:578,w:358,h:98,r:49,fn:buy,aria:'Buy the Best Friend Bundle for $4.99'},
  {x:78,y:912,w:222,h:64,r:32,fn:buy,aria:'Buy 100 bones for $0.99'},
@@ -64,4 +64,4 @@ const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:1,parts:[
  {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=19" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=20" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
