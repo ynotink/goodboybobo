@@ -157,51 +157,81 @@ const W2='win2/',WV='?v=2';
 @keyframes w2Rise{0%{transform:translateY(60%);opacity:0}100%{transform:translateY(0);opacity:1}}
 @keyframes w2Pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 @media (prefers-reduced-motion:reduce){#wfs .w2 .ram.in.cheer,#wfs .w2 .ram.in.leap,#wfs .w2 .cont.in{animation:w2Jump .3s forwards}}`;document.head.appendChild(st)}
+/* phase 3: Soft Depth win screen (ChatGPT's exact kit, 1290x2796 art). The picture is scaled as one piece so nothing
+   drifts; the forest fills any side bars. Level number and bone count are written live in the game's title lettering
+   between the kit's own "Level"/"Complete!" and "+"/"Bones" pieces. */
+const W3='win3/',V3='?v=1',WB={"title":[0,157,1290,353],"bobo":[97,912,1024,1233],"rib_left":[189,642,282,342],"rib_left_off":[189,642,282,342],"rib_center":[468,568,353,430],"rib_center_off":[468,568,353,430],"rib_right":[819,642,282,342],"rib_right_off":[819,642,282,342],"bone":[166,2106,335,166],"bt_continue":[0,2296,1290,278],"bt_continue_p":[0,2296,1290,278],"bt_replay":[369,2586,553,137],"bt_replay_p":[369,2586,553,137],"lvl_a":[32,409,500,149],"lvl_b":[532,407,727,151],"bon_a":[138,2133,478,130],"bon_b":[616,2121,674,143]};
+const css3=document.createElement('style');css3.textContent=`
+#wfs .w3{position:absolute;inset:0;opacity:0;transition:opacity .3s;overflow:hidden}
+#wfs .w3.in{opacity:1}
+#wfs .w3 .bg{position:absolute;max-width:none;pointer-events:none}
+#wfs .w3 .bgb{filter:blur(14px) brightness(.85)}
+#wfs .w3 .st{position:absolute}
+#wfs .w3 .ly{position:absolute;display:block;pointer-events:none;-webkit-user-drag:none}
+#wfs .w3 .pop{transform:scale(0)}#wfs .w3 .pop.in{animation:w3Pop .5s cubic-bezier(.25,1.7,.5,1) forwards}
+#wfs .w3 .fade{opacity:0}#wfs .w3 .fade.in{animation:w3Fade .4s ease-out forwards}
+#wfs .w3 .rib{transform:scale(0)}#wfs .w3 .rib.off{transform:scale(1)}#wfs .w3 .rib.in{animation:w3Stamp .45s cubic-bezier(.3,1.8,.5,1) forwards}
+#wfs .w3 .bob{transform:translateY(110%)}#wfs .w3 .bob.in{animation:w3Jump .65s cubic-bezier(.2,1.5,.45,1) forwards,w3Hop 1.1s ease-in-out .7s infinite}
+#wfs .w3 .num{position:absolute;transform:translate(-50%,-50%);pointer-events:none}
+#wfs .w3 .bt{position:absolute;cursor:pointer;-webkit-tap-highlight-color:transparent;opacity:0}
+#wfs .w3 .bt.in{animation:w3Up .4s cubic-bezier(.25,1.5,.5,1) forwards}
+#wfs .w3 .bt img{position:absolute;pointer-events:none;-webkit-user-drag:none}
+#wfs .w3 .bt .pi{opacity:0}#wfs .w3 .bt.dn .pi{opacity:1}#wfs .w3 .bt.dn .ni{opacity:0}
+@keyframes w3Pop{0%{transform:scale(0)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes w3Fade{from{opacity:0;transform:translateY(8%)}to{opacity:1;transform:none}}
+@keyframes w3Stamp{0%{transform:scale(2.2);opacity:0}60%{transform:scale(.92);opacity:1}100%{transform:scale(1)}}
+@keyframes w3Jump{0%{transform:translateY(110%)}100%{transform:translateY(0)}}
+@keyframes w3Hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.2%)}}
+@keyframes w3Up{0%{opacity:0;transform:translateY(30%)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){#wfs .w3 *{animation:none!important;transform:none!important;opacity:1!important}}`;document.head.appendChild(css3);
 function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FAST=false}catch(e){}
  col.querySelectorAll(':scope>:not(canvas)').forEach(e=>e.remove());parts=[];loop();
- const perfect=stars>=3;
- const W=col.clientWidth||innerWidth,H=innerHeight;
- const sc=el('div','w2',col);const bg=img(W2+(perfect?'background_teal_forest.jpg':'background_backyard.jpg')+WV,'bg',sc);
- const at=(e,x,y,w,h)=>{Object.assign(e.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});return e};
- const word=perfect?'title_pawsome':['title_good_boy','title_top_dog','title_woof'][Math.floor(Math.random()*3)];
- const TS={title_good_boy:804/220,title_pawsome:798/222,title_top_dog:806/229,title_woof:710/239};
- const sa=(()=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:0;height:var(--sat,env(safe-area-inset-top));visibility:hidden';document.body.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return v})();
- const top0=Math.max(sa+12,H*.06,30);
- const tw=W*(word==='title_woof'?.66:.86),th=tw/TS[word];
- const ttl=at(img(W2+word+'.webp'+WV,'p ttl2',sc),(W-tw)/2,top0,tw,th);
- const fs=W*.083;const sub=el('div','sub2',sc);sub.style.top=(top0+th*.86)+'px';sub.style.fontSize=fs+'px';
- const lvT='Level '+(S.li+1)+' Complete!';const sp=el('span','',sub);sp.textContent=lvT;sp.dataset.t=lvT;
- // medals
- const mTop=top0+th*.86+fs*1.35;const MR=762/616;
- const MS=[[.255,.2,.06],[.5,.255,0],[.745,.2,.06]];
- const md=MS.map(([cx,w,dy],i)=>{const mw=W*w,mh=mw*MR;const m=at(img(W2+(i<stars?'medal_earned':'medal_unearned')+'.webp'+WV,'p med'+(i<stars?'':' unearn'),sc),W*cx-mw/2,mTop+W*dy,mw,mh);return m});
- const mBot=mTop+W*.255*MR;
- // bottom stack
- const safeB=18;const repFs=W*.068;const repH=repFs*1.5;const repTop=H-safeB-repH-H*.012;
- const cw=W*.72,ch=cw*228/900;const cTop=repTop-ch-W*.02;
- const bFs=W*.1;const bTop=cTop-bFs*1.55;
- const glow=el('div','glow',sc);glow.style.top=(mTop+W*.12)+'px';
- // Rambo fills the space between the medals and the bones
- const rTopMin=mBot-W*.04,rBot=bTop+bFs*.25;const RA=perfect?1082/900:1199/900;
- let rh=rBot-rTopMin,rw=rh/RA;if(rw>W*.92){rw=W*.92;rh=rw*RA}
- const ram=at(img(W2+(perfect?'rambo_crowned_leap':'rambo_cheering')+'.webp'+WV,'p ram '+(perfect?'leap':'cheer'),sc),(W-rw)/2+(perfect?-W*.02:0),rBot-rh,rw,rh);
- sc.insertBefore(ram,md[0]);   // Rambo under the medals
- const bo=el('div','bones2',sc);bo.style.top=bTop+'px';bo.style.fontSize=bFs+'px';img(W2+'icon_bone.webp'+WV,'',bo);const bt=el('b','',bo);const setB=n=>{const t='+'+n+' Bones';bt.textContent=t;bt.dataset.t=t};setB(0);
- const ct=at(el('div','cont',sc),(W-cw)/2,cTop,cw,ch);img(W2+'button_continue_blank.webp'+WV,'',ct);const cl=el('b','',ct);cl.textContent='Continue';cl.style.fontSize=(ch*.42)+'px';ct.setAttribute('role','button');ct.setAttribute('aria-label','Continue');
- const rp=el('div','rep',sc);rp.style.top=repTop+'px';rp.style.fontSize=repFs+'px';const rs=el('span','',rp);rs.textContent='Replay';rs.dataset.t='Replay';rp.setAttribute('role','button');
+ const perfect=stars>=3,DW=1290,DH=2796;
+ const sc=el('div','w3',col);const bb=img(W3+'bg.jpg'+V3,'bg bgb',sc),bg=img(W3+'bg.jpg'+V3,'bg',sc);const st=el('div','st',sc);
+ const items=[];let s=1;
+ const lay=()=>{const W=col.clientWidth||innerWidth,H=innerHeight;s=Math.min(W/DW,H/DH);const sb=Math.max(W/DW,H/DH);
+  for(const [e,k] of [[bb,sb],[bg,s]])Object.assign(e.style,{width:DW*k+'px',height:DH*k+'px',left:(W-DW*k)/2+'px',top:(H-DH*k)/2+'px'});
+  Object.assign(st.style,{width:DW*s+'px',height:DH*s+'px',left:(W-DW*s)/2+'px',top:(H-DH*s)/2+'px'});items.forEach(f=>f())};
+ const put=(n,c,box)=>{const b=box||WB[n],e=img(W3+n+'.webp'+V3,'ly '+(c||''),st);items.push(()=>Object.assign(e.style,{left:b[0]*s+'px',top:b[1]*s+'px',width:b[2]*s+'px',height:b[3]*s+'px'}));return e};
+ // title: PAWSOME for a perfect level, otherwise one of the other praise words (old art) in the same spot
+ let ttl;if(perfect)ttl=put('title','pop');else{const w=['title_good_boy','title_top_dog','title_woof'][Math.floor(Math.random()*3)],R={title_good_boy:804/220,title_top_dog:806/229,title_woof:710/239}[w];
+  const bw=w==='title_woof'?820:1110,bh=bw/R;ttl=img(W2+w+'.webp'+WV,'ly pop',st);items.push(()=>Object.assign(ttl.style,{left:(645-bw/2)*s+'px',top:(345-bh/2)*s+'px',width:bw*s+'px',height:bh*s+'px'}))}
+ // "Level N Complete!": the kit's two words with the live number set between them
+ const lv=el('div','fade',st);lv.style.position='absolute';lv.style.inset='0';
+ const la=put('lvl_a','',WB.lvl_a),lb=put('lvl_b','',WB.lvl_b);lv.appendChild(la);lv.appendChild(lb);
+ const ln=el('div','num',lv);
+ const N=(t,box,cap,parts)=>{const [a,b]=parts;items.push(()=>{const gap=box[2];if(window.GBBFont){GBBFont.draw(t,t._v,cap*s,{style:'title'});}
+   const w=(parseFloat((t.firstChild||{}).style?.width)||0)/s||gap,extra=Math.max(0,w+14-gap)/2;   // wider numbers push the words apart evenly
+   const A=WB[a.dataset.n],B=WB[b.dataset.n];a.style.left=(A[0]-extra)*s+'px';b.style.left=(B[0]+extra)*s+'px';
+   Object.assign(t.style,{left:(box[0]+box[2]/2)*s+'px',top:(box[1]+box[3]/2)*s+'px'})})};
+ la.dataset.n='lvl_a';lb.dataset.n='lvl_b';ln._v=String(S.li+1);N(ln,[494,432,77,111],88,[la,lb]);
+ // ribbons (lit or empty)
+ const rb=['left','center','right'].map((r,i)=>put('rib_'+r+(i<stars?'':'_off'),'rib'+(i<stars?'':' off')));
+ const bob=put('bobo','bob');st.insertBefore(bob,rb[0]);
+ // "+N Bones"
+ const bo=el('div','pop',st);bo.style.position='absolute';bo.style.inset='0';bo.style.transformOrigin='50% 76.5%';
+ bo.appendChild(put('bone'));const ba=put('bon_a'),bn=put('bon_b');ba.dataset.n='bon_a';bn.dataset.n='bon_b';bo.appendChild(ba);bo.appendChild(bn);
+ const bt=el('div','num',bo);bt._v='0';N(bt,[527,2121,167,134],112,[ba,bn]);const setB=n=>{bt._v=String(n);lay()};
+ // buttons: kit art with pressed art, tap only in the kit's tap box
+ const btn=(n,tb,aria)=>{const b=WB['bt_'+n],e=el('div','bt',st);e.setAttribute('role','button');e.setAttribute('aria-label',aria);
+  for(const [nn,c] of [['bt_'+n,'ni'],['bt_'+n+'_p','pi']]){const i=img(W3+nn+'.webp'+V3,c,e);Object.assign(i.style,{left:(b[0]-tb[0])/tb[2]*100+'%',top:(b[1]-tb[1])/tb[3]*100+'%',width:b[2]/tb[2]*100+'%',height:b[3]/tb[3]*100+'%'})}
+  items.push(()=>Object.assign(e.style,{left:tb[0]*s+'px',top:tb[1]*s+'px',width:tb[2]*s+'px',height:tb[3]*s+'px'}));
+  e.addEventListener('pointerdown',()=>e.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(x=>e.addEventListener(x,()=>e.classList.remove('dn')));return e};
+ const ct=btn('continue',[163,2313,964,241],'Continue'),rp=btn('replay',[470,2590,350,125],'Replay');
+ lay();const onR=()=>lay();addEventListener('resize',onR);
  const fade=el('div','fadeout',col);
  let T=[],done=false,ready=false;const later=(ms,f)=>T.push(setTimeout(f,ms));
- const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,sub,bo,ram,...md].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');rp.classList.add('in');ready=true};
- const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');cancelAnimationFrame(raf);fn()};
- ct.addEventListener('pointerdown',()=>ct.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>ct.addEventListener(e,()=>ct.classList.remove('dn')));
+ const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,lv,bo,bob,...rb].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');rp.classList.add('in');ready=true};
+ const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');cancelAnimationFrame(raf);removeEventListener('resize',onR);fn()};
  ct.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>window.BA&&BA.nav?BA.nav('map.html'):location.href='map.html')});
  rp.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>{try{root.className='';col.querySelectorAll(':scope>:not(canvas)').forEach(x=>x.remove());parts=[];startLevel(S.li)}catch(_){location.reload()}})});
  sc.addEventListener('click',()=>{if(!ready)finish()});
  requestAnimationFrame(()=>sc.classList.add('in'));snd('mega');buzz(40);
- later(250,()=>{ttl.classList.add('in');snd('popper');buzz(25);rain(perfect?45:30);sparkle(.5,(top0+th/2)/H,14,.18)});
- later(500,()=>{ram.classList.add('in');snd(perfect?'rambo_triple':'rambo_double',{delay:.15})});
- later(650,()=>{sub.classList.add('in')});
- for(let i=0;i<3;i++)later(1050+i*380,()=>{md[i].classList.add('in');if(i<stars){snd('starland'+i);buzz(35);setTimeout(()=>{const r=md[i].getBoundingClientRect(),c=cv.getBoundingClientRect();const x=(r.left+r.width/2-c.left)/c.width,y=(r.top+r.height*.4-c.top)/c.height;sparkle(x,y,20,.2);burst(x,y,8,.6)},230)}});
+ const at=(x,y)=>{const r=st.getBoundingClientRect(),c=cv.getBoundingClientRect();return [(r.left+x*s-c.left)/c.width,(r.top+y*s-c.top)/c.height]};
+ later(250,()=>{ttl.classList.add('in');snd('popper');buzz(25);rain(perfect?45:30);const [x,y]=at(645,330);sparkle(x,y,14,.18)});
+ later(500,()=>{bob.classList.add('in');snd(perfect?'rambo_triple':'rambo_double',{delay:.15})});
+ later(650,()=>{lv.classList.add('in')});
+ rb.forEach((m,i)=>later(1050+i*380,()=>{if(i<stars){m.classList.add('in');snd('starland'+i);buzz(35);const b=WB['rib_'+['left','center','right'][i]];setTimeout(()=>{const [x,y]=at(b[0]+b[2]/2,b[1]+b[3]*.4);sparkle(x,y,20,.2);burst(x,y,8,.6)},230)}}));
  later(2300,()=>{bo.classList.add('in');snd('buy');let n=0;const step=Math.max(1,Math.round(bones/16));const iv=setInterval(()=>{n=Math.min(bones,n+step);setB(n);if(n>=bones)clearInterval(iv);else snd('tap',{gap:40})},50)});
  later(2800,()=>{ct.classList.add('in');snd('shimmer')});
  later(3100,()=>{rp.classList.add('in');ready=true});
