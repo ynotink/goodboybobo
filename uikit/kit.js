@@ -55,7 +55,14 @@ K.topbar=(parent,gearHref)=>{let g={};try{g=JSON.parse(localStorage.getItem('gbb
 // the scene: bottom-anchored painted background with drifting light motes; calls onSize(info) on every resize
 K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');
  const bgb=h('div','',document.body);bgb.id='kbgb';bgb.style.backgroundImage=`url(${bg})`;
- const st=h('div','',document.body);st.id='kstage';const bi=h('img','',st);bi.src=bg;const fx=h('canvas','',st);fx.id='kfx';
+ const st=h('div','',document.body);st.id='kstage';const bi=h('img','',st);bi.src=bg;
+ // living scene: one Higgsfield video of this page's painting (first frame = last frame = the painting), shown once it plays
+ {const page=(bg.match(/^([a-z]+)\/bg\.jpg/)||[])[1];let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  if(page&&!RM&&/^(toys|friends|settings)$/.test(page)){const v=h('video','',st);v.src='live/'+page+'_scene.mp4?v=1';v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';
+   for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');v.style.cssText='object-fit:fill;opacity:0;transition:opacity .4s';
+   v.addEventListener('playing',()=>{v.style.opacity=1});const kick=()=>{if(v.paused&&!document.hidden&&!window.GBB_HIDDEN){const q=v.play();q&&q.catch&&q.catch(()=>{})}};
+   kick();setInterval(kick,1000);addEventListener('pointerdown',kick,{passive:true});document.addEventListener('visibilitychange',kick);K.sceneVideo=v}}
+ const fx=h('canvas','',st);fx.id='kfx';fx.style.display='none';   // (old drifting-mote effect retired)
  let ui=document.getElementById('ui');if(!ui){ui=h('div','kui',document.body);ui.id='ui'}document.body.appendChild(ui);
  const R=document.documentElement.style;let started=false;
  function size(){const DPR=Math.min(2,devicePixelRatio||1);const CW=window.GBB_COL?GBB_COL():innerWidth,CX=(innerWidth-CW)/2;ui.style.left=CX+'px';ui.style.width=CW+'px';ui.style.right='auto';let w=innerWidth,hh=w*IH/IW;if(hh<innerHeight){hh=innerHeight;w=hh*IW/IH}else if(hh>innerHeight*1.04){hh=innerHeight;w=hh*IW/IH}
