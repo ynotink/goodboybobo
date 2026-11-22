@@ -18,10 +18,12 @@ if(!window.FX)window.FX={out(){}};else FX.out=function(){};
 const PAGE=(location.pathname.match(/(shop|toys|friends|settings)\.html/)||[])[1];
 const navPage=()=>{const n=document.querySelector('script[src*="nav/nav.js"]');return n?n.dataset.page:''};
 let META=null;fetch(PR+'meta.json'+V).then(r=>r.json()).then(m=>{META=m;preload()}).catch(()=>{});
+const NV2={home:1,map:1},PRN=()=>NV2[navPage()]?root+'ui3/v2/press/':PR,VN=()=>NV2[navPage()]?'?v=1':V;
 function keyFor(z){
  if(z.classList.contains('it')){const its=[...document.querySelectorAll('#gbnav .it')];const art=['home','map','toys','friends','shop'].includes(navPage())?navPage():'none';return 'nav_'+art+'_'+its.indexOf(z)}
  if(!PAGE)return null;return PAGE+'_'+[...document.querySelectorAll('.mk-z')].indexOf(z)}
-function preload(){for(const k in META)if((PAGE&&k.startsWith(PAGE+'_'))||k.startsWith('nav_')){new Image().src=PR+k+'.webp'+V;new Image().src=PR+k+'_p.webp'+V}}
+function preload(){for(const k in META){if(PAGE&&k.startsWith(PAGE+'_')){new Image().src=PR+k+'.webp'+V;new Image().src=PR+k+'_p.webp'+V}
+ if(k.startsWith('nav_')&&k.startsWith('nav_'+(['home','map','toys','friends','shop'].includes(navPage())?navPage():'none')+'_')){new Image().src=PRN()+k+'.webp'+VN();new Image().src=PRN()+k+'_p.webp'+VN()}}}
 // tap-area corner in mockup px (pieces were cut in mockup coordinates; the zone's own on-screen spot gives the row offset)
 const ZONES={};
 [['shop',[[472,578],[78,912],[360,912],[637,912],[93,1250],[357,1250],[626,1250]]],
@@ -29,12 +31,12 @@ const ZONES={};
  ['friends',[[356,400],[612,400],[612,628],[612,745],[612,862],[94,975],[478,975],[266,1212],[650,1338]]],
  ['settings',[null,[590,962]]]].forEach(([p,a])=>a.forEach((xy,i)=>{if(xy)ZONES[p+'_'+i]=xy}));
 function place(z,k){const m=META&&META[k];if(!m)return null;
- if(k.startsWith('nav_')){const bar=document.querySelector('#gbnav .barimg');if(!bar)return null;const br=bar.getBoundingClientRect(),s=br.width/840,host=bar.parentNode,hr=host.getBoundingClientRect();
+ if(k.startsWith('nav_')){const bar=document.querySelector('#gbnav .barframe')||document.querySelector('#gbnav .barimg');if(!bar)return null;const br=bar.getBoundingClientRect(),s=br.width/840,host=bar.parentNode,hr=host.getBoundingClientRect();
   return{host,left:br.left-hr.left+m[0]*s,top:br.top-hr.top+m[1]*s,w:m[2]*s,h:m[3]*s}}
  const Z=ZONES[k];if(!Z)return null;const box=z.parentNode,s=parseFloat(box.style.getPropertyValue('--s'))||1;
  return{host:box,left:parseFloat(z.style.left)+(m[0]-Z[0])*s,top:parseFloat(z.style.top)+(m[1]-Z[1])*s,w:m[2]*s,h:m[3]*s}}
 function lift(z){const k=keyFor(z);if(!k)return null;const P=place(z,k);if(!P)return null;
- const mk=(src,c)=>{const i=new Image();i.src=PR+src+V;i.className=c;i.alt='';i.draggable=false;Object.assign(i.style,{left:P.left+'px',top:P.top+'px',width:P.w+'px',height:P.h+'px'});return i};
+ const nv=k.startsWith('nav_'),mk=(src,c)=>{const i=new Image();i.src=(nv?PRN():PR)+src+(nv?VN():V);i.className=c;i.alt='';i.draggable=false;Object.assign(i.style,{left:P.left+'px',top:P.top+'px',width:P.w+'px',height:P.h+'px'});return i};
  const pt=mk(k+'_p.webp','ul-pt'),pc=mk(k+'.webp','ul-pc');P.host.insertBefore(pt,z);P.host.insertBefore(pc,z);return{pt,pc,nav:k.startsWith('nav_'),dn:/^toys_[2-7]$/.test(k)}}
 // buttons that are their own picture (e.g. Restore Purchases): spring the picture itself
 function ownPart(z){const r=z.getBoundingClientRect();for(const p of z.parentNode.querySelectorAll('.mk-p')){const q=p.getBoundingClientRect();

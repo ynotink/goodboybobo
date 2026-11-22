@@ -10,17 +10,23 @@ const art=ITEMS.some(i=>i[0]===page)?page:'none';
 const css=document.createElement('style');css.textContent=`
 #gbnav{position:fixed;left:0;right:0;bottom:0;z-index:60;pointer-events:none;-webkit-user-select:none;user-select:none}
 #gbnav .barimg{position:absolute;display:block;-webkit-user-drag:none;filter:drop-shadow(0 calc(var(--k)*7px) calc(var(--k)*5px) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--k)*16px) calc(var(--k)*20px) rgba(25,14,0,.38))}
+#gbnav .barimg.v2{filter:none}
+#gbnav .barframe{position:absolute;pointer-events:none}
 #gbnav .it{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:calc(var(--k)*30px)}
 #gbnav .it::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,30,0,.12);opacity:0;transition:opacity 90ms}
 #gbnav .it.dn::after{opacity:1}`;
 document.head.appendChild(css);
 // preload every page's bar so switching pages never flashes
-ITEMS.forEach(i=>{const p=new Image();p.src=root+'ui3/nav_'+i[0]+'.webp'+V});
+// pages whose bar is the approved Soft Depth finish (exact ChatGPT layers, shadows included)
+const V2={home:1,map:1},barSrc=k=>V2[k]?root+'ui3/v2/nav_'+k+'.webp?v=1':root+'ui3/nav_'+k+'.webp'+V;
+ITEMS.forEach(i=>{const p=new Image();p.src=barSrc(i[0])});
 const nav=document.createElement('div');nav.id='gbnav';
-const img=new Image();img.className='barimg';img.alt='';img.draggable=false;img.src=root+'ui3/nav_'+art+'.webp'+V;nav.appendChild(img);
+const img=new Image();img.className='barimg'+(V2[art]?' v2':'');img.alt='';img.draggable=false;img.src=barSrc(art);nav.appendChild(img);
+const frame=document.createElement('div');frame.className='barframe';nav.appendChild(frame);   // the 840x191 bar frame the tap areas and press pieces are measured in
 function build(){const W=window.GBB_COL?GBB_COL():innerWidth,u=W/852;
  nav.style.left=(innerWidth-W)/2+'px';nav.style.right='auto';nav.style.width=W+'px';nav.style.height=(191+32+6)*u+'px';nav.style.setProperty('--k',u);
- const bx=6*u,bb=32*u;Object.assign(img.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
+ const bx=6*u,bb=32*u;Object.assign(frame.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
+ if(V2[art])Object.assign(img.style,{left:0,bottom:15.851*u+'px',width:852*u+'px',height:206.065*u+'px'});else Object.assign(img.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
  nav.querySelectorAll('.it').forEach(e=>e.remove());
  ITEMS.forEach(([key,label,cx,url])=>{const on=key===page;const it=document.createElement('div');it.className='it';it.setAttribute('role','link');it.setAttribute('aria-label',label);if(on)it.setAttribute('aria-current','page');
   Object.assign(it.style,{left:bx+(cx-80)*u+'px',width:160*u+'px',bottom:bb+16*u+'px',height:163*u+'px'});

@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795312641"><script src="review_shim.js?v=4"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795317055"><script src="review_shim.js?v=4"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo</title>
@@ -71,7 +71,7 @@ let bar=null;
 function navOf(f){try{return f.contentDocument.getElementById('gbnav')}catch(e){return null}}
 function barOn(cur){try{const b=cur.contentDocument.querySelector('#gbnav .barimg');if(!b)return;const r=b.getBoundingClientRect();
  bar=new Image();bar.id='swbar';bar.src=b.src;Object.assign(bar.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',filter:getComputedStyle(b).filter});
- document.body.appendChild(bar);TABN.forEach(n=>{const p=new Image();p.src=b.src.replace(/nav_[a-z]+/,'nav_'+n)})}catch(e){bar=null}}
+ document.body.appendChild(bar);}catch(e){bar=null}}
 function barsHidden(fs,h){fs.forEach(f=>{const n=f&&navOf(f);if(n)n.style.visibility=h?'hidden':''})}
 const swipe={
  start(win,idx){log([Date.now()%100000,'sw-start',idx,!!drag,settling,!!pending,!!shown&&shown.contentWindow===win]);if(drag||settling||pending||!shown||shown.contentWindow!==win)return false;
@@ -94,7 +94,7 @@ const swipe={
   [d.cur,d.prev,d.next].forEach(f=>{if(f)f.style.transition=ease});
   d.cur.style.transform='translate3d('+tx+'px,0,0)';
   if(nb&&nb.classList.contains('peek'))nb.style.transform='translate3d('+(tx+dir*(W-1))+'px,0,0)';
-  if(commit&&bar)bar.src=bar.src.replace(/nav_[a-z]+/,'nav_'+TABN[d.idx+dir]);
+  if(commit&&bar){try{const b2=nb.contentDocument.querySelector('#gbnav .barimg'),r=b2.getBoundingClientRect();bar.src=b2.src;Object.assign(bar.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',filter:getComputedStyle(b2).filter})}catch(e){}}
   setTimeout(()=>{
    [d.cur,d.prev,d.next].forEach(f=>{if(!f)return;f.style.transition='';f.style.transform='';f.style.willChange='';f.classList.remove('peek');if(f!==shown)f.classList.add('off')});
    if(commit){pending=nb;nb._pre=false;swapTo(nb)}
