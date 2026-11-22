@@ -4,11 +4,11 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=13',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=14',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
  "pause":{"10_rambo":[321,844,969,785],"11_mr_bunny":[0,1229,661,404],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2357,822,223],"bt_restart_p":[0,2357,822,223],"bt_quit":[495,2356,795,224],"bt_quit_p":[495,2356,795,224]},
  "fail":{"10_rambo":[0,794,1048,1250],"11_mr_cardinal":[693,1419,517,512],"21_title":[0,234,1290,477],"22_life":[362,623,571,149],"bt_try_again":[0,2029,1290,329],"bt_try_again_p":[0,2029,1290,329],"bt_back_to_map":[8,2336,1275,269],"bt_back_to_map_p":[8,2336,1275,269]},
- "lives":{},
+ "lives":{"10_cuddle":[0,721,1290,1259],"21_title":[0,167,1290,389],"30_timer_panel":[0,1908,1290,245],"bt_refill_lives":[0,2140,1290,289],"bt_refill_lives_p":[0,2140,1290,289],"bt_back_to_map":[2,2409,1287,214],"bt_back_to_map_p":[2,2409,1287,214]},
  "boost":{},
  "bones":{},
  "lose":{"10_rambo":[0,567,1096,1140],"11_mr_cardinal":[772,1127,443,391],"21_title":[0,146,1290,487],"22_still_needed_title":[250,1728,791,153],"bt_buy_moves":[0,2127,1290,286],"bt_buy_moves_p":[0,2127,1290,286],"bt_give_up":[134,2407,1013,213],"bt_give_up_p":[134,2407,1013,213]}};
@@ -166,13 +166,13 @@ window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
   later(1000,()=>t.classList.add('pulse'));show()})};
 // ---------- OUT OF LIVES ----------
 window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
- want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;
-  const tm=text('Next life in --:--',645,2030,104,{maxW:900,style:'ink'});
+ want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;   // the 90 is painted on the Soft Depth button (matches Eco.PRICE.lives)
+  layer(k,'10_cuddle');layer(k,'21_title','ttl');layer(k,'30_timer_panel');
+  const tm=text('Next life in --:--',641,2032,104,{maxW:860,style:'ink'});
   const tick=()=>{if(kind!=='lives'||!window.Eco)return;if(Eco.hearts()>0){close();if(S)S.over=false;showIntro();return}tm.set('Next life in '+Eco.fmt(Eco.nextIn()));later(1000,tick)};
-  const p=zoneAt(65,2161,1162,239,()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
-  const pr=h('div','tx',stage);items.push(()=>{Object.assign(pr.style,{left:1080*s+'px',top:2272*s+'px'});GBBFont&&GBBFont.draw(pr,String(PL),104*s,{style:'button'})});
-  zoneAt(239,2427,809,163,()=>{close();BA.nav('map.html')},'Back to map');
-  show();tick()})};
+  const p=sdBtn(k,'bt_refill_lives',[62,2156,1165,250],()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
+  sdBtn(k,'bt_back_to_map',[239,2425,812,175],()=>{close();BA.nav('map.html')},'Back to map');
+  later(1000,()=>p.classList.add('pulse'));show();tick()})};
 // ---------- GET A BOOSTER ----------
 const BN=['Paw Tap','Free Swap','Bomb','Shuffle'],BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'];
 function zoneAt(x,y,w,hh,fn,aria){const el=h('div','bt zn',stage);el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));el.setAttribute('role','button');el.setAttribute('aria-label',aria);
