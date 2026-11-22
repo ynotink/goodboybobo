@@ -2,12 +2,12 @@
    Backdrop = the yard with Bobo's head/paw area painted clean; his tail stays the painted one (so it never swings over Mr Buck).
    The painted Bobo shows until the clip is playing, and stays if a phone can't play it. */
 (function(){
-const DIR='live/',V='?v=6',W=1290,H=2796,BS=[273,710,714,1098],BL=[233.35,694.75,793,1128.5];
+const DIR='live/',V='?v=7',W=1290,H=2796,BS=[296,856,609,940],BL=[262.16,837.2,676.8,971.33];
 const stage=document.getElementById('stage');if(!stage)return;
 const pc=v=>v*100+'%';
 const root=document.createElement('div');root.style.cssText='position:absolute;inset:0;overflow:hidden;pointer-events:none';stage.insertBefore(root,stage.firstChild);
 const img=(src,b)=>{const i=new Image();i.decoding='async';i.src=DIR+src+V;i.alt='';Object.assign(i.style,{position:'absolute',display:'block',maxWidth:'none',left:pc(b[0]/W),top:pc(b[1]/H),width:pc(b[2]/W),height:pc(b[3]/H)});root.appendChild(i);return i};
-img('home_static.jpg',[0,0,W,H]);const still=img('bobo_still.webp',BS);
+img('home_static2.jpg',[0,0,W,H]);const still=img('rambo_still.webp',BS);
 const oldCv=document.getElementById('gl');if(oldCv)oldCv.style.display='none';
 let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}if(RM)return;
 const cv=document.createElement('canvas');Object.assign(cv.style,{position:'absolute',left:pc(BL[0]/W),top:pc(BL[1]/H),width:pc(BL[2]/W),height:pc(BL[3]/H),opacity:0,transition:'opacity .3s'});root.appendChild(cv);
@@ -19,7 +19,7 @@ gl.linkProgram(pr);gl.useProgram(pr);gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuff
 const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
 gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);
 const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);cv.width=Math.max(2,Math.round(r.width*d));cv.height=Math.max(2,Math.round(r.height*d))};
-const v=document.createElement('video');v.src=DIR+'bobo_loop.mp4'+V;v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');
+const v=document.createElement('video');v.src=DIR+'rambo_loop.mp4'+V;v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');
 let live=false,lastT=-1;const draw=()=>{if(v.readyState<2)return false;if(v.currentTime===lastT)return true;lastT=v.currentTime;try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,v)}catch(e){return false}
  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);return true};
 const on=()=>{if(live)return;size();if(!draw())return;live=true;cv.style.opacity=1;setTimeout(()=>{still.style.visibility='hidden'},320)};
