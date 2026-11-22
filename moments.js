@@ -4,15 +4,16 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=9',DW=1290,DH=2796;
-const L={"ready":{"10_rambo":[63,1009,974,898],"11_mr_bunny":[853,1201,392,416],"20_title_accents":[102,178,1081,434],"21_title":[268,253,754,278],"30_primary_button_blank":[221,2348,848,246],"31_hard_blank":[483,665,324,110],"32_super_hard_blank":[483,666,324,109]},
+const R='bovo11/mom/',V='?v=10',DW=1290,DH=2796;
+const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
  "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
  "fail":{},
  "lives":{},
  "boost":{},
  "bones":{},
  "lose":{"10_rambo":[108,582,764,1125],"11_mr_cardinal":[826,1136,376,376],"20_title_accents":[102,178,1081,434],"21_title":[61,198,1169,297],"22_still_needed_title":[375,1741,540,128],"30_primary_button_blank":[82,2145,1129,234],"31_give_up_button_blank":[301,2426,688,158],"50_bone_icon":[838,2212,119,95]}};
-const ART={ready_play:[885,261],pause_resume:[1115,250],pause_restart:[577,180],pause_quit:[547,185],pause_on:[345,117],pause_off:[343,117],lose_plus5:[1144,241],lose_giveup:[691,169]};
+const SD={ready_play:1};   // buttons from the Soft Depth kits (pressed art supplied)
+const ART={ready_play:[1284,283],pause_resume:[1115,250],pause_restart:[577,180],pause_quit:[547,185],pause_on:[345,117],pause_off:[343,117],lose_plus5:[1144,241],lose_giveup:[691,169]};
 const css=document.createElement('style');css.textContent=`
 #gm{position:fixed;inset:0;z-index:300;display:none;overflow:hidden;font-family:KNun,BoboNunito,system-ui;-webkit-user-select:none;user-select:none;touch-action:none;background:#2d5a20}
 #gm.on{display:block}
@@ -25,6 +26,7 @@ const css=document.createElement('style');css.textContent=`
 #gm .bt.art img{filter:drop-shadow(0 calc(var(--s)*14px) calc(var(--s)*12px) rgba(40,25,0,.38))}
 #gm .tg{position:absolute;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*8px) calc(var(--s)*8px) rgba(30,40,0,.35))}
 #gm .bt.dn{transform:scale(.95)}
+#gm .bt.sd img{filter:none}#gm .bt.sd.dn{transform:none}#gm .bt.sd .pi{opacity:0}#gm .bt.sd.dn .pi{opacity:1}#gm .bt.sd.dn .ni{opacity:0}
 #gm .zn.dn{transform:none;background:rgba(60,20,0,.18)}
 #gm .bt .lb{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:.25em;white-space:nowrap;line-height:1;color:#fff1cb;font-weight:900;pointer-events:none}
 #gm .gr{position:absolute;display:flex;align-items:center;transform:translate(-50%,-50%);pointer-events:none}
@@ -52,7 +54,7 @@ function want(k){if(done[k])return done[k];const names=['bg',...Object.keys(L[k]
 want('ready');addEventListener('load',()=>setTimeout(()=>{want('pause');want('lose')},1200));
 // ---------- layout ----------
 let s=1,stage=null,items=[],timers=[],once=false,kind=null;
-const FLAT={lives:1,bones:1,boost:1,fail:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
+const FLAT={lives:1,bones:1,boost:1,fail:1,ready:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
 function fit(){if(!stage)return;const W=innerWidth,H=innerHeight;s=Math.min(W/DW,H/DH);const sb=Math.max(W/DW,H/DH);
  const bg=gm.querySelector('.bg:not(.bgb)'),bb=gm.querySelector('.bgb');const sc=FLAT[kind]?s:sb;
  if(bg)Object.assign(bg.style,{width:DW*sc+'px',height:DH*sc+'px',left:(W-DW*sc)/2+'px',top:(H-DH*sc)/2+'px'});
@@ -78,6 +80,7 @@ function button(k,n,label,size,fn,o={}){const b=L[k][n],el=h('div','bt',stage);e
  el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
 function artButton(k,n,a,fn,aria){const b=L[k][n],[aw,ah]=ART[a],cx=b[0]+b[2]/2,cy=b[1]+b[3]/2,el=h('div','bt art',stage);el.setAttribute('role','button');el.setAttribute('aria-label',aria);
  const im=h('img','',el);im.src=IM[k+'/btn_'+a]?IM[k+'/btn_'+a].src:R+'btn_'+a+'.webp'+V;im.alt='';
+ if(SD[a]){el.classList.add('sd');im.classList.add('ni');const pi=h('img','pi',el);pi.src=R+'btn_'+a+'_p.webp'+V;pi.alt=''}
  items.push(()=>{Object.assign(el.style,{left:(cx-aw/2)*s+'px',top:(cy-ah/2)*s+'px',width:aw*s+'px',height:ah*s+'px'});gm.style.setProperty('--s',s)});
  el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));
  el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
@@ -101,10 +104,9 @@ window.GM={close,get kind(){return kind}};
 window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return window.gpNoLives&&gpNoLives();
  want('ready').then(()=>{if(typeof S==='undefined'||!S||S.over)return;
   open('ready','popper');const T=S.lv.tier;
-  layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','20_title_accents','ttl');layer('ready','21_title','ttl');
+  layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','21_title','ttl');
   text('Level '+(S.li+1),645,590,104);
-  if(T=='H'||T=='SH'){const n=T=='SH'?'32_super_hard_blank':'31_hard_blank';layer('ready',n);
-   text(T=='SH'?'SUPER HARD':'HARD',645,720,T=='SH'?44:58,{ol:.07,col:T=='SH'?'#3c1670':'#7a1d12',drop:T=='SH'?'#2a0e50':'#5a140c'})}
+  if(T=='H'||T=='SH')layer('ready',T=='SH'?'32_super_hard_blank':'31_hard_blank');   // badge lettering is part of the Soft Depth art)}
   goals(S.goals.map(x=>({...x,left:x.n})),2080);
   text(S.moves+' Moves',645,2250,96);
   const go=artButton('ready','30_primary_button_blank','ready_play',()=>{close();window.say&&say('You got this!');window.hintArm&&hintArm()},'Play');
