@@ -4,7 +4,7 @@
    One dial: ?live=calm (the plan as written) or the default "lively" (same motion, bigger and more often). */
 (function(){
 const B={"sky":[0,0,1290,2796],"rays":[0,207,908,720],"back":[0,0,1290,1045],"branch_right":[919,0,371,244],"branch_mid":[217,0,620,215],"ground":[0,803,1290,1993],"flowers_right":[1094,1770,196,336],"flowers_left":[0,1756,193,328],"buck":[781,626,509,1093],"buck_under":[781,626,509,1093],"buck_part":[781,626,509,1093],"bunny":[6,1002,365,745],"bunny_under":[6,1002,365,745],"bunny_part":[6,1002,365,745],"bobo":[259,696,742,1126],"bobo_under":[259,696,742,1126],"bobo_part":[259,696,742,1126],"cardinal":[188,1382,288,415],"cardinal_under":[188,1382,288,415],"cardinal_part":[188,1382,288,415],"bobo_blink":[259,696,742,1126],"p_butterfly_blue_01":[384,320],"p_butterfly_blue_02":[384,320],"p_butterfly_blue_03":[384,320],"p_butterfly_blue_04":[384,320],"p_butterfly_blue_05":[384,320],"p_butterfly_blue_06":[384,320],"p_butterfly_monarch_01":[384,320],"p_butterfly_monarch_02":[384,320],"p_butterfly_monarch_03":[384,320],"p_butterfly_monarch_04":[384,320],"p_butterfly_monarch_05":[384,320],"p_butterfly_monarch_06":[384,320],"p_leaf_beech":[256,256],"p_leaf_birch":[256,256],"p_leaf_maple":[256,256],"p_leaf_oak":[256,256],"p_mote_amber":[128,128],"p_mote_gold":[128,128],"p_mote_ivory":[128,128],"p_petal_cosmos":[256,256],"p_petal_daisy":[256,256],"p_petal_rose":[256,256]};
-const DIR='live/',V='?v=4',W=1290,H=2796;
+const DIR='live/',V='?v=5',W=1290,H=2796;
 const Q=new URLSearchParams(location.search);let mode=Q.get('live')||(()=>{try{return localStorage.getItem('gbb_live')}catch(e){}})()||'lively';
 const M=mode==='calm'?{amp:1,rate:1,parts:1,size:1,g:1}:{amp:6,rate:.42,parts:3,size:2.4,g:3.2};
 let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
@@ -39,7 +39,7 @@ const G={bobo:{keys:[0,2,-1,0],segs:[.2,.23,.39],first:9.6,every:19},bunny:{keys
  cardinal:{keys:[0,3,3,0],segs:[.27,.18,.4],first:12.4,every:17.7},buck:{keys:[0,2.3,-.7,0],segs:[.15,.16,.37],first:14.8,every:21.2}};
 for(const c in G){G[c].next=G[c].first*M.rate+(M.rate<1?1.5:0);G[c].every*=M.rate}
 let active=null;   // only one character gesture at a time
-function fire(c){if(active||t-CH[c].last<3)return false;active={c,t0:t};CH[c].last=t;const C=CH[c];C.under.style.opacity=1;C.part.style.opacity=1;C.rest.style.opacity=0;return true}
+function fire(c){if(c==='bobo'&&boboLive)return false;if(active||t-CH[c].last<3)return false;active={c,t0:t};CH[c].last=t;const C=CH[c];C.under.style.opacity=1;C.part.style.opacity=1;C.rest.style.opacity=0;return true}
 function runGesture(){if(!active)return;const g=G[active.c],C=CH[active.c],k=t-active.t0;const amp=M.g*({bobo:.7,bunny:.85,cardinal:.8,buck:.9}[active.c]||1);
  const a=gestureAngle(k,g.keys,g.segs);if(a===null){C.part.style.transform='';C.rest.style.opacity=1;C.under.style.opacity=0;C.part.style.opacity=0;active=null;return}
  C.part.style.transform='rotate('+(a*amp).toFixed(3)+'deg)'}
@@ -47,6 +47,26 @@ function runGesture(){if(!active)return;const g=G[active.c],C=CH[active.c],k=t-a
 let nextBlink=2.8;function runBlink(){const k=t-nextBlink;if(k<0){blink.style.opacity=0;return}
  let o=0;if(k<.065)o=1-Math.pow(1-k/.065,2);else if(k<.109)o=1;else if(k<.2)o=1-ease((k-.109)/.091);else{nextBlink+=6.7*(M.rate<1?.8:1);o=0}
  if(active&&active.c==='bobo')o=0;blink.style.opacity=o.toFixed(3)}
+
+// ---- Bobo, really animated (Higgsfield clip on green, keyed out live; the painted Bobo stays as the fallback)
+const BL=[233.35,694.75,793,1128.5];let boboLive=false;
+(function(){if(RM)return;const cv=document.createElement('canvas');Object.assign(cv.style,{position:'absolute',left:pc(BL[0]/W)+'%',top:pc(BL[1]/H)+'%',width:pc(BL[2]/W)+'%',height:pc(BL[3]/H)+'%',opacity:0,transition:'opacity .35s',pointerEvents:'none'});
+ CH.bobo.rest.after(cv);
+ const gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true});if(!gl)return;
+ const vs='attribute vec2 p;varying vec2 t;void main(){t=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}';
+ const fs='precision mediump float;varying vec2 t;uniform sampler2D v;void main(){vec3 c=texture2D(v,t).rgb;float m=max(c.r,c.b);float g=c.g-m;float a=1.-smoothstep(.08,.30,g);c.g=min(c.g,m+.015);gl_FragColor=vec4(c*a,a);}';
+ const sh=(k,s)=>{const o=gl.createShader(k);gl.shaderSource(o,s);gl.compileShader(o);return o};const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+ gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);const ap=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(ap);gl.vertexAttribPointer(ap,2,gl.FLOAT,false,0,0);
+ const tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);
+ const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);cv.width=Math.max(2,Math.round(r.width*d));cv.height=Math.max(2,Math.round(r.height*d))};
+ const v=document.createElement('video');v.src=DIR+'bobo_live.mp4'+V;v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');
+ let lastT=-1;const draw=()=>{if(v.readyState<2)return false;if(v.currentTime===lastT)return true;lastT=v.currentTime;try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,v)}catch(e){return false}
+  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);return true};
+ const on=()=>{if(boboLive)return;size();if(!draw())return;boboLive=true;cv.style.opacity=1;setTimeout(()=>{const C=CH.bobo;[C.rest,C.under,C.part].forEach(i=>i.style.visibility='hidden');blink.style.visibility='hidden'},380)};
+ v.addEventListener('playing',()=>{on()});addEventListener('resize',()=>{if(boboLive){size();lastT=-1}});
+ const tick=()=>{requestAnimationFrame(tick);if(window.__liveSeek)return;if(v.paused&&!document.hidden&&!window.GBB_HIDDEN){const p=v.play();p&&p.catch&&p.catch(()=>{})}if(boboLive)draw();else if(v.readyState>=2&&!v.paused)on()};
+ const p=v.play();p&&p.catch&&p.catch(()=>{});addEventListener('pointerdown',()=>{if(v.paused){const q=v.play();q&&q.catch&&q.catch(()=>{})}},{passive:true});tick();
+ window.GBB_BOBO_VIDEO=v;window.__boboDraw=()=>{lastT=-1;size();draw();cv.style.opacity=1;const C=CH.bobo;[C.rest,C.under,C.part].forEach(i=>i.style.visibility='hidden');blink.style.visibility='hidden'}})();
 // ---- particles (ChatGPT's painted sprites)
 const P=[];let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 function sprite(n,w){const i=new Image();i.src=DIR+'p_'+n+'.webp'+V;i.className='pt';i.alt='';const r=B['p_'+n][1]/B['p_'+n][0];
