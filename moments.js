@@ -4,16 +4,16 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=11',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=12',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
  "pause":{"10_rambo":[321,844,969,785],"11_mr_bunny":[0,1229,661,404],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2357,822,223],"bt_restart_p":[0,2357,822,223],"bt_quit":[495,2356,795,224],"bt_quit_p":[495,2356,795,224]},
  "fail":{},
  "lives":{},
  "boost":{},
  "bones":{},
- "lose":{"10_rambo":[108,582,764,1125],"11_mr_cardinal":[826,1136,376,376],"20_title_accents":[102,178,1081,434],"21_title":[61,198,1169,297],"22_still_needed_title":[375,1741,540,128],"30_primary_button_blank":[82,2145,1129,234],"31_give_up_button_blank":[301,2426,688,158],"50_bone_icon":[838,2212,119,95]}};
+ "lose":{"10_rambo":[0,567,1096,1140],"11_mr_cardinal":[772,1127,443,391],"21_title":[0,146,1290,487],"22_still_needed_title":[250,1728,791,153],"bt_buy_moves":[0,2127,1290,286],"bt_buy_moves_p":[0,2127,1290,286],"bt_give_up":[134,2407,1013,213],"bt_give_up_p":[134,2407,1013,213]}};
 const SD={ready_play:1};   // buttons from the Soft Depth kits (pressed art supplied)
-const ART={ready_play:[1284,283],lose_plus5:[1144,241],lose_giveup:[691,169]};
+const ART={ready_play:[1284,283],_:[1,1]};
 const css=document.createElement('style');css.textContent=`
 #gm{position:fixed;inset:0;z-index:300;display:none;overflow:hidden;font-family:KNun,BoboNunito,system-ui;-webkit-user-select:none;user-select:none;touch-action:none;background:#2d5a20}
 #gm.on{display:block}
@@ -54,7 +54,7 @@ function want(k){if(done[k])return done[k];const names=['bg',...Object.keys(L[k]
 want('ready');addEventListener('load',()=>setTimeout(()=>{want('pause');want('lose')},1200));
 // ---------- layout ----------
 let s=1,stage=null,items=[],timers=[],once=false,kind=null;
-const FLAT={lives:1,bones:1,boost:1,fail:1,ready:1,pause:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
+const FLAT={lives:1,bones:1,boost:1,fail:1,ready:1,pause:1,lose:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
 function fit(){if(!stage)return;const W=innerWidth,H=innerHeight;s=Math.min(W/DW,H/DH);const sb=Math.max(W/DW,H/DH);
  const bg=gm.querySelector('.bg:not(.bgb)'),bb=gm.querySelector('.bgb');const sc=FLAT[kind]?s:sb;
  if(bg)Object.assign(bg.style,{width:DW*sc+'px',height:DH*sc+'px',left:(W-DW*sc)/2+'px',top:(H-DH*sc)/2+'px'});
@@ -141,13 +141,12 @@ function sdBtn(k,n,tb,fn,aria){const b=L[k][n],el=h('div','bt sd2',stage);el.set
 // ---------- OUT OF MOVES ----------
 window.lose=function(again){S.over=true;if(!again)window.fx&&window.fx('lose');
  want('lose').then(()=>{open('lose','tap');const k='lose';
-  layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');layer(k,'22_still_needed_title');
-  goals(S.goals.filter(x=>x.left>0),1990);
-  const PM=window.Eco?Eco.PRICE.moves:90;
+  layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'21_title','ttl');layer(k,'22_still_needed_title');
+  goals(S.goals.filter(x=>x.left>0),1994);
+  const PM=window.Eco?Eco.PRICE.moves:90;   // the 90 is painted on the Soft Depth button (matches Eco.PRICE.moves)
   const buy=el=>{if(window.Eco&&!Eco.spend(PM)){el.classList.remove('pulse','nope');void el.offsetWidth;close();needBones(PM,()=>lose(1));return}close();moreMoves()};
-  const p5=PM===90?artButton(k,'30_primary_button_blank','lose_plus5',buy,'Get 5 more moves for '+PM+' bones'):button(k,'30_primary_button_blank','',84,buy,
-   {aria:'Get 5 more moves for '+PM+' bones',inner:['50_bone_icon'],html:'<span style="position:absolute;left:33.7%;transform:translateX(-50%)">+5 MOVES</span><span style="position:absolute;left:84.5%;transform:translateX(-50%)">'+PM+'</span>'});
-  artButton(k,'31_give_up_button_blank','lose_giveup',()=>{window.Eco&&Eco.loseHeart();showFail()},'Give up, costs one life');
+  const p5=sdBtn(k,'bt_buy_moves',[75,2142,1144,240],buy,'Get 5 more moves for '+PM+' bones');
+  sdBtn(k,'bt_give_up',[301,2422,688,167],()=>{window.Eco&&Eco.loseHeart();showFail()},'Give up, costs one life');
   later(1000,()=>p5.classList.add('pulse'));show()})};
 
 // ---------- painted-word buttons (words are part of the art) ----------
