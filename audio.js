@@ -31,7 +31,7 @@ if(SH){const P=window.parent.BA;let mine=null;window.GBB_FRAMED=true;
   if(mine)P.music(mine)};
  if(SH.startHidden&&SH.startHidden(window))window.GBB_HIDDEN=true;
  const sa=()=>{const r=document.documentElement.style;r.setProperty('--sat',SH.sat+'px');r.setProperty('--sab',SH.sab+'px')};sa();
- const rd=()=>SH.ready(window);addEventListener('load',()=>_raf(()=>_raf(rd)));document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>_raf(()=>_raf(rd)),/game_new/.test(location.pathname)?2500:350));
+ const rd=()=>SH.ready(window);addEventListener('load',()=>_raf(()=>_raf(rd)));document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>_raf(()=>_raf(rd)),/game_new/.test(location.pathname)?2500:2200));
  return}
 const AB=(document.currentScript&&document.currentScript.src||'').replace(/audio\.js.*$/,'');
 // opened on its own (not inside the app shell)? hop into the shell so the whole app shares one engine
