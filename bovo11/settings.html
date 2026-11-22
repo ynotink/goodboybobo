@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795322212"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=27"></script><script src="../ui_life.js?v=11"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795323856"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=27"></script><script src="../ui_life.js?v=12"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Settings</title>
@@ -37,7 +37,7 @@ const {h,img}=K;
 K.topbar(ui,'index.html');
 const say=m=>()=>K.toast(m);
 // pieces cut straight from ChatGPT's approved Settings mockup (934 px wide), title without the platform
-const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings/',v:4,maxGap:14,parts:[
+const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings2/',v:1,maxGap:14,parts:[
  {n:'title',x:257,y:337,w:406,h:122,i:0,row:0},
  {n:'panel',x:72,y:461,w:790,h:945,i:1,row:1}],
  zones:[
@@ -48,15 +48,15 @@ const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings/',v:4,maxGap:14,p
  {x:110,y:1222,w:720,h:80,r:24,fn:say('Privacy & Terms are coming soon!'),aria:'Privacy & Terms'}]});
 // live toggles over the panel (ChatGPT's own on/off art)
 const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}else ST[k]=ST['_'+k]||(k==='music'?70:80);save();if(k==='vib'&&v)K.buzz(30)};
-[['Music','music',515],['Sound Effects','sounds',603],['Vibration','vib',691],['Notifications','notif',778]].forEach(([lb,k,y],i)=>{
+[['Music','music',506],['Sound Effects','sounds',595.78],['Vibration','vib',682.67],['Notifications','notif',770.27]].forEach(([lb,k,y],i)=>{
  let on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
  const t=document.createElement('div');t.className='mk-tg k-pop';t.style.setProperty('--i',2+i);t.setAttribute('role','switch');t.setAttribute('aria-label',lb);
  const im=document.createElement('img');im.alt='';im.draggable=false;t.appendChild(im);
- const draw=()=>{im.src='../ui3/settings/'+(on?'tog_on':'tog_off')+'.webp?v=5';t.setAttribute('aria-checked',on?'true':'false')};draw();
+ const draw=()=>{im.src='../ui3/settings2/tog_'+k+(on?'_on':'_off')+'.webp?v=1';t.setAttribute('aria-checked',on?'true':'false')};draw();
  t.addEventListener('click',()=>{if(k==='notif'){K.toast('Notifications are coming soon!');t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');return}on=!on;draw();flip(k)(on);K.buzz(10)});
- M.add(t,666,y,135,63);
+ M.add(t,658.88,y,150.6,80.37);
  // tapping the row also flips it
- M.add((()=>{const z=document.createElement('div');z.className='mk-z';z.addEventListener('click',()=>t.click());return z})(),110,y-10,540,84)});
+ M.add((()=>{const z=document.createElement('div');z.className='mk-z';z.addEventListener('click',()=>t.click());return z})(),110,y+6,540,84)});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=17" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=18" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
