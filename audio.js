@@ -22,13 +22,15 @@ if(SH){const P=window.parent.BA;let mine=null;window.GBB_FRAMED=true;
  const MP=HTMLMediaElement.prototype,_play=MP.play,_pause=MP.pause;
  MP.play=function(){this._want=true;if(window.GBB_HIDDEN)return Promise.resolve();return _play.apply(this,arguments)};
  MP.pause=function(){this._want=false;return _pause.apply(this,arguments)};
- document.addEventListener('play',e=>{if(window.GBB_HIDDEN&&e.target.pause){e.target._want=true;_pause.call(e.target)}},true);
+ document.addEventListener('play',e=>{if(window.GBB_HIDDEN&&e.target.pause&&!e.target._peek){e.target._want=true;_pause.call(e.target)}},true);
  window.GBB_hide=()=>{if(window.GBB_HIDDEN)return;window.GBB_HIDDEN=true;document.querySelectorAll('video,audio').forEach(v=>{v._want=!v.paused;_pause.call(v)});
   try{dispatchEvent(new PageTransitionEvent('pagehide',{persisted:true}))}catch(e){}};
- window.GBB_show=()=>{const was=window.GBB_HIDDEN;window.GBB_HIDDEN=false;if(was){const h=held.splice(0);h.forEach(cb=>_raf(cb));
+ window.GBB_show=()=>{const was=window.GBB_HIDDEN;window.GBB_HIDDEN=false;document.querySelectorAll('video.scene').forEach(v=>v._peek=false);if(was){const h=held.splice(0);h.forEach(cb=>_raf(cb));
    document.querySelectorAll('video,audio').forEach(v=>{if(v._want)_play.call(v).catch(()=>{})});
    try{dispatchEvent(new PageTransitionEvent('pageshow',{persisted:true}))}catch(e){}}
   if(mine)P.music(mine)};
+ // while a screen slides in under your thumb, its living scene already plays (so it never lands frozen)
+ window.GBB_peek=on=>{if(!window.GBB_HIDDEN)return;document.querySelectorAll('video.scene').forEach(v=>{if(on){v._want=true;v._peek=true;_play.call(v).catch(()=>{})}else{v._peek=false;_pause.call(v)}})};
  if(SH.startHidden&&SH.startHidden(window))window.GBB_HIDDEN=true;
  const sa=()=>{const r=document.documentElement.style;r.setProperty('--sat',SH.sat+'px');r.setProperty('--sab',SH.sab+'px')};sa();
  const rd=()=>SH.ready(window);addEventListener('load',()=>_raf(()=>_raf(rd)));document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>_raf(()=>_raf(rd)),/game_new/.test(location.pathname)?2500:2200));

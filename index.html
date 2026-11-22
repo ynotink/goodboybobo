@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795377678"><script src="review_shim.js?v=4"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795378303"><script src="review_shim.js?v=4"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo</title>
@@ -21,7 +21,7 @@ iframe.scr.peek{visibility:visible;pointer-events:none;z-index:1}
 window.GBB_SHELL_HOST=true;
 try{const q=new URLSearchParams(location.search);if(q.get('live'))localStorage.setItem('gbb_live',q.get('live'));if(q.get('mom')==='1')localStorage.setItem('gbb_mom','1');if(q.get('mom')==='0')localStorage.removeItem('gbb_mom')}catch(e){}
 </script>
-<script src="audio.js?v=29"></script>
+<script src="audio.js?v=31"></script>
 </head><body><img id="splash" src="splash.jpg?v=1" alt="" fetchpriority="high" decoding="sync"><div id="sa"></div><div id="sb"></div>
 <script>
 (function(){
@@ -92,7 +92,7 @@ const swipe={
   if(!nb){const a=Math.abs(x);x=Math.sign(x)*W*.16*(1-Math.exp(-a/(W*.35)))}
   d.x=x;d.cur.style.transform='translate3d('+x+'px,0,0)';
   [[d.prev,1-W],[d.next,W-1]].forEach(([f,off])=>{if(!f)return;const on=(off<0&&x>0)||(off>0&&x<0);
-   if(on){f.classList.remove('off');f.classList.add('peek');f.style.transform='translate3d('+(x+off)+'px,0,0)'}else{f.classList.add('off');f.classList.remove('peek')}})},
+   if(on){if(!f.classList.contains('peek')){try{f.contentWindow.GBB_peek&&f.contentWindow.GBB_peek(true)}catch(e){}}f.classList.remove('off');f.classList.add('peek');f.style.transform='translate3d('+(x+off)+'px,0,0)'}else{if(f.classList.contains('peek')){try{f.contentWindow.GBB_peek&&f.contentWindow.GBB_peek(false)}catch(e){}}f.classList.add('off');f.classList.remove('peek')}})},
  end(dx,v){const d=drag;if(!d)return;drag=null;settling=true;const W=d.W,x=d.x,dir=x<0?1:-1,nb=dir>0?d.next:d.prev;
   const fling=Math.abs(v)>.35&&Math.sign(v)===Math.sign(x);
   const commit=!!nb&&(Math.abs(x)>W*.22||fling);
@@ -105,7 +105,7 @@ const swipe={
   if(nb&&nb.classList.contains('peek'))nb.style.transform='translate3d('+(tx+dir*(W-1))+'px,0,0)';
   if(commit&&bar){try{const b2=nb.contentDocument.querySelector('#gbnav .barimg'),r=b2.getBoundingClientRect();bar.src=b2.src;Object.assign(bar.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',filter:getComputedStyle(b2).filter})}catch(e){}}
   setTimeout(()=>{
-   [d.cur,d.prev,d.next].forEach(f=>{if(!f)return;f.style.transition='';f.style.transform='';f.style.willChange='';f.classList.remove('peek');if(f!==shown)f.classList.add('off')});
+   [d.cur,d.prev,d.next].forEach(f=>{if(!f)return;f.style.transition='';f.style.transform='';f.style.willChange='';f.classList.remove('peek');if(f!==shown){f.classList.add('off');try{f.contentWindow.GBB_peek&&f.contentWindow.GBB_peek(false)}catch(e){}}});
    if(commit){pending=nb;nb._pre=false;swapTo(nb)}
    barsHidden([d.cur,d.prev,d.next],false);const b=bar;bar=null;if(b)requestAnimationFrame(()=>requestAnimationFrame(()=>b.remove()));
    settling=false;if(want)go(TABS[d.idx+dir])},ms+20)}};

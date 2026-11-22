@@ -58,10 +58,10 @@ K.scene=(bg,IW,IH,onSize)=>{document.documentElement.classList.add('kpage');
  const st=h('div','',document.body);st.id='kstage';const bi=h('img','',st);bi.src=bg;
  // living scene: one Higgsfield video of this page's painting (first frame = last frame = the painting), shown once it plays
  {const page=(bg.match(/^([a-z]+)\/bg\.jpg/)||[])[1];let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
-  if(page&&!RM&&/^(toys|friends|settings)$/.test(page)){const v=h('video','',st);v.src='live/'+page+'_scene.mp4?v=2';v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';
-   for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');v.style.cssText='object-fit:fill;opacity:0;transition:opacity .4s';
-   v.addEventListener('playing',()=>{v.style.opacity=1});const kick=()=>{if(v.paused&&!document.hidden&&!window.GBB_HIDDEN){const q=v.play();q&&q.catch&&q.catch(()=>{})}};
-   kick();setInterval(kick,1000);addEventListener('pointerdown',kick,{passive:true});document.addEventListener('visibilitychange',kick);K.sceneVideo=v}}
+  if(page&&!RM&&/^(toys|friends|settings)$/.test(page)){const v=h('video','',st);v.src='live/'+page+'_scene.mp4?v=3';v.className='scene';v.muted=true;v.defaultMuted=true;v.playsInline=true;v.loop=true;v.autoplay=true;v.preload='auto';
+   for(const a of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(a,'');v.style.cssText='object-fit:fill;opacity:0';
+   {const on=()=>{v.style.opacity=1};v.addEventListener('playing',on);v.addEventListener('loadeddata',on)}const kick=()=>{if(v.paused&&!document.hidden&&!window.GBB_HIDDEN){const q=v.play();q&&q.catch&&q.catch(()=>{})}};
+   kick();v.addEventListener('canplay',kick);setInterval(kick,250);addEventListener('pointerdown',kick,{passive:true});document.addEventListener('visibilitychange',kick);K.sceneVideo=v}}
  const fx=h('canvas','',st);fx.id='kfx';fx.style.display='none';   // (old drifting-mote effect retired)
  let ui=document.getElementById('ui');if(!ui){ui=h('div','kui',document.body);ui.id='ui'}document.body.appendChild(ui);
  const R=document.documentElement.style;let started=false;
