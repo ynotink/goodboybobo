@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795362554"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=29"></script><script src="../ui_life.js?v=16"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795363229"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=29"></script><script src="../ui_life.js?v=17"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Good Boy Bobo — Home (new)</title>
 <style>
@@ -28,7 +28,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 #ui .hb3.dn{transform:scale(.95)}
 #play .plv{position:absolute;left:0;right:0;top:61%;height:22%;display:flex;align-items:center;justify-content:center;font-family:Nun,system-ui;font-size:calc(var(--w)*19.2);line-height:1;color:#fff7e8;text-shadow:0 calc(var(--w)*.61) calc(var(--w)*.9) rgba(117,58,34,.3);pointer-events:none}
 </style><link rel="stylesheet" href="../uikit/kit.css?v=11"></head><body>
-<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=17"></script>
+<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=18"></script>
 
 <script>
 'use strict';
@@ -48,7 +48,7 @@ let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx
 K.topbar(ui,'settings.html');
 const U3='../ui3/';
 const V2={daily:'position:absolute;left:-.071%;top:.73%;width:100.024%;height:100.104%',events:'position:absolute;left:-.047%;top:.73%;width:100.379%;height:100.104%',play:'position:absolute;left:0;top:.577%;width:100.22%;height:99.603%'};
-const artBtn=(art,cls,label,fn)=>{const b=K.h('div','k-btn hb3 k-pop '+cls);const im=K.h('img','k-art',b);im.src=U3+'v2/'+art+'.webp?v=1';im.style.cssText=V2[art];im.alt='';im.draggable=false;K.press(b,fn);b.setAttribute('role','button');b.setAttribute('aria-label',label);return b};
+const artBtn=(art,cls,label,fn)=>{const b=K.h('div','k-btn hb3 k-pop '+cls);const im=K.h('img','k-art',b);im.src=U3+'v2/'+art+'.webp?v=2';im.style.cssText=V2[art];im.alt='';im.draggable=false;K.press(b,fn);b.setAttribute('role','button');b.setAttribute('aria-label',label);return b};
 {const d=artBtn('daily','','Daily',()=>K.toast('Daily rewards are coming soon!'));d.style.setProperty('--i',2);place(d,198.3,1813.9,420.9,287.7)}
 {const e=artBtn('events','','Events',()=>K.toast('Events are coming soon!'));e.style.setProperty('--i',3);place(e,669.2,1813.9,422.4,287.7)}
 const play=artBtn('play','','Play level '+lvlN,()=>(window.BA&&BA.nav?BA.nav('../game_new.html?lv='+lvlN):location.href='../game_new.html?lv='+lvlN));play.id='play';play.style.setProperty('--i',4);
@@ -93,4 +93,4 @@ const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Mat
 const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!RMm){
  const lg=document.getElementById('logo');const br=()=>{if(!document.hidden){lg.classList.remove('breath');void lg.offsetWidth;lg.classList.add('breath')}setTimeout(br,9000+Math.random()*3000)};setTimeout(br,6000)}
-</script><script src="../nav/nav.js?v=21" data-page="home"></script><script>window.BA&&BA.music("Theme")</script></body></html>
+</script><script src="../nav/nav.js?v=22" data-page="home"></script><script>window.BA&&BA.music("Theme")</script></body></html>

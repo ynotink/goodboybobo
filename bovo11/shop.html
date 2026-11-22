@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795362554"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=29"></script><script src="../ui_life.js?v=16"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795363229"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=29"></script><script src="../ui_life.js?v=17"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
@@ -37,7 +37,7 @@
 .rest{align-self:center;width:calc(var(--u)*204);height:calc(var(--u)*38);border-width:calc(var(--u)*16) calc(var(--u)*17);margin-top:calc(var(--u)*-1)}
 .rest span{margin:calc(var(--u)*-16) 0;font-size:calc(var(--u)*16);color:#1b4b50;white-space:nowrap}
 </style></head><body>
-<script src="../uikit/kit.js?v=17"></script><script src="../ui3/mock.js?v=5"></script>
+<script src="../uikit/kit.js?v=18"></script><script src="../ui3/mock.js?v=5"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -47,7 +47,7 @@ K.topbar(ui,'settings.html');
 const buy=()=>K.toast('Purchases are coming soon!');
 const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
 // pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:3,parts:[
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:4,parts:[
  {n:'title',x:217.22,y:173.44,w:498.13,h:120.91,i:0,row:0},
  {n:'bundle',x:49.97,y:281.54,w:834.08,h:422.11,i:1,row:1},
  {row:2,n:'b100',x:54.32,y:719.85,w:265.72,h:280.92,i:2},{row:2,n:'b550',x:336.69,y:721.29,w:264.27,h:279.48,i:3},{row:2,n:'b1200',x:613.98,y:719.85,w:265.72,h:280.92,i:4},
@@ -64,4 +64,4 @@ const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:3,parts:[
  {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();
-</script><script src="../nav/nav.js?v=21" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=22" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

@@ -4,7 +4,7 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=17',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=18',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[0,1001,1237,922],"11_mr_bunny":[953,1190,312,434],"21_title":[230,241,814,319],"30_primary_button_blank":[6,2316,1284,320],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
  "pause":{"10_rambo":[321,844,969,799],"11_mr_bunny":[0,1229,661,416],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2356,822,226],"bt_restart_p":[0,2356,822,226],"bt_quit":[495,2356,795,229],"bt_quit_p":[495,2356,795,229]},
  "fail":{"10_rambo":[0,794,1048,1258],"11_mr_cardinal":[688,1419,522,526],"21_title":[0,234,1290,477],"22_life":[362,620,571,173],"bt_try_again":[0,2029,1290,333],"bt_try_again_p":[0,2029,1290,333],"bt_back_to_map":[8,2336,1275,278],"bt_back_to_map_p":[8,2336,1275,278]},
