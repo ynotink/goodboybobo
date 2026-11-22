@@ -49,6 +49,8 @@ const FADE_IN=1.8,XFADE=1.6,RESUME_WINDOW=25;
 const lastPos={};let AC=null,bus={},META=null,buf={},loading={},cur=null,shift=0,unlocked=false,want=null,last={},leaving=false;
 const ST=()=>{let s={music:70,sounds:80,barks:1};try{Object.assign(s,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}return s};
 const muted=()=>{try{const p=JSON.parse(localStorage.getItem('gbb_play')||'{}');return p.sound===0||p.sound===false}catch(e){return false}};
+// iPhone: play the game's music and sounds even when the ring/silent switch is on silent (like other games do)
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
 function ctx(){if(AC)return AC;const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
  try{AC=new C({latencyHint:'interactive'})}catch(e){AC=new C()}
  bus.master=AC.createGain();
