@@ -4,16 +4,16 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=10',DW=1290,DH=2796;
+const R='bovo11/mom/',V='?v=11',DW=1290,DH=2796;
 const L={"ready":{"10_rambo":[0,1011,1237,902],"11_mr_bunny":[971,1200,274,410],"21_title":[247,252,777,279],"30_primary_button_blank":[6,2325,1284,283],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
- "pause":{"10_rambo":[535,857,706,765],"11_mr_bunny":[46,1246,514,376],"20_title_accents":[102,178,1081,434],"21_title":[206,244,876,289],"30_primary_button_blank":[98,2112,1094,211],"31_restart_button_blank":[82,2376,541,170],"32_quit_button_blank":[668,2377,537,170],"40_music_toggle_on_blank":[778,1729,326,106],"41_sound_toggle_on_blank":[778,1894,326,106],"42_music_toggle_off_blank":[778,1730,326,106],"43_sound_toggle_off_blank":[778,1895,326,106],"50_music_icon":[200,1729,114,107],"51_sound_icon":[189,1895,137,104],"52_restart_icon":[133,2416,90,90],"53_quit_icon":[723,2417,96,87]},
+ "pause":{"10_rambo":[321,844,969,785],"11_mr_bunny":[0,1229,661,404],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2357,822,223],"bt_restart_p":[0,2357,822,223],"bt_quit":[495,2356,795,224],"bt_quit_p":[495,2356,795,224]},
  "fail":{},
  "lives":{},
  "boost":{},
  "bones":{},
  "lose":{"10_rambo":[108,582,764,1125],"11_mr_cardinal":[826,1136,376,376],"20_title_accents":[102,178,1081,434],"21_title":[61,198,1169,297],"22_still_needed_title":[375,1741,540,128],"30_primary_button_blank":[82,2145,1129,234],"31_give_up_button_blank":[301,2426,688,158],"50_bone_icon":[838,2212,119,95]}};
 const SD={ready_play:1};   // buttons from the Soft Depth kits (pressed art supplied)
-const ART={ready_play:[1284,283],pause_resume:[1115,250],pause_restart:[577,180],pause_quit:[547,185],pause_on:[345,117],pause_off:[343,117],lose_plus5:[1144,241],lose_giveup:[691,169]};
+const ART={ready_play:[1284,283],lose_plus5:[1144,241],lose_giveup:[691,169]};
 const css=document.createElement('style');css.textContent=`
 #gm{position:fixed;inset:0;z-index:300;display:none;overflow:hidden;font-family:KNun,BoboNunito,system-ui;-webkit-user-select:none;user-select:none;touch-action:none;background:#2d5a20}
 #gm.on{display:block}
@@ -26,7 +26,7 @@ const css=document.createElement('style');css.textContent=`
 #gm .bt.art img{filter:drop-shadow(0 calc(var(--s)*14px) calc(var(--s)*12px) rgba(40,25,0,.38))}
 #gm .tg{position:absolute;pointer-events:none;filter:drop-shadow(0 calc(var(--s)*8px) calc(var(--s)*8px) rgba(30,40,0,.35))}
 #gm .bt.dn{transform:scale(.95)}
-#gm .bt.sd img{filter:none}#gm .bt.sd.dn{transform:none}#gm .bt.sd .pi{opacity:0}#gm .bt.sd.dn .pi{opacity:1}#gm .bt.sd.dn .ni{opacity:0}
+#gm .bt.sd img{filter:none}#gm .bt.sd2 img{inset:auto;filter:none}#gm .bt.sd2.dn{transform:none}#gm .bt.sd2 .pi{opacity:0}#gm .bt.sd2.dn .pi{opacity:1}#gm .bt.sd2.dn .ni{opacity:0}#gm .bt.sd.dn{transform:none}#gm .bt.sd .pi{opacity:0}#gm .bt.sd.dn .pi{opacity:1}#gm .bt.sd.dn .ni{opacity:0}
 #gm .zn.dn{transform:none;background:rgba(60,20,0,.18)}
 #gm .bt .lb{position:absolute;left:0;right:0;top:46%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;gap:.25em;white-space:nowrap;line-height:1;color:#fff1cb;font-weight:900;pointer-events:none}
 #gm .gr{position:absolute;display:flex;align-items:center;transform:translate(-50%,-50%);pointer-events:none}
@@ -54,7 +54,7 @@ function want(k){if(done[k])return done[k];const names=['bg',...Object.keys(L[k]
 want('ready');addEventListener('load',()=>setTimeout(()=>{want('pause');want('lose')},1200));
 // ---------- layout ----------
 let s=1,stage=null,items=[],timers=[],once=false,kind=null;
-const FLAT={lives:1,bones:1,boost:1,fail:1,ready:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
+const FLAT={lives:1,bones:1,boost:1,fail:1,ready:1,pause:1};   // scenes painted as one picture: keep the whole picture in view, blurred copy fills any side bars
 function fit(){if(!stage)return;const W=innerWidth,H=innerHeight;s=Math.min(W/DW,H/DH);const sb=Math.max(W/DW,H/DH);
  const bg=gm.querySelector('.bg:not(.bgb)'),bb=gm.querySelector('.bgb');const sc=FLAT[kind]?s:sb;
  if(bg)Object.assign(bg.style,{width:DW*sc+'px',height:DH*sc+'px',left:(W-DW*sc)/2+'px',top:(H-DH*sc)/2+'px'});
@@ -115,21 +115,29 @@ window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FR
 const STG=()=>{try{return Object.assign({music:70,sounds:80},JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){return{music:70,sounds:80}}};
 window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;
  want('pause').then(()=>{open('pause','tap');const k='pause';
-  layer(k,'11_mr_bunny');layer(k,'10_rambo');layer(k,'20_title_accents','ttl');layer(k,'21_title','ttl');
+  layer(k,'11_mr_bunny');layer(k,'10_rambo');layer(k,'21_title','ttl');layer(k,'52_labels');
   const st=STG();
-  [['music','Music','50_music_icon','40_music_toggle_on_blank','42_music_toggle_off_blank',1783],['sounds','Sound','51_sound_icon','41_sound_toggle_on_blank','43_sound_toggle_off_blank',1948]].forEach(([key,lab,ic,on,off,y])=>{
-   layer(k,ic);text(lab,445,y,80);const a=artAt(k,on,'pause_on'),b=artAt(k,off,'pause_off');let v=st[key]>0;
-   const draw=()=>{a.style.visibility=v?'visible':'hidden';b.style.visibility=v?'hidden':'visible'};draw();
-   const z=h('div','bt',stage);z.setAttribute('role','switch');z.setAttribute('aria-label',lab);
-   items.push(()=>Object.assign(z.style,{left:170*s+'px',top:(y-80)*s+'px',width:960*s+'px',height:160*s+'px'}));
+  [['music','sw_music','Music',[778,1734,326,98]],['sounds','sw_sound','Sound',[778,1899,326,97]]].forEach(([key,n,lab,tb])=>{
+   const a=layer(k,n+'_on'),b=layer(k,n+'_off');let v=st[key]>0;
+   const draw=()=>{a.style.visibility=v?'visible':'hidden';b.style.visibility=v?'hidden':'visible';z.setAttribute('aria-checked',v)};
+   const z=h('div','bt',stage);z.setAttribute('role','switch');z.setAttribute('aria-label',lab);draw();
+   items.push(()=>Object.assign(z.style,{left:170*s+'px',top:(tb[1]-30)*s+'px',width:(tb[0]+tb[2]-170)*s+'px',height:(tb[3]+60)*s+'px'}));   // the whole row flips it
    z.addEventListener('click',e=>{e.stopPropagation();v=!v;if(!v){st['_'+key]=st[key];st[key]=0}else st[key]=st['_'+key]||(key=='music'?70:80);
-    try{localStorage.setItem('gbb_settings',JSON.stringify(st))}catch(_){}window.BA&&BA.apply&&BA.apply();draw();z.setAttribute('aria-checked',v);snd('tap')})});
+    try{localStorage.setItem('gbb_settings',JSON.stringify(st))}catch(_){}window.BA&&BA.apply&&BA.apply();draw();snd('tap')})});
   const moved=S&&S.lv&&S.moves<S.lv.moves;
-  artButton(k,'30_primary_button_blank','pause_resume',()=>{close()},'Resume');
-  artButton(k,'31_restart_button_blank','pause_restart',()=>{if(moved&&window.Eco)Eco.loseHeart();close();if(window.Eco&&Eco.hearts()<1)return window.gpNoLives&&gpNoLives();startLevel(S.li)},'Restart');
-  artButton(k,'32_quit_button_blank','pause_quit',()=>{if(moved&&window.Eco)Eco.loseHeart();close();BA.nav('map.html')},'Quit');
-  if(moved)text('Restarting or quitting now uses 1 life.',645,2625,40,{ol:.1});
+  sdBtn(k,'bt_resume',[87,2094,1116,249],()=>{close()},'Resume');
+  sdBtn(k,'bt_restart',[64,2371,577,179],()=>{if(moved&&window.Eco)Eco.loseHeart();close();if(window.Eco&&Eco.hearts()<1)return window.gpNoLives&&gpNoLives();startLevel(S.li)},'Restart');
+  sdBtn(k,'bt_quit',[663,2370,546,182],()=>{if(moved&&window.Eco)Eco.loseHeart();close();BA.nav('map.html')},'Quit');
+  if(moved)layer(k,'60_warning');
   show()})};
+// Soft Depth kit button: art (shadow baked in) at its own box, taps only inside the kit's tap box, pressed art swaps in
+function sdBtn(k,n,tb,fn,aria){const b=L[k][n],el=h('div','bt sd2',stage);el.setAttribute('role','button');el.setAttribute('aria-label',aria);
+ const mk=(nn,c)=>{const i=h('img',c,el);i.src=IM[k+'/'+nn]?IM[k+'/'+nn].src:R+k+'_'+nn+'.webp'+V;i.alt='';
+  Object.assign(i.style,{left:(b[0]-tb[0])/tb[2]*100+'%',top:(b[1]-tb[1])/tb[3]*100+'%',width:b[2]/tb[2]*100+'%',height:b[3]/tb[3]*100+'%'});return i};
+ mk(n,'ni');mk(n+'_p','pi');
+ items.push(()=>Object.assign(el.style,{left:tb[0]*s+'px',top:tb[1]*s+'px',width:tb[2]*s+'px',height:tb[3]*s+'px'}));
+ el.addEventListener('pointerdown',()=>el.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(e=>el.addEventListener(e,()=>el.classList.remove('dn')));
+ el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
 // ---------- OUT OF MOVES ----------
 window.lose=function(again){S.over=true;if(!again)window.fx&&window.fx('lose');
  want('lose').then(()=>{open('lose','tap');const k='lose';
