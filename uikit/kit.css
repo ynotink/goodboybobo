@@ -89,7 +89,7 @@ html.kpage #ui{position:fixed;inset:0;pointer-events:none}html.kpage #ui>*{point
 @media (prefers-reduced-motion:reduce){.k-go .k-in,.k-go .k-drop,.k-go .k-pop,.k-shine::after,.k-btn.up{animation:none;opacity:1}}
 
 /* ChatGPT top bar art (ui3): heart + bones counters and the gear, exactly as the mockup */
-.k-top .k-counter3,.k-top .k-gear3{position:absolute;cursor:pointer;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 calc(var(--w)*2.6) calc(var(--w)*2) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--w)*6) calc(var(--w)*8) rgba(25,14,0,.35))}
+.k-top .k-counter3,.k-top .k-gear3{position:absolute;cursor:pointer;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 calc(var(--w)*4.9) calc(var(--w)*6.1) rgba(0,0,0,.5))}
 .k-art{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-user-drag:none;pointer-events:none}
 .k-top .k-counter3.heart{left:calc(var(--w)*20.3);top:calc(var(--w)*1.6);width:calc(var(--w)*113);height:calc(var(--w)*34.1)}
 .k-top .k-counter3.bone{left:calc(var(--w)*142.5);top:calc(var(--w)*1.6);width:calc(var(--w)*143);height:calc(var(--w)*34.6)}
