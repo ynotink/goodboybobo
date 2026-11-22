@@ -18,8 +18,8 @@ if(!window.FX)window.FX={out(){}};else FX.out=function(){};
 const PAGE=(location.pathname.match(/(shop|toys|friends|settings)\.html/)||[])[1];
 const navPage=()=>{const n=document.querySelector('script[src*="nav/nav.js"]');return n?n.dataset.page:''};
 let META=null;fetch(PR+'meta.json'+V).then(r=>r.json()).then(m=>{META=m;preload()}).catch(()=>{});
-const PG2={toys:'ui3/toys2/press/',friends:'ui3/friends2/press/',shop:'ui3/shop2/press/',settings:'ui3/settings2/press/'},PRP=()=>PG2[PAGE]?root+PG2[PAGE]:PR,VP=()=>PG2[PAGE]?'?v=3':V;   // pages whose press pieces come from the Soft Depth kits
-const NV2={home:1,map:1,toys:1,friends:1,shop:1,settings:1},PRN=()=>NV2[navPage()]?root+'ui3/v2/press/':PR,VN=()=>NV2[navPage()]?'?v=2':V;
+const PG2={toys:'ui3/toys2/press/',friends:'ui3/friends2/press/',shop:'ui3/shop2/press/',settings:'ui3/settings2/press/'},PRP=()=>PG2[PAGE]?root+PG2[PAGE]:PR,VP=()=>PG2[PAGE]?'?v=4':V;   // pages whose press pieces come from the Soft Depth kits
+const NV2={home:1,map:1,toys:1,friends:1,shop:1,settings:1},PRN=()=>NV2[navPage()]?root+'ui3/v2/press/':PR,VN=()=>NV2[navPage()]?'?v=3':V;
 function keyFor(z){
  if(z.classList.contains('it')){const its=[...document.querySelectorAll('#gbnav .it')];const art=['home','map','toys','friends','shop'].includes(navPage())?navPage():'none';return 'nav_'+art+'_'+its.indexOf(z)}
  if(!PAGE)return null;return PAGE+'_'+[...document.querySelectorAll('.mk-z')].indexOf(z)}
