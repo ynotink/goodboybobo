@@ -4,11 +4,11 @@
    One dial: ?live=calm (the plan as written) or the default "lively" (same motion, bigger and more often). */
 (function(){
 const B={"sky":[0,0,1290,2796],"rays":[0,207,908,720],"back":[0,0,1290,1045],"branch_right":[919,0,371,244],"branch_mid":[217,0,620,215],"ground":[0,803,1290,1993],"flowers_right":[1094,1770,196,336],"flowers_left":[0,1756,193,328],"buck":[781,626,509,1093],"buck_under":[781,626,509,1093],"buck_part":[781,626,509,1093],"bunny":[6,1002,365,745],"bunny_under":[6,1002,365,745],"bunny_part":[6,1002,365,745],"bobo":[259,696,742,1126],"bobo_under":[259,696,742,1126],"bobo_part":[259,696,742,1126],"cardinal":[188,1382,288,415],"cardinal_under":[188,1382,288,415],"cardinal_part":[188,1382,288,415],"bobo_blink":[259,696,742,1126],"p_butterfly_blue_01":[384,320],"p_butterfly_blue_02":[384,320],"p_butterfly_blue_03":[384,320],"p_butterfly_blue_04":[384,320],"p_butterfly_blue_05":[384,320],"p_butterfly_blue_06":[384,320],"p_butterfly_monarch_01":[384,320],"p_butterfly_monarch_02":[384,320],"p_butterfly_monarch_03":[384,320],"p_butterfly_monarch_04":[384,320],"p_butterfly_monarch_05":[384,320],"p_butterfly_monarch_06":[384,320],"p_leaf_beech":[256,256],"p_leaf_birch":[256,256],"p_leaf_maple":[256,256],"p_leaf_oak":[256,256],"p_mote_amber":[128,128],"p_mote_gold":[128,128],"p_mote_ivory":[128,128],"p_petal_cosmos":[256,256],"p_petal_daisy":[256,256],"p_petal_rose":[256,256]};
-const DIR='live/',V='?v=3',W=1290,H=2796;
+const DIR='live/',V='?v=4',W=1290,H=2796;
 const Q=new URLSearchParams(location.search);let mode=Q.get('live')||(()=>{try{return localStorage.getItem('gbb_live')}catch(e){}})()||'lively';
-const M=mode==='calm'?{amp:1,rate:1,parts:1,size:1}:{amp:2.6,rate:.5,parts:2.2,size:2};
+const M=mode==='calm'?{amp:1,rate:1,parts:1,size:1,g:1}:{amp:6,rate:.42,parts:3,size:2.4,g:3.2};
 let RM=false;try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
-const stage=document.getElementById('stage');if(!stage)return;
+const stage=document.getElementById('stage');if(!stage)return;if(Q.get('seek'))window.__liveSeek=1;
 const css=document.createElement('style');css.textContent=`
 #living{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 #living img{position:absolute;display:block;max-width:none;-webkit-user-drag:none;will-change:transform}
@@ -24,7 +24,7 @@ const brR=add('branch_right'),brM=add('branch_mid');piv(brR,1278,62);piv(brM,285
 add('ground');const flR=add('flowers_right'),flL=add('flowers_left');piv(flR,1234,2025);piv(flL,45,2004);
 const CH={};
 for(const [c,p] of [['buck',[1075,921]],['bunny',[120,1264]],['bobo',[381,1225]],['cardinal',[390,1561]]]){
- const under=add(c+'_under'),rest=add(c),part=add(c+'_part');under.style.opacity=0;part.style.opacity=0;piv(part,p[0],p[1]);
+ const rest=add(c),under=add(c+'_under'),part=add(c+'_part');under.style.opacity=0;part.style.opacity=0;piv(part,p[0],p[1]);
  CH[c]={rest,under,part,last:-99}}
 const blink=add('bobo_blink');blink.style.opacity=0;
 const ptl=document.createElement('div');ptl.style.cssText='position:absolute;inset:0';root.appendChild(ptl);
@@ -40,7 +40,7 @@ const G={bobo:{keys:[0,2,-1,0],segs:[.2,.23,.39],first:9.6,every:19},bunny:{keys
 for(const c in G){G[c].next=G[c].first*M.rate+(M.rate<1?1.5:0);G[c].every*=M.rate}
 let active=null;   // only one character gesture at a time
 function fire(c){if(active||t-CH[c].last<3)return false;active={c,t0:t};CH[c].last=t;const C=CH[c];C.under.style.opacity=1;C.part.style.opacity=1;C.rest.style.opacity=0;return true}
-function runGesture(){if(!active)return;const g=G[active.c],C=CH[active.c],k=t-active.t0;const amp=active.c==='bobo'?Math.min(M.amp,2):M.amp;
+function runGesture(){if(!active)return;const g=G[active.c],C=CH[active.c],k=t-active.t0;const amp=M.g*({bobo:.7,bunny:.85,cardinal:.8,buck:.9}[active.c]||1);
  const a=gestureAngle(k,g.keys,g.segs);if(a===null){C.part.style.transform='';C.rest.style.opacity=1;C.under.style.opacity=0;C.part.style.opacity=0;active=null;return}
  C.part.style.transform='rotate('+(a*amp).toFixed(3)+'deg)'}
 // blink
@@ -69,12 +69,13 @@ function runParticles(){
  if(t>=nextFly){if(!P.some(p=>p.fly)&&!active){spawnButterfly();P[P.length-1].fly=1;nextFly=t+(M.amp>1?16:28)}else nextFly=t+2}
  for(let i=P.length-1;i>=0;i--){const p=P[i],k=t-p.t0;if(k>=p.d){(p.all||[p.el]).forEach(e=>e.remove());P.splice(i,1)}else p.f(k)}}
 // ---- frame loop
-function frame(now){const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;t+=dt;
- if(!RM){sway(brM,.36,7.8,.9);sway(brR,.43,9.2,2.1);sway(flL,.26,5.2,1.4);sway(flR,.32,6.1,2.7);
+function frame(now){requestAnimationFrame(frame);if(window.__liveSeek)return;const dt=Math.min(.05,Math.max(0,(now-last)/1000));last=now;t+=dt;try{step()}catch(e){}}
+function step(){
+ if(!RM){sway(brM,.36,M.amp>1?5.6:7.8,.9);sway(brR,.43,M.amp>1?6.4:9.2,1.6);sway(flL,.26*(M.amp>1?1.4:1),M.amp>1?4.2:5.2,.6);sway(flR,.32*(M.amp>1?1.4:1),M.amp>1?4.8:6.1,1.1);
   rays.style.opacity=t<2.9?1:(.975+.025*Math.cos(2*Math.PI*(t-2.9)/10.8)).toFixed(3);
   for(const c in G)if(t>=G[c].next){if(!fire(c)&&active)G[c].next=t+1.5;else G[c].next=t+G[c].every}
   runGesture();runParticles()}
- runBlink();requestAnimationFrame(frame)}
+ runBlink()}
 requestAnimationFrame(n=>{last=n;requestAnimationFrame(frame)});
 // ---- tap a character: he reacts (the UI keeps its own taps)
 const hit={};for(const c of ['cardinal','bobo','bunny','buck']){const im=new Image();im.src=DIR+c+'.webp'+V;im.onload=()=>{const k=.25,cv=document.createElement('canvas');cv.width=Math.ceil(im.width*k);cv.height=Math.ceil(im.height*k);const g=cv.getContext('2d');g.drawImage(im,0,0,cv.width,cv.height);hit[c]={d:g.getImageData(0,0,cv.width,cv.height).data,w:cv.width,h:cv.height,k}}}
@@ -85,5 +86,5 @@ addEventListener('pointerup',e=>{const d=down;down=null;if(!d||Math.hypot(e.clie
  for(const c of ['cardinal','bobo','bunny','buck']){const h=hit[c],b=B[c];if(!h)continue;const ix=Math.floor((x-b[0])*h.k),iy=Math.floor((y-b[1])*h.k);
   if(ix<0||iy<0||ix>=h.w||iy>=h.h||h.d[(iy*h.w+ix)*4+3]<100)continue;
   if(active&&active.c!==c)return;if(fire(c)){G[c].next=t+G[c].every;try{window.BA&&BA.play&&BA.play('tap',{gap:200})}catch(_){}}return}},true);
-window.GBB_LIVE={get mode(){return mode},set(m){try{localStorage.setItem('gbb_live',m)}catch(e){}location.reload()}};
+window.GBB_LIVE={seek(sec){window.__liveSeek=1;while(t<sec-1e-6){t=Math.min(sec,t+1/60);step()}},get mode(){return mode},set(m){try{localStorage.setItem('gbb_live',m)}catch(e){}location.reload()}};
 })();
