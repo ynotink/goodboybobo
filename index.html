@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795357378"><script src="review_shim.js?v=4"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795358802"><script src="review_shim.js?v=4"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo</title>
@@ -20,7 +20,7 @@ iframe.scr.peek{visibility:visible;pointer-events:none;z-index:1}
 window.GBB_SHELL_HOST=true;
 try{const q=new URLSearchParams(location.search);if(q.get('mom')==='1')localStorage.setItem('gbb_mom','1');if(q.get('mom')==='0')localStorage.removeItem('gbb_mom')}catch(e){}
 </script>
-<script src="audio.js?v=27"></script>
+<script src="audio.js?v=28"></script>
 </head><body><div id="sa"></div><div id="sb"></div>
 <script>
 (function(){
@@ -34,7 +34,7 @@ function norm(u){const x=new URL(u,ROOT);x.searchParams.delete('b');x.searchPara
  return rel}
 const keyOf=rel=>/^game_new\.html/.test(rel)?'game':rel.replace(/[?#].*$/,'');
 const snap=()=>{const a=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(/^(gbb|rv_)/.test(k)&&!/settings/.test(k))a.push(k+'='+localStorage.getItem(k))}}catch(e){}return a.sort().join('|')};
-function make(rel,key){const f=document.createElement('iframe');f.className='scr off';f.setAttribute('allow','autoplay');f.setAttribute('scrolling','no');
+function make(rel,key){const f=document.createElement('iframe');f._rel=rel;f.className='scr off';f.setAttribute('allow','autoplay');f.setAttribute('scrolling','no');
  f._key=key;f._ready=false;f.src=ROOT+rel;document.body.appendChild(f);frames[key]=f;return f}
 function swapTo(f){log([Date.now()%100000,'swap',f._key]);
  if(shown&&shown!==f){const o=shown;o._snap=snap();o.classList.add('off');try{o.contentWindow.GBB_hide&&o.contentWindow.GBB_hide()}catch(e){}
@@ -44,8 +44,8 @@ function swapTo(f){log([Date.now()%100000,'swap',f._key]);
  if(!prewarmed)setTimeout(prewarm,2500);setTimeout(warmNeighbors,900)}
 const LOG=[];const log=a=>{LOG.push(a);if(LOG.length>60)LOG.shift()};function go(u){const rel=norm(u),key=keyOf(rel);let f=frames[key];log([Date.now()%100000,'go',key,f?(f._snap===snap()?'same':'changed'):'new',f&&f._ready]);
  if(f&&f===shown&&key!=='game')return;
+ if(key==='game'&&f&&f!==shown&&f._pre&&!f._used&&f._rel===rel&&f._snap===snap()){f._used=true;f._pre=false;pending=f;if(f._ready)swapTo(f);return}   // that level was already loading in the background: use it
  if(f&&(key==='game'||f._snap!==snap())){if(f!==shown){f.remove();delete frames[key];f=null}else{f.contentWindow.location.replace(ROOT+rel);return}}
- if(key==='game'&&frames.game){const g=frames.game;g.remove();delete frames.game}
  if(!f)f=make(rel,key);
  pending=f;f._pre=false;if(f._ready)swapTo(f)}
 function ready(win){for(const k in frames){const f=frames[k];if(f.contentWindow===win){f._ready=true;
@@ -67,6 +67,12 @@ function tabFrame(i,create){const rel=TABS[i];if(!rel)return null;let f=frames[r
  if(!f&&create){f=make(rel,rel);f._pre=true;f._snap=snap()}return f}
 function warmNeighbors(){if(drag||settling||pending||!shown)return;const i=TABS.indexOf(shown._key);if(i<0)return;tabFrame(i-1,true);tabFrame(i+1,true)}
 setInterval(warmNeighbors,2000);
+// the level PLAY will open (the next unplayed one), loaded hidden and silent while you look around
+function nextLevel(){let mx=0;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');for(const k in (g.stars||{}))mx=Math.max(mx,+k+1)}catch(e){}return Math.min(100,mx+1)}
+function warmGame(){if(drag||settling||pending||!shown||shown._key==='game')return;const rel='game_new.html?lv='+nextLevel();const g=frames.game;
+ if(g&&g._rel===rel&&g._snap===snap())return;if(g){g.remove();delete frames.game}
+ const f=make(rel,'game');f._pre=true;f._snap=snap()}
+setInterval(warmGame,3000);
 let bar=null;
 function navOf(f){try{return f.contentDocument.getElementById('gbnav')}catch(e){return null}}
 function barOn(cur){try{const b=cur.contentDocument.querySelector('#gbnav .barimg');if(!b)return;const r=b.getBoundingClientRect();
@@ -104,5 +110,7 @@ window.GBB_SHELL={LOG,go,ready,active,startHidden,swipe,get sat(){return sat()},
 // keep the shell's own frame from ever showing a stale "pending" screen if a frame fails to report
 setInterval(()=>{if(pending&&!pending._ready){try{const d=pending.contentDocument;if(d&&d.readyState==='complete')ready(pending.contentWindow)}catch(e){}}},500);
 const q=new URLSearchParams(location.search);go(q.get('start')||HOME);
+// keep a copy of the game's files on the phone so every visit after the first opens instantly
+try{if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}catch(e){}
 })();
 </script></body></html>

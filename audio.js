@@ -10,7 +10,7 @@ addEventListener('DOMContentLoaded',()=>{if(!window.GBB_REVIEW)return;const t=do
 /* inside the app shell: every screen shares the shell's one audio engine, so music never restarts and nothing pops between screens */
 let SH=null;try{if(window.parent!==window&&window.parent.GBB_SHELL)SH=window.parent.GBB_SHELL}catch(e){}
 if(SH){const P=window.parent.BA;let mine=null;window.GBB_FRAMED=true;
- window.BA={music:n=>{mine=n;if(SH.active(window))P.music(n)},play:(n,o)=>P.play(n,o),apply:()=>P.apply(),nav:u=>SH.go(new URL(u,location.href).href,window),MUS:P.MUS,chMusic:c=>P.chMusic(c),unlock:()=>P.unlock(),
+ window.BA={music:n=>{mine=n;if(SH.active(window))P.music(n)},play:(n,o)=>{if(SH.active(window))return P.play(n,o)},apply:()=>P.apply(),nav:u=>SH.go(new URL(u,location.href).href,window),MUS:P.MUS,chMusic:c=>P.chMusic(c),unlock:()=>P.unlock(),
   get mine(){return mine},get shift(){return P.shift},get playing(){return P.playing},get state(){return P.state},get ready(){return P.ready}};
  ['pointerdown','touchstart','touchend','keydown'].forEach(e=>addEventListener(e,()=>P.unlock(),{capture:true,passive:true}));
  addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.tap,.imgbtn,.bimg,.gnav .it,.nav .it,.qb,.btn');if(el&&!el.dataset.nosnd)P.play(el.dataset.snd||'tap',{gap:80})},true);
