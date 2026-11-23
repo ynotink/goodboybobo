@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795476835"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795477300"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -154,25 +154,44 @@ function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=
 // ---- soft seams between scenes: where one picture ends and the next begins, each side gets a short blurred,
 // mirrored strip of its neighbour that fades out, so the hard dirt-to-sky line melts into a soft blend.
 // Drawn inside the art (under the markers, which stay sharp), so it scrolls with the pictures.
-const SEAMIMG={};function seamImg(S){if(!SEAMIMG[S.dir]){const im=new Image();im.src=S.dir+'/still.jpg?v=2';im.onload=()=>seams();SEAMIMG[S.dir]=im}return SEAMIMG[S.dir]}
+const SEAMIMG={};function seamImg(S){if(!SEAMIMG[S.dir]){const im=new Image();im.src=S.dir+'/still.jpg?v=2';im.onload=()=>seamsSoon();SEAMIMG[S.dir]=im}return SEAMIMG[S.dir]}
+let seamT=0;function seamsSoon(){clearTimeout(seamT);seamT=setTimeout(seams,120)}
 function seams(){const DPR=Math.min(2,devicePixelRatio||1);
  for(let i=0;i<SCENES.length-1;i++){const lo=SCENES[i],up=SCENES[i+1];const Hs=lo.el.clientHeight||innerHeight,FH=Math.round(Hs*.09);
   for(const [me,nb,top] of [[lo,up,true],[up,lo,false]]){
    const key=top?'seamT':'seamB';let c=me[key];if(!c){c=document.createElement('canvas');c.style.cssText='position:absolute;left:0;width:100%;pointer-events:none;z-index:2';me.art.appendChild(c);me[key]=c}
    const aw=me.art.clientWidth,ah=me.art.clientHeight,vis=Math.min(ah,me.el.clientHeight||Hs);
-   c.style.height=FH+'px';c.style.top=(top?0:vis-FH)+'px';c.width=Math.round(aw*DPR);c.height=Math.round(FH*DPR);
-   const im=seamImg(nb);if(!im.complete||!im.naturalWidth)continue;
+   c.style.height=FH+'px';c.style.top=(top?0:vis-FH)+'px';{const cw=Math.round(aw*DPR),ch=Math.round(FH*DPR);if(c.width!==cw||c.height!==ch){c.width=cw;c.height=ch;c._sig=0}}
+   const im=seamImg(nb),mi=seamImg(me);if(!im.complete||!im.naturalWidth||!mi.complete||!mi.naturalWidth)continue;
+   const sig=[aw,vis,FH,nb.art.clientWidth,DPR].join();if(c._sig===sig)continue;c._sig=sig;   // each strip is drawn once per layout
    const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);
-   // the neighbour's picture as it is laid out on screen (its own width, centred like ours)
-   const nw=nb.art.clientWidth,nh=nb.art.clientHeight,nvis=Math.min(nh,nb.el.clientHeight||Hs),dx=(aw-nw)/2;
-   const sy=im.naturalHeight/nh,sx=im.naturalWidth/nw;
-   // rows of the neighbour next to the seam: its bottom (for our top strip) or its top (for our bottom strip)
-   const srcY=top?(nvis-FH)*sy:0,srcH=FH*sy;
-   g.save();g.filter='blur('+Math.max(2,FH*.06*DPR)+'px)';g.translate(dx*DPR,0);
-   g.translate(0,c.height);g.scale(1,-1);   // mirror: the row touching the seam stays at the seam
-   g.drawImage(im,0,srcY,im.naturalWidth,srcH,0,0,nw*DPR,c.height);g.restore();
-   g.globalCompositeOperation='destination-in';const gr=g.createLinearGradient(0,0,0,c.height);
-   const a0='rgba(0,0,0,.85)',a1='rgba(0,0,0,0)';if(top){gr.addColorStop(0,a0);gr.addColorStop(.4,'rgba(0,0,0,.35)');gr.addColorStop(1,a1)}else{gr.addColorStop(0,a1);gr.addColorStop(.6,'rgba(0,0,0,.35)');gr.addColorStop(1,a0)}
+   // Both sides of a seam draw the same thing right at the seam: half this picture, half the neighbour, both softly
+   // blurred. So the last row of one scene and the first row of the next are identical - no line - and the blend
+   // fades back to the sharp painting over the strip.
+   const M=Math.round(FH*.5),CW2=c.width,CH2=c.height,MD=Math.round(M*DPR);
+   const strip=(img,S2,srcTop,flip)=>{   // blurred strip of a picture (screen rows srcTop-M .. srcTop+FH+M), edges padded by reflection
+    const w2=S2.art.clientWidth,h2=S2.art.clientHeight,sy2=img.naturalHeight/h2,dx2=(aw-w2)/2,vis2=Math.min(h2,S2.el.clientHeight||Hs);
+    const a=document.createElement('canvas');a.width=CW2+2*MD;a.height=CH2+2*MD;const ag=a.getContext('2d');
+    const row=(sy,dy,h,mirror)=>{const top=Math.max(0,Math.min(vis2,sy)),bot=Math.max(0,Math.min(vis2,sy+h));if(bot<=top)return;
+     ag.save();const ddy=(dy+(top-sy))*DPR;if(mirror){ag.translate(0,2*ddy+(bot-top)*DPR);ag.scale(1,-1)}
+     ag.drawImage(img,0,top*sy2,img.naturalWidth,(bot-top)*sy2,MD+dx2*DPR,ddy,w2*DPR,(bot-top)*DPR);ag.restore()};
+    const s0=srcTop-M,s1=srcTop+FH+M;row(s0,0,s1-s0,false);
+    if(s0<0)row(0,0,-s0,true);                                     // above the picture's top: mirror its first rows
+    if(s1>vis2)row(vis2-(s1-vis2),vis2-s0,s1-vis2,true);            // below its bottom: mirror its last rows
+    ag.drawImage(a,0,0,MD,a.height,0,0,MD,a.height);
+    const t=document.createElement('canvas');t.width=a.width;t.height=a.height;const tg=t.getContext('2d');
+    tg.filter='blur('+Math.max(2,FH*.08*DPR)+'px)';if(flip){tg.translate(0,t.height);tg.scale(1,-1)}tg.drawImage(a,0,0);return t};
+   const nvis=Math.min(nb.art.clientHeight,nb.el.clientHeight||Hs);
+   const own=strip(mi,me,top?0:vis-FH,false), oth=strip(im,nb,top?nvis-FH:0,true);
+   const mix=(a,b)=>{const t=document.createElement('canvas');t.width=CW2;t.height=CH2;const tg=t.getContext('2d');
+    tg.drawImage(a,MD,MD,CW2,CH2,0,0,CW2,CH2);
+    const m=document.createElement('canvas');m.width=CW2;m.height=CH2;const mg=m.getContext('2d');mg.drawImage(b,MD,MD,CW2,CH2,0,0,CW2,CH2);
+    mg.globalCompositeOperation='destination-in';const gm=mg.createLinearGradient(0,0,0,CH2);
+    if(top){gm.addColorStop(0,'rgba(0,0,0,.5)');gm.addColorStop(1,'rgba(0,0,0,0)')}else{gm.addColorStop(0,'rgba(0,0,0,0)');gm.addColorStop(1,'rgba(0,0,0,.5)')}
+    mg.fillStyle=gm;mg.fillRect(0,0,CW2,CH2);tg.drawImage(m,0,0);return t};
+   g.drawImage(mix(own,oth),0,0);
+   g.globalCompositeOperation='destination-in';const gr=g.createLinearGradient(0,0,0,c.height);   // full strength at the seam, gone by the far edge
+   if(top){gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(.45,'rgba(0,0,0,.6)');gr.addColorStop(1,'rgba(0,0,0,0)')}else{gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.55,'rgba(0,0,0,.6)');gr.addColorStop(1,'rgba(0,0,0,1)')}
    g.fillStyle=gr;g.fillRect(0,0,c.width,c.height);g.globalCompositeOperation='source-over'}}}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
