@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795469922"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795471875"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -114,7 +114,7 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
-const LIVEV='?v=13';
+const LIVEV='?v=14';
 function liveOn(S){if(S.lv||S.still||!window.SeamLoop||!motion)return;
  if(window.GapLoop&&!window.GBB_NOGAP){   // gapless: frames decoded and drawn by us, so the loop never restarts (no iPhone hiccup)
   const cv=document.createElement('canvas');cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:0;transition:opacity .6s;z-index:1';
