@@ -103,7 +103,8 @@ window.GM={close,get kind(){return kind}};
 // ---------- READY ----------
 window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return window.gpNoLives&&gpNoLives();
  want('ready').then(()=>{if(typeof S==='undefined'||!S||S.over)return;
-  open('ready','popper');const T=S.lv.tier;
+  open('ready','shimmer');   // soft sparkle as the level opens (the popper crackle sounded off here)
+ const T=S.lv.tier;
   layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','21_title','ttl');
   text('Level '+(S.li+1),645,590,104);
   if(T=='H'||T=='SH')layer('ready',T=='SH'?'32_super_hard_blank':'31_hard_blank');   // badge lettering is part of the Soft Depth art)}
