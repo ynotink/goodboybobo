@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795471875"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795473122"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -111,7 +111,7 @@ function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEa
 function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];const W2=Math.max(w,.11),AR=S.art.clientWidth/S.art.clientHeight;S.art.appendChild(paw);paw.style.left=(x+.019*W2)*100+'%';paw.style.top=(y+W2*.18-.80*W2*AR)*100+'%';paw.style.width=W2*.5*100+'%'}
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GBB_COL():innerWidth;const CX=(innerWidth-CW)/2;for(const e of [sc,document.getElementById('hud')]){e.style.left=CX+'px';e.style.right='auto';e.style.width=CW+'px'}document.getElementById('hud').style.setProperty('--w',CW/393+'px');document.getElementById('gearA').style.right=(CX+4)+'px';const H=sc.clientHeight,avail=H-CW*327/1170*.92;
  for(const S of SCENES){let w=CW,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
-  S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons()}
+  S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons();seams()}
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
 const LIVEV='?v=14';
@@ -147,8 +147,35 @@ function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=
  const tex=(f,unit,name)=>new Promise(ok=>{const im=new Image();im.onload=()=>{gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,gl.createTexture());gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
   for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);gl.uniform1i(U(name),unit);ok()};im.src=S.dir+'/'+f+'?v=13'});
  return Promise.all([tex('scene.png?v=6',0,'tB'),tex('masks.png',1,'tM'),tex('skyclean.png',2,'tS'),tex('clouds.png',3,'tC'),tex('cloudrm.png',4,'tR')]).then(()=>{if(S.gl!==gl)return;gl.uniform1f(U('chf'),S.CH/S.IH);S.ready=1})}
+
+// ---- soft seams between scenes: where one picture ends and the next begins, each side gets a short blurred,
+// mirrored strip of its neighbour that fades out, so the hard dirt-to-sky line melts into a soft blend.
+// Drawn inside the art (under the markers, which stay sharp), so it scrolls with the pictures.
+const SEAMIMG={};function seamImg(S){if(!SEAMIMG[S.dir]){const im=new Image();im.src=S.dir+'/still.jpg?v=2';im.onload=()=>seams();SEAMIMG[S.dir]=im}return SEAMIMG[S.dir]}
+function seams(){const DPR=Math.min(2,devicePixelRatio||1);
+ for(let i=0;i<SCENES.length-1;i++){const lo=SCENES[i],up=SCENES[i+1];const Hs=lo.el.clientHeight||innerHeight,FH=Math.round(Hs*.09);
+  for(const [me,nb,top] of [[lo,up,true],[up,lo,false]]){
+   const key=top?'seamT':'seamB';let c=me[key];if(!c){c=document.createElement('canvas');c.style.cssText='position:absolute;left:0;width:100%;pointer-events:none;z-index:2';me.art.appendChild(c);me[key]=c}
+   const aw=me.art.clientWidth,ah=me.art.clientHeight,vis=Math.min(ah,me.el.clientHeight||Hs);
+   c.style.height=FH+'px';c.style.top=(top?0:vis-FH)+'px';c.width=Math.round(aw*DPR);c.height=Math.round(FH*DPR);
+   const im=seamImg(nb);if(!im.complete||!im.naturalWidth)continue;
+   const g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);
+   // the neighbour's picture as it is laid out on screen (its own width, centred like ours)
+   const nw=nb.art.clientWidth,nh=nb.art.clientHeight,nvis=Math.min(nh,nb.el.clientHeight||Hs),dx=(aw-nw)/2;
+   const sy=im.naturalHeight/nh,sx=im.naturalWidth/nw;
+   // rows of the neighbour next to the seam: its bottom (for our top strip) or its top (for our bottom strip)
+   const srcY=top?(nvis-FH)*sy:0,srcH=FH*sy;
+   g.save();g.filter='blur('+Math.max(2,FH*.06*DPR)+'px)';g.translate(dx*DPR,0);
+   g.translate(0,c.height);g.scale(1,-1);   // mirror: the row touching the seam stays at the seam
+   g.drawImage(im,0,srcY,im.naturalWidth,srcH,0,0,nw*DPR,c.height);g.restore();
+   g.globalCompositeOperation='destination-in';const gr=g.createLinearGradient(0,0,0,c.height);
+   const a0='rgba(0,0,0,.85)',a1='rgba(0,0,0,0)';if(top){gr.addColorStop(0,a0);gr.addColorStop(.4,'rgba(0,0,0,.35)');gr.addColorStop(1,a1)}else{gr.addColorStop(0,a1);gr.addColorStop(.6,'rgba(0,0,0,.35)');gr.addColorStop(1,a0)}
+   g.fillStyle=gr;g.fillRect(0,0,c.width,c.height);g.globalCompositeOperation='source-over'}}}
 SCENES.forEach(S=>{S.tw=S.tw.map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));S.pol=[...Array(18)].map(()=>({x:Math.random(),y:.45+Math.random()*.5,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}))});
 size();addEventListener('resize',size);
+if(window.FountainFX){const V=SCENES.find(S=>S.dir==='s6');if(V)FountainFX(V,{box:[.02,.28,.30,.46],drops:16,
+ curtains:[{x0:.095,x1:.205,y0:.327,y1:.356},{x0:.045,x1:.25,y0:.372,y1:.404,lean:0,toBasin:true}],
+ basin:{x0:.055,x1:.235,y:.41,dy:.004,flat:.26}})}
 Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
  (function frame(now){const t=window.__t!=null?window.__t:(now-t0)/1000,dt=Math.min(.05,(now-last)/1000);last=now;on+=((motion?1:0)-on)*Math.min(1,dt*4);
   const vh=sc.clientHeight;
