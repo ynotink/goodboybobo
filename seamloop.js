@@ -26,11 +26,15 @@ window.SeamLoop=function(a,opt){
   const t=cur.currentTime,end=cur.duration;
   if(phase==='solo'&&t>=end-L+0.02&&nxt.readyState>=2){phase='lead';nxt.playbackRate=1;play(nxt)}
   else if(phase==='lead'){
-   if(nxt.paused||nxt.currentTime<0.05){if(cur.ended)swap();return}      // still starting up (hidden)
+   if(nxt.paused||nxt.currentTime<0.05){                                  // still starting up (hidden)
+    if(cur.ended){if(!nxt.paused&&nxt.currentTime>0){swap();return}
+     park(nxt);phase='solo';try{cur.currentTime=L}catch(e){}play(cur)}   // iPhone never started the copy: keep looping the visible one
+    return}
    const d=diff(pos(cur),pos(nxt));                                       // >0: hidden copy is behind
    if(Math.abs(d)<0.03||cur.ended||t>=end-0.06){swap();return}
    nxt.playbackRate=Math.max(.8,Math.min(1.25,1+d*1.5))}
   else if(cur.ended){try{cur.currentTime=L}catch(e){}play(cur)}             // safety
+  else if(cur.paused&&!document.hidden&&!window.GBB_HIDDEN)play(cur);       // stalled (e.g. iPhone dropped it): start it again
  }
  b.addEventListener('loadeddata',()=>{try{b.currentTime=0}catch(e){}},{once:true});
  return{
