@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795476573"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795476835"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -96,7 +96,10 @@ void main(){vec4 m=texture2D(tM,uv);vec2 d=vec2(0.);
  float r=length((uv-vec2(.0,.23))*vec2(1.,2.2));c+=vec3(1.,.92,.65)*exp(-r*r/.03)*(.08+.05*sin(t*.7))*on;
  gl_FragColor=vec4(c,1.);}`;
 const VS=`attribute vec2 p;varying vec2 uv;void main(){uv=vec2(p.x*.5+.5,.5-p.y*.5);gl_Position=vec4(p,0.,1.);}`;
-const sc=document.getElementById('sc');let motion=true,on=1,cur=0;try{const s=JSON.parse(localStorage.getItem('gbb_play')||'{}').stars||{};let mx=0;for(const k in s)mx=Math.max(mx,+k+1);cur=Math.min(SCENES.length*5-1,mx)}catch(e){}const paw=document.createElement('img');paw.id='paw';paw.src='paw.webp';
+// MAP MOTION OFF (Nov 23): every map scene shows its still painting only - no videos, no effects - until the motion plan is settled.
+// Flip MAP_MOTION back to true to bring it all back exactly as it was.
+const MAP_MOTION=false;
+const sc=document.getElementById('sc');let motion=MAP_MOTION,on=1,cur=0;try{const s=JSON.parse(localStorage.getItem('gbb_play')||'{}').stars||{};let mx=0;for(const k in s)mx=Math.max(mx,+k+1);cur=Math.min(SCENES.length*5-1,mx)}catch(e){}const paw=document.createElement('img');paw.id='paw';paw.src='paw.webp';
 // build scenes top (last) to bottom (first)
 for(let i=SCENES.length-1;i>=0;i--){const S=SCENES[i];S.el=document.createElement('div');S.el.className='scene';S.art=document.createElement('div');S.art.className='art';
  S.cv=document.createElement('canvas');S.fx=document.createElement('canvas');S.art.append(S.cv,S.fx);S.el.appendChild(S.art);sc.appendChild(S.el)}
@@ -133,7 +136,7 @@ function liveOn(S){if(S.lv||S.still||!window.SeamLoop||!motion)return;
   rv.addEventListener('playing',()=>{if(S.lv)rv.style.opacity=S.rain>.5?.6:.44},{once:true});RL.play()}
  v.addEventListener('playing',()=>{if(!S.lv)return;v.style.opacity=1;S.live=1;setTimeout(()=>{const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)},650)},{once:true});L.play()}
 function liveOff(S){if(!S.lv)return;if(S.lv.G){S.lv.G.close();S.lv.cv.remove();if(S.lv.c)S.lv.c.remove();S.lv=null;S.live=0;return}S.lv.L.pause();if(S.lv.RL){S.lv.RL.pause();for(const e of S.lv.RL.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}}for(const e of S.lv.L.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}if(S.lv.c)S.lv.c.remove();S.lv=null;S.live=0}
-function ensure(S){if(window.SeamLoop&&motion){if(!S.under){const im=new Image();im.decoding='async';im.src=S.dir+'/still.jpg?v=2';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}return}  // living scenes: a light still under the video, no WebGL textures
+function ensure(S){if(!MAP_MOTION||(window.SeamLoop&&motion)){if(!S.under){const im=new Image();im.decoding='async';im.src=S.dir+'/still.jpg?v=2';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}return}  // living scenes: a light still under the video, no WebGL textures
  if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
 function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=6';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
@@ -182,10 +185,10 @@ const MAPFX={
  s34:{box:[.6,.33,1,.52],fx:[{type:'glint',path:[[.78,.452],[.83,.436],[.885,.428],[.935,.436]],dur:1.8,gap:[4,7],alpha:.95,len:.07,
                                clip:{ellipse:[.83,.425,.2,.07]}}]}                                                                       // 17.2 glint along a skating curve
 };
-if(window.MapFX)for(const S of SCENES)if(MAPFX[S.dir])MapFX(S,MAPFX[S.dir]);
+if(MAP_MOTION&&window.MapFX)for(const S of SCENES)if(MAPFX[S.dir])MapFX(S,MAPFX[S.dir]);
 {let ly=0,lt=0,tm=0;sc.addEventListener('scroll',()=>{const now=performance.now(),v=Math.abs(sc.scrollTop-ly)/Math.max(1,now-lt);ly=sc.scrollTop;lt=now;
  if(v>2.5&&window.MapFXScroll)MapFXScroll(true);clearTimeout(tm);tm=setTimeout(()=>window.MapFXScroll&&MapFXScroll(false),250)},{passive:true})}   // fast fling: hold new elements until it settles
-if(window.FountainFX){const V=SCENES.find(S=>S.dir==='s6');if(V)FountainFX(V,{box:[.02,.28,.30,.46],drops:16,
+if(MAP_MOTION&&window.FountainFX){const V=SCENES.find(S=>S.dir==='s6');if(V)FountainFX(V,{box:[.02,.28,.30,.46],drops:16,
  curtains:[{x0:.095,x1:.205,y0:.327,y1:.356},{x0:.045,x1:.25,y0:.372,y1:.404,lean:0,toBasin:true}],
  basin:{x0:.055,x1:.235,y:.41,dy:.004,flat:.26}})}
 Promise.resolve().then(()=>{const S0=SCENES[Math.floor(cur/5)];sc.style.scrollSnapType='none';sc.scrollTop=S0.el.offsetTop;requestAnimationFrame(()=>sc.style.scrollSnapType='');let t0=performance.now(),last=t0;
