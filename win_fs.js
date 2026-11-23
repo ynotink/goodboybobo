@@ -201,8 +201,8 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  const la=put('lvl_a','',WB.lvl_a),lb=put('lvl_b','',WB.lvl_b);lv.appendChild(la);lv.appendChild(lb);
  const ln=el('div','num',lv);
  const N=(t,box,cap,parts)=>{const [a,b]=parts;items.push(()=>{const gap=box[2];if(window.GBBFont){GBBFont.draw(t,t._v,cap*s,{style:'title'});}
-   const w=(parseFloat((t.firstChild||{}).style?.width)||0)/s||gap,extra=Math.max(0,w+14-gap)/2;   // wider numbers push the words apart evenly
-   const A=WB[a.dataset.n],B=WB[b.dataset.n];a.style.left=(A[0]-extra)*s+'px';b.style.left=(B[0]+extra)*s+'px';
+   const w=(parseFloat((t.firstChild||{}).style?.width)||0)/s||gap,extra=Math.max(-60,w+14-gap)/2;   // wider numbers push the words apart, narrower ones pull them together
+   const A=WB[a.dataset.n],B=WB[b.dataset.n];a.style.left=(A[0]-extra)*s+'px';b.style.left=(B[0]+extra)*s+'px';if(t._with)t._with.style.left=(WB.bone[0]-extra)*s+'px';
    Object.assign(t.style,{left:(box[0]+box[2]/2)*s+'px',top:(box[1]+box[3]/2)*s+'px'})})};
  la.dataset.n='lvl_a';lb.dataset.n='lvl_b';ln._v=String(S.li+1);N(ln,[494,432,77,111],88,[la,lb]);
  // ribbons (lit or empty)
@@ -210,21 +210,20 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  const bob=put('bobo','bob');st.insertBefore(bob,rb[0]);
  // "+N Bones"
  const bo=el('div','pop',st);bo.style.position='absolute';bo.style.inset='0';bo.style.transformOrigin='50% 76.5%';
- bo.appendChild(put('bone'));const ba=put('bon_a'),bn=put('bon_b');ba.dataset.n='bon_a';bn.dataset.n='bon_b';bo.appendChild(ba);bo.appendChild(bn);
- const bt=el('div','num',bo);bt._v='0';N(bt,[527,2121,167,134],112,[ba,bn]);const setB=n=>{bt._v=String(n);lay()};
+ const bn0=put('bone');bo.appendChild(bn0);const ba=put('bon_a'),bn=put('bon_b');ba.dataset.n='bon_a';bn.dataset.n='bon_b';bo.appendChild(ba);bo.appendChild(bn);
+ const bt=el('div','num',bo);bt._v='0';bt._with=bn0;N(bt,[527,2121,167,134],112,[ba,bn]);const setB=n=>{bt._v=String(n);lay()};
  // buttons: kit art with pressed art, tap only in the kit's tap box
  const btn=(n,tb,aria)=>{const b=WB['bt_'+n],e=el('div','bt',st);e.setAttribute('role','button');e.setAttribute('aria-label',aria);
   for(const [nn,c] of [['bt_'+n,'ni'],['bt_'+n+'_p','pi']]){const i=img(W3+nn+'.webp'+V3,c,e);Object.assign(i.style,{left:(b[0]-tb[0])/tb[2]*100+'%',top:(b[1]-tb[1])/tb[3]*100+'%',width:b[2]/tb[2]*100+'%',height:b[3]/tb[3]*100+'%'})}
   items.push(()=>Object.assign(e.style,{left:tb[0]*s+'px',top:tb[1]*s+'px',width:tb[2]*s+'px',height:tb[3]*s+'px'}));
   e.addEventListener('pointerdown',()=>e.classList.add('dn'));['pointerup','pointerleave','pointercancel'].forEach(x=>e.addEventListener(x,()=>e.classList.remove('dn')));return e};
- const ct=btn('continue',[163,2313,964,241],'Continue'),rp=btn('replay',[470,2590,350,125],'Replay');
+ const ct=btn('continue',[163,2313,964,241],'Continue');   // a won level only goes forward: no Replay (tester note)
  lay();const onR=()=>lay();addEventListener('resize',onR);
  const fade=el('div','fadeout',col);
  let T=[],done=false,ready=false;const later=(ms,f)=>T.push(setTimeout(f,ms));
- const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,lv,bo,bob,...rb].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');rp.classList.add('in');ready=true};
+ const finish=()=>{T.forEach(clearTimeout);T=[];[ttl,lv,bo,bob,...rb].forEach(e=>e.classList.add('in'));setB(bones);ct.classList.add('in');ready=true};
  const leave=fn=>{if(done)return;done=true;T.forEach(clearTimeout);snd('tap');cancelAnimationFrame(raf);removeEventListener('resize',onR);fn()};
  ct.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>window.BA&&BA.nav?BA.nav('map.html'):location.href='map.html')});
- rp.addEventListener('click',e=>{e.stopPropagation();if(!ready)return finish();leave(()=>{try{root.className='';col.querySelectorAll(':scope>:not(canvas)').forEach(x=>x.remove());parts=[];startLevel(S.li)}catch(_){location.reload()}})});
  sc.addEventListener('click',()=>{if(!ready)finish()});
  requestAnimationFrame(()=>sc.classList.add('in'));snd('mega');buzz(40);
  const at=(x,y)=>{const r=st.getBoundingClientRect(),c=cv.getBoundingClientRect();return [(r.left+x*s-c.left)/c.width,(r.top+y*s-c.top)/c.height]};
@@ -233,8 +232,7 @@ function scene(stars,bones){mount();root.className='on';root.onclick=null;try{FA
  later(650,()=>{lv.classList.add('in')});
  rb.forEach((m,i)=>later(1050+i*380,()=>{if(i<stars){m.classList.add('in');snd('starland'+i);buzz(35);const b=WB['rib_'+['left','center','right'][i]];setTimeout(()=>{const [x,y]=at(b[0]+b[2]/2,b[1]+b[3]*.4);sparkle(x,y,20,.2);burst(x,y,8,.6)},230)}}));
  later(2300,()=>{bo.classList.add('in');snd('buy');let n=0;const step=Math.max(1,Math.round(bones/16));const iv=setInterval(()=>{n=Math.min(bones,n+step);setB(n);if(n>=bones)clearInterval(iv);else snd('tap',{gap:40})},50)});
- later(2800,()=>{ct.classList.add('in');snd('shimmer')});
- later(3100,()=>{rp.classList.add('in');ready=true});
+ later(2800,()=>{ct.classList.add('in');snd('shimmer');ready=true});
 }
 
 // ---------- hook into the game ----------

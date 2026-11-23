@@ -3,7 +3,8 @@
    Bones are earned by winning and spent on +5 moves, life refills and boosters. Saved in 'gbb' (and boosters in 'gbb_play'). */
 (function(){
 const MAX=5,REFILL=30*60*1000,START_BONES=430;
-const PRICE={moves:90,lives:90,boost:[50,70,90,60]};
+// tester notes (Nov 22): bones should feel valuable. Wins pay 5-10, so refills and boosters cost real saving up.
+const PRICE={moves:90,lives:300,boost:[120,150,200,130],win:[5,7,10]};
 const rd=()=>{try{return JSON.parse(localStorage.getItem('gbb')||'{}')}catch(e){return{}}};
 const wr=g=>{try{localStorage.setItem('gbb',JSON.stringify(g))}catch(e){}};
 function state(){const g=rd();if(g.hearts==null)g.hearts=MAX;if(g.bones==null)g.bones=START_BONES;
@@ -13,6 +14,8 @@ function state(){const g=rd();if(g.hearts==null)g.hearts=MAX;if(g.bones==null)g.
  wr(g);return g}
 const listeners=[];const changed=()=>{const g=state();listeners.forEach(f=>{try{f(g)}catch(e){}})};
 const E=window.Eco={MAX,PRICE,
+ movesPrice:n=>PRICE.moves*Math.pow(2,Math.min(n,4)),   // +5 moves: 90, then 180, 360... within one try
+ winBones:stars=>PRICE.win[Math.max(1,Math.min(3,stars))-1],
  hearts:()=>state().hearts,bones:()=>state().bones,
  nextIn:()=>{const g=state();return g.hearts>=MAX?0:Math.max(0,g.heartAt+REFILL-Date.now())},
  fmt:ms=>{const s=Math.ceil(ms/1000),m=Math.floor(s/60);return m+':'+String(s%60).padStart(2,'0')},

@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795379576"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=1"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=32"></script><script src="../ui_life.js?v=17"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795402569"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=32"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
@@ -47,7 +47,7 @@ K.topbar(ui,'settings.html');
 const buy=()=>K.toast('Purchases are coming soon!');
 const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
 // pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:4,parts:[
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:5,parts:[
  {n:'title',x:217.22,y:173.44,w:498.13,h:120.91,i:0,row:0},
  {n:'bundle',x:49.97,y:281.54,w:834.08,h:422.11,i:1,row:1},
  {row:2,n:'b100',x:54.32,y:719.85,w:265.72,h:280.92,i:2},{row:2,n:'b550',x:336.69,y:721.29,w:264.27,h:279.48,i:3},{row:2,n:'b1200',x:613.98,y:719.85,w:265.72,h:280.92,i:4},
@@ -58,9 +58,9 @@ const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:4,parts:[
  {x:78,y:912,w:222,h:64,r:32,fn:buy,aria:'Buy 100 bones for $0.99'},
  {x:360,y:912,w:216,h:64,r:32,fn:buy,aria:'Buy 550 bones for $4.99'},
  {x:637,y:912,w:220,h:64,r:32,fn:buy,aria:'Buy 1,200 bones for $9.99'},
- {x:93,y:1250,w:216,h:68,r:34,fn:bst(50,'Paw Tap',0),aria:'Buy one Paw Tap for 50 bones'},
- {x:357,y:1250,w:220,h:68,r:34,fn:bst(70,'Free Swap',1),aria:'Buy one Free Swap for 70 bones'},
- {x:626,y:1250,w:218,h:68,r:34,fn:bst(90,'Bomb',2),aria:'Buy one Bomb for 90 bones'},
+ {x:93,y:1250,w:216,h:68,r:34,fn:bst(Eco.PRICE.boost[0],'Paw Tap',0),aria:'Buy one Paw Tap for '+Eco.PRICE.boost[0]+' bones'},
+ {x:357,y:1250,w:220,h:68,r:34,fn:bst(Eco.PRICE.boost[1],'Free Swap',1),aria:'Buy one Free Swap for '+Eco.PRICE.boost[1]+' bones'},
+ {x:626,y:1250,w:218,h:68,r:34,fn:bst(Eco.PRICE.boost[2],'Bomb',2),aria:'Buy one Bomb for '+Eco.PRICE.boost[2]+' bones'},
  {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
 function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
 K.start();

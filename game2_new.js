@@ -13,6 +13,7 @@ const css=document.createElement('style');css.textContent=`
 #g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/plain/s02.webp?v=1) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
 #g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/plain/s02.webp?v=1) 0 0/100% 100%;z-index:0}
 #board{z-index:2}
+#g2skin,#g2top{filter:brightness(1.3) saturate(1.05)}   /* backgrounds sit lighter than the board so the toys stand out (tester note) */
 #g2hud,#g2ui{position:absolute;left:0;width:390px;height:${H*KC}px;z-index:4;pointer-events:none}
 #g2ui .h{position:absolute;pointer-events:auto;cursor:pointer;border-radius:12px}
 #g2ui .h.sel{box-shadow:0 0 0 3px #fff6b0,0 0 14px 6px rgba(255,230,90,.9);background:rgba(255,240,150,.18)}
@@ -48,7 +49,7 @@ window.drawPiece=function(p){const el=p.el;
  el.className='pc'+(p.sp?' sp':'');let src;
  if(p.carrot)src=A+'carrot.webp';
  else if(p.sp=='row'||p.sp=='col')src=A+(TOYS[p.dc]||TOYS[0])+(p.sp=='row'?'_row_blast':'_column_blast')+'.webp';
- else if(p.sp)src=A+{bomb:'bomb',flyer:'flyer',rainbow:'rainbow'}[p.sp]+'.webp';
+ else if(p.sp)src=A+{bomb:'bomb',flyer:'flyer_gold',rainbow:'rainbow'}[p.sp]+'.webp';
  else src=toySrc(p.t);
  el.innerHTML=`<img src="${src}">`+(p.tied?`<img class="lsh" src="${A}leash.webp">`:'')};
 window.goalImg=g=>g.k=='piece'?'g2/'+(TOYS[g.t]||'tennis'):g.k=='crate'?'g2/crate_full':g.k=='dirt'?'g2/dirt_full':g.k=='tied'?'g2/leash':'g2/carrot';
@@ -73,10 +74,11 @@ function drawHud(){if(typeof S==='undefined'||!S||!S.goals)return;const r=(windo
  ptxt(g,'Moves',[X(209)-110,Y(177)-24,220,48],40,'center','#fff1d6','badge');
  {const nm=window.GBB_NAME||(window.GBB_NAME=Object.assign(new Image(),{src:'bovo11/play2/rambo_name.webp?v=1',onload:()=>drawHud()}));   // painted "Rambo" logo on the ledge under him
   if(nm.complete&&nm.naturalWidth){const w=X(84),h=w*nm.naturalHeight/nm.naturalWidth,cx=X(289.5),cy=Y(181);g.save();g.shadowColor='rgba(90,35,10,.35)';g.shadowOffsetY=5;g.shadowBlur=8;g.drawImage(nm,cx-w/2,cy-h/2,w,h);g.restore()}}
- const n=S.goals.length,gap=45*(n==1?1:n==2?1.15:1),isz=X(n==1?26:n==2?22:18),fsz=X(n==1?19:n==2?16:14)*1.08,cx0=X(99),cy=Y(165);
- S.goals.forEach((go,i)=>{const pc=cx0+(i-(n-1)/2)*X(gap);const ic=pc-X(n==1?12:n==2?10:8),tc=pc+X(n==1?17:n==2?15:13);
+ // goal icons sized up (tester note: they were too small to read at a glance)
+ const n=S.goals.length,gap=n==1?45:n==2?60:49,isz=X(n==1?36:n==2?31:25),fsz=X(n==1?24:n==2?21:17.5)*1.08,cx0=X(99),cy=Y(165);
+ S.goals.forEach((go,i)=>{const pc=cx0+(i-(n-1)/2)*X(gap);const ic=pc-X(n==1?15:n==2?12:9),tc=pc+X(n==1?22:n==2?19:15);
   const ix=ic-isz/2;(window.G_BOX||(window.G_BOX=[]))[i]=[ix,cy-isz/2,isz,isz];contain(g,img(goalSrc(go)),ix,cy-isz/2,isz,isz);
-  if(go.left>0)ptxt(g,String(go.left),[tc-X(14),cy-fsz*.7,X(28),fsz*1.4],fsz,'center','#0d4a4b','ink');else check(g,tc,cy,fsz*.9)});
+  if(go.left>0)ptxt(g,String(go.left),[tc-X(16),cy-fsz*.7,X(32),fsz*1.4],fsz,'center','#0d4a4b','ink');else check(g,tc,cy,fsz*.9)});
  [[273,2435],[580,2435],[878,2435],[1189,2435]].forEach(([x,y],k)=>{const v=SAVE.boost[k];ptxt(g,v?String(v):'+',[x-40,y-30,80,60],50,'center','#fdf1d6','badge')});
  const sel=S.booster??-1;if(sel!==lastSel){lastSel=sel;ui.querySelectorAll('.bh').forEach((e,k)=>e.classList.toggle('sel',k===sel))}}
 const _dm=window.drawMoves,_dg=window.drawGoals,_db=window.drawBoosters;
@@ -143,7 +145,7 @@ window.win=async function(){
  // reuse the engine's bonus sequence, then the approved celebration + results
  const _show=window.showOv;window.showOv=()=>{};await _win();window.showOv=_show;
  const kk=S.score/target3(),stars=kk>=1?3:kk>=.65?2:1;
- const bones=10*stars;if(window.Eco){Eco.addBones(bones)}else try{const G0=JSON.parse(localStorage.getItem('gbb')||'{}');const GG=typeof G!=='undefined'?G:{};G0.bones=(G0.bones!=null?+G0.bones:(+GG.bones||430))+bones;G0.hearts=G0.hearts??(GG.hearts??3);localStorage.setItem('gbb',JSON.stringify(G0));GG.bones=G0.bones}catch(e){}
+ const bones=window.Eco?Eco.winBones(stars):[5,7,10][stars-1];if(window.Eco){Eco.addBones(bones)}else try{const G0=JSON.parse(localStorage.getItem('gbb')||'{}');const GG=typeof G!=='undefined'?G:{};G0.bones=(G0.bones!=null?+G0.bones:(+GG.bones||430))+bones;G0.hearts=G0.hearts??(GG.hearts??3);localStorage.setItem('gbb',JSON.stringify(G0));GG.bones=G0.bones}catch(e){}
  window.g2results?window.g2results(stars,bones):results(stars,bones)};
 function results(stars,bones){openPop('Win_Results',({P,g,put,btn})=>{
  put(A+'P_Win_Rambo.webp',PM.P_Win_Rambo);

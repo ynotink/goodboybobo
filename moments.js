@@ -4,8 +4,8 @@
    number is written live in the game's rounded lettering. */
 (function(){
 try{const q=new URLSearchParams(location.search);}catch(e){}   // approved: on for everyone
-const R='bovo11/mom/',V='?v=18',DW=1290,DH=2796;
-const L={"ready":{"10_rambo":[0,1001,1237,922],"11_mr_bunny":[953,1190,312,434],"21_title":[230,241,814,319],"30_primary_button_blank":[6,2316,1284,320],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109]},
+const R='bovo11/mom/',V='?v=19',DW=1290,DH=2796;
+const L={"ready":{"10_rambo":[0,1001,1237,922],"11_mr_bunny":[953,1190,312,434],"21_title":[230,241,814,319],"30_primary_button_blank":[6,2150,1284,320],"31_hard_blank":[501,647,287,109],"32_super_hard_blank":[427,647,435,109],"bt_back_to_map":[98,2478,1094,190],"bt_back_to_map_p":[98,2478,1094,190]},
  "pause":{"10_rambo":[321,844,969,799],"11_mr_bunny":[0,1229,661,416],"21_title":[0,157,1290,471],"52_labels":[179,1719,398,288],"60_warning":[161,2616,968,46],"sw_music_on":[629,1723,631,137],"sw_music_off":[629,1723,631,137],"sw_sound_on":[629,1888,631,136],"sw_sound_off":[629,1888,631,136],"bt_resume":[0,2080,1290,296],"bt_resume_p":[0,2080,1290,296],"bt_restart":[0,2356,822,226],"bt_restart_p":[0,2356,822,226],"bt_quit":[495,2356,795,229],"bt_quit_p":[495,2356,795,229]},
  "fail":{"10_rambo":[0,794,1048,1258],"11_mr_cardinal":[688,1419,522,526],"21_title":[0,234,1290,477],"22_life":[362,620,571,173],"bt_try_again":[0,2029,1290,333],"bt_try_again_p":[0,2029,1290,333],"bt_back_to_map":[8,2336,1275,278],"bt_back_to_map_p":[8,2336,1275,278]},
  "lives":{"10_cuddle":[0,721,1290,1273],"21_title":[0,167,1290,403],"30_timer_panel":[0,1908,1290,257],"bt_refill_lives":[0,2140,1290,297],"bt_refill_lives_p":[0,2140,1290,297],"bt_back_to_map":[2,2409,1287,224],"bt_back_to_map_p":[2,2409,1287,224]},
@@ -107,9 +107,11 @@ window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FR
   layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','21_title','ttl');
   text('Level '+(S.li+1),645,590,104);
   if(T=='H'||T=='SH')layer('ready',T=='SH'?'32_super_hard_blank':'31_hard_blank');   // badge lettering is part of the Soft Depth art)}
-  goals(S.goals.map(x=>({...x,left:x.n})),2080);
-  text(S.moves+' Moves',645,2250,96);
+  goals(S.goals.map(x=>({...x,left:x.n})),1950);
+  text(S.moves+' Moves',645,2092,92);
   const go=artButton('ready','30_primary_button_blank','ready_play',()=>{close();window.say&&say('You got this!');window.hintArm&&hintArm()},'Play');
+  // tapped the wrong level? go back to the map (the level hasn't started, so no life is used)
+  sdBtn('ready','bt_back_to_map',[301,2490,686,149],()=>{close();S.over=true;BA.nav('map.html')},'Back to map');
   later(1100,()=>go.classList.add('pulse'));show()})};
 // ---------- PAUSED ----------
 const STG=()=>{try{return Object.assign({music:70,sounds:80},JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){return{music:70,sounds:80}}};
@@ -124,11 +126,11 @@ window.g2pause=function(){if(typeof S==='undefined'||!S||S.over)return;
    items.push(()=>Object.assign(z.style,{left:170*s+'px',top:(tb[1]-30)*s+'px',width:(tb[0]+tb[2]-170)*s+'px',height:(tb[3]+60)*s+'px'}));   // the whole row flips it
    z.addEventListener('click',e=>{e.stopPropagation();v=!v;if(!v){st['_'+key]=st[key];st[key]=0}else st[key]=st['_'+key]||(key=='music'?70:80);
     try{localStorage.setItem('gbb_settings',JSON.stringify(st))}catch(_){}window.BA&&BA.apply&&BA.apply();draw();snd('tap')})});
-  const moved=S&&S.lv&&S.moves<S.lv.moves;
+  // once PLAY is pressed the level has started: restarting or quitting always uses a life
   sdBtn(k,'bt_resume',[87,2094,1116,249],()=>{close()},'Resume');
-  sdBtn(k,'bt_restart',[64,2371,577,179],()=>{if(moved&&window.Eco)Eco.loseHeart();close();if(window.Eco&&Eco.hearts()<1)return window.gpNoLives&&gpNoLives();startLevel(S.li)},'Restart');
-  sdBtn(k,'bt_quit',[663,2370,546,182],()=>{if(moved&&window.Eco)Eco.loseHeart();close();BA.nav('map.html')},'Quit');
-  if(moved)layer(k,'60_warning');
+  sdBtn(k,'bt_restart',[64,2371,577,179],()=>{window.Eco&&Eco.loseHeart();close();if(window.Eco&&Eco.hearts()<1)return window.gpNoLives&&gpNoLives();startLevel(S.li)},'Restart, uses one life');
+  sdBtn(k,'bt_quit',[663,2370,546,182],()=>{window.Eco&&Eco.loseHeart();S.over=true;close();BA.nav('map.html')},'Quit, uses one life');
+  layer(k,'60_warning');
   show()})};
 // Soft Depth kit button: art (shadow baked in) at its own box, taps only inside the kit's tap box, pressed art swaps in
 function sdBtn(k,n,tb,fn,aria){const b=L[k][n],el=h('div','bt sd2',stage);el.setAttribute('role','button');el.setAttribute('aria-label',aria);
@@ -143,9 +145,11 @@ window.lose=function(again){S.over=true;if(!again)window.fx&&window.fx('lose');
  want('lose').then(()=>{open('lose','tap');const k='lose';
   layer(k,'10_rambo');layer(k,'11_mr_cardinal');layer(k,'21_title','ttl');layer(k,'22_still_needed_title');
   goals(S.goals.filter(x=>x.left>0),1994);
-  const PM=window.Eco?Eco.PRICE.moves:90;   // the 90 is painted on the Soft Depth button (matches Eco.PRICE.moves)
-  const buy=el=>{if(window.Eco&&!Eco.spend(PM)){el.classList.remove('pulse','nope');void el.offsetWidth;close();needBones(PM,()=>lose(1));return}close();moreMoves()};
+  // +5 moves costs more each time in the same try: 90, then 180, then 360...
+  const PM=window.Eco?Eco.movesPrice(S.buys||0):90;
+  const buy=el=>{if(window.Eco&&!Eco.spend(PM)){el.classList.remove('pulse','nope');void el.offsetWidth;close();needBones(PM,()=>lose(1));return}S.buys=(S.buys||0)+1;close();moreMoves()};
   const p5=sdBtn(k,'bt_buy_moves',[75,2142,1144,240],buy,'Get 5 more moves for '+PM+' bones');
+  price(p5,[75,2142,1144,240],1066,2248,96,170,PM);
   sdBtn(k,'bt_give_up',[301,2422,688,167],()=>{window.Eco&&Eco.loseHeart();showFail()},'Give up, costs one life');
   later(1000,()=>p5.classList.add('pulse'));show()})};
 
@@ -157,6 +161,10 @@ function imgButton(k,n,fn,aria){const b=L[k][n],el=h('div','bt art',stage);el.se
  el.addEventListener('click',e=>{e.stopPropagation();if(once)return;once=true;if(fn(el)===false){once=false;return}snd('tap')});return el}
 // a live word painted ON a button (price), centred at x,y in art pixels, riding along with the button when pressed
 function onButton(el,k,n,str,x,y,cap){const b=L[k][n],t=h('div','tx',el);items.push(()=>{Object.assign(t.style,{left:(x-b[0])*s+'px',top:(y-b[1])*s+'px'});GBBFont&&GBBFont.draw(t,str,cap*s,{style:'button'})});return t}
+// a live price written on a button in the painted button lettering, centred at x,y (art pixels), shrunk to fit maxW
+function price(el,tb,x,y,cap,maxW,v){const t=h('div','tx bp',el);
+ items.push(()=>{Object.assign(t.style,{left:(x-tb[0])/tb[2]*100+'%',top:(y-tb[1])/tb[3]*100+'%'});if(!window.GBBFont){t.textContent=v;return}
+  const cv=GBBFont.draw(t,String(v),cap*s,{style:'button'});const w=parseFloat((cv||t.firstChild).style.width);if(w>maxW*s)GBBFont.draw(t,String(v),cap*s*maxW*s/w,{style:'button'})});return t}
 // ---------- LEVEL FAILED ("So Close!") ----------
 window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
  want('fail').then(()=>{open('fail','tap');const k='fail';
@@ -166,11 +174,12 @@ window.showFail=function(){if(typeof S!=='undefined'&&S)S.over=true;
   later(1000,()=>t.classList.add('pulse'));show()})};
 // ---------- OUT OF LIVES ----------
 window.gpNoLives=function(){if(typeof S!=='undefined'&&S)S.over=true;
- want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:90;   // the 90 is painted on the Soft Depth button (matches Eco.PRICE.lives)
+ want('lives').then(()=>{open('lives','tap');const k='lives',PL=window.Eco?Eco.PRICE.lives:300;   // price written live on the button
   layer(k,'10_cuddle');layer(k,'21_title','ttl');layer(k,'30_timer_panel');
   const tm=text('Next life in --:--',641,2032,104,{maxW:860,style:'ink'});
   const tick=()=>{if(kind!=='lives'||!window.Eco)return;if(Eco.hearts()>0){close();if(S)S.over=false;showIntro();return}tm.set('Next life in '+Eco.fmt(Eco.nextIn()));later(1000,tick)};
   const p=sdBtn(k,'bt_refill_lives',[62,2156,1165,250],()=>{if(!Eco.spend(PL)){close();needBones(PL,()=>gpNoLives());return}Eco.refillHearts();close();if(S)S.over=false;showIntro()},'Refill lives for '+PL+' bones');
+  price(p,[62,2156,1165,250],1080,2271,108,178,PL);
   sdBtn(k,'bt_back_to_map',[239,2425,812,175],()=>{close();BA.nav('map.html')},'Back to map');
   later(1000,()=>p.classList.add('pulse'));show();tick()})};
 // ---------- GET A BOOSTER ----------

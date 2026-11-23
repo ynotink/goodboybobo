@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795379576"><script src="review_shim.js?v=4"></script><script src="economy.js?v=1"></script><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js?v=32"></script><script src="motion.js?v=24"></script><script src="ui_life.js?v=17"></script><link rel="stylesheet" href="base.css?v=23"><link rel="stylesheet" href="uikit/kit.css?v=11">
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795402569"><script src="review_shim.js?v=4"></script><script src="economy.js?v=2"></script><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>Good Boy Bobo</title><script src="audio.js?v=32"></script><script src="motion.js?v=24"></script><script src="ui_life.js?v=18"></script><link rel="stylesheet" href="base.css?v=23"><link rel="stylesheet" href="uikit/kit.css?v=11">
 <style>
 html,body{overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}#app{touch-action:none}#app *{-webkit-touch-callout:none}
 #bgA,#bgB{position:absolute;inset:0;background-size:cover;background-position:center 42%;transition:opacity .9s}
@@ -279,7 +279,9 @@ const SH8={
  bowl:['........','........','........','........','........','x......x','xx....xx','xxx..xxx'],
  twin:['........','........','...xx...','...xx...','...xx...','...xx...','........','........']};
 function genLevels(){
- const MV={"1":12,"2":12,"3":11,"4":12,"5":15,"6":19,"7":23,"8":20,"9":23,"10":19,"11":13,"12":17,"13":14,"14":14,"15":20,"16":17,"17":16,"18":20,"19":20,"20":17,"21":18,"22":18,"23":15,"24":12,"25":14,"26":25,"27":18,"28":18,"29":19,"30":25,"31":17,"32":15,"33":18,"34":17,"35":24,"36":21,"37":14,"38":19,"39":17,"40":21,"41":20,"42":19,"43":17,"44":20,"45":17,"46":27,"47":22,"48":14,"49":23,"50":21,"51":20,"52":22,"53":26,"54":25,"55":25,"56":25,"57":16,"58":19,"59":18,"60":21,"61":18,"62":29,"63":18,"64":21,"65":20,"66":31,"67":23,"68":32,"69":19,"70":37,"71":29,"72":26,"73":23,"74":18,"75":21,"76":33,"77":15,"78":20,"79":22,"80":22,"81":21,"82":22,"83":25,"84":17,"85":21,"86":26,"87":35,"88":14,"89":8,"90":28,"91":17,"92":25,"93":19,"94":26,"95":20,"96":38,"97":23,"98":20,"99":22,"100":30};
+ // moves per level, retuned Nov 22 after playtesting (tester cleared 87 levels in under an hour):
+ // a bot that plays like a decent casual player now wins about half its tries instead of three in four
+ const MV={"1":12,"2":12,"3":10,"4":11,"5":12,"6":14,"7":15,"8":15,"9":16,"10":16,"11":14,"12":16,"13":12,"14":14,"15":14,"16":11,"17":13,"18":14,"19":15,"20":13,"21":15,"22":14,"23":11,"24":11,"25":11,"26":18,"27":14,"28":13,"29":13,"30":16,"31":12,"32":13,"33":12,"34":12,"35":15,"36":14,"37":12,"38":14,"39":16,"40":14,"41":16,"42":14,"43":13,"44":15,"45":13,"46":21,"47":18,"48":14,"49":19,"50":17,"51":15,"52":15,"53":20,"54":24,"55":19,"56":15,"57":11,"58":16,"59":16,"60":17,"61":15,"62":23,"63":14,"64":15,"65":12,"66":18,"67":19,"68":25,"69":20,"70":27,"71":22,"72":23,"73":20,"74":17,"75":19,"76":26,"77":16,"78":16,"79":23,"80":16,"81":17,"82":17,"83":16,"84":15,"85":16,"86":21,"87":27,"88":15,"89":12,"90":20,"91":20,"92":21,"93":17,"94":20,"95":18,"96":24,"97":16,"98":18,"99":20,"100":25};
  const EXTRA=new Set([12,13,16,21,22,23,24,25,31,32,33,36,37,44,50,51,81,95]);
  const L=[];let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
  const pick=a=>a[Math.floor(rnd()*a.length)];
@@ -363,7 +365,9 @@ function newState(li){
  return st}
 const cellAt=(r,c)=>(r>=0&&r<S.R&&c>=0&&c<COLS)?S.cells[r][c]:null;
 const isStatic=cell=>!cell||cell.b||(cell.p&&cell.p.tied);
-const colorOf=p=>(p&&!p.sp&&!p.carrot)?p.t:-1;
+// a striped (row/col) toy still counts as its own toy, so it matches with plain toys of the same kind
+const colorOf=p=>!p||p.carrot?-1:!p.sp?p.t:(p.sp=='row'||p.sp=='col')&&p.dc>=0?p.dc:-1;
+const isLine=p=>p&&(p.sp=='row'||p.sp=='col');
 function allCells(){const a=[];S.cells.forEach(row=>row.forEach(c=>{if(c)a.push(c)}));return a}
 
 // ================= rendering =================
@@ -491,7 +495,7 @@ function damage(cell,src){
  if(p.tied){p.tied=false;drawPiece(p);fx('leash',{gap:60});particles(cell,'#e0302a',5);goalHit('tied',0,cell);addScore(80);return}
  if(p.carrot)return;
  p.dying=true;cell.p=null;
- if(p.sp){FQ.push({p,cell});return}
+ if(p.sp){if(isLine(p)&&p.dc>=0)goalHit('piece',p.dc,cell);FQ.push({p,cell});return}
  popEl(p);particles(cell,PCOL[p.t]);addScore(60*(1+S.combo*.5));goalHit('piece',p.t,cell)}
 function popEl(p){const el=p.el;if(FAST){el.remove();return}el.classList.add('pop');setTimeout(()=>el.remove(),240)}
 function hitBlock(cell){const b=cell.b;if(b.hitTag==S.tag)return;b.hitTag=S.tag;b.hp--;addScore(100);fx(b.k=='crate'?'crate':'dirt',{gap:60});
@@ -527,7 +531,7 @@ async function fire(p,cell,opt={}){
  if(p.sp=='row'||p.sp=='col'){beam(cell,p.sp);for(let k=0;k<(p.sp=='row'?COLS:S.R);k++)damage(p.sp=='row'?cellAt(r,k):cellAt(k,c));await wait(90)}
  else if(p.sp=='bomb'){ring(cell,230);shake(5);areaBomb(r,c,2).forEach(x=>damage(x));await wait(120)}
  else if(p.sp=='flyer'){[[0,0],[0,1],[0,-1],[1,0],[-1,0]].forEach(([a,b])=>damage(cellAt(r+a,c+b)));
-  const tg=flyerTarget([cell]);if(tg){await flyAnim(cell,tg,opt.carry?SPIMG[opt.carry]:'sp_flyer');if(opt.carry){await fire({sp:opt.carry},tg,{keepEl:1})}else{ring(tg,70);damage(tg)}}}
+  const tg=flyerTarget([cell]);if(tg){await flyAnim(cell,tg,opt.carry?SPIMG[opt.carry]:'g2/flyer_gold');if(opt.carry){await fire({sp:opt.carry},tg,{keepEl:1})}else{ring(tg,70);damage(tg)}}}
  else if(p.sp=='rainbow'){const t=opt.t!=null?opt.t:mostCommon();await rainbowClear(cell,t)}
 }
 async function flyAnim(a,b,img){if(FAST)return;const [x1,y1]=center(a),[x2,y2]=center(b);const im=document.createElement('img');im.src=`a/${img}.webp`;im.style.cssText=`position:absolute;left:${x1-22}px;top:${y1-22}px;width:44px;height:44px;z-index:30;pointer-events:none`;$('fx').appendChild(im);
@@ -536,7 +540,7 @@ function mostCommon(){const n=[0,0,0,0,0];allCells().forEach(c=>{const t=colorOf
 async function rainbowClear(from,t,turnInto){
  const targets=allCells().filter(c=>!c.b&&c.p&&colorOf(c.p)==t);
  targets.forEach(x=>zap(from,x));await wait(220);
- if(turnInto){targets.forEach(x=>{x.p.sp=turnInto=='line'?(Math.random()<.5?'row':'col'):turnInto;x.p.t=-1;drawPiece(x.p)});await wait(250);targets.forEach(x=>damage(x));}
+ if(turnInto){targets.forEach(x=>{x.p.sp=turnInto=='line'?(Math.random()<.5?'row':'col'):turnInto;x.p.dc=t;x.p.t=-1;drawPiece(x.p)});await wait(250);targets.forEach(x=>damage(x));}
  else targets.forEach(x=>damage(x));
 }
 
@@ -588,6 +592,8 @@ async function resolve(swapCells=[]){
    S.combo++;snd('pop',S.combo);
    for(const g of groups){
     let pos=g.cells.find(x=>swapCells.includes(x))||g.cells[Math.floor(g.cells.length/2)];
+    // a striped toy made by your swipe points the way you swiped: up/down swipe = up/down stripes
+    if((g.sp=='row'||g.sp=='col')&&S.swipe&&g.cells.some(x=>swapCells.includes(x)))g.sp=S.swipe=='v'?'col':'row';
     if(g.sp&&pos.p&&pos.p.tied)pos=g.cells.find(x=>x.p&&!x.p.tied)||null;
     // neighbors blockers
     const nb=new Set();g.cells.forEach(x=>[[0,1],[0,-1],[1,0],[-1,0]].forEach(([a,b])=>{const n=cellAt(x.r+a,x.c+b);if(n&&n.b)nb.add(n)}));
@@ -610,10 +616,12 @@ async function trySwap(a,b,free=false){
  if(S.busy||S.over)return;
  const mov=x=>x&&!x.b&&x.p&&!x.p.tied;if(!mov(a)||!mov(b))return;
  S.busy=true;clearSel();hintStop();
- const pa=a.p,pb=b.p;snd('swap');
+ const pa=a.p,pb=b.p;snd('swap');S.swipe=a.r==b.r?'h':'v';
  a.p=pb;b.p=pa;pa.cell=b;pb.cell=a;setPos(pa,b.r,b.c,160);setPos(pb,a.r,a.c,160);await wait(170);
  let used=false;
- if(pa.sp||pb.sp){used=true;if(!free)useMove();await special2(b,a,pa,pb);await resolve([])}
+ // two specials, or a bomb/plane/rainbow, go off together; a striped toy next to plain toys matches like any toy
+ const plainish=p=>!p.sp||isLine(p);
+ if((pa.sp||pb.sp)&&!(plainish(pa)&&plainish(pb)&&(localMatch(a)||localMatch(b)))){used=true;if(!free)useMove();await special2(b,a,pa,pb);await resolve([])}
  else if(localMatch(a)||localMatch(b)){used=true;if(!free)useMove();await resolve([a,b])}
  else{snd('bad');a.p=pa;b.p=pb;pa.cell=a;pb.cell=b;setPos(pa,a.r,a.c,160);setPos(pb,b.r,b.c,160);await wait(170)}
  S.busy=false;if(used)await endTurn()}
@@ -686,12 +694,14 @@ async function tapCell(cell){
   else if(k==2){boosterDone();S.busy=true;S.tag++;await fire({sp:'bomb'},cell,{keepEl:1});await fireAll();await resolve([]);S.busy=false;await endTurn()}
   else if(k==1){if(!cell.p||cell.p.tied||cell.b)return;if(!S.bsel){S.bsel=cell;cell.p.el.classList.add('sel');return}
    const a=S.bsel;a.p&&a.p.el.classList.remove('sel');if(Math.abs(a.r-cell.r)+Math.abs(a.c-cell.c)!=1){S.bsel=cell;cell.p.el.classList.add('sel');return}
-   boosterDone();S.bsel=null;S.busy=true;const pa=a.p,pb=cell.p;a.p=pb;cell.p=pa;pa.cell=cell;pb.cell=a;setPos(pa,cell.r,cell.c,160);setPos(pb,a.r,a.c,160);await wait(170);
+   boosterDone();S.bsel=null;S.busy=true;S.swipe=a.r==cell.r?'h':'v';const pa=a.p,pb=cell.p;a.p=pb;cell.p=pa;pa.cell=cell;pb.cell=a;setPos(pa,cell.r,cell.c,160);setPos(pb,a.r,a.c,160);await wait(170);
    if(pa.sp||pb.sp){await special2(cell,a,pa,pb)}await resolve([a,cell]);S.busy=false;await endTurn()}
   return}
  if(!cell.p||cell.b||cell.p.tied)return;
- if(S.sel){const a=S.sel;if(a===cell){if(cell.p.sp){tapSpecial(cell)}else clearSel();return}
+ if(S.sel){const a=S.sel;if(a===cell){clearSel();return}
   if(Math.abs(a.r-cell.r)+Math.abs(a.c-cell.c)==1){trySwap(a,cell);return}}
+ // special toys (striped, bomb, plane, rainbow) go off with a single tap
+ if(cell.p.sp){clearSel();tapSpecial(cell);return}
  clearSel();S.sel=cell;cell.p.el.classList.add('sel')}
 function clearSel(){if(S&&S.sel&&S.sel.p)S.sel.p.el.classList.remove('sel');if(S)S.sel=null}
 let hintT;function hintArm(){clearTimeout(hintT);if(FAST)return;hintT=setTimeout(()=>{if(S.busy||S.over)return;const m=findMove();if(m)m.forEach(c=>{c.p.el.classList.remove('hint');void c.p.el.offsetWidth;c.p.el.classList.add('hint')})},6000)}
@@ -739,7 +749,7 @@ $('pz').onclick=()=>{if(!S)return;showOv(`<img class="ttl2" src="a/L_t_paused.we
 window.T={get S(){return S},findMove,localMatch,trySwap,startLevel,LEVELS,setFast:v=>FAST=v,tapCell};
 document.body.dataset.bt=Q.get('bt')||'cream70';document.getElementById('topw').style.transform=`translate(10px,${Q.get('hu')??14}px) scale(.9)`;if(Q.get('dof'))document.body.dataset.dof=Q.get('dof');if(Q.get('calm'))document.body.dataset.calm=Q.get('calm');document.body.dataset.hud=Q.get('hud')||'smoke';
 addEventListener("load",()=>startLevel(Math.max(0,(+Q.get("lv")||1)-1)));
-</script><script src="game_fx.js?v=25"></script><script src="fontA.js?v=5"></script><script src="game2_new.js?v=28"></script><script src="uikit/kit.js?v=21"></script><script src="pop_kit.js?v=26"></script><script src="polish.js?v=5"></script><script src="frameless.js?v=22"></script><script src="rambo_react.js?v=12"></script><script src="rambo_live2.js?v=4"></script><script src="booster_tip.js?v=1"></script><script src="game_fx2.js?v=2"></script><script src="game_fx3.js?v=6"></script><script src="win_fs.js?v=16"></script><script src="moments.js?v=22"></script><script>(function(){const _sl=window.startLevel,lv0=+(new URLSearchParams(location.search).get('lv')||1);window.startLevel=function(n,o){if(Math.floor(n/10)!==Math.floor((lv0-1)/10))return location.replace('game_new.html?lv='+(n+1));return _sl(n,o)}})();
+</script><script src="game_fx.js?v=25"></script><script src="fontA.js?v=5"></script><script src="game2_new.js?v=29"></script><script src="uikit/kit.js?v=21"></script><script src="pop_kit.js?v=26"></script><script src="polish.js?v=5"></script><script src="frameless.js?v=22"></script><script src="rambo_react.js?v=12"></script><script src="rambo_live2.js?v=4"></script><script src="booster_tip.js?v=1"></script><script src="game_fx2.js?v=2"></script><script src="game_fx3.js?v=6"></script><script src="win_fs.js?v=17"></script><script src="moments.js?v=23"></script><script>(function(){const _sl=window.startLevel,lv0=+(new URLSearchParams(location.search).get('lv')||1);window.startLevel=function(n,o){if(Math.floor(n/10)!==Math.floor((lv0-1)/10))return location.replace('game_new.html?lv='+(n+1));return _sl(n,o)}})();
 (function(){
 // ===== Which background each chapter uses (easy to swap) =====
 // s01 Teal woodland · s02 Blue backyard · s03 Rooftops · s04 Streetlamps · s05 Mountains · s06 Rolling hills
