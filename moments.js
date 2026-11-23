@@ -94,7 +94,7 @@ function goals(list,cy){const n=list.length,sp=n>2?380:400;list.forEach((go,i)=>
 function open(k,sound){close();once=false;kind=k;gm.innerHTML='';items=[];
  const src=IM[k+'/bg']?IM[k+'/bg'].src:R+k+'_bg.webp'+V;if(FLAT[k]){const bb=h('img','bg bgb',gm);bb.src=src;bb.alt='';bb.style.filter='blur(14px) brightness(.85)'}
  const bg=h('img','bg',gm);bg.src=src;bg.alt='';stage=h('div','st',gm);
- gm.classList.add('on');snd(sound);return stage}
+ gm.classList.add('on');if(sound)snd(sound);return stage}
 function show(){fit();const t=gm.querySelector('.ttl');if(t)t.classList.add('in')}
 function close(){timers.forEach(clearTimeout);timers=[];gm.classList.remove('on');gm.innerHTML='';stage=null;items=[];kind=null}
 // keep the old helpers in step (tests and other code call gpClose)
@@ -103,7 +103,7 @@ window.GM={close,get kind(){return kind}};
 // ---------- READY ----------
 window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return window.gpNoLives&&gpNoLives();
  want('ready').then(()=>{if(typeof S==='undefined'||!S||S.over)return;
-  open('ready','shimmer');   // soft sparkle as the level opens (the popper crackle sounded off here)
+  open('ready');   // no sound as the level opens until Antonio picks one (the popper crackle sounded like a glitch)
  const T=S.lv.tier;
   layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','21_title','ttl');
   text('Level '+(S.li+1),645,590,104);
