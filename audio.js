@@ -123,5 +123,5 @@ autoStart();addEventListener('load',autoStart);addEventListener('pageshow',autoS
 // soft tap on buttons (only real buttons, never the game board)
 addEventListener('click',e=>{const el=e.target.closest&&e.target.closest('.tap,.imgbtn,.bimg,.gnav .it,.nav .it,.qb,.btn');if(el&&!el.dataset.nosnd)play(el.dataset.snd||'tap',{gap:80})},true);
 window.BA={music,play,apply,nav:u=>window.GBB_SHELL?GBB_SHELL.go(new URL(u,location.href).href):nav(u),unlock,MUS,get shift(){return shift},get playing(){return cur?cur.name+'@'+musPos().toFixed(1):null},get state(){return AC?AC.state:'none'},
- get ready(){return Object.keys(buf).length},chMusic:ci=>MUS.ch[Math.min(9,Math.floor(ci/3))]};
+ get ready(){return Object.keys(buf).length},chMusic:ci=>MUS.ch[Math.floor(ci/3)%MUS.ch.length]};
 })();
