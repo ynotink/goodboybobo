@@ -103,7 +103,7 @@ window.GM={close,get kind(){return kind}};
 // ---------- READY ----------
 window.showIntro=function(){if(window.Eco&&Eco.hearts()<1&&!window.GBB_REVIEW_FREE)return window.gpNoLives&&gpNoLives();
  want('ready').then(()=>{if(typeof S==='undefined'||!S||S.over)return;
-  open('ready');   // no sound as the level opens until Antonio picks one (the popper crackle sounded like a glitch)
+  open('ready','rambo_triple');   // Rambo's triple bark as the level opens (Antonio's pick)
  const T=S.lv.tier;
   layer('ready','10_rambo');layer('ready','11_mr_bunny');layer('ready','21_title','ttl');
   text('Level '+(S.li+1),645,590,104);
