@@ -60,6 +60,6 @@ build();
 addEventListener('gbbPraise',()=>{const r=document.getElementById('rambo4');if(!r)return;r.classList.remove('hop');void r.offsetWidth;r.classList.add('hop');setTimeout(()=>r.classList.remove('hop'),720)});
 // plain chapter background
 const fix=()=>{const a=document.getElementById('g2skin'),b=document.getElementById('g2top');if(!a)return setTimeout(fix,50);
- const s=(a.style.backgroundImage||'').match(/bgs\/(\w+)\.webp/);const k=s?s[1]:'s02';const src=`url(bovo11/play2/plain/${k}.webp?v=1)`;a.style.backgroundImage=src;if(b)b.style.backgroundImage=src};
+ const s=(a.style.backgroundImage||'').match(/bgs\/(\w+)\.webp/);const k=s?s[1]:'s02';const src=`url(bovo11/play2/plain/${k}.webp?v=2)`;a.style.backgroundImage=src;if(b)b.style.backgroundImage=src};
 
 })();

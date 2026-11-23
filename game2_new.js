@@ -10,10 +10,9 @@ const font=new FontFace('BoboNunito','url(a/home/Nunito-Black.ttf)',{weight:'900
 const css=document.createElement('style');css.textContent=`
 #bgA,#bgB,#tint,#calm,#topw,#lvs,#pz,#bsts,#brks,#bub,#btip,#sb{display:none!important}
 #tiles{background:none!important}#tiles .tile{background:url(bovo11/play2/tileA.webp) 0 0/100% 100%!important;filter:none!important;box-shadow:none!important;backdrop-filter:none!important}#tiles .tile.a{background-image:url(bovo11/play2/tileB.webp)!important}
-#g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/plain/s02.webp?v=1) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
-#g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/plain/s02.webp?v=1) 0 0/100% 100%;z-index:0}
+#g2top{position:absolute;left:0;width:390px;background:url(bovo11/play2/plain/s02.webp?v=2) center top/390px ${H*KC}px;transform:scaleY(-1);z-index:0}
+#g2skin{position:absolute;left:0;width:390px;height:${H*KC}px;background:url(bovo11/play2/plain/s02.webp?v=2) 0 0/100% 100%;z-index:0}
 #board{z-index:2}
-#g2skin,#g2top{filter:brightness(1.3) saturate(1.05)}   /* backgrounds sit lighter than the board so the toys stand out (tester note) */
 #g2hud,#g2ui{position:absolute;left:0;width:390px;height:${H*KC}px;z-index:4;pointer-events:none}
 #g2ui .h{position:absolute;pointer-events:auto;cursor:pointer;border-radius:12px}
 #g2ui .h.sel{box-shadow:0 0 0 3px #fff6b0,0 0 14px 6px rgba(255,230,90,.9);background:rgba(255,240,150,.18)}
