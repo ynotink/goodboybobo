@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795477300"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795484243"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -113,7 +113,8 @@ function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEa
   S.art.appendChild(n)}})});placePaw(cur)}
 function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];const W2=Math.max(w,.11),AR=S.art.clientWidth/S.art.clientHeight;S.art.appendChild(paw);paw.style.left=(x+.019*W2)*100+'%';paw.style.top=(y+W2*.18-.80*W2*AR)*100+'%';paw.style.width=W2*.5*100+'%'}
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GBB_COL():innerWidth;const CX=(innerWidth-CW)/2;for(const e of [sc,document.getElementById('hud')]){e.style.left=CX+'px';e.style.right='auto';e.style.width=CW+'px'}document.getElementById('hud').style.setProperty('--w',CW/393+'px');document.getElementById('gearA').style.right=(CX+4)+'px';const H=sc.clientHeight,avail=H-CW*327/1170*.92;
- for(const S of SCENES){let w=CW,h=w*S.IH/S.IW;if(h<avail){h=avail;w=h*S.IW/S.IH}
+ const full=Math.max(avail,...SCENES.map(S=>S.el.clientHeight||H));   // never shorter than the scene itself, or a strip of background shows between scenes
+ for(const S of SCENES){let w=CW,h=w*S.IH/S.IW;if(h<full){h=full;w=h*S.IW/S.IH}
   S.art.style.width=w+'px';S.art.style.height=h+'px';S.art.style.top='0px';S.cv.width=Math.round(w*DPR);S.cv.height=Math.round(h*DPR);S.fx.width=S.cv.width;S.fx.height=S.cv.height}buttons();seams()}
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
