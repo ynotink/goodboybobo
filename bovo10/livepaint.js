@@ -42,16 +42,16 @@ window.LivePaint=function(S,cfg){
   gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
   for(const [a,b] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,a,b);
   gl.uniform1i(U(name),unit);ok(im)};im.onerror=no;im.src=src});
- const V=cfg.v||'';let raf=0,dead=0,IW=1180;
+ const V=cfg.v||'';let raf=0,dead=0,IW=1180,IH=2556;
  S.art.insertBefore(cv,S.fx);
  let ch=null;if(cfg.chars){ch=new Image();ch.src=S.dir+'/chars.webp'+V;ch.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:3';S.art.insertBefore(ch,S.fx)}
  const a=cfg.amp||[18,3.0,.11,14];gl.uniform4f(U('amp'),a[0],a[1],a[2],a[3]);
  const t0=performance.now()-(cfg.offset||0);
- const ready=Promise.all([load(S.dir+'/plate.jpg'+V,0,'tA'),load(S.dir+'/wind.png'+V,1,'tW')]).then(([im])=>{IW=im.naturalWidth;
+ const ready=Promise.all([load(S.dir+'/'+(cfg.plate||'plate.jpg')+V,0,'tA'),load(S.dir+'/wind.png'+V,1,'tW')]).then(([im])=>{IW=im.naturalWidth;IH=im.naturalHeight;
   const frame=now=>{if(dead)return;raf=requestAnimationFrame(frame);
    const DPR=Math.min(2,devicePixelRatio||1),w=Math.round(cv.clientWidth*DPR),h=Math.round(cv.clientHeight*DPR);
    if(!w||!h)return;if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;gl.viewport(0,0,w,h)}
-   gl.uniform1f(U('t'),window.LP_T!=null?window.LP_T:((now-t0)/1000)%3600);gl.uniform2f(U('px'),1/IW,1/(IW*2556/1180));
+   gl.uniform1f(U('t'),window.LP_T!=null?window.LP_T:((now-t0)/1000)%3600);gl.uniform2f(U('px'),1/IW,1/IH);
    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);if(cv.style.opacity!=='1'){cv.style.opacity='1';if(cfg.onFirst)cfg.onFirst()}};
   raf=requestAnimationFrame(frame)});
  return {ready,close(){dead=1;cancelAnimationFrame(raf);cv.remove();if(ch)ch.remove();const e=gl.getExtension('WEBGL_lose_context');if(e)e.loseContext()},cv};
