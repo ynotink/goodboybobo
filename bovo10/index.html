@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795611937"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795612367"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -28,7 +28,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #tag{position:fixed;z-index:9;left:8px;top:calc(var(--sat,env(safe-area-inset-top)) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 #hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(var(--sat,env(safe-area-inset-top)) + 150px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
 </style></head><body>
-<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/still.jpg?v=2) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
+<div id="scbg" style="position:fixed;inset:-40px;background:url(s1/still.jpg?v=3) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
 <div id="hud"><div id="chn"><small>CHAPTER 1</small><span>The Backyard</span></div><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/v2/cnt_heart.webp?v=2" alt="" style="position:absolute;left:-.71%;top:.232%;width:101.371%;height:101.848%"><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
 <div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img src="../ui3/v2/cnt_bone.webp?v=2" alt="" style="position:absolute;left:.054%;top:.229%;width:100.13%;height:100.376%"><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
 <div class="c3" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img src="../ui3/v2/gear.webp?v=2" alt="" style="position:absolute;left:-1.519%;top:1.495%;width:102.376%;height:99.133%"></div></div>
@@ -141,7 +141,7 @@ function liveOn(S){if(S.lv||S.still||!window.SeamLoop||!(motion||LIVE_OK.has(S.d
   rv.addEventListener('playing',()=>{if(S.lv)rv.style.opacity=S.rain>.5?.6:.44},{once:true});RL.play()}
  v.addEventListener('playing',()=>{if(!S.lv)return;v.style.opacity=1;S.live=1;setTimeout(()=>{const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)},650)},{once:true});L.play()}
 function liveOff(S){if(!S.lv)return;if(S.lv.P){S.lv.P.close();S.lv=null;S.live=0;return}if(S.lv.G){S.lv.G.close();S.lv.cv.remove();if(S.lv.c)S.lv.c.remove();S.lv=null;S.live=0;return}S.lv.L.pause();if(S.lv.RL){S.lv.RL.pause();for(const e of S.lv.RL.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}}for(const e of S.lv.L.els){e.removeAttribute('src');try{e.load()}catch(_){}e.remove()}if(S.lv.c)S.lv.c.remove();S.lv=null;S.live=0}
-function ensure(S){if(!MAP_MOTION||(window.SeamLoop&&motion)){if(!S.under){const im=new Image();im.decoding='async';im.src=S.dir+'/still.jpg?v=2';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}return}  // living scenes: a light still under the video, no WebGL textures
+function ensure(S){if(!MAP_MOTION||(window.SeamLoop&&motion)){if(!S.under){const im=new Image();im.decoding='async';im.src=S.dir+'/still.jpg?v=3';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}return}  // living scenes: a light still under the video, no WebGL textures
  if(S.gl||S.loading)return;S.loading=1;initGL(S).finally(()=>S.loading=0)}
 function drop(S){if(!S.gl||S.loading)return;const e=S.gl.getExtension('WEBGL_lose_context');e&&e.loseContext();const c=document.createElement('canvas');c.width=S.cv.width;c.height=S.cv.height;S.art.replaceChild(c,S.cv);S.cv=c;S.gl=null;S.ready=0}
 function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=6';im.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block';S.art.insertBefore(im,S.art.firstChild);S.under=im}
@@ -159,7 +159,7 @@ function initGL(S){if(!S.under){const im=new Image();im.src=S.dir+'/scene.png?v=
 // ---- soft seams between scenes: where one picture ends and the next begins, each side gets a short blurred,
 // mirrored strip of its neighbour that fades out, so the hard dirt-to-sky line melts into a soft blend.
 // Drawn inside the art (under the markers, which stay sharp), so it scrolls with the pictures.
-const SEAMIMG={};function seamImg(S){if(!SEAMIMG[S.dir]){const im=new Image();im.src=S.dir+'/still.jpg?v=2';im.onload=()=>seamsSoon();SEAMIMG[S.dir]=im}return SEAMIMG[S.dir]}
+const SEAMIMG={};function seamImg(S){if(!SEAMIMG[S.dir]){const im=new Image();im.src=S.dir+'/still.jpg?v=3';im.onload=()=>seamsSoon();SEAMIMG[S.dir]=im}return SEAMIMG[S.dir]}
 let seamT=0;function seamsSoon(){clearTimeout(seamT);seamT=setTimeout(seams,120)}
 function seams(){const DPR=Math.min(2,devicePixelRatio||1);
  for(let i=0;i<SCENES.length-1;i++){const lo=SCENES[i],up=SCENES[i+1];const Hs=lo.el.clientHeight||innerHeight,FH=Math.round(Hs*.09);
