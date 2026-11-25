@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795564609"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795567388"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -42,7 +42,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 const SCENES=[
  {dir:'s1',paint:{},gate:[.535,.44],IW:852,IH:1846,CH:775,spots:[[.47,.8,.21],[.48,.705,.17],[.54,.625,.14],[.515,.555,.115],[.53,.49,.095]],tw:[[.03,.84],[.08,.87],[.86,.79],[.93,.77],[.9,.93],[.98,.47],[.34,.45],[.12,.46]]},
  {dir:'s2',paint:{},gate:[.44,.34],IW:934,IH:1684,CH:505,spots:[[.5,.86,.2],[.42,.725,.17],[.28,.625,.14],[.36,.5,.115],[.37,.44,.095]],tw:[[.03,.93],[.11,.92],[.9,.96],[.93,.69],[.75,.47],[.6,.58],[.05,.52]]},
- {dir:'s3',gate:[.5,.36],IW:852,IH:1846,CH:553,spots:[[.48,.8,.2],[.46,.7,.17],[.48,.605,.14],[.53,.515,.115],[.49,.44,.095]],tw:[[.03,.88],[.08,.9],[.95,.86],[.9,.53],[.06,.4],[.23,.43],[.72,.45]]},
+ {dir:'s3',paint:{},gate:[.5,.36],IW:852,IH:1846,CH:553,spots:[[.48,.8,.2],[.46,.7,.17],[.48,.605,.14],[.53,.515,.115],[.49,.44,.095]],tw:[[.03,.88],[.08,.9],[.95,.86],[.9,.53],[.06,.4],[.23,.43],[.72,.45]]},
  {dir:'s4',gate:[.27,.27],IW:852,IH:1846,CH:553,spots:[[.36,.775,.2],[.36,.69,.17],[.41,.6,.14],[.47,.515,.115],[.46,.445,.095]],tw:[[.03,.72],[.08,.74],[.95,.77],[.9,.42],[.05,.55],[.2,.3],[.4,.32]]},
  {dir:'s5',gate:[.13,.31],IW:852,IH:1846,CH:553,spots:[[.64,.8,.2],[.66,.69,.17],[.63,.605,.14],[.5,.495,.115],[.38,.405,.095]],tw:[[.05,.79],[.1,.81],[.95,.5],[.9,.47],[.02,.42],[.13,.27]]},
  {dir:'s6',gate:[.74,.31],IW:852,IH:1846,CH:553,spots:[[.43,.84,.2],[.36,.71,.17],[.39,.6,.14],[.44,.515,.115],[.52,.43,.095]],tw:[[.06,.85],[.12,.88],[.94,.83],[.3,.04],[.8,.02],[.37,.36]]},
@@ -119,7 +119,7 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
 const LIVEV='?v=17';
-const LIVE_OK=new Set(['s1','s2']);   // rebuilt seamless loops: these move even while MAP_MOTION is off
+const LIVE_OK=new Set(['s1','s2','s3']);   // rebuilt seamless loops: these move even while MAP_MOTION is off
 function liveOn(S){if(S.lv||S.still||!window.SeamLoop||!(motion||LIVE_OK.has(S.dir)))return;
  if(S.paint&&window.LivePaint){   // living painting: the art itself moved by a wind field (no video)
   const PC=S.paint===1?{chars:1}:{chars:0,plate:'still.jpg'};const P=LivePaint(S,{...PC,v:'?v=2',amp:S.paint.amp,onFirst:()=>{if(S.lv&&S.lv.P===P){S.live=1;const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)}}});
