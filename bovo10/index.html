@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795567388"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795567778"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=2"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -119,7 +119,7 @@ function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GB
 // ---- living scenes: MiniMax loop per scene (same frame at start and end, run-up file for an invisible iPhone hand-off).
 // Characters are frozen inside the clip; only the world moves. Only the scene on screen (and its neighbour) keeps a video.
 const LIVEV='?v=17';
-const LIVE_OK=new Set(['s1','s2','s3']);   // rebuilt seamless loops: these move even while MAP_MOTION is off
+const LIVE_OK=new Set([]);   // rebuilt seamless loops: these move even while MAP_MOTION is off
 function liveOn(S){if(S.lv||S.still||!window.SeamLoop||!(motion||LIVE_OK.has(S.dir)))return;
  if(S.paint&&window.LivePaint){   // living painting: the art itself moved by a wind field (no video)
   const PC=S.paint===1?{chars:1}:{chars:0,plate:'still.jpg'};const P=LivePaint(S,{...PC,v:'?v=2',amp:S.paint.amp,onFirst:()=>{if(S.lv&&S.lv.P===P){S.live=1;const g=S.fx.getContext('2d');g.clearRect(0,0,S.fx.width,S.fx.height)}}});
