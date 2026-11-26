@@ -1,7 +1,7 @@
 /* Good Boy Bobo — "clean" page style (from ChatGPT's Shop handoff, Nov 26). Shared by Shop, Toy Box, Friends, Settings.
    Tokens: peach #FCB48D, mint #CEEDD0, lavender #D8CCF8, warm cream #FFF2D8, coral #FE6F46→#FD5F37, dark teal lettering. Sizes in --u. */
 .cl-scroll{position:absolute;left:0;right:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
- -webkit-mask-image:linear-gradient(transparent 0,#000 calc(var(--u)*8),#000 calc(100% - var(--u)*12),transparent);mask-image:linear-gradient(transparent 0,#000 calc(var(--u)*8),#000 calc(100% - var(--u)*12),transparent)}
+ }
 .cl-scroll::-webkit-scrollbar{display:none}
 .cl-col{padding:calc(var(--u)*6) calc(var(--u)*15) calc(var(--u)*30);font-family:KNun,system-ui;color:#224946}
 .cl-ttl{display:block;width:calc(var(--u)*196);height:auto;margin:0 auto calc(var(--u)*16)}
@@ -41,3 +41,4 @@
 @keyframes nope{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .cl-pop{animation:clPop 520ms cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(var(--i,0)*60ms)}
 @keyframes clPop{0%{opacity:0;transform:translateY(calc(var(--u)*14)) scale(.97)}100%{opacity:1;transform:none}}
+.cl-title{display:table;margin:0 auto calc(var(--u)*16);padding:calc(var(--u)*7) calc(var(--u)*38) calc(var(--u)*9);border-radius:99px;background:linear-gradient(#ffd2b4,#fcb48d);font-family:KNun,system-ui;font-size:calc(var(--u)*34);line-height:1;color:#1d4a51;white-space:nowrap;box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,inset 0 calc(var(--u)*2.5) 0 #ffffff70,0 calc(var(--u)*4) 0 #c97a52,0 calc(var(--u)*7) calc(var(--u)*10) #44200840}

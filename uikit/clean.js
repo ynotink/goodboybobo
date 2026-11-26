@@ -10,6 +10,7 @@ C.tap=(el,fn)=>{el.setAttribute('role','button');el.tabIndex=0;let d=false;
  el.addEventListener('pointerup',()=>up(true));el.addEventListener('pointerleave',()=>up(false));el.addEventListener('pointercancel',()=>up(false));
  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fn&&fn(el)}});return el};
 C.btn=(p,label,fn,kind,icon)=>{const b=h('div','cl-btn'+(kind?' '+kind:''),p);if(icon)C.img(icon,b);const s=h('span','',b);s.textContent=label;C.tap(b,fn);return b};
+C.title=(p,t)=>{const d=h('div','cl-title cl-pop',p);d.textContent=t;return d};
 C.card=(p,tone,i)=>{const c=h('div','cl-card cl-pop t-'+(tone||'cream'),p);c.style.setProperty('--i',i||0);return c};
 C.head=(card,title,tag)=>{const d=h('div','cl-head',card);h('h3','',d).textContent=title;if(tag){const t=h('span','cl-tag',d);t.textContent=tag}return d};
 C.toggle=(p,on,fn,label)=>{const t=h('div','cl-tog'+(on?' on':''),p);t.setAttribute('role','switch');t.setAttribute('aria-label',label||'');t.setAttribute('aria-checked',on?'true':'false');
