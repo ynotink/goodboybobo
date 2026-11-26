@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795714717"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Toy Box</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=12"><link rel="stylesheet" href="../uikit/clean.css?v=4">
+<style>
+.prog{height:calc(var(--u)*16);border-radius:99px;background:#efe0c8;box-shadow:inset 0 2px 3px #8a4d2630;overflow:hidden;margin:calc(var(--u)*2) calc(var(--u)*4) calc(var(--u)*4)}
+.prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(#ff946d,#fd5f37);box-shadow:inset 0 2px 1px #ffd3b080}
+.chap{display:flex;align-items:center;gap:calc(var(--u)*8);margin:calc(var(--u)*2) 0 calc(var(--u)*12)}
+.chap .nm{flex:1;text-align:center;font-size:calc(var(--u)*20)}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(var(--u)*10)}
+.toy{position:relative;display:flex;align-items:center;gap:calc(var(--u)*6);border-radius:calc(var(--u)*15);padding:calc(var(--u)*8);min-height:calc(var(--u)*78);
+ box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*4) 0 var(--ed),0 calc(var(--u)*6) calc(var(--u)*8) #542a1438;cursor:pointer}
+.toy.dn{transform:translateY(calc(var(--u)*2))}
+.toy>img{width:calc(var(--u)*56);height:calc(var(--u)*56);object-fit:contain;flex:none;filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*2) #5a2a0040)}
+.toy b{display:block;font-size:calc(var(--u)*16);font-weight:inherit;line-height:1.1}
+.toy .ck{position:absolute;right:calc(var(--u)*8);bottom:calc(var(--u)*8);width:calc(var(--u)*24);height:calc(var(--u)*24)}
+.toy.wob>img{animation:wob 560ms cubic-bezier(.3,1.4,.5,1)}
+@keyframes wob{25%{transform:scale(1.15) rotate(-8deg)}55%{transform:scale(1.08) rotate(6deg)}100%{transform:none}}
+.lock{display:flex;justify-content:space-around;align-items:center;padding:calc(var(--u)*8) 0}
+.lock img{width:calc(var(--u)*62);height:calc(var(--u)*56);object-fit:contain;filter:brightness(0) opacity(.28)}
+.lock .q{position:relative}.lock .q span{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--u)*26);color:#fff;text-shadow:0 1px 2px #0005}
+</style></head><body>
+<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
+<script>
+'use strict';
+const ui=K.scene('toys/bg.jpg?v=6',852,1846,I=>CL.layout&&CL.layout(I));
+const {h}=K;K.topbar(ui,'settings.html');
+const {col}=CL.scroll(ui);const G='../a/g2/',U='../uikit/';
+const TOYS=[['Tennis Ball','tennis'],['Rope Tug','rope'],['Chew Ring','ring'],['Frisbee','frisbee'],['Rubber Duck','duck'],['Chew Bone','natural_bone']];
+const TONES=['peach','mint','lav','gold','mint','peach'];
+CL.extraTop=64;CL.title(col,'Toy Box');
+const c=CL.card(col,'cream',1);
+const hd=CL.head(c,'6 / 30 Toys Collected');hd.style.justifyContent='center';
+const pg=h('div','prog',c);h('i','',pg).style.width='20%';
+const ch=h('div','chap',c);
+CL.btn(ch,'',()=>K.toast('More chapters are coming soon!'),'cream sq',U+'ic_arrow_l.webp?v=1').setAttribute('aria-label','Previous chapter');
+h('div','nm',ch).textContent='The Backyard';
+CL.btn(ch,'',()=>K.toast('More chapters are coming soon!'),'cream sq',U+'ic_arrow_r.webp?v=1').setAttribute('aria-label','Next chapter');
+const g=h('div','tgrid',c);
+TOYS.forEach(([n,a],i)=>{const t=h('div','toy t-'+TONES[i],g);CL.img(G+a+'.webp?v=1',t);h('b','',h('div','',t)).textContent=n;CL.img(U+'badge_check.webp?v=1',t,'ck');
+ CL.tap(t,()=>{t.classList.remove('wob');void t.offsetWidth;t.classList.add('wob');K.toast(n+': collected!')});t.setAttribute('aria-label',n+', collected')});
+const l=CL.card(col,'lav',2);CL.head(l,'Next Chapter: Neighborhood','LOCKED');
+const lk=h('div','cl-inset lock',l);['rubber_ball','squeaky_bone','leash'].forEach(a=>{const q=h('div','q',lk);CL.img(G+a+'.webp?v=1',q);h('span','',q).textContent='?'});
+CL.tap(l,()=>K.toast('Finish The Backyard to unlock the Neighborhood!'));
+K.start();
+</script><script src="../nav/nav.js?v=23" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

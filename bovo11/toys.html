@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795714717"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795721818"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Toy Box</title>
@@ -20,6 +20,7 @@
 .lock{display:flex;justify-content:space-around;align-items:center;padding:calc(var(--u)*8) 0}
 .lock img{width:calc(var(--u)*62);height:calc(var(--u)*56);object-fit:contain;filter:brightness(0) opacity(.28)}
 .lock .q{position:relative}.lock .q span{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--u)*26);color:#fff;text-shadow:0 1px 2px #0005}
+.toy.lk>img{filter:brightness(0) opacity(.25)}.toy small{display:block;font-size:calc(var(--u)*12.5);color:#7b5a3a;margin-top:calc(var(--u)*2)}.chap .cl-btn.off{opacity:.35;pointer-events:none}
 </style></head><body>
 <script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
 <script>
@@ -27,21 +28,25 @@
 const ui=K.scene('toys/bg.jpg?v=6',852,1846,I=>CL.layout&&CL.layout(I));
 const {h}=K;K.topbar(ui,'settings.html');
 const {col}=CL.scroll(ui);const G='../a/g2/',U='../uikit/';
-const TOYS=[['Tennis Ball','tennis'],['Rope Tug','rope'],['Chew Ring','ring'],['Frisbee','frisbee'],['Rubber Duck','duck'],['Chew Bone','natural_bone']];
+// toys are earned by beating levels: Backyard 6 toys, Neighborhood 3 toys
+const CHS=[{nm:'The Backyard',toys:[['Tennis Ball','tennis',2],['Rope Tug','rope',4],['Chew Ring','ring',5],['Frisbee','frisbee',7],['Rubber Duck','duck',9],['Chew Bone','natural_bone',10]]},
+ {nm:'The Neighborhood',toys:[['Rubber Ball','rubber_ball',13],['Squeaky Bone','squeaky_bone',17],['Leash','leash',20]]}];
 const TONES=['peach','mint','lav','gold','mint','peach'];
+let beat=0;try{const st=JSON.parse(localStorage.getItem('gbb_play')||'{}').stars||{};for(const k in st)beat=Math.max(beat,+k+1)}catch(e){}
+const ALL=CHS.flatMap(c=>c.toys),got=ALL.filter(t=>beat>=t[2]).length;
 CL.extraTop=64;CL.title(col,'Toy Box');
 const c=CL.card(col,'cream',1);
-const hd=CL.head(c,'6 / 30 Toys Collected');hd.style.justifyContent='center';
-const pg=h('div','prog',c);h('i','',pg).style.width='20%';
-const ch=h('div','chap',c);
-CL.btn(ch,'',()=>K.toast('More chapters are coming soon!'),'cream sq',U+'ic_arrow_l.webp?v=1').setAttribute('aria-label','Previous chapter');
-h('div','nm',ch).textContent='The Backyard';
-CL.btn(ch,'',()=>K.toast('More chapters are coming soon!'),'cream sq',U+'ic_arrow_r.webp?v=1').setAttribute('aria-label','Next chapter');
+const hd=CL.head(c,got+' / '+ALL.length+' Toys Collected');hd.style.justifyContent='center';
+const pg=h('div','prog',c);h('i','',pg).style.width=Math.max(3,got/ALL.length*100)+'%';
+const ch=h('div','chap',c);let ci=beat>=10?1:0;
+const prev=CL.btn(ch,'',()=>show(ci-1),'cream sq',U+'ic_arrow_l.webp?v=1');prev.setAttribute('aria-label','Previous chapter');
+const nm=h('div','nm',ch);
+const next=CL.btn(ch,'',()=>show(ci+1),'cream sq',U+'ic_arrow_r.webp?v=1');next.setAttribute('aria-label','Next chapter');
 const g=h('div','tgrid',c);
-TOYS.forEach(([n,a],i)=>{const t=h('div','toy t-'+TONES[i],g);CL.img(G+a+'.webp?v=1',t);h('b','',h('div','',t)).textContent=n;CL.img(U+'badge_check.webp?v=1',t,'ck');
- CL.tap(t,()=>{t.classList.remove('wob');void t.offsetWidth;t.classList.add('wob');K.toast(n+': collected!')});t.setAttribute('aria-label',n+', collected')});
-const l=CL.card(col,'lav',2);CL.head(l,'Next Chapter: Neighborhood','LOCKED');
-const lk=h('div','cl-inset lock',l);['rubber_ball','squeaky_bone','leash'].forEach(a=>{const q=h('div','q',lk);CL.img(G+a+'.webp?v=1',q);h('span','',q).textContent='?'});
-CL.tap(l,()=>K.toast('Finish The Backyard to unlock the Neighborhood!'));
+function show(i){ci=Math.max(0,Math.min(CHS.length-1,i));nm.textContent=CHS[ci].nm;prev.classList.toggle('off',ci===0);next.classList.toggle('off',ci===CHS.length-1);g.innerHTML='';
+ CHS[ci].toys.forEach(([n,a,lv],k)=>{const have=beat>=lv;const t=h('div','toy t-'+TONES[k%6]+(have?'':' lk'),g);CL.img(G+a+'.webp?v=1',t);const d=h('div','',t);h('b','',d).textContent=have?n:'???';
+  if(have)CL.img(U+'badge_check.webp?v=1',t,'ck');else h('small','',d).textContent='Beat level '+lv;
+  CL.tap(t,()=>{t.classList.remove('wob');void t.offsetWidth;t.classList.add('wob');K.toast(have?n+': collected!':'Beat level '+lv+' to win this toy!')});t.setAttribute('aria-label',have?n+', collected':'Locked toy, beat level '+lv)})}
+show(ci);
 K.start();
 </script><script src="../nav/nav.js?v=23" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

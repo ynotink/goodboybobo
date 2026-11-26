@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795714717"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Settings</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=12"><link rel="stylesheet" href="../uikit/clean.css?v=4">
+<style>
+.cl-row{min-height:calc(var(--u)*52)}
+.cl-row .rt .cl-btn{min-height:calc(var(--u)*34);font-size:calc(var(--u)*15);padding:calc(var(--u)*3) calc(var(--u)*14)}
+.ver{text-align:center;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*-6)}
+</style></head><body>
+<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
+<script>
+'use strict';
+const ui=K.scene('settings/bg.jpg?v=4',852,1846,I=>CL.layout&&CL.layout(I));
+const ST=K.settings();const save=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
+const {h}=K;K.topbar(ui,'index.html');
+const {col}=CL.scroll(ui);const U='../uikit/';
+CL.extraTop=80;CL.title(col,'Settings');
+const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}else ST[k]=ST['_'+k]||(k==='music'?70:80);save();if(k==='vib'&&v)K.buzz(30)};
+const c=CL.card(col,'peach',1);const ins=h('div','cl-inset',c);
+[['Music','music','ic_music'],['Sound Effects','sounds','ic_speaker'],['Vibration','vib','ic_vibrate'],['Notifications','notif','ic_bell']].forEach(([lb,k,ic])=>{
+ const r=h('div','cl-row',ins);CL.img(U+ic+'.webp?v=1',r,'ic');h('div','lb',r).textContent=lb;
+ const on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
+ const t=CL.toggle(r,on,v=>{if(k==='notif'){K.toast('Notifications are coming soon!');return false}flip(k)(v)},lb);
+ r.style.cursor='pointer';r.addEventListener('click',()=>t.click())});
+const c2=CL.card(col,'mint',2);const i2=h('div','cl-inset',c2);
+const row=(lb,ic,right,fn)=>{const r=h('div','cl-row',i2);CL.img(U+ic+'.webp?v=1',r,'ic');h('div','lb',r).textContent=lb;const rt=h('div','rt',r);if(right)right(rt);else h('div','cl-chev',rt);if(fn)CL.tap(r,fn);return r};
+row('Player Profile','ic_person',null,()=>K.toast('Player profiles are coming soon!'));
+row('Save Progress','ic_cloud_up',rt=>CL.btn(rt,'Connect',()=>K.toast('Saving to the cloud is coming soon!')));
+row('Language','ic_globe',rt=>{h('span','',rt).textContent='English';h('div','cl-chev',rt)},()=>K.toast('More languages are coming soon!'));
+row('Help & Support','ic_help',null,()=>K.toast('Help & Support is coming soon!'));
+row('Privacy & Terms','ic_shield',null,()=>K.toast('Privacy & Terms are coming soon!'));
+h('div','ver',i2).textContent='Version 1.0.0';
+K.start();
+</script><script src="../nav/nav.js?v=23" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795714717"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795721818"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Good Boy Bobo — Home (new)</title>
 <style>
@@ -35,6 +35,44 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-s
 <div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=22"></script>
 
 <script>
+// Daily Gift: one gift per day, a 7-day streak that grows; missing a day starts over at day 1
+const Daily=(()=>{const R=[[20],[25],[30],[40],[50],[60],[100,1]];
+ const day=d=>{const x=d||new Date();return x.getFullYear()+'-'+(x.getMonth()+1)+'-'+x.getDate()};
+ const yest=()=>{const x=new Date();x.setDate(x.getDate()-1);return day(x)};
+ const rd=()=>{try{return JSON.parse(localStorage.getItem('gbb_daily')||'{}')}catch(e){return{}}};
+ const st=()=>{const g=rd();const ready=g.last!==day();const streak=g.last===day()||g.last===yest()?(g.n||0):0;return{ready,idx:ready?streak%7:((g.n||1)-1)%7}};
+ function dot(){const b=document.getElementById('dailyBtn');if(b)b.classList.toggle('has',st().ready)}
+ function open(){const s0=st();const ov=K.h('div','dg-ov',document.body);const cd=K.h('div','dg-card',ov);K.h('div','dg-ttl',cd).textContent='Daily Gift';
+  K.h('div','dg-sub',cd).textContent=s0.ready?'Come back every day for bigger gifts!':'You got today\u2019s gift. See you tomorrow!';
+  const row=K.h('div','dg-row',cd);R.forEach(([b,x],i)=>{const t=K.h('div','dg-d'+(i<s0.idx||(!s0.ready&&i===s0.idx)?' done':i===s0.idx?' now':''),row);K.h('small','',t).textContent='Day '+(i+1);
+   const im=K.h('img','',t);im.src='../bovo11/shop5/'+(x?'gold_bone':'bone_cream')+'.webp?v=3';K.h('b','',t).textContent=b+(x?'+':'')});
+  const bt=K.h('div','dg-btn'+(s0.ready?'':' off'),cd);bt.textContent=s0.ready?'Claim '+R[s0.idx][0]+' Bones':'Come Back Tomorrow';
+  const close=()=>{ov.classList.add('out');setTimeout(()=>ov.remove(),220)};
+  K.press(bt,()=>{if(!s0.ready)return close();const g=rd();g.n=s0.idx+1;g.last=day();try{localStorage.setItem('gbb_daily',JSON.stringify(g))}catch(e){}
+   Eco.addBones(R[s0.idx][0]);if(R[s0.idx][1])Eco.addBoost(Math.floor(Math.random()*4),1);K.buzz&&K.buzz(30);window.BA&&BA.sfx&&BA.sfx('win');dot();
+   K.toast('+'+R[s0.idx][0]+' Bones'+(R[s0.idx][1]?' and a free booster!':'!'));close()});
+  ov.addEventListener('click',e=>{if(e.target===ov)close()})}
+ return{open,dot}})();
+</script>
+<style>
+.hbc.has::after{content:'';position:absolute;right:calc(var(--u)*10);top:calc(var(--u)*8);width:calc(var(--u)*14);height:calc(var(--u)*14);border-radius:50%;background:#fd5f37;box-shadow:0 0 0 calc(var(--u)*2.5) #fff}
+.dg-ov{position:fixed;inset:0;z-index:50;background:#2a140640;display:grid;place-items:center;animation:dgIn .22s ease-out}.dg-ov.out{opacity:0;transition:opacity .2s}
+@keyframes dgIn{from{opacity:0}}
+.dg-card{box-sizing:border-box;width:calc(var(--u)*350);max-width:94vw;padding:calc(var(--u)*18) calc(var(--u)*14) calc(var(--u)*16);border-radius:calc(var(--u)*24);background:linear-gradient(#fff7e6,#fff2d8);text-align:center;font-family:KNun,Nun,sans-serif;color:#224946;
+ box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*5) 0 #c9a271,0 calc(var(--u)*10) calc(var(--u)*24) #44200860;animation:dgPop .32s cubic-bezier(.3,1.5,.5,1)}
+@keyframes dgPop{from{transform:scale(.8)}}
+.dg-ttl{display:inline-block;padding:calc(var(--u)*6) calc(var(--u)*26);border-radius:99px;background:linear-gradient(#ffc6a4,#fcb48d);color:#7a2e12;font-size:calc(var(--u)*26);box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*3) 0 #d9845c}
+.dg-sub{font-size:calc(var(--u)*15);color:#7b5a3a;margin:calc(var(--u)*10) 0 calc(var(--u)*12)}
+.dg-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--u)*7)}
+.dg-row>div{position:relative;border-radius:calc(var(--u)*13);padding:calc(var(--u)*6) 0;background:#fff;box-shadow:inset 0 0 0 calc(var(--u)*1.5) #f0dfc2,0 calc(var(--u)*3) 0 #e2cba5}
+.dg-row>div:last-child{grid-column:span 2;background:linear-gradient(#fff3c4,#ffe28a)}
+.dg-row small{display:block;font-size:calc(var(--u)*12);color:#7b5a3a}.dg-row img{display:block;max-width:82%;height:calc(var(--u)*30);object-fit:contain;margin-left:auto;margin-right:auto;margin:calc(var(--u)*3) 0}.dg-row b{display:block;font-weight:inherit;font-size:calc(var(--u)*16)}
+.dg-row .now{background:linear-gradient(#ffe1cc,#fcb48d);box-shadow:inset 0 0 0 calc(var(--u)*2) #fff,0 calc(var(--u)*3) 0 #d9845c;transform:scale(1.06)}
+.dg-row .done{opacity:.5}.dg-row .done::after{content:'\2713';position:absolute;right:calc(var(--u)*5);top:calc(var(--u)*3);font-size:calc(var(--u)*16);color:#2f8f5e}
+.dg-btn{margin-top:calc(var(--u)*16);padding:calc(var(--u)*13) 0;border-radius:99px;background:linear-gradient(#ff946d,#fe6f46 71%,#fd5f37);color:#fff;font-size:calc(var(--u)*21);text-shadow:0 calc(var(--u)*1.5) 0 #c2481d;
+ box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*4) 0 #b8422a;cursor:pointer}.dg-btn.off{background:linear-gradient(#e9dcc6,#d8c6a8);text-shadow:none;color:#5a4630;box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*4) 0 #b9a27f}
+</style>
+<script>
 'use strict';
 const IW=852,IH=1846,CH=553,RW=1290,RH=2796,A='../a/home/';
 const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx=document.getElementById('fx');
@@ -47,15 +85,15 @@ function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of 
  const R=document.documentElement.style;R.setProperty('--w',UW/393+'px');R.setProperty('--u',UW/393+'px')}
 for(const [f,x,y,w,h,id] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L'+(id&&id!=='logo'?' btn':'');if(id)i.id=id;place(i,x,y,w,h)}
 function RRH(){return RH}
-let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}
+let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(200,mx+1)}catch(e){}
 // kit buttons: daily, events, play (each its own piece: press, bounce, shine)
 K.topbar(ui,'settings.html');
 const U3='../ui3/';
 const V2={daily:'position:absolute;left:-.071%;top:.73%;width:100.024%;height:100.104%',events:'position:absolute;left:-.047%;top:.73%;width:100.379%;height:100.104%',play:'position:absolute;left:0;top:.577%;width:100.22%;height:99.603%'};
 const artBtn=(art,cls,label,fn)=>{const b=K.h('div','k-btn hb3 k-pop '+cls);const im=K.h('img','k-art',b);im.src=U3+'v2/'+art+'.webp?v=2';im.style.cssText=V2[art];im.alt='';im.draggable=false;K.press(b,fn);b.setAttribute('role','button');b.setAttribute('aria-label',label);return b};
 const cleanBtn=(ic,label,fn)=>{const b=K.h('div','k-btn hb3 hbc k-pop');const i=K.h('img','hbc-ic',b);i.src='../uikit/'+ic+'.webp?v=1';i.alt='';i.draggable=false;K.h('span','',b).textContent=label;K.press(b,fn);b.setAttribute('role','button');b.setAttribute('aria-label',label);return b};
-{const d=cleanBtn('ic_gift','Daily',()=>K.toast('Daily rewards are coming soon!'));d.style.setProperty('--i',2);place(d,198.3,1813.9,420.9,287.7)}
-{const e=cleanBtn('ic_calendar','Events',()=>K.toast('Events are coming soon!'));e.style.setProperty('--i',3);place(e,669.2,1813.9,422.4,287.7)}
+{const d=cleanBtn('ic_gift','Daily Gift',()=>Daily.open());d.id='dailyBtn';d.style.setProperty('--i',2);place(d,368,1813.9,554,287.7);Daily.dot()}
+
 const play=artBtn('play','','Play level '+lvlN,()=>(window.BA&&BA.nav?BA.nav('../game_new.html?lv='+lvlN):location.href='../game_new.html?lv='+lvlN));play.id='play';play.style.setProperty('--i',4);
 {const l=K.h('div','plv',play);l.textContent='Level '+lvlN}
 place(play,165,2139.4,953.9,277.1);

@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795714717"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Friends</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=12"><link rel="stylesheet" href="../uikit/clean.css?v=4">
+<style>
+.tabs{display:flex;gap:calc(var(--u)*4);padding:calc(var(--u)*5);border-radius:calc(var(--u)*16);background:linear-gradient(#fff7e6,#fff2d8);
+ box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*4) 0 #c9a271,0 calc(var(--u)*6) calc(var(--u)*10) #44200840;margin-bottom:calc(var(--u)*16)}
+.tabs>div{flex:1;text-align:center;padding:calc(var(--u)*8) 0;border-radius:calc(var(--u)*11);font-size:calc(var(--u)*17);cursor:pointer}
+.tabs .on{background:linear-gradient(#ff946d,#fe6f46 71%,#fd5f37);color:#fff;text-shadow:0 calc(var(--u)*1.5) 0 #c2481d;box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*2) 0 #b8422a}
+.fr .av{width:calc(var(--u)*50);height:calc(var(--u)*50);border-radius:50%;flex:none;box-shadow:0 0 0 calc(var(--u)*2.5) #fff,0 calc(var(--u)*2) calc(var(--u)*4) #5a2a0040}
+.fr .lb small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a}
+.fr .cl-btn{min-width:calc(var(--u)*94)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*10);margin-top:calc(var(--u)*12)}
+.two .cl-btn{font-size:calc(var(--u)*15);white-space:normal;line-height:1.05;min-height:calc(var(--u)*50)}
+.two .cl-btn img{height:calc(var(--u)*30)}
+.wide{display:flex;align-items:center;gap:calc(var(--u)*10)}
+.wide>img{width:calc(var(--u)*60);height:calc(var(--u)*52);object-fit:contain;flex:none}
+.wide .tx{flex:1;min-width:0}.wide .tx b{display:block;font-size:calc(var(--u)*20);font-weight:inherit}.wide .tx small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*2)}
+.wide .cl-btn{flex:none}
+</style></head><body>
+<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
+<script>
+'use strict';
+const ui=K.scene('friends/bg.jpg?v=2',852,1846,I=>CL.layout&&CL.layout(I));
+const {h}=K;K.topbar(ui,'settings.html');
+const {col}=CL.scroll(ui);const U='../uikit/';
+CL.extraTop=78;CL.title(col,'Friends');
+const tb=h('div','tabs cl-pop',col);tb.style.setProperty('--i',1);
+[['Friends',null],['Teams','Teams are coming soon!'],['Events','Events are coming soon!']].forEach(([n,m],i)=>{const t=h('div',i?'':'on',tb);t.textContent=n;CL.tap(t,()=>{if(m)K.toast(m)})});
+const c=CL.card(col,'cream',2);const hd=CL.head(c,'Your Friends');h('span','cl-sub',hd).textContent='3 Friends';
+const ins=h('div','cl-inset',c);
+const sent=new Set();
+[['Heather',24],['Marcus',21],['Jasmine',18]].forEach(([n,l])=>{const r=h('div','cl-row fr',ins);CL.img('clean/av_'+n.toLowerCase()+'.webp?v=2',r,'av');
+ const lb=h('div','lb',r);lb.textContent=n;h('small','',lb).textContent='Level '+l;
+ const b=CL.btn(r,'Send',()=>{if(sent.has(n)){K.toast('You already sent '+n+' a life today.');return}sent.add(n);K.toast('Sent a life to '+n+'!')},'',U+'ic_heart.webp?v=1');b.setAttribute('aria-label','Send '+n+' a life')});
+const two=h('div','two',c);
+CL.btn(two,'Ask for Lives',()=>K.toast('Asked your friends for lives!'),'lav',U+'ic_ask_lives.webp?v=1');
+CL.btn(two,'Invite Friends',()=>K.toast('Inviting friends is coming soon!'),'mint',U+'ic_person_add.webp?v=1');
+const t=CL.card(col,'mint',3);const w=h('div','wide',t);CL.img(U+'ic_paws3.webp?v=1',w);const tx=h('div','tx',w);h('b','',tx).textContent='Team Up!';h('small','',tx).textContent='Join a team. Help each other.';
+CL.btn(w,'Find a Team',()=>K.toast('Teams are coming soon!'));
+const e=CL.card(col,'gold',4);const w2=h('div','wide',e);CL.img(U+'ic_trophy.webp?v=1',w2);const t2=h('div','tx',w2);h('small','',t2).textContent='Weekly Event';h('b','',t2).textContent='Backyard Dash';
+const tm=h('small','',t2);tm.textContent='4d 2h left';
+CL.btn(w2,'View Event',()=>K.toast('The Backyard Dash starts soon!'));
+K.start();
+</script><script src="../nav/nav.js?v=23" data-page="friends"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
