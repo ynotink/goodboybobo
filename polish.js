@@ -3,7 +3,14 @@
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const KC=390/1290,P='bovo11/play2/';
 const ST=()=>{try{return Object.assign({vib:1},JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){return{vib:1}}};
-window.buzz=ms=>{try{if(ST().vib&&navigator.vibrate)navigator.vibrate(ms)}catch(e){}};
+const BZ=ms=>Array.isArray(ms)?ms.map((v,i)=>i%2?v:Math.min(60,v*2)):Math.min(60,ms*2);   // phone haptics: short taps were too faint
+window.buzz=ms=>{try{if(ST().vib&&navigator.vibrate)navigator.vibrate(BZ(ms))}catch(e){}};
+// gameplay haptics: every swap, match, combo and blast gets a buzz (works even with sound off)
+if(typeof window.snd=='function'){const _snd=window.snd;window.snd=function(kind,v){try{
+ if(kind=='swap')buzz(6);else if(kind=='bad')buzz([6,70,6]);
+ else if(kind=='pop'){const c=v|0;buzz(c<=1?8:Math.min(30,8+c*4))}
+ else if(kind=='boom')buzz(25);else if(kind=='tap')buzz(6)}catch(e){}
+ return _snd.apply(this,arguments)}}
 const snd=(n,o)=>{try{typeof fx=='function'?fx(n,o||{gap:60}):(window.BA&&BA.play(n,o||{gap:60}))}catch(e){}};
 const css=document.createElement('style');css.textContent=`
 .pl{position:absolute;pointer-events:none;transform-origin:50% 50%;will-change:transform}

@@ -21,7 +21,7 @@
 .lock img{width:calc(var(--u)*62);height:calc(var(--u)*56);object-fit:contain;filter:brightness(0) opacity(.28)}
 .lock .q{position:relative}.lock .q span{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--u)*26);color:#fff;text-shadow:0 1px 2px #0005}
 </style></head><body>
-<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
+<script src="../uikit/kit.js?v=23"></script><script src="../uikit/clean.js?v=4"></script>
 <script>
 'use strict';
 const ui=K.scene('toys/bg.jpg?v=6',852,1846,I=>CL.layout&&CL.layout(I));
@@ -44,4 +44,4 @@ const l=CL.card(col,'lav',2);CL.head(l,'Next Chapter: Neighborhood','LOCKED');
 const lk=h('div','cl-inset lock',l);['rubber_ball','squeaky_bone','leash'].forEach(a=>{const q=h('div','q',lk);CL.img(G+a+'.webp?v=1',q);h('span','',q).textContent='?'});
 CL.tap(l,()=>K.toast('Finish The Backyard to unlock the Neighborhood!'));
 K.start();
-</script><script src="../nav/nav.js?v=23" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=24" data-page="toys"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

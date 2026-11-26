@@ -30,7 +30,7 @@ function build(){const W=window.GBB_COL?GBB_COL():innerWidth,u=W/852;
   Object.assign(it.style,{left:bx+(cx-78)*u+'px',width:156*u+'px',bottom:bb+16*u+'px',height:159*u+'px'});
   const im=document.createElement('img');im.src=ICON(key);im.alt='';im.draggable=false;it.appendChild(im);
   const sp=document.createElement('span');sp.textContent=label;it.appendChild(sp);
-  it.addEventListener('pointerdown',()=>it.classList.add('dn'));
+  it.addEventListener('pointerdown',()=>{it.classList.add('dn');(function(ms){try{var s=JSON.parse(localStorage.getItem('gbb_settings')||'{}');if(s.vib===0)return;navigator.vibrate&&navigator.vibrate(ms)}catch(e){}})(16)});
   ['pointerleave','pointercancel','pointerup'].forEach(e=>it.addEventListener(e,()=>it.classList.remove('dn')));
   it.addEventListener('click',()=>{if(on||nav.dataset.go)return;nav.dataset.go=1;try{window.BA&&BA.play&&BA.play('tap',{gap:60})}catch(e){}
    (window.BA&&BA.nav?BA.nav(root+url):location.href=root+url)});

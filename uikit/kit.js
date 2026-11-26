@@ -6,7 +6,7 @@ const h=(tag,cls,parent)=>{const e=document.createElement(tag);if(cls)e.classNam
 K.h=h;
 K.img=(name,cls,parent)=>{const i=h('img',cls,parent);i.src=base+name+'.webp?v=1';i.alt='';return i};
 K.settings=()=>{let s={music:70,sounds:80,barks:1,vib:1,hints:1};try{Object.assign(s,JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){}return s};
-K.buzz=(ms=12)=>{if(window.buzz)return window.buzz(ms);if(K.settings().vib&&navigator.vibrate)try{navigator.vibrate(ms)}catch(e){}};
+K.buzz=(ms=12)=>{if(window.buzz)return window.buzz(ms);if(K.settings().vib&&navigator.vibrate)try{navigator.vibrate(Math.min(60,ms*2))}catch(e){}};
 K.toast=m=>{let t=document.getElementById('ktoast');if(!t){t=h('div','',document.body);t.id='ktoast'}t.textContent=m;t.classList.add('on');clearTimeout(K.toast.t);K.toast.t=setTimeout(()=>t.classList.remove('on'),1600)};
 // press feel for any element: squash while held, springy bounce on release, then fn
 K.press=(el,fn)=>{let down=false;if(!el.classList.contains('k-btn'))el.classList.add('k-pr');

@@ -62,7 +62,7 @@
 .got{animation:got 700ms cubic-bezier(.3,1.5,.5,1)}
 @keyframes got{30%{transform:scale(1.06)}100%{transform:none}}
 </style></head><body>
-<script src="../uikit/kit.js?v=22"></script>
+<script src="../uikit/kit.js?v=23"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -126,4 +126,4 @@ setInterval(()=>{col.querySelectorAll('[data-daily]').forEach(e=>{e.textContent=
  col.querySelectorAll('.sold').forEach(e=>{const p=S.byId(e.dataset.id);if(!S.bought(p.id)){render();return}e.textContent=(p.kind==='daily'?'New deal in ':'Back in ')+S.fmt(p.kind==='daily'?S.dailyLeft():S.weeklyLeft())})},30000);
 function layout(I){const top=I.wu*112,bot=I.navTop-4*I.wu;Object.assign(sc.style,{top:top+'px',height:Math.max(100,bot-top)+'px'})}
 K.start();
-</script><script src="../nav/nav.js?v=23" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=24" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
