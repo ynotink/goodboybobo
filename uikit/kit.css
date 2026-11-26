@@ -99,3 +99,16 @@ html.kpage #ui{position:fixed;inset:0;pointer-events:none}html.kpage #ui>*{point
 .k-top .k-counter3.dn,.k-top .k-gear3.dn{transform:scale(.94)}
 /* screens appear instantly: no fade/pop-in on arrival */
 .k-in,.k-drop,.k-pop,.k-go .k-in,.k-go .k-drop,.k-go .k-pop{animation:none!important;opacity:1!important}
+
+/* clean top bar (Nov 26): cream pills like the clean cards, live icons, crisp edges */
+.k-top .kc-clean{filter:none;border-radius:99px;background:linear-gradient(#fffaf0,#fff2d8 60%,#f6dfba);
+ box-shadow:inset 0 0 0 calc(var(--w)*1.5) #ffffffd0,inset 0 calc(var(--w)*2.5) 0 #ffffff80,0 calc(var(--w)*3) 0 #c9a271,0 calc(var(--w)*5) calc(var(--w)*9) rgba(50,25,5,.42)}
+.k-top .kc-clean .kc-ic{position:absolute;left:calc(var(--w)*7);top:50%;transform:translateY(-50%);width:calc(var(--w)*28);height:calc(var(--w)*25);object-fit:contain;filter:drop-shadow(0 1px 1px rgba(80,30,0,.3))}
+.k-top .k-counter3.bone .kc-ic{width:calc(var(--w)*34);height:calc(var(--w)*22);left:calc(var(--w)*6)}
+.k-top .kc-plus{position:absolute;right:calc(var(--w)*4);top:50%;transform:translateY(-50%);width:calc(var(--w)*27);height:calc(var(--w)*27);border-radius:50%;
+ background:linear-gradient(#2f7d78,#1d5c58);box-shadow:inset 0 0 0 calc(var(--w)*1.2) #ffffff55,0 calc(var(--w)*2) 0 #12403d}
+.k-top .kc-plus::before,.k-top .kc-plus::after{content:'';position:absolute;left:50%;top:50%;width:48%;height:15%;transform:translate(-50%,-50%);background:#fff;border-radius:9px}
+.k-top .kc-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.k-top .kc-clean .k-num3{left:30%;width:44%}
+.k-top .k-gear3.kc-clean{border-radius:50%}
+.k-top .kc-gear{position:absolute;left:50%;top:50%;width:62%;height:62%;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,40,40,.3))}

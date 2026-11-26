@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795699239"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795700041"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -27,11 +27,21 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 #tog{right:10px;top:calc(var(--sat,env(safe-area-inset-top)) + 84px);background:rgba(18,95,90,.9)}#tog.off{background:rgba(120,120,120,.9)}
 #tag{position:fixed;z-index:9;left:8px;top:calc(var(--sat,env(safe-area-inset-top)) + 86px);font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
 #hint{position:fixed;z-index:9;left:50%;transform:translateX(-50%);top:calc(var(--sat,env(safe-area-inset-top)) + 150px);font:800 14px system-ui;color:#fff;background:rgba(0,0,0,.45);padding:7px 12px;border-radius:14px;transition:opacity .6s}
+#hud .c3{filter:none!important;border-radius:99px;background:linear-gradient(#fffaf0,#fff2d8 60%,#f6dfba);
+ box-shadow:inset 0 0 0 calc(var(--w)*1.5) #ffffffd0,inset 0 calc(var(--w)*2.5) 0 #ffffff80,0 calc(var(--w)*3) 0 #c9a271,0 calc(var(--w)*5) calc(var(--w)*9) rgba(50,25,5,.42)}
+#hud .c3 img.ci{position:absolute;left:calc(var(--w)*7);top:50%;transform:translateY(-50%);width:calc(var(--w)*28);height:calc(var(--w)*25);object-fit:contain}
+#hud .c3 img.ci.bn{width:calc(var(--w)*34);height:calc(var(--w)*22);left:calc(var(--w)*6)}
+#hud .c3 .pl{position:absolute;right:calc(var(--w)*4);top:50%;transform:translateY(-50%);width:calc(var(--w)*27);height:calc(var(--w)*27);border-radius:50%;background:linear-gradient(#2f7d78,#1d5c58);box-shadow:inset 0 0 0 calc(var(--w)*1.2) #ffffff55,0 calc(var(--w)*2) 0 #12403d}
+#hud .c3 .pl::before,#hud .c3 .pl::after{content:'';position:absolute;left:50%;top:50%;width:48%;height:15%;transform:translate(-50%,-50%);background:#fff;border-radius:9px}
+#hud .c3 .pl::after{transform:translate(-50%,-50%) rotate(90deg)}
+#hud .c3.rd{border-radius:50%}
+#hud .c3 img.gr{position:absolute;left:50%;top:50%;width:62%;height:62%;transform:translate(-50%,-50%);object-fit:contain}
+#hud .t{left:30%!important;width:44%!important;height:100%!important}
 </style></head><body>
 <div id="scbg" style="position:fixed;inset:-40px;background:url(s1/still.jpg?v=5) center/cover;filter:blur(18px) brightness(.8)"></div><div id="sc"></div>
-<div id="hud"><div id="chn"><small>CHAPTER 1</small><span>The Backyard</span></div><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img src="../ui3/v2/cnt_heart.webp?v=2" alt="" style="position:absolute;left:-.71%;top:.232%;width:101.371%;height:101.848%"><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
-<div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img src="../ui3/v2/cnt_bone.webp?v=2" alt="" style="position:absolute;left:.054%;top:.229%;width:100.13%;height:100.376%"><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
-<div class="c3" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img src="../ui3/v2/gear.webp?v=2" alt="" style="position:absolute;left:-1.519%;top:1.495%;width:102.376%;height:99.133%"></div></div>
+<div id="hud"><div id="chn"><small>CHAPTER 1</small><span>The Backyard</span></div><div class="c3" style="left:calc(var(--w)*20.3);width:calc(var(--w)*113);height:calc(var(--w)*34.1)"><img class="ci" src="../uikit/ic_heart.webp?v=1" alt=""><i class="pl"></i><div class="t" id="hH" style="left:36%;width:34%">5</div></div>
+<div class="c3" style="left:calc(var(--w)*142.5);width:calc(var(--w)*143);height:calc(var(--w)*34.6)"><img class="ci bn" src="../bovo11/shop5/gold_bone.webp?v=1" alt=""><i class="pl"></i><div class="t" id="hB" style="left:32%;width:43%;height:97%">430</div></div>
+<div class="c3 rd" style="left:calc(var(--w)*337.2);margin-top:calc(var(--w)*-1.4);width:calc(var(--w)*36.9);height:calc(var(--w)*37.8)"><img class="gr" src="../uikit/ic_gear.webp?v=1" alt=""></div></div>
 <a id="gearA" href="../bovo11/settings.html" style="position:fixed;right:4px;top:calc(var(--sat,env(safe-area-inset-top)) + 26px);width:54px;height:54px;z-index:6"></a>
 <button class="btn" id="tog" style="display:none">Motion: ON</button><button class="btn" id="win" style="display:none">Win level ▶</button>
 <div id="hint">Swipe up to explore ↑</div>
@@ -259,4 +269,4 @@ function win(){const N=SCENES.length*5;if(cur>=N-1){cur=0;buttons();sc.scrollTo(
   if(u<1)requestAnimationFrame(hop);else{cur++;buttons()}})(t0)}
 document.getElementById('win').onclick=win;
 document.getElementById('tog').onclick=e=>{motion=!motion;e.target.textContent='Motion: '+(motion?'ON':'OFF');e.target.classList.toggle('off',!motion)};
-</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}if(window.GBBFont){GBBFont.bind(hH,'ink');GBBFont.bind(hB,'ink')}</script><script src="../nav/nav.js?v=22" data-page="map"></script><script>window.BA&&BA.music("Theme");if(window.Eco){const u=()=>{document.getElementById("hH").textContent=Eco.hearts();document.getElementById("hB").textContent=Eco.bones()};u();Eco.on(u)}</script></body></html>
+</script><script>try{const g=JSON.parse(localStorage.getItem("gbb")||"{}");if(g.hearts!=null)hH.textContent=g.hearts;if(g.bones!=null)hB.textContent=g.bones}catch(e){}if(window.GBBFont){GBBFont.bind(hH,'ink');GBBFont.bind(hB,'ink')}</script><script src="../nav/nav.js?v=23" data-page="map"></script><script>window.BA&&BA.music("Theme");if(window.Eco){const u=()=>{document.getElementById("hH").textContent=Eco.hearts();document.getElementById("hB").textContent=Eco.bones()};u();Eco.on(u)}</script></body></html>

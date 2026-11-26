@@ -1,0 +1,96 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795699239"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>Good Boy Bobo — Home (new)</title>
+<style>
+@font-face{font-family:Nun;src:url('../a/home/Nunito-Black.ttf')}
+html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f;-webkit-user-select:none;user-select:none}
+#stage{position:fixed;left:50%;top:0;transform:translateX(-50%)}
+#ui{position:fixed;left:50%;top:0;bottom:0;transform:translateX(-50%)}#bg{position:fixed;inset:-40px;background:url(home/scene.jpg?v=1) center bottom/cover;filter:blur(18px) brightness(.85)}#stage.fit{-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}#stage canvas{position:absolute;inset:0;width:100%;height:100%}
+.L{position:absolute;display:block;-webkit-user-drag:none}
+.btn{cursor:pointer;transform-origin:50% 55%;-webkit-tap-highlight-color:transparent}
+.btn.dn{transform:scale(.97);filter:brightness(.96);transition:transform 80ms ease-out,filter 80ms}
+.btn.up{animation:bUp 180ms ease-out}@keyframes bUp{0%{transform:scale(.97)}60%{transform:scale(1.012)}100%{transform:none}}
+.btn.lift{animation:bLift 260ms ease-out}@keyframes bLift{0%{transform:none}45%{transform:translateY(-9%) scale(1.06)}100%{transform:translateY(-3%) scale(1.02)}}
+#shine{position:fixed;pointer-events:none;overflow:hidden;z-index:3;border-radius:999px}
+#shine i{position:absolute;top:-20%;bottom:-20%;width:28%;left:-40%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-18deg)}
+#shine.go i{animation:sweep 900ms ease-in-out}@keyframes sweep{to{left:120%}}
+#logo.breath{animation:breath 1.6s ease-in-out}@keyframes breath{50%{transform:translateY(-1%) scale(1.01)}}
+@media (prefers-reduced-motion: reduce){#shine{display:none}.btn.up,.btn.lift,#logo.breath{animation:none}}
+
+
+.t{position:absolute;font-family:Nun;color:#14504e;display:flex;align-items:center}
+#lvl{position:absolute;font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,70,0,.45);text-align:center;pointer-events:none}
+#tag{position:fixed;left:50%;transform:translateX(-50%);top:calc(var(--sat,env(safe-area-inset-top)) + 4px);z-index:9;font:700 11px system-ui;color:#fff;background:rgba(200,40,40,.85);padding:5px 8px;border-radius:9px}
+#ui.kui{font-family:KNun,system-ui}
+#stage .live{position:absolute;left:0;top:0;width:100%;height:82.06933911159263%;object-fit:fill;-webkit-mask-image:linear-gradient(#000 94%,transparent);mask-image:linear-gradient(#000 94%,transparent)}#stage #fx{display:none}
+#ui .hb3{position:absolute;cursor:pointer;-webkit-tap-highlight-color:transparent;filter:drop-shadow(0 calc(var(--w)*6.1) calc(var(--w)*11) rgba(0,0,0,.72))}
+#play.hb3{filter:drop-shadow(0 calc(var(--w)*4.9) calc(var(--w)*19.5) rgba(0,0,0,.75))}
+#ui .hb3.dn{transform:scale(.95)}
+#play .plv{position:absolute;left:0;right:0;top:61%;height:22%;display:flex;align-items:center;justify-content:center;font-family:Nun,system-ui;font-size:calc(var(--w)*19.2);line-height:1;color:#fff7e8;text-shadow:0 calc(var(--w)*.61) calc(var(--w)*.9) rgba(117,58,34,.3);pointer-events:none}
+</style><link rel="stylesheet" href="../uikit/kit.css?v=12"></head><body>
+<div id="bg"></div><div id="stage"><canvas id="gl"></canvas><canvas id="fx"></canvas></div><div id="ui" class="kui"></div><script src="../uikit/kit.js?v=22"></script>
+
+<script>
+'use strict';
+const IW=852,IH=1846,CH=553,RW=1290,RH=2796,A='../a/home/';
+const stage=document.getElementById('stage'),cv=document.getElementById('gl'),fx=document.getElementById('fx');
+// [file, x, y, w, h] in the original 1290x2796 layout (logo moved up and smaller so the cast shows)
+const LAY=[['L05_logo',320,395,660,325,'logo']];
+const P=v=>v*100+'%',ui=document.getElementById('ui');let UW=390;const V=v=>v/RW*UW+'px';const PL=[];
+function place(el,x,y,w,h){PL.push([el,x,y,w,h]);ui.appendChild(el)}
+function layout(){UW=ui.getBoundingClientRect().width;for(const [el,x,y,w,h] of PL){el.style.left=V(x);el.style.width=V(w);if(h)el.style.height=V(h);
+ if(y<1400){el.style.top=V(y);el.style.bottom=''}else{el.style.bottom=V(RH-y-(h||0));el.style.top=''}}
+ const R=document.documentElement.style;R.setProperty('--w',UW/393+'px');R.setProperty('--u',UW/393+'px')}
+for(const [f,x,y,w,h,id] of LAY){const i=document.createElement('img');i.src=A+f+'.webp';i.className='L'+(id&&id!=='logo'?' btn':'');if(id)i.id=id;place(i,x,y,w,h)}
+function RRH(){return RH}
+let lvlN=1;try{const g=JSON.parse(localStorage.getItem('gbb_play')||'{}');let mx=0;for(const k in (g.stars||{}))mx=Math.max(mx,+k+1);lvlN=Math.min(100,mx+1)}catch(e){}
+// kit buttons: daily, events, play (each its own piece: press, bounce, shine)
+K.topbar(ui,'settings.html');
+const U3='../ui3/';
+const V2={daily:'position:absolute;left:-.071%;top:.73%;width:100.024%;height:100.104%',events:'position:absolute;left:-.047%;top:.73%;width:100.379%;height:100.104%',play:'position:absolute;left:0;top:.577%;width:100.22%;height:99.603%'};
+const artBtn=(art,cls,label,fn)=>{const b=K.h('div','k-btn hb3 k-pop '+cls);const im=K.h('img','k-art',b);im.src=U3+'v2/'+art+'.webp?v=2';im.style.cssText=V2[art];im.alt='';im.draggable=false;K.press(b,fn);b.setAttribute('role','button');b.setAttribute('aria-label',label);return b};
+{const d=artBtn('daily','','Daily',()=>K.toast('Daily rewards are coming soon!'));d.style.setProperty('--i',2);place(d,198.3,1813.9,420.9,287.7)}
+{const e=artBtn('events','','Events',()=>K.toast('Events are coming soon!'));e.style.setProperty('--i',3);place(e,669.2,1813.9,422.4,287.7)}
+const play=artBtn('play','','Play level '+lvlN,()=>(window.BA&&BA.nav?BA.nav('../game_new.html?lv='+lvlN):location.href='../game_new.html?lv='+lvlN));play.id='play';play.style.setProperty('--i',4);
+{const l=K.h('div','plv',play);l.textContent='Level '+lvlN}
+place(play,165,2139.4,953.9,277.1);
+requestAnimationFrame(()=>requestAnimationFrame(()=>ui.classList.add('k-go')));
+document.addEventListener('animationend',e=>{if(/^k(In|Drop|Pop)$/.test(e.animationName))e.target.classList.add('k-done')});
+function size(){const DPR=Math.min(2.5,devicePixelRatio||1);let w=innerWidth,h=w*IH/IW;if(h<innerHeight){h=innerHeight;w=h*IW/IH}else if(h>innerHeight*1.04){h=innerHeight;w=h*IW/IH}stage.classList.toggle('fit',w<innerWidth-2);ui.style.width=Math.min(w,innerWidth)+'px';
+ stage.style.width=w+'px';stage.style.height=h+'px';stage.style.top=(innerHeight-h)+'px';cv.width=Math.round(w*DPR);cv.height=Math.round(h*DPR);fx.width=cv.width;fx.height=cv.height;
+ layout()}
+size();addEventListener('resize',size);
+// the painting under the living video: one light JPEG drawn once (the old WebGL path loaded 5 big textures to draw a still)
+if(false){const g=cv.getContext('2d');const im=new Image();im.decoding='async';im.onload=()=>{const d=()=>g.drawImage(im,0,0,cv.width,cv.height);d();addEventListener('resize',()=>requestAnimationFrame(d))};im.src='home/scene.jpg?v=1'}
+const TW=[[.03,.6],[.05,.64],[.96,.63],[.92,.66],[.04,.58],[.1,.2],[.2,.13]].map(([x,y])=>({x,y,ph:Math.random()*6.3,sp:.7+Math.random()*.8}));
+const POL=[...Array(26)].map(()=>({x:Math.random(),y:.3+Math.random()*.6,vx:(Math.random()-.5)*.004,vy:-.004-Math.random()*.006,ph:Math.random()*6.3}));
+// ---- living Home scene: MiniMax loop over the top of the painting (painting stays underneath for the grass below)
+if(false){// (old MiniMax loop, replaced by the layered living scene in home_live.js) two copies hand off so the loop never pauses; both autoplay at load (iPhone only lets a video start on its own if it was allowed to autoplay),
+ // the copy waiting its turn is parked at the start. If a handoff ever fails, the playing copy simply loops by itself, so the scene can never freeze.
+ const mk=()=>{const v=document.createElement('video');v.className='live';v.src='home/live.mp4?v=6';v.poster='home/live_poster.jpg?v=5';
+  v.muted=true;v.defaultMuted=true;v.playsInline=true;v.autoplay=true;v.loop=true;v.preload='auto';
+  for(const k of ['muted','playsinline','webkit-playsinline','autoplay','loop'])v.setAttribute(k,'');stage.insertBefore(v,fx);return v};
+ const V=[mk(),mk()];let cur=0,lead=0.12,busy=false,solo=false;V[1].style.opacity=0;
+ const play=v=>{const p=v.play();return p&&p.catch?p:Promise.resolve()};
+ const onFrame=(v,fn)=>{if(v.requestVideoFrameCallback)v.requestVideoFrameCallback((n,m)=>fn(m.mediaTime));else v.addEventListener('playing',()=>fn(v.currentTime),{once:true})};
+ // park the second copy once it has really started (that start is what unlocks it for later)
+ let parked=false;const park=()=>{if(parked)return;parked=true;V[1].pause();V[1].currentTime=0};
+ V[1].addEventListener('playing',park,{once:true});play(V[1]).catch(()=>{solo=true});
+ play(V[0]).catch(()=>{});
+ const tick=()=>{const a=V[cur],b=V[1-cur];
+  if(a.paused&&!busy&&!document.hidden)play(a).catch(()=>{});
+  if(!solo&&parked&&!busy&&a.duration&&a.currentTime>=a.duration-lead&&a.currentTime<a.duration-0.005){busy=true;b.currentTime=0;let done=false;
+   const fail=setTimeout(()=>{if(done)return;done=true;b.pause();b.currentTime=0;busy=false;solo=true},400);   // phone said no: let the playing copy loop on its own
+   play(b).catch(()=>{if(done)return;done=true;clearTimeout(fail);busy=false;solo=true});
+   onFrame(b,mt=>{if(done)return;done=true;clearTimeout(fail);const left=a.duration-a.currentTime;
+     lead=Math.min(.4,Math.max(.02,lead-left*.5));
+     b.style.opacity=1;a.style.opacity=0;cur=1-cur;busy=false;setTimeout(()=>{a.pause();a.currentTime=0},150)})}
+  requestAnimationFrame(tick)};requestAnimationFrame(tick);
+ const go=()=>{solo=false;play(V[cur]).catch(()=>{});if(!parked)play(V[1-cur]).catch(()=>{})};
+ addEventListener('pointerdown',go,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden)play(V[cur]).catch(()=>{})})}
+
+// ---- quiet idle rhythm: PLAY shine every ~8s, logo breath offset; nothing in unison
+const RMm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!RMm){
+ const lg=document.getElementById('logo');const br=()=>{if(!document.hidden){lg.classList.remove('breath');void lg.offsetWidth;lg.classList.add('breath')}setTimeout(br,9000+Math.random()*3000)};setTimeout(br,6000)}
+</script><script src="home_live.js?v=7"></script><script src="../nav/nav.js?v=23" data-page="home"></script><script>window.BA&&BA.music("Theme")</script></body></html>

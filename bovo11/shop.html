@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795699239"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script><script src="../store.js?v=2"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795700041"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script><script src="../store.js?v=2"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<link rel="stylesheet" href="../uikit/kit.css?v=12">
 <style>
 /* Shop built from ChatGPT's "Shop Redo" handoff (Nov 26): one scroll — Deals, Bundles, Bone Packs, Boosters, Restore.
    Cream offer labels, honey edges, apricot buy buttons, live text everywhere. All sizes in --u (1/393 of the phone column). */
@@ -80,7 +80,7 @@
 .boo:nth-child(2){background:linear-gradient(#fff0cd,#fdd596);box-shadow:inset 0 0 0 calc(var(--u)*1.5) #ffffffc8,0 calc(var(--u)*4) 0 #c9924a,0 calc(var(--u)*6) calc(var(--u)*8) #542a1440}
 .pc span{margin-top:calc(var(--u)*3)}
 </style></head><body>
-<script src="../uikit/kit.js?v=21"></script>
+<script src="../uikit/kit.js?v=22"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -149,4 +149,4 @@ setInterval(()=>{col.querySelectorAll('[data-daily]').forEach(e=>e.textContent='
  col.querySelectorAll('.buy.off').forEach(e=>{const p=S.byId(e.dataset.id);if(!S.bought(p.id))return render();e.textContent=(p.kind==='daily'?'New deal in ':'Back in ')+S.fmt(p.kind==='daily'?S.dailyLeft():S.weeklyLeft())})},30000);
 function layout(I){const top=I.wu*112,bot=I.navTop-4*I.wu;Object.assign(sc.style,{top:top+'px',height:Math.max(100,bot-top)+'px'})}
 K.start();
-</script><script src="../nav/nav.js?v=22" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=23" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Shop</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<link rel="stylesheet" href="../uikit/kit.css?v=12">
 <style>
 /* Shop laid out like Candy Crush's: deals on top, bundles, then a grid of bone packs, then boosters. Scrolls between the counters and the menu. */
 #shopScroll{position:absolute;left:0;right:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
@@ -62,7 +62,7 @@
 .got{animation:got 700ms cubic-bezier(.3,1.5,.5,1)}
 @keyframes got{30%{transform:scale(1.06)}100%{transform:none}}
 </style></head><body>
-<script src="../uikit/kit.js?v=21"></script>
+<script src="../uikit/kit.js?v=22"></script>
 <script>
 'use strict';
 const IW=852,IH=1846;
@@ -126,4 +126,4 @@ setInterval(()=>{col.querySelectorAll('[data-daily]').forEach(e=>{e.textContent=
  col.querySelectorAll('.sold').forEach(e=>{const p=S.byId(e.dataset.id);if(!S.bought(p.id)){render();return}e.textContent=(p.kind==='daily'?'New deal in ':'Back in ')+S.fmt(p.kind==='daily'?S.dailyLeft():S.weeklyLeft())})},30000);
 function layout(I){const top=I.wu*112,bot=I.navTop-4*I.wu;Object.assign(sc.style,{top:top+'px',height:Math.max(100,bot-top)+'px'})}
 K.start();
-</script><script src="../nav/nav.js?v=22" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
+</script><script src="../nav/nav.js?v=23" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

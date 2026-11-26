@@ -7,29 +7,29 @@ const V='?v=4';
 // centres of each item inside the 840x191 bar art
 const ITEMS=[['home','Home',91,'bovo11/index.html'],['map','Map',260,'bovo10/index.html'],['toys','Toys',421,'bovo11/toys.html'],['friends','Friends',588,'bovo11/friends.html'],['shop','Shop',751,'bovo11/shop.html']];
 const art=ITEMS.some(i=>i[0]===page)?page:'none';
-const css=document.createElement('style');css.textContent=`
-#gbnav{position:fixed;left:0;right:0;bottom:0;z-index:60;pointer-events:none;-webkit-user-select:none;user-select:none}
-#gbnav .barimg{position:absolute;display:block;-webkit-user-drag:none;filter:drop-shadow(0 calc(var(--k)*7px) calc(var(--k)*5px) rgba(30,16,2,.62)) drop-shadow(0 calc(var(--k)*16px) calc(var(--k)*20px) rgba(25,14,0,.38))}
-#gbnav .barimg.v2{filter:none}
-#gbnav .barframe{position:absolute;pointer-events:none}
-#gbnav .it{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:calc(var(--k)*30px)}
-#gbnav .it::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(60,30,0,.12);opacity:0;transition:opacity 90ms}
-#gbnav .it.dn::after{opacity:1}`;
+const css=document.createElement('style');css.textContent=`@font-face{font-family:KNun;src:url(${root}a/home/Nunito-Black.ttf)}
+#gbnav{position:fixed;left:0;right:0;bottom:0;z-index:60;pointer-events:none;-webkit-user-select:none;user-select:none;font-family:KNun,system-ui}
+#gbnav .bar{position:absolute;border-radius:calc(var(--k)*44px);background:linear-gradient(#fffaf0,#fff2d8 55%,#f6dfba);
+ box-shadow:inset 0 0 0 calc(var(--k)*3.2px) #ffffffd0,inset 0 calc(var(--k)*5px) 0 #ffffff80,0 calc(var(--k)*8px) 0 #c9a271,0 calc(var(--k)*14px) calc(var(--k)*24px) rgba(50,25,5,.42)}
+#gbnav .it{position:absolute;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:calc(var(--k)*34px);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 90ms}
+#gbnav .it img{width:calc(var(--k)*100px);height:calc(var(--k)*100px);object-fit:contain;-webkit-user-drag:none;filter:drop-shadow(0 calc(var(--k)*4px) calc(var(--k)*3px) rgba(80,40,0,.28))}
+#gbnav .it span{font-size:calc(var(--k)*31px);line-height:1;color:#224946;margin-top:calc(var(--k)*6px);white-space:nowrap}
+#gbnav .it.on{background:linear-gradient(#ff946d,#fe6f46 71%,#fd5f37);box-shadow:inset 0 0 0 calc(var(--k)*3.2px) #ffffffc8,0 calc(var(--k)*6px) 0 #b8422a,0 calc(var(--k)*8px) calc(var(--k)*14px) rgba(98,57,30,.33)}
+#gbnav .it.on span{color:#fff;text-shadow:0 calc(var(--k)*3px) 0 #c2481d}
+#gbnav .it.dn{transform:scale(.93)}`;
 document.head.appendChild(css);
-// preload every page's bar so switching pages never flashes
-// pages whose bar is the approved Soft Depth finish (exact ChatGPT layers, shadows included)
-const V2={home:1,map:1,toys:1,friends:1,shop:1,none:1},barSrc=k=>V2[k]?root+'ui3/v2/nav_'+k+'.webp?v=4':root+'ui3/nav_'+k+'.webp'+V;
-
+const ICON=k=>root+'v2/a/nav_'+k+'.webp?v=1';
+ITEMS.forEach(i=>{const im=new Image();im.src=ICON(i[0])});
 const nav=document.createElement('div');nav.id='gbnav';
-const img=new Image();img.className='barimg'+(V2[art]?' v2':'');img.alt='';img.draggable=false;img.src=barSrc(art);nav.appendChild(img);
-const frame=document.createElement('div');frame.className='barframe';nav.appendChild(frame);   // the 840x191 bar frame the tap areas and press pieces are measured in
+const bar=document.createElement('div');bar.className='bar';nav.appendChild(bar);
 function build(){const W=window.GBB_COL?GBB_COL():innerWidth,u=W/852;
  nav.style.left=(innerWidth-W)/2+'px';nav.style.right='auto';nav.style.width=W+'px';nav.style.height=(191+32+6)*u+'px';nav.style.setProperty('--k',u);
- const bx=6*u,bb=32*u;Object.assign(frame.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
- if(V2[art])Object.assign(img.style,{left:0,bottom:15.851*u+'px',width:852*u+'px',height:206.065*u+'px'});else Object.assign(img.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
+ const bx=6*u,bb=32*u;Object.assign(bar.style,{left:bx+'px',bottom:bb+'px',width:840*u+'px',height:191*u+'px'});
  nav.querySelectorAll('.it').forEach(e=>e.remove());
- ITEMS.forEach(([key,label,cx,url])=>{const on=key===page;const it=document.createElement('div');it.className='it';it.setAttribute('role','link');it.setAttribute('aria-label',label);if(on)it.setAttribute('aria-current','page');
-  Object.assign(it.style,{left:bx+(cx-80)*u+'px',width:160*u+'px',bottom:bb+16*u+'px',height:163*u+'px'});
+ ITEMS.forEach(([key,label,cx,url])=>{const on=key===page;const it=document.createElement('div');it.className='it'+(on?' on':'');it.setAttribute('role','link');it.setAttribute('aria-label',label);if(on)it.setAttribute('aria-current','page');
+  Object.assign(it.style,{left:bx+(cx-78)*u+'px',width:156*u+'px',bottom:bb+16*u+'px',height:159*u+'px'});
+  const im=document.createElement('img');im.src=ICON(key);im.alt='';im.draggable=false;it.appendChild(im);
+  const sp=document.createElement('span');sp.textContent=label;it.appendChild(sp);
   it.addEventListener('pointerdown',()=>it.classList.add('dn'));
   ['pointerleave','pointercancel','pointerup'].forEach(e=>it.addEventListener(e,()=>it.classList.remove('dn')));
   it.addEventListener('click',()=>{if(on||nav.dataset.go)return;nav.dataset.go=1;try{window.BA&&BA.play&&BA.play('tap',{gap:60})}catch(e){}
