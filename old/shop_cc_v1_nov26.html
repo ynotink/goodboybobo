@@ -1,0 +1,129 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795691949"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script><script src="../store.js?v=1"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Shop</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<style>
+/* Shop laid out like Candy Crush's: deals on top, bundles, then a grid of bone packs, then boosters. Scrolls between the counters and the menu. */
+#shopScroll{position:absolute;left:0;right:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+ -webkit-mask-image:linear-gradient(transparent 0,#000 calc(var(--u)*10),#000 calc(100% - var(--u)*14),transparent);mask-image:linear-gradient(transparent 0,#000 calc(var(--u)*10),#000 calc(100% - var(--u)*14),transparent)}
+#shopScroll::-webkit-scrollbar{display:none}
+#col{width:calc(var(--u)*362);margin:0 auto;padding:calc(var(--u)*14) 0 calc(var(--u)*28);display:flex;flex-direction:column;gap:calc(var(--u)*16)}
+.ttl{align-self:center;width:calc(var(--u)*196);height:auto;margin-bottom:calc(var(--u)*-4)}
+.card{position:relative;border-style:solid;border-width:calc(var(--u)*22);border-image-slice:56 fill;border-image-width:calc(var(--u)*22);border-image-repeat:stretch;
+ filter:drop-shadow(0 calc(var(--u)*5) calc(var(--u)*5) rgba(80,35,5,.32));margin:0 calc(var(--u)*-6)}
+.card.peach{border-image-source:url(../ui2/card_peach.webp?v=1)}.card.mint{border-image-source:url(../ui2/card_mint.webp?v=1)}.card.lilac{border-image-source:url(../ui2/card_lilac.webp?v=1)}
+.card.yellow{border-image-source:url(../ui2/card_yellow.webp?v=1)}.card.blue{border-image-source:url(../ui2/card_blue.webp?v=1)}
+.inner{position:relative;margin:calc(var(--u)*-10) calc(var(--u)*-10) 0;min-height:calc(var(--u)*104);border-radius:calc(var(--u)*18);background:rgba(255,250,240,.78);
+ box-shadow:inset 0 calc(var(--u)*2) calc(var(--u)*3) rgba(120,70,20,.18);display:flex;align-items:flex-end;justify-content:space-evenly;padding:calc(var(--u)*8) calc(var(--u)*4) calc(var(--u)*6)}
+.it{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0}
+.it .ic{height:calc(var(--u)*58);width:auto;max-width:calc(var(--u)*104);object-fit:contain;filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*2) rgba(80,40,0,.25))}
+.it .big{height:calc(var(--u)*72);max-width:calc(var(--u)*128)}
+.num{height:calc(var(--u)*26);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*24);margin-top:calc(var(--u)*3)}
+.num .tm{width:calc(var(--u)*20);height:calc(var(--u)*22);object-fit:contain;margin-right:calc(var(--u)*3)}
+.bst4{display:grid;grid-template-columns:1fr 1fr;width:calc(var(--u)*62);height:calc(var(--u)*58);place-items:center}
+.bst4 img{width:calc(var(--u)*29);height:calc(var(--u)*27);object-fit:contain;filter:drop-shadow(0 1px 1px rgba(80,40,0,.3))}
+.inf{position:relative;width:calc(var(--u)*62);height:calc(var(--u)*56)}
+.inf img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*2) rgba(120,0,0,.25))}
+.inf span{position:absolute;left:0;right:0;top:44%;transform:translateY(-50%);text-align:center;color:#fff;font:900 calc(var(--u)*30)/1 KNun,system-ui;text-shadow:0 calc(var(--u)*1.5) 0 rgba(140,10,10,.55)}
+.foot{display:flex;align-items:center;justify-content:space-between;margin:calc(var(--u)*10) calc(var(--u)*-4) calc(var(--u)*-6);min-height:calc(var(--u)*50)}
+.nm{font-size:calc(var(--u)*25);min-width:0;flex:1;display:flex;justify-content:flex-start}
+.nm canvas{max-width:100%}
+.pb{width:calc(var(--u)*148);height:calc(var(--u)*50);flex:none}
+.pb .k-lbl{font-size:calc(var(--u)*26)}
+.sold{width:calc(var(--u)*148);text-align:center;font-size:calc(var(--u)*15);color:#1b4b50;line-height:1.15}
+.tag{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;background:url(../uikit/tag_teal.webp?v=1) center/100% 100% no-repeat;filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*2) rgba(0,40,40,.35))}
+.tag.off{right:calc(var(--u)*-4);top:calc(var(--u)*78);width:calc(var(--u)*92);height:calc(var(--u)*30);font-size:calc(var(--u)*17);transform:rotate(-6deg)}
+.tag.pop{left:calc(var(--u)*-22);top:calc(var(--u)*76);width:calc(var(--u)*122);height:calc(var(--u)*32);font-size:calc(var(--u)*18);transform:rotate(-4deg)}
+.timer{position:absolute;z-index:3;left:50%;top:calc(var(--u)*-40);transform:translateX(-50%);height:calc(var(--u)*34);padding:0 calc(var(--u)*14) 0 calc(var(--u)*8);display:flex;align-items:center;gap:calc(var(--u)*4);
+ border-style:solid;border-width:calc(var(--u)*14);border-image:url(../ui2/btn_cream.webp?v=1) 70 fill/calc(var(--u)*17) stretch;font-size:calc(var(--u)*18);white-space:nowrap}
+.timer img{width:calc(var(--u)*22);height:calc(var(--u)*24);object-fit:contain;margin:calc(var(--u)*-14) 0}
+.timer .t{margin:calc(var(--u)*-14) 0}
+.hdr{align-self:center;width:calc(var(--u)*190);height:calc(var(--u)*42);font-size:calc(var(--u)*25);margin:calc(var(--u)*6) 0 calc(var(--u)*-6)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--u)*10) calc(var(--u)*8)}
+.tile{position:relative;min-width:0;border-style:solid;border-width:calc(var(--u)*18);border-image:url(../ui2/card_yellow.webp?v=1) 56 fill/calc(var(--u)*18) stretch;
+ filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*4) rgba(80,35,5,.3));display:flex;flex-direction:column;align-items:center;padding-top:calc(var(--u)*2)}
+.tile .ic{height:calc(var(--u)*62);width:100%;object-fit:contain;filter:drop-shadow(0 calc(var(--u)*2) calc(var(--u)*2) rgba(80,40,0,.25))}
+.tile .num{font-size:calc(var(--u)*22);margin-top:calc(var(--u)*2)}
+.tile .pb{width:calc(var(--u)*100);height:calc(var(--u)*40);margin:calc(var(--u)*6) 0 calc(var(--u)*-4)}
+.tile .pb .k-lbl{font-size:calc(var(--u)*20)}
+.bgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:calc(var(--u)*8)}
+.btile{min-width:0;border-style:solid;border-width:calc(var(--u)*16);border-image:url(../ui2/card_peach.webp?v=1) 56 fill/calc(var(--u)*16) stretch;filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*4) rgba(80,35,5,.3));
+ display:flex;flex-direction:column;align-items:center}
+.btile .ic{height:calc(var(--u)*50);width:100%;object-fit:contain;margin-top:calc(var(--u)*-4)}
+.btile .bn{font-size:calc(var(--u)*13.5);margin-top:calc(var(--u)*4);white-space:nowrap;height:calc(var(--u)*16);display:flex;align-items:center}
+.btile .pb{width:calc(var(--u)*80);height:calc(var(--u)*36);margin:calc(var(--u)*6) 0 calc(var(--u)*-2);gap:calc(var(--u)*2)}
+.btile .pb img.b{position:relative;width:calc(var(--u)*22);height:calc(var(--u)*14);object-fit:contain}
+.btile .pb .k-lbl{font-size:calc(var(--u)*18)}
+.rest{align-self:center;width:calc(var(--u)*214);height:calc(var(--u)*44);margin-top:calc(var(--u)*2)}
+.rest .k-lbl{font-size:calc(var(--u)*17)}
+.wob{animation:wob 560ms cubic-bezier(.3,1.4,.5,1)}
+@keyframes wob{25%{transform:scale(1.15) rotate(-8deg)}55%{transform:scale(1.08) rotate(6deg)}100%{transform:none}}
+.got{animation:got 700ms cubic-bezier(.3,1.5,.5,1)}
+@keyframes got{30%{transform:scale(1.06)}100%{transform:none}}
+</style></head><body>
+<script src="../uikit/kit.js?v=21"></script>
+<script>
+'use strict';
+const IW=852,IH=1846;
+const ui=K.scene('shop/bg.jpg?v=3',IW,IH,layout);
+const {h}=K;
+K.topbar(ui,'settings.html');
+const S=window.GBBStore,E=window.Eco;
+const A='../uikit/',B3='shop3/';
+const BI=['bst_paw','bst_swap','bst_bomb','bst_shuffle'],BN=['Paw Tap','Free Swap','Bomb','Shuffle'];
+const sc=h('div','',ui);sc.id='shopScroll';const col=h('div','',sc);col.id='col';
+const im=(src,cls,p)=>{const i=h('img',cls,p);i.src=src;i.alt='';i.draggable=false;return i};
+const paint=(el,txt,style)=>{el.textContent=txt;if(window.GBBFont)GBBFont.bind(el,style)};
+const fmtN=n=>n.toLocaleString('en-US');
+const durTxt=ms=>S.dur(ms);
+// ---- one item inside a card: picture + number underneath
+function item(p,kind,v){const d=h('div','it',p);
+ if(kind==='bones'){im(B3+'bones'+v.art+'.webp?v=1','ic'+(v.big?' big':''),d);paint(h('div','num',d),fmtN(v.n),'ink')}
+ if(kind==='boost'){const g=h('div','bst4',d);BI.forEach(b=>im(A+b+'.webp?v=1','',g));paint(h('div','num',d),'×'+v,'ink')}
+ if(kind==='hearts'){const f=h('div','inf',d);im(A+'ic_heart.webp?v=1','',f);h('span','',f).textContent='∞';
+  const n=h('div','num',d);im(A+'ic_stopwatch.webp?v=1','tm',n);const t=h('span','',n);paint(t,durTxt(v),'ink')}
+ return d}
+function priceBtn(p,prod,el){const b=K.button('green_med',prod.price,()=>buy(prod,el),{aria:'Buy '+(prod.name||fmtN(prod.bones)+' bones')+' for '+prod.price});b.classList.add('pb');p.appendChild(b);
+ const l=b.querySelector('.k-lbl');if(l&&window.GBBFont){l.style.textShadow='none';GBBFont.bind(l,'button',.78)}return b}
+function buy(prod,el){S.buy(prod.id,(ok,p,msg)=>{if(ok){el.classList.remove('got');void el.offsetWidth;el.classList.add('got');try{BA.play('win',{gap:200})}catch(e){}
+  const bits=[];if(p.bones)bits.push(fmtN(p.bones)+' bones');if(p.boost)bits.push(p.boost+' of each booster');if(p.hearts)bits.push(durTxt(p.hearts)+' unlimited hearts');K.toast('Added: '+bits.join(', ')+'!');render()}
+  else if(msg)K.toast(msg)})}
+// ---- deal / bundle card (Candy Crush style: items panel on top, name bottom-left, price bottom-right)
+function card(prod,color){const c=h('div','card '+color,col);const inn=h('div','inner',c);
+ if(prod.bones)item(inn,'bones',{n:prod.bones,art:prod.kind==='bundle'?{500:3,1100:4,2400:5,6500:6}[prod.bones]:prod.kind==='weekly'?2:3,big:prod.kind!=='bundle'||prod.bones>=2400});
+ if(prod.boost)item(inn,'boost',prod.boost);
+ if(prod.hearts)item(inn,'hearts',prod.hearts);
+ const ft=h('div','foot',c);const nm=h('div','nm',ft);if(prod.name.length>14)nm.style.fontSize='calc(var(--u)*21)';paint(nm,prod.name,'title');
+ if(S.bought(prod.id)){const s=h('div','sold',ft);s.dataset.id=prod.id;s.textContent=(prod.kind==='daily'?'New deal in ':'Back in ')+S.fmt(prod.kind==='daily'?S.dailyLeft():S.weeklyLeft())}
+ else priceBtn(ft,prod,c);
+ if(prod.kind==='weekly'){const t=h('div','tag off',c);paint(t,prod.tag,'badge')}
+ if(prod.kind==='daily'){const t=h('div','tag pop',c);paint(t,prod.tag,'badge');const tm=h('div','timer',c);im(A+'ic_stopwatch.webp?v=1','',tm);const tt=h('span','t',tm);tt.dataset.daily=1;paint(tt,S.fmt(S.dailyLeft()),'ink');c.style.marginTop='calc(var(--u)*30)'}
+ return c}
+function header(txt){const p=h('div','k-plate hdr',col);paint(p,txt,'ink')}
+function render(){col.textContent='';
+ im('../ui3/shop2/title.webp?v=5','ttl',col);
+ const P=S.products;
+ card(P.find(p=>p.kind==='weekly'),'yellow');
+ card(P.find(p=>p.kind==='daily'),'peach');
+ header('Bundles');
+ for(const p of P.filter(p=>p.kind==='bundle'))card(p,p.card);
+ header('Bones');
+ const g=h('div','grid',col);
+ for(const p of P.filter(p=>p.kind==='bones')){const t=h('div','tile',g);im(B3+'bones'+p.art+'.webp?v=1','ic',t);paint(h('div','num',t),fmtN(p.bones),'ink');priceBtn(t,p,t)}
+ header('Boosters');
+ const bg=h('div','bgrid',col);
+ BI.forEach((b,k)=>{const t=h('div','btile',bg);const pic=im(A+b+'.webp?v=1','ic',t);paint(h('div','bn',t),BN[k],'ink');
+  const price=E.PRICE.boost[k];const btn=K.button('green_med',String(price),()=>{
+   if(!E.spend(price)){K.toast('You need '+price+' bones. You have '+E.bones()+'.');return}
+   E.addBoost(k,1);pic.classList.remove('wob');void pic.offsetWidth;pic.classList.add('wob');K.toast(BN[k]+' added! You have '+E.boosts()[k]+'.')},{aria:'Buy one '+BN[k]+' for '+price+' bones'});
+  btn.classList.add('pb');t.appendChild(btn);const l=btn.querySelector('.k-lbl');const bi=h('img','b');bi.src=A+'gold_bone.webp?v=1';btn.insertBefore(bi,l);if(l&&window.GBBFont){l.style.textShadow='none';GBBFont.bind(l,'button',.78)}});
+ const r=K.button('cream_big','Restore Purchases',()=>S.restore(),{aria:'Restore Purchases'});r.classList.add('rest');col.appendChild(r)}
+S.onChange=render;
+render();
+// keep the countdowns ticking
+setInterval(()=>{col.querySelectorAll('[data-daily]').forEach(e=>{e.textContent=S.fmt(S.dailyLeft())});
+ col.querySelectorAll('.sold').forEach(e=>{const p=S.byId(e.dataset.id);if(!S.bought(p.id)){render();return}e.textContent=(p.kind==='daily'?'New deal in ':'Back in ')+S.fmt(p.kind==='daily'?S.dailyLeft():S.weeklyLeft())})},30000);
+function layout(I){const top=I.wu*112,bot=I.navTop-4*I.wu;Object.assign(sc.style,{top:top+'px',height:Math.max(100,bot-top)+'px'})}
+K.start();
+</script><script src="../nav/nav.js?v=22" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

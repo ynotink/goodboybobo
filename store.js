@@ -4,6 +4,7 @@
      web -> native : window.webkit.messageHandlers.iap.postMessage({buy: productId})   (and {restore:true})
      native -> web : GBBStore.purchased(productId)   when Apple confirms a purchase
                      GBBStore.failed(productId, message)   when it was cancelled or failed
+                     GBBStore.pending(productId)   when Apple puts it on hold (Ask to Buy)
                      GBBStore.prices({productId: '$0.99', ...})   localized prices from Apple (optional)
    Boosters index: 0 Paw Tap, 1 Free Swap, 2 Bomb, 3 (fourth booster). */
 (function(){
@@ -36,16 +37,18 @@ const S=window.GBBStore={products:P,
  dailyLeft:()=>{const n=new Date(),m=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1);return m-n},
  weeklyLeft:()=>{const w=weekStart();w.setDate(w.getDate()+7);return w-new Date()},
  bought:id=>{const o=rd(),p=S.byId(id);if(!p)return false;if(p.kind==='daily')return o.daily===dayId();if(p.kind==='weekly')return o.weekly===weekStart().getTime();return false},
- buy(id,cb){const p=S.byId(id);if(!p||S.bought(id))return;S._cb=cb;
+ busy:null,
+ buy(id,cb){const p=S.byId(id);if(!p||S.bought(id)||S.busy)return;S.busy=id;S._cb=cb;   // one purchase at a time: repeat taps are ignored
   if(S.native()){try{webkit.messageHandlers.iap.postMessage({buy:id})}catch(e){S.failed(id,'Purchase could not start.')}return}
   S.failed(id,'Purchases work in the App Store version of Good Boy Bobo.')},
  restore(){if(S.native()){try{webkit.messageHandlers.iap.postMessage({restore:true})}catch(e){}}else S.failed(null,'Nothing to restore yet.')},
  // called by the native app once Apple confirms payment: hand over everything in the item
- purchased(id){const p=S.byId(id);if(!p)return;const E=window.Eco;
+ purchased(id){const p=S.byId(id);S.busy=null;if(!p)return;const E=window.Eco;
   if(E){if(p.bones)E.addBones(p.bones);if(p.boost)for(let k=0;k<4;k++)E.addBoost(k,p.boost);if(p.hearts)E.addUnlimited(p.hearts)}
   const o=rd();if(p.kind==='daily')o.daily=dayId();if(p.kind==='weekly')o.weekly=weekStart().getTime();wr(o);
   const cb=S._cb;S._cb=null;if(cb)cb(true,p);if(S.onChange)S.onChange()},
- failed(id,msg){const cb=S._cb;S._cb=null;if(cb)cb(false,null,msg);else if(window.K&&K.toast&&msg)K.toast(msg)},
+ failed(id,msg){S.busy=null;const cb=S._cb;S._cb=null;if(cb)cb(false,null,msg);else if(window.K&&K.toast&&msg)K.toast(msg)},
+ pending(id){S.busy=null;const cb=S._cb;S._cb=null;if(cb)cb(false,null,'Waiting for approval. Your items arrive once it is approved.')},
  prices(map){for(const p of P)if(map&&map[p.id])p.price=map[p.id];if(S.onChange)S.onChange()},
  fmt(ms){const m=Math.floor(ms/M),h=Math.floor(m/60),d=Math.floor(h/24);return d>=1?d+'d '+(h%24)+'h':h>=1?h+'h '+String(m%60).padStart(2,'0')+'m':Math.max(1,m)+'m'},
  dur(ms){const h=ms/H;return h>=24?(h/24)+'d':h>=1?h+'h':(ms/M)+'m'}};
