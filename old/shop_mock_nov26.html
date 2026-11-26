@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795663621"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Good Boy Bobo — Shop</title>
+<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<style>
+#col{position:absolute;left:50%;width:calc(var(--u)*352);margin-left:calc(var(--u)*-176);display:flex;flex-direction:column;gap:calc(var(--u)*10)}
+.cd{border-style:solid;border-width:calc(var(--u)*20);border-image:url(../uikit/card_small.webp?v=1) 64 fill/calc(var(--u)*20) stretch;filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*5) rgba(60,25,0,.3))}
+.bund{position:relative;height:calc(var(--u)*162)}
+.bund .art{position:absolute;left:calc(var(--u)*-12);bottom:calc(var(--u)*-12);height:calc(var(--u)*178);width:auto;transform-origin:50% 100%}
+.k-go .bund .art{animation:kPop 520ms cubic-bezier(.3,1.5,.5,1) 380ms both,breathe 3.6s ease-in-out 1.2s infinite}
+@keyframes breathe{50%{transform:scale(1.025) translateY(calc(var(--u)*-1))}}
+.bund .rt{position:absolute;right:calc(var(--u)*-8);top:calc(var(--u)*-6);width:calc(var(--u)*170);display:flex;flex-direction:column;align-items:center;text-align:center}
+.bund .t1{font-size:calc(var(--u)*23);color:#1b4b50;line-height:1.0}
+.bund .t2{font-size:calc(var(--u)*15);color:#1b4b50;line-height:1.05;margin-top:calc(var(--u)*5)}
+.bund .k-btn{width:calc(var(--u)*150);height:calc(var(--u)*46);margin-top:calc(var(--u)*8)}
+.bund .k-lbl{font-size:calc(var(--u)*26)}
+.three{display:flex;gap:calc(var(--u)*7)}
+.bn{flex:1 1 0;min-width:0;height:calc(var(--u)*140);border-width:calc(var(--u)*18);display:flex;flex-direction:column;align-items:center}
+.bn>*{flex:none}
+.bn .pic{height:calc(var(--u)*58);width:calc(var(--u)*92);object-fit:contain;margin-top:calc(var(--u)*-6)}
+.bn .nm{font-size:calc(var(--u)*14.5);color:#1b4b50;margin-top:calc(var(--u)*3);white-space:nowrap}
+.bn .k-btn{width:calc(var(--u)*90);height:calc(var(--u)*34);margin-top:calc(var(--u)*6)}
+.bn .k-lbl{font-size:calc(var(--u)*17)}
+.bsec{position:relative;margin-top:calc(var(--u)*12)}
+.bsec .k-plate{position:absolute;left:50%;top:calc(var(--u)*-17);transform:translateX(-50%);width:calc(var(--u)*186);height:calc(var(--u)*40);font-size:calc(var(--u)*25);color:#1b4b50;z-index:2}
+.bsec .cd{height:calc(var(--u)*150)}
+.bst{position:absolute;inset:calc(var(--u)*-6) calc(var(--u)*-12) calc(var(--u)*-10);display:flex}
+.bst>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;padding-bottom:calc(var(--u)*2)}
+.bst>div+div::before{content:'';position:absolute;left:0;top:28%;bottom:8%;width:1.5px;background:rgba(150,105,55,.3)}
+.bst .pic{height:calc(var(--u)*72);width:calc(var(--u)*82);object-fit:contain;cursor:pointer}
+.bst .k-btn{width:calc(var(--u)*94);height:calc(var(--u)*35);margin-top:calc(var(--u)*6);gap:calc(var(--u)*4)}
+.bst .k-btn img.b{position:relative;width:calc(var(--u)*24);height:calc(var(--u)*16);object-fit:contain}
+.bst .k-lbl{font-size:calc(var(--u)*17)}
+.bst .wob{animation:wob 560ms cubic-bezier(.3,1.4,.5,1)}
+@keyframes wob{25%{transform:scale(1.15) rotate(-8deg)}55%{transform:scale(1.08) rotate(6deg)}100%{transform:none}}
+.rest{align-self:center;width:calc(var(--u)*204);height:calc(var(--u)*38);border-width:calc(var(--u)*16) calc(var(--u)*17);margin-top:calc(var(--u)*-1)}
+.rest span{margin:calc(var(--u)*-16) 0;font-size:calc(var(--u)*16);color:#1b4b50;white-space:nowrap}
+</style></head><body>
+<script src="../uikit/kit.js?v=21"></script><script src="../ui3/mock.js?v=5"></script>
+<script>
+'use strict';
+const IW=852,IH=1846;
+const ui=K.scene('shop/bg.jpg?v=3',IW,IH,layout);
+const {h,img}=K;
+K.topbar(ui,'settings.html');
+const buy=()=>K.toast('Purchases are coming soon!');
+const bst=(price,name,bk)=>()=>{if(!window.Eco)return;if(!Eco.spend(price)){K.toast('You need '+price+' bones. You have '+Eco.bones()+'.');return}Eco.addBoost(bk,1);K.toast(name+' added! You have '+Eco.boosts()[bk]+'.')};
+// pieces cut straight from ChatGPT's approved Shop mockup (934 px wide)
+const M=K.mock(ui,{MW:934,y0:170,y1:1462,base:'../ui3/shop2/',v:5,parts:[
+ {n:'title',x:217.22,y:173.44,w:498.13,h:120.91,i:0,row:0},
+ {n:'bundle',x:49.97,y:281.54,w:834.08,h:422.11,i:1,row:1},
+ {row:2,n:'b100',x:54.32,y:719.85,w:265.72,h:280.92,i:2},{row:2,n:'b550',x:336.69,y:721.29,w:264.27,h:279.48,i:3},{row:2,n:'b1200',x:613.98,y:719.85,w:265.72,h:280.92,i:4},
+ {row:3,n:'boost',x:49.97,y:999.54,w:834.08,h:355.5,i:5},
+ {row:4,n:'restore',x:234.62,y:1370.49,w:463.38,h:86.88,i:6}],
+ zones:[
+ {x:472,y:578,w:358,h:98,r:49,fn:buy,aria:'Buy the Best Friend Bundle for $4.99'},
+ {x:78,y:912,w:222,h:64,r:32,fn:buy,aria:'Buy 100 bones for $0.99'},
+ {x:360,y:912,w:216,h:64,r:32,fn:buy,aria:'Buy 550 bones for $4.99'},
+ {x:637,y:912,w:220,h:64,r:32,fn:buy,aria:'Buy 1,200 bones for $9.99'},
+ {x:93,y:1250,w:216,h:68,r:34,fn:bst(Eco.PRICE.boost[0],'Paw Tap',0),aria:'Buy one Paw Tap for '+Eco.PRICE.boost[0]+' bones'},
+ {x:357,y:1250,w:220,h:68,r:34,fn:bst(Eco.PRICE.boost[1],'Free Swap',1),aria:'Buy one Free Swap for '+Eco.PRICE.boost[1]+' bones'},
+ {x:626,y:1250,w:218,h:68,r:34,fn:bst(Eco.PRICE.boost[2],'Bomb',2),aria:'Buy one Bomb for '+Eco.PRICE.boost[2]+' bones'},
+ {x:236,y:1371,w:462,h:86,r:43,fn:()=>K.toast('Nothing to restore yet.'),aria:'Restore Purchases'}]});
+function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
+K.start();
+</script><script src="../nav/nav.js?v=22" data-page="shop"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
