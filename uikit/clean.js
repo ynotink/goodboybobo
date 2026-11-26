@@ -18,5 +18,5 @@ C.toggle=(p,on,fn,label)=>{const t=h('div','cl-tog'+(on?' on':''),p);t.setAttrib
   t.classList.toggle('on');t.setAttribute('aria-checked',t.classList.contains('on')?'true':'false');K.buzz(10)});return t};
 // scroll area between the top counters and the bottom menu
 C.scroll=ui=>{const sc=h('div','cl-scroll',ui);const col=h('div','cl-col',sc);
- C.layout=I=>{const top=I.wu*112,bot=I.navTop-4*I.wu;Object.assign(sc.style,{top:top+'px',height:Math.max(100,bot-top)+'px'})};return {sc,col}};
+ C.layout=I=>{Object.assign(sc.style,{top:'0px',height:innerHeight+'px',zIndex:4});col.style.paddingTop=(I.wu*112+(C.extraTop||0)*I.wu)+'px';col.style.paddingBottom=(innerHeight-I.navTop+18*I.wu)+'px'};return {sc,col}};
 })();

@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795701237"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795702363"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Friends</title>
@@ -19,13 +19,13 @@
 .wide .tx{flex:1;min-width:0}.wide .tx b{display:block;font-size:calc(var(--u)*20);font-weight:inherit}.wide .tx small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*2)}
 .wide .cl-btn{flex:none}
 </style></head><body>
-<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=2"></script>
+<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
 <script>
 'use strict';
 const ui=K.scene('friends/bg.jpg?v=2',852,1846,I=>CL.layout&&CL.layout(I));
 const {h}=K;K.topbar(ui,'settings.html');
 const {col}=CL.scroll(ui);const U='../uikit/';
-col.style.paddingTop='calc(var(--u)*14)';CL.title(col,'Friends');
+CL.extraTop=14;CL.title(col,'Friends');
 const tb=h('div','tabs cl-pop',col);tb.style.setProperty('--i',1);
 [['Friends',null],['Teams','Teams are coming soon!'],['Events','Events are coming soon!']].forEach(([n,m],i)=>{const t=h('div',i?'':'on',tb);t.textContent=n;CL.tap(t,()=>{if(m)K.toast(m)})});
 const c=CL.card(col,'cream',2);const hd=CL.head(c,'Your Friends');h('span','cl-sub',hd).textContent='3 Friends';

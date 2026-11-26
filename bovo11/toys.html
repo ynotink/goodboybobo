@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795701237"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795702363"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Toy Box</title>
@@ -21,7 +21,7 @@
 .lock img{width:calc(var(--u)*62);height:calc(var(--u)*56);object-fit:contain;filter:brightness(0) opacity(.28)}
 .lock .q{position:relative}.lock .q span{position:absolute;inset:0;display:grid;place-items:center;font-size:calc(var(--u)*26);color:#fff;text-shadow:0 1px 2px #0005}
 </style></head><body>
-<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=2"></script>
+<script src="../uikit/kit.js?v=22"></script><script src="../uikit/clean.js?v=4"></script>
 <script>
 'use strict';
 const ui=K.scene('toys/bg.jpg?v=6',852,1846,I=>CL.layout&&CL.layout(I));
@@ -29,7 +29,7 @@ const {h}=K;K.topbar(ui,'settings.html');
 const {col}=CL.scroll(ui);const G='../a/g2/',U='../uikit/';
 const TOYS=[['Tennis Ball','tennis'],['Rope Tug','rope'],['Chew Ring','ring'],['Frisbee','frisbee'],['Rubber Duck','duck'],['Chew Bone','natural_bone']];
 const TONES=['peach','mint','lav','gold','mint','peach'];
-col.style.paddingTop='calc(var(--u)*64)';CL.title(col,'Toy Box');
+CL.extraTop=64;CL.title(col,'Toy Box');
 const c=CL.card(col,'cream',1);
 const hd=CL.head(c,'6 / 30 Toys Collected');hd.style.justifyContent='center';
 const pg=h('div','prog',c);h('i','',pg).style.width='20%';
