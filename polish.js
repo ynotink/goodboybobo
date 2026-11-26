@@ -12,15 +12,15 @@ const HT=(at,i,s)=>({at,i,s}),HC=(at,dur,i,s)=>({at,dur,i,s}),HP=(...e)=>({t:'pa
 const HF={
  swap:[{t:'impact',style:'light'},6],                                        // moving a piece: small tap
  bad:[HP(HT(0,.5,.3),HT(.09,.5,.3)),[6,70,6]],                               // no match: two soft bumps
- match:[{t:'impact',style:'rigid',i:1},16],                                  // a match: crisp strong pop
- crate:[HP(HT(0,.9,.8),HT(.03,.7,.8),HT(.06,.5,.8)),[6,15,6]],               // crate breaking: crunch
+ match:[HP(HT(0,1,.45),HC(0,.07,.85,.3)),30],                                  // a match: crisp strong pop
+ crate:[HP(HT(0,1,.8),HT(.035,.85,.8),HT(.07,.7,.8),HC(0,.09,.6,.6)),[10,15,10]],               // crate breaking: crunch
  dirt:[{t:'impact',style:'soft',i:.9},12],                                   // mud/dirt: soft thud
  leash:[{t:'impact',style:'rigid',i:.8},10],                                 // leash snap
- striped:[HP(HT(0,1,.8),HC(.01,.16,.75,.6)),30],                             // row/column blast: zip
- flyer:[HP(HC(0,.2,.4,.9),HT(.22,.9,.6)),[20,60,15]],                        // flyer: whoosh then hit
- bomb:[HP(HT(0,1,.05),HC(0,.14,.7,.05)),45],                                 // bomb: deep thump
- rainbow:[HP(HC(0,.15,.35,.3),HC(.15,.15,.75,.4),HC(.3,.2,1,.5),HT(.5,1,.8)),[60,20,80,20,120]],   // rainbow ball: swell
- mega:[HP(HT(0,1,.3),HC(0,.35,.9,.15),HT(.36,1,.6)),[40,30,80]],             // two specials together: big rumble
+ striped:[HP(HT(0,1,.7),HC(0,.25,1,.55)),60],                             // row/column blast: zip
+ flyer:[HP(HC(0,.2,.6,.8),HT(.22,1,.5),HC(.22,.1,.9,.3)),[30,60,30]],                        // flyer: whoosh then hit
+ bomb:[HP(HT(0,1,.1),HC(0,.35,1,.08),HT(.12,1,.2),HC(.35,.2,.6,.05)),[120,30,60]],                                 // bomb: deep thump
+ rainbow:[HP(HC(0,.15,.5,.3),HC(.15,.15,.85,.4),HC(.3,.3,1,.5),HT(.6,1,.6),HC(.6,.2,1,.3)),[80,20,100,20,200]],   // rainbow ball: swell
+ mega:[HP(HT(0,1,.3),HC(0,.5,1,.15),HT(.25,1,.5),HT(.5,1,.6),HC(.5,.25,.8,.1)),[150,30,150]],             // two specials together: big rumble
  goal:[{t:'note',kind:'success'},[15,60,25]],                                // a goal finished
  lowmoves:[{t:'note',kind:'warning'},[25,80,25]],                            // 5 moves left
  win:[HP(HT(0,.6,.8),HT(.1,.7,.8),HT(.2,.8,.8),HC(.3,.35,1,.3)),[10,80,12,80,15,80,300]],          // level clear
@@ -28,7 +28,7 @@ const HF={
 const hLast={};
 window.hap=function(k,combo){try{if(!ST().vib)return;const f=HF[k];if(!f)return;const now=performance.now();if(now-(hLast[k]||0)<70)return;hLast[k]=now;
  let r=f[0];
- if(k=='match'&&combo>=2){const n=Math.min(5,combo);r=HP(...Array.from({length:n},(_,j)=>HT(j*.06,Math.min(1,.7+j*.1),.55+j*.08)))}   // cascades climb
+ if(k=='match'&&combo>=2){const n=Math.min(5,combo);r=HP(...Array.from({length:n},(_,j)=>HT(j*.06,1,.4+j*.1)),HC(0,.06*n,.9,.3))}   // cascades climb
  if(RICH())webkit.messageHandlers.haptic2.postMessage(r);else if(navigator.vibrate)navigator.vibrate(f[1])}catch(e){}};
 if(typeof window.snd=='function'){const _snd=window.snd;window.snd=function(kind,v){try{
  if(kind=='swap')hap('swap');else if(kind=='bad')hap('bad');else if(kind=='pop')hap('match',v|0);else if(kind=='boom')hap('bomb');else if(kind=='tap')buzz(6)}catch(e){}
