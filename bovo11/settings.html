@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795735340"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795736083"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Settings</title>
@@ -26,6 +26,7 @@ const c=CL.card(col,'peach',1);const ins=h('div','cl-inset',c);
 const c2=CL.card(col,'mint',2);const i2=h('div','cl-inset',c2);
 const row=(lb,ic,right,fn)=>{const r=h('div','cl-row',i2);CL.img(U+ic+'.webp?v=1',r,'ic');h('div','lb',r).textContent=lb;const rt=h('div','rt',r);if(right)right(rt);else h('div','cl-chev',rt);if(fn)CL.tap(r,fn);return r};
 const go=u=>(window.BA&&BA.nav?BA.nav(u):location.href=u);
+row('Vibration Lab','ic_vibrate',null,()=>go('vibes.html'));
 row('Help & Support','ic_help',null,()=>go('support.html'));
 row('Privacy & Terms','ic_shield',null,()=>go('privacy.html'));
 h('div','ver',i2).textContent='Version 1.0.0';
