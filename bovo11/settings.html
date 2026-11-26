@@ -1,62 +1,35 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795695854"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795696823"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Settings</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<link rel="stylesheet" href="../uikit/kit.css?v=11"><link rel="stylesheet" href="../uikit/clean.css?v=1">
 <style>
-/* page */
-#inner{margin:calc(var(--u)*-10) calc(var(--u)*-24) calc(var(--u)*-22);display:flex;flex-direction:column;gap:calc(var(--u)*15)}
-.sec{position:relative;padding-top:calc(var(--u)*14)}
-.sec .k-plate{position:absolute;left:50%;top:calc(var(--u)*-14);transform:translateX(-50%);width:calc(var(--u)*182);height:calc(var(--u)*32);font-size:calc(var(--u)*19.5);color:#1b4b50;z-index:2}
-.sec .k-card{padding:calc(var(--u)*4) calc(var(--u)*4);border-width:calc(var(--u)*20)}
-.box{margin:calc(var(--u)*-16) calc(var(--u)*-14);padding-top:calc(var(--u)*4)}
-.row{display:flex;align-items:center;height:calc(var(--u)*39);gap:calc(var(--u)*10);padding:0 calc(var(--u)*2);cursor:pointer;position:relative}
-.row+.row::before{content:'';position:absolute;left:calc(var(--u)*4);right:calc(var(--u)*4);top:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(150,105,55,.25) 8%,rgba(150,105,55,.25) 92%,transparent)}
-.row .ic{width:calc(var(--u)*30);height:calc(var(--u)*30);object-fit:contain;flex:none}
-.row .tx{flex:1;font-size:calc(var(--u)*16);color:#24434c;white-space:nowrap}
-.row .k-tg{width:calc(var(--u)*54);height:calc(var(--u)*28)}
-.row .val{font-size:calc(var(--u)*13.5);color:#24434c;display:flex;align-items:center;gap:calc(var(--u)*4)}
-.chev{width:calc(var(--u)*10);height:calc(var(--u)*16)}
-.row .k-btn{width:calc(var(--u)*86);height:calc(var(--u)*33)}
-.row .k-btn .k-lbl{font-size:calc(var(--u)*14.5);top:calc(var(--u)*1)}
-.row.tap .ic{animation:kBump 360ms cubic-bezier(.3,1.6,.5,1)}
-.helps{display:flex;flex-direction:column;gap:calc(var(--u)*8);padding:calc(var(--u)*6) 0 calc(var(--u)*2)}
-.k-pill.k-btn{height:calc(var(--u)*37);border-width:calc(var(--u)*18) calc(var(--u)*19);gap:calc(var(--u)*9);font-size:calc(var(--u)*16);color:#24434c}
-.k-pill .ic{width:calc(var(--u)*27);height:calc(var(--u)*27);margin:calc(var(--u)*-14) 0;object-fit:contain}
-.k-pill span{margin:calc(var(--u)*-14) 0;white-space:nowrap}
-#ver{text-align:center;font-size:calc(var(--u)*12.5);color:#8a6d4c;padding:calc(var(--u)*1) 0 calc(var(--u)*5)}
+.cl-row{min-height:calc(var(--u)*52)}
+.cl-row .rt .cl-btn{min-height:calc(var(--u)*34);font-size:calc(var(--u)*15);padding:calc(var(--u)*3) calc(var(--u)*14)}
+.ver{text-align:center;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*8)}
 </style></head><body>
-
-<script src="../uikit/kit.js?v=21"></script><script src="../ui3/mock.js?v=5"></script>
+<script src="../uikit/kit.js?v=21"></script><script src="../uikit/clean.js?v=1"></script>
 <script>
 'use strict';
-const IW=852,IH=1846,FENCE=474;      // fence rail top in the scene
-const ui=K.scene('settings/bg.jpg?v=4',IW,IH,layout);
+const ui=K.scene('settings/bg.jpg?v=4',852,1846,I=>CL.layout&&CL.layout(I));
 const ST=K.settings();const save=()=>{try{localStorage.setItem('gbb_settings',JSON.stringify(ST))}catch(e){};window.BA&&BA.apply&&BA.apply()};
-const {h,img}=K;
-K.topbar(ui,'index.html');
-const say=m=>()=>K.toast(m);
-// pieces cut straight from ChatGPT's approved Settings mockup (934 px wide), title without the platform
-const M=K.mock(ui,{MW:934,y0:336,y1:1407,base:'../ui3/settings2/',v:4,maxGap:14,parts:[
- {n:'title',x:256.32,y:336.54,w:406.91,h:123.09,i:0,row:0},
- {n:'panel',x:71.69,y:460.39,w:790.64,h:946.31,i:1,row:1}],
- zones:[
- {x:110,y:870,w:720,h:80,r:24,fn:say('Player profiles are coming soon!'),aria:'Player Profile'},
- {x:590,y:962,w:214,h:70,r:35,fn:say('Saving to the cloud is coming soon!'),aria:'Save Progress: Connect'},
- {x:110,y:1045,w:720,h:80,r:24,fn:say('More languages are coming soon!'),aria:'Language: English'},
- {x:110,y:1135,w:720,h:80,r:24,fn:say('Help & Support is coming soon!'),aria:'Help & Support'},
- {x:110,y:1222,w:720,h:80,r:24,fn:say('Privacy & Terms are coming soon!'),aria:'Privacy & Terms'}]});
-// live toggles over the panel (ChatGPT's own on/off art)
+const {h}=K;K.topbar(ui,'index.html');
+const {col}=CL.scroll(ui);const U='../uikit/';
+col.style.paddingTop='calc(var(--u)*80)';CL.img('../ui3/settings2/title.webp?v=4',col,'cl-ttl');
 const flip=k=>v=>{if(k==='vib')ST.vib=v?1:0;else if(!v){ST['_'+k]=ST[k];ST[k]=0}else ST[k]=ST['_'+k]||(k==='music'?70:80);save();if(k==='vib'&&v)K.buzz(30)};
-[['Music','music',506],['Sound Effects','sounds',595.78],['Vibration','vib',682.67],['Notifications','notif',770.27]].forEach(([lb,k,y],i)=>{
- let on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
- const t=document.createElement('div');t.className='mk-tg k-pop';t.style.setProperty('--i',2+i);t.setAttribute('role','switch');t.setAttribute('aria-label',lb);
- const im=document.createElement('img');im.alt='';im.draggable=false;t.appendChild(im);
- const draw=()=>{im.src='../ui3/settings2/tog_'+k+(on?'_on':'_off')+'.webp?v=2';t.setAttribute('aria-checked',on?'true':'false')};draw();
- t.addEventListener('click',()=>{if(k==='notif'){K.toast('Notifications are coming soon!');t.classList.remove('nope');void t.offsetWidth;t.classList.add('nope');return}on=!on;draw();flip(k)(on);K.buzz(10)});
- M.add(t,658.88,y,150.6,80.37);
- // tapping the row also flips it
- M.add((()=>{const z=document.createElement('div');z.className='mk-z';z.addEventListener('click',()=>t.click());return z})(),110,y+6,540,84)});
-function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
+const c=CL.card(col,'peach',1);const ins=h('div','cl-inset',c);
+[['Music','music','ic_music'],['Sound Effects','sounds','ic_speaker'],['Vibration','vib','ic_vibrate'],['Notifications','notif','ic_bell']].forEach(([lb,k,ic])=>{
+ const r=h('div','cl-row',ins);CL.img(U+ic+'.webp?v=1',r,'ic');h('div','lb',r).textContent=lb;
+ const on=k==='notif'?false:k==='vib'?!!ST.vib:ST[k]>0;
+ const t=CL.toggle(r,on,v=>{if(k==='notif'){K.toast('Notifications are coming soon!');return false}flip(k)(v)},lb);
+ r.style.cursor='pointer';r.addEventListener('click',()=>t.click())});
+const c2=CL.card(col,'mint',2);const i2=h('div','cl-inset',c2);
+const row=(lb,ic,right,fn)=>{const r=h('div','cl-row',i2);CL.img(U+ic+'.webp?v=1',r,'ic');h('div','lb',r).textContent=lb;const rt=h('div','rt',r);if(right)right(rt);else h('div','cl-chev',rt);if(fn)CL.tap(r,fn);return r};
+row('Player Profile','ic_person',null,()=>K.toast('Player profiles are coming soon!'));
+row('Save Progress','ic_cloud_up',rt=>CL.btn(rt,'Connect',()=>K.toast('Saving to the cloud is coming soon!')));
+row('Language','ic_globe',rt=>{h('span','',rt).textContent='English';h('div','cl-chev',rt)},()=>K.toast('More languages are coming soon!'));
+row('Help & Support','ic_help',null,()=>K.toast('Help & Support is coming soon!'));
+row('Privacy & Terms','ic_shield',null,()=>K.toast('Privacy & Terms are coming soon!'));
+h('div','ver',col).textContent='Version 1.0.0';
 K.start();
 </script><script src="../nav/nav.js?v=22" data-page=""></script><script>window.BA&&BA.music("inside_myself")</script></body></html>

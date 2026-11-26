@@ -1,82 +1,46 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795695854"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795696823"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Friends</title>
-<link rel="stylesheet" href="../uikit/kit.css?v=11">
+<link rel="stylesheet" href="../uikit/kit.css?v=11"><link rel="stylesheet" href="../uikit/clean.css?v=1">
 <style>
-#col{position:absolute;left:50%;width:calc(var(--u)*356);margin-left:calc(var(--u)*-178);display:flex;flex-direction:column;gap:calc(var(--u)*7)}
-.tabs{position:relative;height:calc(var(--u)*46);border-style:solid;border-width:0;border-image:url(../uikit/tab_strip.webp?v=1) 60 64 fill/calc(var(--u)*21) calc(var(--u)*22) stretch;
- filter:drop-shadow(0 calc(var(--u)*4) calc(var(--u)*5) rgba(60,25,0,.3))}
-.tabs .sel{position:absolute;top:calc(var(--u)*7);height:calc(var(--u)*32);width:calc(var(--u)*104);left:calc(var(--u)*7);border-style:solid;
- border-image:url(../uikit/tab_selected.webp?v=1) 50 54 fill/calc(var(--u)*16) calc(var(--u)*17) stretch;transition:left 340ms cubic-bezier(.3,1.35,.5,1)}
-.tabs .tb{position:absolute;top:calc(var(--u)*7);height:calc(var(--u)*32);width:calc(var(--u)*104);display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*18.5);color:#1b4b50;cursor:pointer}
-.tabs .dv{position:absolute;top:calc(var(--u)*14);height:calc(var(--u)*18);width:1.5px;background:rgba(150,105,55,.3)}
-.fr{border-width:calc(var(--u)*28)}
-.frin{margin:calc(var(--u)*-20) calc(var(--u)*-18) calc(var(--u)*-18)}
-.fr h2{margin:0;text-align:center;font-weight:400;font-size:calc(var(--u)*24);color:#1b4b50;line-height:1}
-.fr .sub{text-align:center;font-size:calc(var(--u)*12.5);color:#7b6a55;line-height:1;margin-top:calc(var(--u)*2)}
-.list{margin-top:calc(var(--u)*6);border-width:calc(var(--u)*18)}
-.lin{margin:calc(var(--u)*-12) calc(var(--u)*-10)}
-.pal{display:flex;align-items:center;height:calc(var(--u)*55);gap:calc(var(--u)*10);position:relative}
-.pal+.pal::before{content:'';position:absolute;left:calc(var(--u)*4);right:calc(var(--u)*4);top:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(150,105,55,.25) 8%,rgba(150,105,55,.25) 92%,transparent)}
-.av{position:relative;width:calc(var(--u)*48);height:calc(var(--u)*48);flex:none}
-.av img{width:100%;height:100%;border-radius:50%}
-.av::after{content:'';position:absolute;right:calc(var(--u)*-2);bottom:calc(var(--u)*0);width:calc(var(--u)*13);height:calc(var(--u)*13);border-radius:50%;
- background:radial-gradient(circle at 38% 32%,#9bf06a,#2fb52c 60%,#1f8f1f);box-shadow:0 0 0 calc(var(--u)*2) #fff}
-.who{flex:1;line-height:1.05}.who b{display:block;font-weight:400;font-size:calc(var(--u)*18);color:#1b4b50}.who i{font-style:normal;font-size:calc(var(--u)*13);color:#7b6a55}
-.send{width:calc(var(--u)*94);height:calc(var(--u)*34);gap:calc(var(--u)*5)}
-.send .hi{position:relative;width:calc(var(--u)*22);height:calc(var(--u)*22)}
-.send .k-lbl{font-size:calc(var(--u)*16.5)}
-.send.sent{filter:saturate(.25) brightness(1.08);pointer-events:none}
-.fly{position:fixed;z-index:50;pointer-events:none;animation:fly 820ms cubic-bezier(.3,.7,.4,1) forwards}
-@keyframes fly{0%{transform:scale(1);opacity:1}30%{transform:translateY(calc(var(--u)*-26)) scale(1.5);opacity:1}100%{transform:translateY(calc(var(--u)*-90)) scale(.6);opacity:0}}
-.two{display:flex;gap:calc(var(--u)*8);margin-top:calc(var(--u)*7)}
-.cb{flex:1;height:calc(var(--u)*46);border-style:solid;border-width:calc(var(--u)*16);border-image:url(../uikit/booster.webp?v=1) 70 fill/calc(var(--u)*16) stretch;gap:calc(var(--u)*7)}
-.cb.dn{border-image-source:url(../uikit/booster_p.webp?v=1)}
-.cb img{width:calc(var(--u)*32);height:calc(var(--u)*32);margin:calc(var(--u)*-12) 0;object-fit:contain;flex:none}
-.cb span{margin:calc(var(--u)*-12) 0;font-size:calc(var(--u)*15.5);white-space:nowrap;color:#1b4b50;line-height:1.02}
-.cd{border-width:calc(var(--u)*20);position:relative}
-.cdin{margin:calc(var(--u)*-10) calc(var(--u)*-8);display:flex;align-items:center;gap:calc(var(--u)*10)}
-.cdin .art{flex:none;width:calc(var(--u)*80);height:calc(var(--u)*50);position:relative}
-.cdin .art img{position:absolute;object-fit:contain}
-.cdin .vd{width:1.5px;align-self:stretch;margin:calc(var(--u)*4) 0;background:rgba(150,105,55,.3)}
-.cdin .tx{flex:1;line-height:1.05}
-.cdin .t1{font-size:calc(var(--u)*20);color:#1b4b50}.cdin .t2{font-size:calc(var(--u)*12.5);color:#7b6a55;margin-top:calc(var(--u)*2)}
-.team .gb{width:calc(var(--u)*186);height:calc(var(--u)*36);margin:calc(var(--u)*6) auto calc(var(--u)*-2)}
-.team .gb .k-lbl{font-size:calc(var(--u)*18)}
-.ev .t0{font-size:calc(var(--u)*12.5);color:#1b4b50}.ev .t1{font-size:calc(var(--u)*18);white-space:nowrap}
-.ev .t2{display:flex;align-items:center;gap:calc(var(--u)*4);font-size:calc(var(--u)*12.5)}.ev .t2 img{width:calc(var(--u)*15);height:calc(var(--u)*15)}
-.ev .vb{width:calc(var(--u)*80);height:calc(var(--u)*46);flex:none}
-.ev .vb .k-lbl{font-size:calc(var(--u)*15.5);text-align:center;line-height:.95}
-.glow{animation:glow 900ms ease-out}
-@keyframes glow{0%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}35%{filter:drop-shadow(0 0 calc(var(--u)*10) rgba(255,214,90,.95))}100%{filter:drop-shadow(0 0 0 rgba(255,220,120,0))}}
+.tabs{display:flex;gap:calc(var(--u)*4);padding:calc(var(--u)*5);border-radius:calc(var(--u)*16);background:linear-gradient(#fff7e6,#fff2d8);border:2px solid #ffffffb0;
+ box-shadow:0 calc(var(--u)*4) 0 #c9a271,0 calc(var(--u)*6) calc(var(--u)*10) #44200840;margin-bottom:calc(var(--u)*16)}
+.tabs>div{flex:1;text-align:center;padding:calc(var(--u)*8) 0;border-radius:calc(var(--u)*11);font-size:calc(var(--u)*17);cursor:pointer}
+.tabs .on{background:linear-gradient(#ff946d,#fd5f37);color:#fff;text-shadow:0 1px 1px #a63a12;box-shadow:0 calc(var(--u)*2) 0 #b8422a}
+.fr .av{width:calc(var(--u)*50);height:calc(var(--u)*50);border-radius:50%;flex:none}
+.fr .lb small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a}
+.fr .cl-btn{min-width:calc(var(--u)*94)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*10);margin-top:calc(var(--u)*12)}
+.two .cl-btn{font-size:calc(var(--u)*15);white-space:normal;line-height:1.05;min-height:calc(var(--u)*50)}
+.two .cl-btn img{height:calc(var(--u)*30)}
+.wide{display:flex;align-items:center;gap:calc(var(--u)*10)}
+.wide>img{width:calc(var(--u)*60);height:calc(var(--u)*52);object-fit:contain;flex:none}
+.wide .tx{flex:1;min-width:0}.wide .tx b{display:block;font-size:calc(var(--u)*20);font-weight:inherit}.wide .tx small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*2)}
+.wide .cl-btn{flex:none}
 </style></head><body>
-<script src="../uikit/kit.js?v=21"></script><script src="../ui3/mock.js?v=5"></script>
+<script src="../uikit/kit.js?v=21"></script><script src="../uikit/clean.js?v=1"></script>
 <script>
 'use strict';
-const IW=852,IH=1846,FENCE=492;     // fence top in the scene
-const ui=K.scene('friends/bg.jpg?v=2',IW,IH,layout);
-const {h,img}=K;
-K.topbar(ui,'settings.html');
-const say=m=>()=>K.toast(m);
-const sent=new Set();const send=n=>()=>{if(sent.has(n)){K.toast('You already sent '+n+' a life today.');return}sent.add(n);K.toast('Sent a life to '+n+'!')};
-// pieces cut straight from ChatGPT's approved Friends mockup (934 px wide)
-const M=K.mock(ui,{MW:934,y0:238,y1:1460,base:'../ui3/friends2/',v:4,parts:[
- {n:'title',x:221.59,y:239.89,w:472.79,h:125.26,i:0,row:0},
- {n:'tabs',x:75.32,y:390.64,w:781.23,h:102.09,i:1,row:1},
- {n:'panel',x:69.52,y:495.79,w:794.99,h:600.95,i:2,row:2},
- {n:'team',x:68.09,y:1103.4,w:796.43,h:199.11,i:3,row:3},
- {n:'weekly',x:68.09,y:1308.46,w:797.16,h:149.87,i:4,row:4}],
- zones:[
- {x:356,y:400,w:240,h:72,r:36,fn:say('Teams are coming soon!'),aria:'Teams'},
- {x:612,y:400,w:236,h:72,r:36,fn:say('Events are coming soon!'),aria:'Events'},
- {x:612,y:628,w:212,h:72,r:30,fn:send('Heather'),aria:'Send Heather a life'},
- {x:612,y:745,w:212,h:72,r:30,fn:send('Marcus'),aria:'Send Marcus a life'},
- {x:612,y:862,w:212,h:72,r:30,fn:send('Jasmine'),aria:'Send Jasmine a life'},
- {x:94,y:975,w:362,h:94,r:30,fn:say('Asked your friends for lives!'),aria:'Ask for Lives'},
- {x:478,y:975,w:362,h:94,r:30,fn:say('Inviting friends is coming soon!'),aria:'Invite Friends'},
- {x:266,y:1212,w:402,h:64,r:32,fn:say('Teams are coming soon!'),aria:'Find a Team'},
- {x:650,y:1338,w:194,h:94,r:30,fn:say('The Backyard Dash starts soon!'),aria:'View Event'}]});
-function layout(I){M.lay(Object.assign({},I,{top0:I.wu*112}))}
+const ui=K.scene('friends/bg.jpg?v=2',852,1846,I=>CL.layout&&CL.layout(I));
+const {h}=K;K.topbar(ui,'settings.html');
+const {col}=CL.scroll(ui);const U='../uikit/';
+col.style.paddingTop='calc(var(--u)*14)';CL.img('../ui3/friends2/title.webp?v=4',col,'cl-ttl');
+const tb=h('div','tabs cl-pop',col);tb.style.setProperty('--i',1);
+[['Friends',null],['Teams','Teams are coming soon!'],['Events','Events are coming soon!']].forEach(([n,m],i)=>{const t=h('div',i?'':'on',tb);t.textContent=n;CL.tap(t,()=>{if(m)K.toast(m)})});
+const c=CL.card(col,'cream',2);const hd=CL.head(c,'Your Friends');h('span','cl-sub',hd).textContent='3 Friends';
+const ins=h('div','cl-inset',c);
+const sent=new Set();
+[['Heather',24],['Marcus',21],['Jasmine',18]].forEach(([n,l])=>{const r=h('div','cl-row fr',ins);CL.img('clean/av_'+n.toLowerCase()+'.webp?v=1',r,'av');
+ const lb=h('div','lb',r);lb.textContent=n;h('small','',lb).textContent='Level '+l;
+ const b=CL.btn(r,'Send',()=>{if(sent.has(n)){K.toast('You already sent '+n+' a life today.');return}sent.add(n);K.toast('Sent a life to '+n+'!')},'',U+'ic_heart.webp?v=1');b.setAttribute('aria-label','Send '+n+' a life')});
+const two=h('div','two',c);
+CL.btn(two,'Ask for Lives',()=>K.toast('Asked your friends for lives!'),'lav',U+'ic_ask_lives.webp?v=1');
+CL.btn(two,'Invite Friends',()=>K.toast('Inviting friends is coming soon!'),'mint',U+'ic_person_add.webp?v=1');
+const t=CL.card(col,'mint',3);const w=h('div','wide',t);CL.img(U+'ic_paws3.webp?v=1',w);const tx=h('div','tx',w);h('b','',tx).textContent='Team Up!';h('small','',tx).textContent='Join a team. Help each other.';
+CL.btn(w,'Find a Team',()=>K.toast('Teams are coming soon!'));
+const e=CL.card(col,'gold',4);const w2=h('div','wide',e);CL.img(U+'ic_trophy.webp?v=1',w2);const t2=h('div','tx',w2);h('small','',t2).textContent='Weekly Event';h('b','',t2).textContent='Backyard Dash';
+const tm=h('small','',t2);tm.textContent='4d 2h left';
+CL.btn(w2,'View Event',()=>K.toast('The Backyard Dash starts soon!'));
 K.start();
 </script><script src="../nav/nav.js?v=22" data-page="friends"></script><script>window.BA&&BA.music("inside_myself")</script></body></html>
