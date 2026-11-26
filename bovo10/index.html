@@ -1,5 +1,5 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795708094"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<html><head><meta charset="utf-8"><meta name="gbb-build" content="1795711768"><script src="../review_shim.js?v=4"></script><script src="../seamloop.js?v=3"></script><script src="../mp4box.min.js?v=1"></script><script src="../gaploop.js?v=1"></script><script src="livepaint.js?v=5"></script><script src="fountain.js?v=1"></script><script src="mapfx.js?v=3"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Good Boy Bobo — Backyard map</title>
 <style>
@@ -11,6 +11,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 .art{position:absolute;left:50%;transform:translateX(-50%)}
 .art canvas{position:absolute;inset:0;width:100%;height:100%}
 .o{position:absolute;z-index:4;transform:translate(-50%,-100%);pointer-events:none;filter:drop-shadow(0 3px 2px rgba(30,16,2,.55)) drop-shadow(0 7px 9px rgba(25,14,0,.32))}
+.o2{position:absolute;z-index:4;pointer-events:none}.o2s{z-index:3}.n.n3{color:#fff7ea;text-shadow:0 .05em 0 rgba(90,30,10,.45)}
 .n{position:absolute;z-index:5;transform:translate(-50%,-50%);font-family:Nun;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35);pointer-events:none;line-height:1}
 .n.nl{color:#f4f4f2;text-shadow:0 .05em .04em rgba(0,0,0,.45)}.n.nc{color:#fff;text-shadow:0 .05em .05em rgba(150,50,10,.5)}
 #paw{position:absolute;transform:translate(-50%,-50%);filter:drop-shadow(0 0 10px #ffe27a) drop-shadow(0 0 4px #ffd34d) drop-shadow(0 4px 3px rgba(0,0,0,.35));animation:bob 1.2s ease-in-out infinite;pointer-events:none;z-index:6}
@@ -51,7 +52,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#0d5f5f}
 // level spots per scene (image fractions): [x, y, button width]
 const SCENES=[
  {dir:'s1',gate:[.535,.44],IW:852,IH:1846,CH:775,spots:[[0.5,0.81,0.24],[0.56,0.72,0.22],[0.5,0.63,0.2],[0.55,0.54,0.18],[0.5,0.462,0.16]],tw:[[.03,.84],[.08,.87],[.86,.79],[.93,.77],[.9,.93],[.98,.47],[.34,.45],[.12,.46]]},
- {dir:'s2',paint:{},gate:[.44,.34],IW:934,IH:1684,CH:505,spots:[[0.579,0.81,0.24],[0.426,0.712,0.22],[0.207,0.613,0.2],[0.207,0.515,0.18],[0.418,0.404,0.16]],tw:[[.03,.93],[.11,.92],[.9,.96],[.93,.69],[.75,.47],[.6,.58],[.05,.52]]},
+ {dir:'s2',om:[[0.5054,0.9157],[0.4529,0.7518],[0.1927,0.5992],[0.3747,0.4952],[0.4379,0.3747]],paint:{},gate:[.44,.34],IW:934,IH:1684,CH:505,spots:[[0.579,0.81,0.24],[0.426,0.712,0.22],[0.207,0.613,0.2],[0.207,0.515,0.18],[0.418,0.404,0.16]],tw:[[.03,.93],[.11,.92],[.9,.96],[.93,.69],[.75,.47],[.6,.58],[.05,.52]]},
  {dir:'s3',paint:{},gate:[.5,.36],IW:852,IH:1846,CH:553,spots:[[0.586,0.81,0.24],[0.377,0.72,0.22],[0.514,0.618,0.2],[0.546,0.54,0.18],[0.5,0.45,0.16]],tw:[[.03,.88],[.08,.9],[.95,.86],[.9,.53],[.06,.4],[.23,.43],[.72,.45]]},
  {dir:'s4',gate:[.27,.27],IW:852,IH:1846,CH:553,spots:[[0.432,0.81,0.24],[0.339,0.72,0.22],[0.501,0.63,0.2],[0.546,0.54,0.18],[0.477,0.45,0.16]],tw:[[.03,.72],[.08,.74],[.95,.77],[.9,.42],[.05,.55],[.2,.3],[.4,.32]]},
  {dir:'s5',gate:[.13,.31],IW:852,IH:1846,CH:553,spots:[[0.855,0.81,0.24],[0.656,0.72,0.22],[0.844,0.63,0.2],[0.62,0.54,0.18],[0.487,0.45,0.16]],tw:[[.05,.79],[.1,.81],[.95,.5],[.9,.47],[.02,.42],[.13,.27]]},
@@ -114,14 +115,18 @@ const sc=document.getElementById('sc');let motion=MAP_MOTION,on=1,cur=0;try{cons
 for(let i=SCENES.length-1;i>=0;i--){const S=SCENES[i];S.el=document.createElement('div');S.el.className='scene';S.art=document.createElement('div');S.art.className='art';
  S.cv=document.createElement('canvas');S.fx=document.createElement('canvas');S.art.append(S.cv,S.fx);S.el.appendChild(S.art);sc.appendChild(S.el)}
 function put(S,src,x,y,w){const i=document.createElement('img');i.src=src;i.className='o';i.style.left=x*100+'%';i.style.top=y*100+'%';i.style.width=w*100+'%';S.art.appendChild(i);return i}
-function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.n').forEach(e=>e.remove());const AR=S.art.clientWidth/S.art.clientHeight;S.spots.forEach(([x,y,w],k)=>{const L=si*5+k,st=L<cur?'done':L===cur?'cur':'lock';
+function buttons(){SCENES.forEach((S,si)=>{S.art.querySelectorAll('.o,.o2,.n').forEach(e=>e.remove());const AR=S.art.clientWidth/S.art.clientHeight;if(S.om){const Wf=220/S.IW,Hf=150/S.IH;S.om.forEach(([cx,cy],k)=>{const L=si*5+k,st=L<cur?'done':L===cur?'cur':'lock';
+  for(const [src,cl] of [['mk3/shadow.png?v=1','o2 o2s'],['mk3/orange.png?v=1','o2']]){const i=document.createElement('img');i.src=src;i.className=cl;i.style.left=(cx-.5*Wf)*100+'%';i.style.top=(cy-68/150*Hf)*100+'%';i.style.width=Wf*100+'%';S.art.appendChild(i);
+   if(cl==='o2'&&st!=='lock'){i.style.pointerEvents='auto';i.style.cursor='pointer';i.onclick=()=>(window.BA&&BA.nav?BA.nav('../game_new.html?lv='+(L+1)):location.href='../game_new.html?lv='+(L+1))}}
+  const n=document.createElement('div');n.className='n n3';n.textContent=L+1;n.style.left=cx*100+'%';n.style.top=cy*100+'%';n.style.fontSize=(56/S.IW*S.art.clientWidth)+'px';S.art.appendChild(n)});return}
+ S.spots.forEach(([x,y,w],k)=>{const L=si*5+k,st=L<cur?'done':L===cur?'cur':'lock';
  const W2=Math.max(w,.15),bot=y+W2*.18;
  const mk=put(S,st==='done'?'mk_done.png':st==='cur'?'mk2_cur.png?v=1':'mk2_lock.png?v=1',x,bot,W2);if(st!=='lock'){mk.style.pointerEvents='auto';mk.style.cursor='pointer';mk.onclick=()=>(window.BA&&BA.nav?BA.nav('../game_new.html?lv='+(L+1)):location.href='../game_new.html?lv='+(L+1))}
  {const n=document.createElement('div');n.className='n'+(st==='lock'?' nl':st==='cur'?' nc':'');n.textContent=L+1;
   if(st==='done'){n.style.left=x*100+'%';n.style.top=(y-w*.06)*100+'%';n.style.fontSize=(Math.max(w,.15)*.33*S.art.clientWidth)+'px'}
   else{const fx=st==='lock'?-.066:.019,fy=st==='lock'?.42:.416,fs=st==='lock'?.36:.5;n.style.left=(x+fx*W2)*100+'%';n.style.top=(bot-fy*W2*AR)*100+'%';n.style.fontSize=(W2*fs*S.art.clientWidth)+'px'}
   S.art.appendChild(n)}})});placePaw(cur)}
-function placePaw(L){const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];const W2=Math.max(w,.15),AR=S.art.clientWidth/S.art.clientHeight;S.art.appendChild(paw);paw.style.left=(x+.019*W2)*100+'%';paw.style.top=(y+W2*.18-.80*W2*AR)*100+'%';paw.style.width=W2*.5*100+'%'}
+function placePaw(L){{const S=SCENES[Math.floor(L/5)];if(S&&S.om){const [cx,cy]=S.om[L%5],Wf=220/S.IW,Hf=150/S.IH,AR=S.art.clientWidth/S.art.clientHeight;S.art.appendChild(paw);paw.style.left=cx*100+'%';paw.style.top=(cy-Hf*.62)*100+'%';paw.style.width=Wf*.42*100+'%';return}}const S=SCENES[Math.floor(L/5)],[x,y,w]=S.spots[L%5];const W2=Math.max(w,.15),AR=S.art.clientWidth/S.art.clientHeight;S.art.appendChild(paw);paw.style.left=(x+.019*W2)*100+'%';paw.style.top=(y+W2*.18-.80*W2*AR)*100+'%';paw.style.width=W2*.5*100+'%'}
 function size(){const DPR=Math.min(2.5,devicePixelRatio||1),CW=window.GBB_COL?GBB_COL():innerWidth;const CX=(innerWidth-CW)/2;for(const e of [sc,document.getElementById('hud')]){e.style.left=CX+'px';e.style.right='auto';e.style.width=CW+'px'}document.getElementById('hud').style.setProperty('--w',CW/393+'px');document.getElementById('gearA').style.right=(CX+4)+'px';const H=sc.clientHeight,avail=H-CW*327/1170*.92;
  const full=Math.max(avail,...SCENES.map(S=>S.el.clientHeight||H));   // never shorter than the scene itself, or a strip of background shows between scenes
  for(const S of SCENES){let w=CW,h=w*S.IH/S.IW;if(h<full){h=full;w=h*S.IW/S.IH}
