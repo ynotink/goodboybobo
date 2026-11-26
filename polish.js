@@ -5,12 +5,36 @@ const KC=390/1290,P='bovo11/play2/';
 const ST=()=>{try{return Object.assign({vib:1},JSON.parse(localStorage.getItem('gbb_settings')||'{}'))}catch(e){return{vib:1}}};
 const BZ=ms=>Array.isArray(ms)?ms.map((v,i)=>i%2?v:Math.min(60,v*2)):Math.min(60,ms*2);   // phone haptics: short taps were too faint
 window.buzz=ms=>{try{if(ST().vib&&navigator.vibrate)navigator.vibrate(BZ(ms))}catch(e){}};
-// gameplay haptics: every swap, match, combo and blast gets a buzz (works even with sound off)
+// gameplay haptics: each kind of moment has its own feel, stronger for the more dramatic ones.
+// On the iPhone app with rich haptics: real textured feels. Elsewhere: simple buzz patterns.
+const RICH=()=>!!(window.webkit&&webkit.messageHandlers&&webkit.messageHandlers.haptic2);
+const HT=(at,i,s)=>({at,i,s}),HC=(at,dur,i,s)=>({at,dur,i,s}),HP=(...e)=>({t:'pattern',events:e});
+const HF={
+ swap:[{t:'impact',style:'light'},6],                                        // moving a piece: small tap
+ bad:[HP(HT(0,.5,.3),HT(.09,.5,.3)),[6,70,6]],                               // no match: two soft bumps
+ match:[{t:'impact',style:'rigid',i:1},16],                                  // a match: crisp strong pop
+ crate:[HP(HT(0,.9,.8),HT(.03,.7,.8),HT(.06,.5,.8)),[6,15,6]],               // crate breaking: crunch
+ dirt:[{t:'impact',style:'soft',i:.9},12],                                   // mud/dirt: soft thud
+ leash:[{t:'impact',style:'rigid',i:.8},10],                                 // leash snap
+ striped:[HP(HT(0,1,.8),HC(.01,.16,.75,.6)),30],                             // row/column blast: zip
+ flyer:[HP(HC(0,.2,.4,.9),HT(.22,.9,.6)),[20,60,15]],                        // flyer: whoosh then hit
+ bomb:[HP(HT(0,1,.05),HC(0,.14,.7,.05)),45],                                 // bomb: deep thump
+ rainbow:[HP(HC(0,.15,.35,.3),HC(.15,.15,.75,.4),HC(.3,.2,1,.5),HT(.5,1,.8)),[60,20,80,20,120]],   // rainbow ball: swell
+ mega:[HP(HT(0,1,.3),HC(0,.35,.9,.15),HT(.36,1,.6)),[40,30,80]],             // two specials together: big rumble
+ goal:[{t:'note',kind:'success'},[15,60,25]],                                // a goal finished
+ lowmoves:[{t:'note',kind:'warning'},[25,80,25]],                            // 5 moves left
+ win:[HP(HT(0,.6,.8),HT(.1,.7,.8),HT(.2,.8,.8),HC(.3,.35,1,.3)),[10,80,12,80,15,80,300]],          // level clear
+ lose:[HP(HC(0,.25,.6,.1),HC(.3,.4,.3,.05)),[200,80,300]]};                  // out of moves: sad droop
+const hLast={};
+window.hap=function(k,combo){try{if(!ST().vib)return;const f=HF[k];if(!f)return;const now=performance.now();if(now-(hLast[k]||0)<70)return;hLast[k]=now;
+ let r=f[0];
+ if(k=='match'&&combo>=2){const n=Math.min(5,combo);r=HP(...Array.from({length:n},(_,j)=>HT(j*.06,Math.min(1,.7+j*.1),.55+j*.08)))}   // cascades climb
+ if(RICH())webkit.messageHandlers.haptic2.postMessage(r);else if(navigator.vibrate)navigator.vibrate(f[1])}catch(e){}};
 if(typeof window.snd=='function'){const _snd=window.snd;window.snd=function(kind,v){try{
- if(kind=='swap')buzz(6);else if(kind=='bad')buzz([6,70,6]);
- else if(kind=='pop'){const c=v|0;buzz(c<=1?8:Math.min(30,8+c*4))}
- else if(kind=='boom')buzz(25);else if(kind=='tap')buzz(6)}catch(e){}
+ if(kind=='swap')hap('swap');else if(kind=='bad')hap('bad');else if(kind=='pop')hap('match',v|0);else if(kind=='boom')hap('bomb');else if(kind=='tap')buzz(6)}catch(e){}
  return _snd.apply(this,arguments)}}
+if(typeof window.fx=='function'){const _fx=window.fx;const FM={bomb:'bomb',rainbow:'rainbow',striped:'striped',swap:'flyer',crate:'crate',dirt:'dirt',leash:'leash',mega:'mega',win:'win',lose:'lose',lowmoves:'lowmoves'};
+ window.fx=function(name){try{if(FM[name])hap(FM[name])}catch(e){}return _fx.apply(this,arguments)}}
 const snd=(n,o)=>{try{typeof fx=='function'?fx(n,o||{gap:60}):(window.BA&&BA.play(n,o||{gap:60}))}catch(e){}};
 const css=document.createElement('style');css.textContent=`
 .pl{position:absolute;pointer-events:none;transform-origin:50% 50%;will-change:transform}
@@ -51,7 +75,7 @@ window.plPress=press;
 let busyR=0;
 window.ramboReact=function(kind){const r=els.ram;if(!r||RM)return;const now=performance.now();if(kind=='happy'&&now<busyR)return;
  r.classList.remove('happy','big');void r.offsetWidth;r.classList.add(kind);busyR=now+(kind=='big'?1100:750);
- if(kind=='big'){sparkAt(1075*KC+(window.G2OFF||0)*0,300*KC,14);buzz([12,40,18])}
+ if(kind=='big'){sparkAt(1075*KC+(window.G2OFF||0)*0,300*KC,14);}
  setTimeout(()=>r.classList.remove(kind),kind=='big'?1150:800)};
 function worry(){const r=els.ram;if(!r||typeof S=='undefined'||!S)return;r.classList.toggle('worry',S.moves>0&&S.moves<=5&&!S.over)}
 const _dm=window.drawMoves;window.drawMoves=function(){_dm&&_dm.apply(this,arguments);worry()};
@@ -64,7 +88,7 @@ const _gh=window.goalHit;
 window.goalHit=goalHit=function(k,t,cell){const g=S.goals.find(g=>g.k==k&&(k!='piece'||g.t==t)&&g.left>0);if(!g)return;
  const i=S.goals.indexOf(g);g.left--;const done=g.left==0;
  const B=window.G_BOX&&G_BOX[i];
- const arrive=()=>{drawGoals(i);if(B){bump(i,B)}if(done){ramboReact('happy');snd('star');buzz(15)}};
+ const arrive=()=>{drawGoals(i);if(B){bump(i,B)}if(done){ramboReact('happy');snd('star');hap('goal')}};
  if(FAST||!cell||!B||RM){arrive();return}
  const [x,y]=center(cell),off=window.G2OFF||0,tx=(B[0]+B[2]/2)*KC,ty=(B[1]+B[3]/2)*KC+off;
  const im=document.createElement('img');im.className='plgfly';im.src='a/'+goalImg(g)+'.webp';im.style.left=(x-20)+'px';im.style.top=(y-20)+'px';document.getElementById('app').appendChild(im);
@@ -77,7 +101,7 @@ function bump(i,B){const h=hb();if(!h)return;const g=S.goals[i];const im=new Ima
 if(typeof special2=='function'){const _s2=special2;window.special2=special2=async function(ca,cb,pa,pb){
  if(pa&&pb&&pa.sp&&pb.sp&&!FAST&&!RM){[pa,pb].forEach(p=>p.el&&p.el.animate([{filter:'brightness(1)',scale:'1'},{filter:'brightness(1.6)',scale:'1.15'}],{duration:170,fill:'forwards'}));buzz(10);await new Promise(r=>setTimeout(r,170));ramboReact('big')}
  return _s2.apply(this,arguments)}}
-if(typeof fire=='function'){const _f=fire;window.fire=fire=async function(p,cell,o){if(p&&p.sp=='rainbow')ramboReact('big');else if(p&&p.sp=='bomb')buzz(14);return _f.apply(this,arguments)}}
+if(typeof fire=='function'){const _f=fire;window.fire=fire=async function(p,cell,o){if(p&&p.sp=='rainbow')ramboReact('big');return _f.apply(this,arguments)}}
 // stop when hidden
 document.addEventListener('visibilitychange',()=>{document.body.classList.toggle('hid',document.hidden)});
 })();
