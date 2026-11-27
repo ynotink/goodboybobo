@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795737467"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
+<!doctype html><html><head><meta charset="utf-8"><meta name="gbb-build" content="1795738284"><script src="../review_shim.js?v=4"></script><script src="../economy.js?v=3"></script><script src="../col.js?v=1"></script><script src="../fontA.js?v=5"></script><script src="../audio.js?v=33"></script><script src="../ui_life.js?v=18"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Good Boy Bobo — Friends</title>
@@ -18,7 +18,8 @@
 .wide>img{width:calc(var(--u)*60);height:calc(var(--u)*52);object-fit:contain;flex:none}
 .wide .tx{flex:1;min-width:0}.wide .tx b{display:block;font-size:calc(var(--u)*20);font-weight:inherit}.wide .tx small{display:block;font-size:calc(var(--u)*13);color:#7b5a3a;margin-top:calc(var(--u)*2)}
 .wide .cl-btn{flex:none}
-.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:calc(var(--u)*14) calc(var(--u)*12) calc(var(--u)*16)}
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:calc(var(--u)*12) calc(var(--u)*12) calc(var(--u)*14)}
+.gang{display:block;width:100%;aspect-ratio:852/730;object-fit:cover;object-position:50% 20%;border-radius:calc(var(--u)*18);margin-bottom:calc(var(--u)*12);box-shadow:inset 0 0 0 2px #fff,0 0 0 calc(var(--u)*3) #fff,0 calc(var(--u)*4) 0 calc(var(--u)*3) #e2cba5}
 .empty .ew{width:calc(var(--u)*120);height:calc(var(--u)*120);object-fit:contain;margin-bottom:calc(var(--u)*6);filter:drop-shadow(0 calc(var(--u)*3) calc(var(--u)*4) #5a2a0040)}
 .empty b{font-size:calc(var(--u)*21);font-weight:inherit}.empty small{display:block;font-size:calc(var(--u)*15);color:#7b5a3a;margin-top:calc(var(--u)*4);line-height:1.25}
 .cl-btn.wide1{display:flex;width:100%;margin-top:calc(var(--u)*12);min-height:calc(var(--u)*54);font-size:calc(var(--u)*19)}.cl-btn.wide1 img{height:calc(var(--u)*32)}
@@ -32,7 +33,7 @@ const {col}=CL.scroll(ui);const U='../uikit/';
 CL.extraTop=78;CL.title(col,'Friends');
 const SHARE_URL='https://ynotink.github.io/goodboybobo/';   // swap for the App Store link once Apple gives one
 const c=CL.card(col,'cream',1);CL.head(c,'Your Friends');
-const ins=h('div','cl-inset empty',c);CL.img('clean/rambo_wave.webp?v=1',ins,'ew');
+CL.img('clean/gang.webp?v=1',c,'gang');const ins=h('div','cl-inset empty',c);
 h('b','',ins).textContent='No friends here yet';
 h('small','',ins).textContent='Invite your friends to play Good Boy Bobo with you!';
 const iv=CL.btn(c,'Invite Friends',invite,'mint wide1',U+'ic_person_add.webp?v=1');
